@@ -46,7 +46,9 @@ public class QnaPostServlet extends HttpServlet {
 				Attach attach = AttachService.handleUploadFile(request, uploadDir);
 				
 				// 3. 게시글과 파일 정보 데이터베이스에 추가
-				int result = AttachService.createBoardWithAttach(qna,attach);
+
+				int result = 0;
+				//고치기..
 				
 				JSONObject obj = new JSONObject();
 				
