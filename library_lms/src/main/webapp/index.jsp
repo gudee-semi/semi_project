@@ -15,6 +15,6 @@
 	<a href="채워주세요!">준수님</a>
 	<a href="채워주세요!">은빈님</a>
 	<a href="채워주세요!">길훈님</a>
-	<a href="채워주세요!">혜원님</a>
+	<a href="/qna/view">혜원님</a>
 </body>
 </html>
