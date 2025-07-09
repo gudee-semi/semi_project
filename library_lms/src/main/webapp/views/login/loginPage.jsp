@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	
+	<h1>로그인! 길훈님</h1>
 </body>
 </html>
