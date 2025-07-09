@@ -37,8 +37,8 @@
 			<br>
 			
 			<a href="<c:url value='/login/signup'/>">회원가입</a> <br>
-			<a href="<c:url value='/login/search'/>">아이디찾기</a> <br>
-			<a href="<c:url value='/login/search'/>">비밀번호찾기</a> <br>
+			<a href="<c:url value='/login/search?type=id'/>">아이디찾기</a> <br>
+			<a href="<c:url value='/login/search?type=pw'/>">비밀번호찾기</a> <br>
 		
 			
 		</div>
