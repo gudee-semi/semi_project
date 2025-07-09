@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.hy.common.sql.SqlSessionTemplate;
+import com.hy.dao.QnaDao;
 import com.hy.dto.Attach;
 import com.hy.dto.Qna;
 
@@ -19,7 +21,7 @@ public class QnaService {
 	}
 	
 	public Qna selectQnaOne(int qnaNo) {
-		return qnaDao.selectQnaOne(QnaNo);
+		return qnaDao.selectQnaOne(qnaNo);
 	}
 	
 	public Attach selectAttachByQnaNo(int qnaNo) {
