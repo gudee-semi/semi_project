@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
    <style>
 
@@ -71,37 +72,29 @@
 </div>    
     
     <ul class="nav flex-column">
-     <li class="nav-item">
-          <a class="nav-link" href="/calendarView">캘린더</a>
-        </li>
+  	 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적관리</a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/scoreView">성적입력</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
+                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
+                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
               </ul>
-            </li>
+            </li>            
+        
         <li class="nav-item">
-          <a class="nav-link" href="#">좌석</a>
+          <a class="dropdown-item" href="<c:url value='/tablet/view' />">태블릿</a>
         </li>
+        
+         <li class="nav-item">
+          <a class="dropdown-item" href="<c:url value='/' />">학습플래너</a>
+        </li>
+        
         <li class="nav-item">
-          <a class="nav-link" href="/calendarView">태블릿</a>
+          <a class="dropdown-item" href="<c:url value='/' />">질의응답</a>
         </li>
-             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">공지사항</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/scoreView">질의응답</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">질의응답</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">마이페이지</a>
-        </li>
+            
+        
       </ul>
 
 </div>
