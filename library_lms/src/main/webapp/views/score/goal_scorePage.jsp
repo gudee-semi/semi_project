@@ -91,10 +91,17 @@
   <div class="section" id="exam-section">
     <h2>시험 분류</h2>
     <div id="exam-checkboxes" class="checkbox-group">
-      <label><input type="checkbox" name="exam" value="3" class="exam-type"> 3월</label>
+ <!--      <label><input type="checkbox" name="exam" value="3" class="exam-type"> 3월</label>
       <label><input type="checkbox" name="exam" value="6" class="exam-type"> 6월</label>
       <label><input type="checkbox" name="exam" value="9" class="exam-type"> 9월</label>
-      <label><input type="checkbox" name="exam" value="11" class="exam-type"> 11월(수능)</label>
+      <label><input type="checkbox" name="exam" value="11" class="exam-type"> 11월(수능)</label> -->
+      
+      
+      <input type="checkbox" name="exam" value="3" class="exam-type"> 3월
+<input type="checkbox" name="exam" value="6" class="exam-type"> 6월
+<input type="checkbox" name="exam" value="9" class="exam-type"> 9월
+<input type="checkbox" name="exam" value="11" class="exam-type"> 11월(수능)
+      
     </div>
   </div>
 
@@ -225,7 +232,7 @@
       const currentYear = new Date().getFullYear();
       const displayMonth = examMonth === '11' ? '11월(수능)' : examMonth + '월';
 
-      let resultHTML = `<strong>${currentYear}년도 ${displayMonth} 모의고사</strong><br><br>`;
+      let resultHTML = `${currentYear}년도 ${displayMonth} 모의고사</strong><br><br>`;
       console.log("결과 미리보기:", resultHTML);
 
       const subjects = ['국어', '수학', '영어', '한국사'];
@@ -240,7 +247,7 @@
       subjects.push(...getCheckedLabels('.science2-subject'));
       subjects.push(...getCheckedLabels('.lang2-subject'));
 
-      resultHTML += subjects.join(' | ');
+      resultHTML += subjects.join('  |  ');
 
       resultDiv.innerHTML = resultHTML;
     });
