@@ -8,13 +8,6 @@
 </head>
 <body>
 
-	<c:if test="${not empty tabletList}">
-		<p>리스트 있음</p>
-	</c:if>
-	<c:if test="${empty tabletList}">
-		<p>리스트 없음</p>
-	</c:if>
-
 	<table border="1">
 	
 		<tr>
@@ -24,21 +17,22 @@
 			<th>수정</th>
 		</tr>
 
+		<!-- tabletList.jsp -->
 		<c:forEach var="t" items="${tabletList}">
-			<tr id="row-${t.tabletId}">
+			<tr>
 				<td>${t.tabletId}</td>
 				<td>${t.memberNo}</td>
-				<td class="available-status">${t.tabletAvailable}</td>
+				<td>${t.tabletAvailable}</td>
 				<td>
-					<button class="update-btn" data-tablet-id="${t.tabletId}"
-						data-available="${t.tabletAvailable == 'Y' ? 'N' : 'Y'}">
-						상태 변경</button>
+					<form action="/tablet/update" method="post">
+						<input type="hidden" name="tabletId" value="${t.tabletId}" /> <input
+							type="hidden" name="available"
+							value="${t.tabletAvailable == 'Y' ? 'N' : 'Y'}" />
+						<button type="submit">변경</button>
+					</form>
 				</td>
 			</tr>
 		</c:forEach>
-	</table>
-
-
-
-</body>
+		
+</body>		
 </html>

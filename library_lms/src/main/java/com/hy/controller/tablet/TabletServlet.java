@@ -9,10 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/tablet/view")
-public class TalbetServlet extends HttpServlet {
+public class TabletServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public TalbetServlet() {
+    public TabletServlet() {
         super();
     }
 
