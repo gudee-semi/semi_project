@@ -226,6 +226,7 @@
       const displayMonth = examMonth === '11' ? '11월(수능)' : examMonth + '월';
 
       let resultHTML = `<strong>${currentYear}년도 ${displayMonth} 모의고사</strong><br><br>`;
+      console.log("결과 미리보기:", resultHTML);
 
       const subjects = ['국어', '수학', '영어', '한국사'];
 
