@@ -11,5 +11,5 @@ public class Todo {
 	private int memberNo;
 	private String title;
 	private String detail;
-	private String dueDate;
+	private java.sql.Date dueDate;
 }

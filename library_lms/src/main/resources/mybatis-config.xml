@@ -16,6 +16,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		</environment>
 	</environments>
 	<mappers>
-		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/calendar-mapper.xml"/>
 	</mappers>
 </configuration>

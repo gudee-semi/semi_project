@@ -100,10 +100,14 @@
 	<div id='calendar'></div>
 
 	  <script>
+	  
+	  	let calendar;
+	  
+	  
 	    document.addEventListener('DOMContentLoaded', function () {
 	      var calendarEl = document.getElementById('calendar');
 	
-	      var calendar = new FullCalendar.Calendar(calendarEl, {
+	      calendar = new FullCalendar.Calendar(calendarEl, {
 	        initialView: 'timeGridWeek', // 주간 뷰만 보기
 	        headerToolbar: {
 	          left: 'prev,next today',
@@ -220,6 +224,7 @@
 				console.log(todoDate);
 				console.log(todoDetail);
 				
+				
 				$.ajax({
 					
 					url: '/calendar/view',
@@ -232,6 +237,39 @@
 					dataType: 'json',
 					success: (data) => {
 						console.log(data);
+						console.log(data.res_msg);
+						
+						const existingEvents = calendar.getEvents().filter(event => {
+							  return event.startStr.startsWith(todoDate); // '2025-07-09' 같은 날짜로 필터
+							});
+						
+					    let startTime = todoDate + 'T00:00:00';
+					    let endTime = todoDate + 'T04:00:00';
+					    
+					    if (existingEvents.length > 0) {
+					    	  // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
+					    	  existingEvents.sort((a, b) => a.end - b.end);
+					    	  const lastEventEnd = existingEvents[existingEvents.length - 1].end;
+
+					    	  // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
+					    	  const nextStart = new Date(lastEventEnd);
+					    	  const nextEnd = new Date(nextStart);
+					    	  nextEnd.setHours(nextEnd.getHours() + 4);
+
+					    	  startTime = nextStart.toISOString();
+					    	  endTime = nextEnd.toISOString();
+					    	}
+					    
+					    
+				        calendar.addEvent({
+			          		title: todoTitle,
+			          		start: startTime,
+			          		end: endTime,
+				        	allDay: false,
+				        	extendedProps: {
+				          		description: todoDetail
+				        	}
+			      		});
 					},
 					error: () => {
 						
