@@ -33,8 +33,18 @@ public class CalendarView extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		
+		int memberNo = 3;
+		String todoTitle = request.getParameter("todoTitle");
+		String todoDate = request.getParameter("todoDate");
+		String todoDetail = request.getParameter("todoDetail");
+		
+		System.out.println(memberNo);
+		System.out.println(todoTitle);
+		System.out.println(todoDate);
+		System.out.println(todoDetail);
+		
 	}
 
 }
