@@ -12,7 +12,7 @@
 	<%@ include file="/views/include/header.jsp" %>
 	<a href="/calendar/view">준하님</a>
 	<a href="채워주세요!">두현님</a>
-	<a href="채워주세요!">준수님</a>
+	<a href="/seat/view">준수님</a>
 	<a href="채워주세요!">은빈님</a>
 	<a href="채워주세요!">길훈님</a>
 	<a href="채워주세요!">혜원님</a>
