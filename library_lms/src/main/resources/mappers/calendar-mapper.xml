@@ -2,8 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hy.mapper.calendar.CalendarMapper">
 
-	<insert id="insertTodo" parameterType="com.hy.dto.calendar.Todo">
+	<resultMap type="com.hy.dto.calendar.Todo" id="todoResultMap">
+		<result property="plannerId" column="planner_id"/>
+		<result property="memberNo" column="member_no"/>
+		<result property="title" column="title"/>
+		<result property="detail" column="detail"/>
+		<result property="isCompleted" column="is_completed"/>
+		<result property="dueDate" column="due_date"/>
+	</resultMap>
+
+	<insert id="insertTodo" parameterType="com.hy.dto.calendar.Todo" useGeneratedKeys="true" keyProperty="plannerId">
 		INSERT INTO planner(member_no, title, detail, due_date)
 		VALUES(#{memberNo},#{title},#{detail},#{dueDate})
 	</insert>
+	
+	<delete id="deleteTodo" parameterType="_int">
+		DELETE FROM planner WHERE planner_id = #{plannerId}
+	</delete>
+	
+	<update id="updateTodo" parameterType="_int">
+		UPDATE planner SET 
+	</update>
+	
+	<select id="selectTodoByNo" resultMap="todoResultMap" parameterType="_int">
+		SELECT planner_id, member_no, title, detail, is_completed, due_date
+		FROM planner WHERE member_no = #{memberNo}
+	</select>
 </mapper>

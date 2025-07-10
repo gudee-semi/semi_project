@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Todo {
+	private int plannerId;
 	private int memberNo;
 	private String title;
 	private String detail;
+	private int isCompleted;
 	private java.sql.Date dueDate;
 }
