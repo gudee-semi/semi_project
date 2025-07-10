@@ -72,18 +72,16 @@
 	  	  });
 	  	}
 	  	
-	  	
-	  
-	  
+
 	    document.addEventListener('DOMContentLoaded', function () {
-	      var calendarEl = document.getElementById('calendar');
+      	var calendarEl = document.getElementById('calendar');
 	
-	      calendar = new FullCalendar.Calendar(calendarEl, {
-	        initialView: 'timeGridWeek', // 주간 뷰만 보기
-	        headerToolbar: {
-	          left: 'prev,next today',
-	          center: 'title',
-	          right: '' // 다른 뷰 버튼 제거
+      	calendar = new FullCalendar.Calendar(calendarEl, {
+		        initialView: 'timeGridWeek', // 주간 뷰만 보기
+		        headerToolbar: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: '' // 다른 뷰 버튼 제거
 	        },
 	        locale: 'ko',
 	        editable: false,
@@ -102,7 +100,7 @@
 	              info.el.querySelector('.fc-event-title').appendChild(descriptionEl);
 	            }
 	          },
-	          eventClick: function(info) {
+	          eventClick: (info) => {
 	        	  // 기존 팝업 제거
 	        	  $('.event-popup').remove();
 
@@ -136,29 +134,74 @@
 	        	  $('body').append(popup);
 
 	        	  // 4. 이벤트 바인딩
-	        	  popup.find('.edit-btn').on('click', function() {
-	        		  
-	        		  $.ajax({
-	        			  
-        			  	url: '/calendar/update',
-	  					type: 'post',
-	  					data: {
-	  						plannerId: plannerId 
-	  					},
-	  					dataType: 'json',
-	        			success: (data) => {
-	        				console.log(data);
-	        				
-	        			}  
-	        			  
-	        			  
-	        		  })
-	        		  
+	        	  popup.find('.edit-btn').on('click', () => {
+        		  	readmePopUp2.style.display = 'flex';
+        		  	
+        		  	const editTitle = event.title;
+        		  	const editDate = event.startStr.split('T')[0];
+        		  	const editDetail = event.extendedProps.description;
+        		  	
+        		  	$('.todo-update-title').val(editTitle);
+        		  	$('.todo-update-date').val(editDate);
+        		  	$('.todo-update-detail').val(editDetail);
+        		  	
+        		  	$('#todo-update').off('submit').on('submit', (e) => {
+        				e.preventDefault();
+        				const todoTitle = $('.todo-update-title').val();
+        				const todoDate = $('.todo-update-date').val();
+        				const todoDetail = $('.todo-update-detail').val();
+        				
+        				if (!todoTitle) {
+        					window.alert('제목은 필수 항목입니다.');
+        				} else if (!todoDate) {
+        					window.alert('날짜는 필수 항목입니다.');
+        				} else {
+        					$.ajax({
+        						url: '/calendar/update',
+        						type: 'post',
+        						data: {
+        							todoTitle: todoTitle,
+        							todoDate: todoDate,
+        							todoDetail: todoDetail,
+        							plannerId: plannerId
+        						},
+        						dataType: 'json',
+        						success: (data) => {
+        							console.log(data.res_msg);
+        							if (data.res_code == '200') {
+        								window.alert('할 일 목록이 수정되었습니다.');
+        								
+     							
+     								  	event.remove();
+
+     								  // 새로 만든 todo 객체로 스마트하게 다시 추가
+	     								const newTodo = {
+	     								    title: todoTitle,
+	     								    start: todoDate,
+	     								    extendedProps: {
+	     								    	planner_id: plannerId,
+	     								    	description: todoDetail,
+	     								    	is_completed: event.extendedProps.is_completed
+	     								  	}
+	     								};
+	     								event.remove();
+
+     								    addSmartEvent(newTodo); // ✅ 우리가 만든 시간 배치 함수로 등록
+
+     								    readmePopUp2.style.display = 'none'; // 모달 닫기
+        							} else {
+        								window.alert('오류!');
+        							}
+        						}
+        					})
+        				}
+        			})
+        		  	
 	        	    console.log('수정:', plannerId);
 	        	    popup.remove();
 	        	  });
 
-	        	  popup.find('.delete-btn').on('click', function() {
+	        	  popup.find('.delete-btn').on('click', () => {
 	        		  $.ajax({
 	        			  
         				url: '/calendar/delete',
@@ -177,11 +220,7 @@
 								window.alert('오류!');
 							}
 	  					}
-	  					
-	        			  
-	        			  
-	        		  })
-	        	  	        		  
+	        		  })    		  
 	        	    popup.remove();
 	        	  });
 	        	}
@@ -231,20 +270,55 @@
     	</div>
   	</div>
   	
+	<div class="modal modal-2">
+    	<div class="modal-content">
+      		<div class="modal-header font-en">
+      			<span></span>
+        		<span class="material-symbols-outlined btn-add-close">close</span>
+      		</div>
+     		 <div class="modal-body">
+     		 	<form id="todo-update">
+	        		<p>할 일 목록</p>
+	        		<input type="text" class="todo-update-title">
+	        		<br>
+	        		<p>날짜</p>
+	        		<input type="date" class="todo-update-date">
+	        		<br>
+	        		<p>상세 내용</p>
+	        		<textarea rows="10" cols="20" class="todo-update-detail"></textarea>
+	        		<br>
+	        		<button type="submit">할 일 목록 수정</button>     		 	
+     		 	</form>
+      		</div>
+    	</div>
+  	</div>
+  	
   	<script>
 	  	const readmeBtn1 = document.querySelector('.btn-add');
 	  	const readmePopUp1 = document.querySelector('.modal.modal-1');
+	  	const readmePopUp2 = document.querySelector('.modal.modal-2');
 	  	const readmeClose1 = document.querySelector('.modal.modal-1 .btn-add-close');
+	  	const readmeClose2 = document.querySelector('.modal.modal-2 .btn-add-close');
 	  	const todoForm = document.querySelector('#todo-input');
+	  	const updateForm = document.querySelector('#todo-update');
 	  	readmeBtn1.addEventListener('click', () => {
 	  		readmePopUp1.style.display = 'flex';
 	  	});
 	  	readmeClose1.addEventListener('click', () => {
+	  		$('.todo-input-title').val('');
+			$('.todo-input-date').val('');
+			$('.todo-input-detail').val('');
 	  		readmePopUp1.style.display = 'none';
+	  	});
+	  	readmeClose2.addEventListener('click', () => {
+	  		readmePopUp2.style.display = 'none';
 	  	});
 	  	todoForm.addEventListener('submit', () => {
 	  		readmePopUp1.style.display = 'none';
-	  	})
+	  	});
+	  	updateForm.addEventListener('submit', () => {
+	  		readmePopUp2.style.display = 'none';
+	  	});
   	</script>
   	
 	<script>
@@ -280,52 +354,61 @@
 					success: (data) => {
 						console.log(data);
 						console.log(data.res_msg);
-						console.log(data.planner_id)
-						
-						const existingEvents = calendar.getEvents().filter(event => {
-							  return event.startStr.startsWith(todoDate); // '2025-07-09' 같은 날짜로 필터
-							});
-						
-					    let startTime = todoDate + 'T00:00:00';
-					    let endTime = todoDate + 'T04:00:00';
-					    
-					    if (existingEvents.length > 0) {
-					    	  // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
-					    	  existingEvents.sort((a, b) => a.end - b.end);
-					    	  const lastEventEnd = existingEvents[existingEvents.length - 1].end;
+						console.log(data.planner_id);
+						if (data.res_code == '200') {
+							
+							window.alert('할 일 목록 등록 성공');
+							
+							const existingEvents = calendar.getEvents().filter(event => {
+								  return event.startStr.startsWith(todoDate); // '2025-07-09' 같은 날짜로 필터
+								});
+							
+						    let startTime = todoDate + 'T00:00:00';
+						    let endTime = todoDate + 'T04:00:00';
+						    
+						    if (existingEvents.length > 0) {
+						    	  // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
+						    	  existingEvents.sort((a, b) => a.end - b.end);
+						    	  const lastEventEnd = existingEvents[existingEvents.length - 1].end;
 
-					    	  // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
-					    	  const nextStart = new Date(lastEventEnd);
-					    	  const nextEnd = new Date(nextStart);
-					    	  nextEnd.setHours(nextEnd.getHours() + 4);
+						    	  // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
+						    	  const nextStart = new Date(lastEventEnd);
+						    	  const nextEnd = new Date(nextStart);
+						    	  nextEnd.setHours(nextEnd.getHours() + 4);
 
-					    	  startTime = nextStart.toISOString();
-					    	  endTime = nextEnd.toISOString();
-					    	}
-					    
-					    
-				        calendar.addEvent({
-			          		title: todoTitle,
-			          		start: startTime,
-			          		end: endTime,
-				        	allDay: false,
-				        	extendedProps: {
-				          		description: todoDetail,
-				          		planner_id: data.planner_id
-				        	}
-			      		});
+						    	  startTime = nextStart.toISOString();
+						    	  endTime = nextEnd.toISOString();
+						    	}
+						    
+						    
+					        calendar.addEvent({
+				          		title: todoTitle,
+				          		start: startTime,
+				          		end: endTime,
+					        	allDay: false,
+					        	extendedProps: {
+					          		description: todoDetail,
+					          		planner_id: data.planner_id
+					        	}
+				      		});	
+							
+						} else {
+							window.alert('오류!');
+						}
 					},
 					error: () => {
 						
 					}					
 					
 				})
+				
+				
 			}
 			
 		})
 		
-	
 	</script>
+	
 	 
 </body>
 </html>

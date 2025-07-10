@@ -21,9 +21,9 @@ public class CalendarDao {
 		return result;
 	}
 
-	public int updateTodo(int plannerId) {
+	public int updateTodo(Todo param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.update("com.hy.mapper.calendar.CalendarMapper.updateTodo", plannerId);
+		int result = session.update("com.hy.mapper.calendar.CalendarMapper.updateTodo", param);
 		return result;
 	}
 

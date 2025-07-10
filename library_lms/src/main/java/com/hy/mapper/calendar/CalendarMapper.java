@@ -10,7 +10,7 @@ public interface CalendarMapper {
 	
 	public int deleteTodo(int plannerId);
 	
-	public int updateTodo(int plannerId);
+	public int updateTodo(Todo param);
 	
 	List<Todo> selectTodoByNo(int memberNo);
 

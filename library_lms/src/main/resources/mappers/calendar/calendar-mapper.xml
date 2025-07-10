@@ -20,8 +20,9 @@
 		DELETE FROM planner WHERE planner_id = #{plannerId}
 	</delete>
 	
-	<update id="updateTodo" parameterType="_int">
-		UPDATE planner SET 
+	<update id="updateTodo" parameterType="com.hy.dto.calendar.Todo">
+		UPDATE planner SET title = #{title}, due_date = #{dueDate}, detail = #{detail}
+		WHERE planner_id = #{plannerId}
 	</update>
 	
 	<select id="selectTodoByNo" resultMap="todoResultMap" parameterType="_int">

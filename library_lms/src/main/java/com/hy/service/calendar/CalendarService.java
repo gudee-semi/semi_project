@@ -1,5 +1,6 @@
 package com.hy.service.calendar;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.hy.dao.calenadar.CalendarDao;
@@ -22,12 +23,17 @@ public class CalendarService {
 		return dao.deleteTodo(plannerId);
 	}
 
-	public int updateTodo(int plannerId) {
-		return dao.updateTodo(plannerId);
-	}
-
 	public List<Todo> selectTodoByNo(int memberNo) {
 		return dao.selectTodoByNo(memberNo);
+	}
+
+	public int updateTodo(String todoTitle, Date todoDate, String todoDetail, int plannerId) {
+		Todo param = new Todo();
+		param.setPlannerId(plannerId);
+		param.setTitle(todoTitle);
+		param.setDueDate(todoDate);
+		param.setDetail(todoDetail);
+		return dao.updateTodo(param);
 	}
 
 }
