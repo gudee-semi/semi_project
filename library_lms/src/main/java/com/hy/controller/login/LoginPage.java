@@ -27,7 +27,7 @@ public class LoginPage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.sendRedirect("/views/login/loginPage.jsp");
-	
+
 	}
 
 	/**
