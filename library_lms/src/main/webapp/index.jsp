@@ -20,7 +20,7 @@
 	<a href="/write_score/view">은빈님 성적 입력</a>
 	<a href="/analysis_score/view">은빈님 성적 분석</a>
 	<a href="<c:url value='/login/view'/>">길훈님</a>
-
 	<a href="/qna/view">혜원님</a>
+
 </body>
 </html>
