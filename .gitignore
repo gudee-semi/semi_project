@@ -113,6 +113,9 @@ $RECYCLE.BIN/
 *.lnk
 Servers
 driver.properties
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/main
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,maven
