@@ -47,7 +47,6 @@
 	<input type="button" id = "member_schul_search" value="학교검색"><br>
 	<input type="text" id="member_schul"  placeholder="학교이름"><br>
 	<p id = "member_schul_msg">
-	<input type="submit" value="제출하기">
 	
 	
 	<div id="schul_modal">
@@ -59,23 +58,23 @@
 		</div>
 		<div id = "modal_content">
 			<div id = "search_field"></div>
-				<input id = "shcul_name" type="text" placeholder="학교이름 입력"> 
-				<button type= "button" id = "shcul_search"></button>
-			</div>
+				<input id = "schul_name" type="text" placeholder="학교이름 입력"> 
+				<button type= "button" id = "schul_search">검색</button>
+		</div>
 			<div id = "result_field">
-				<ul>
+			<%-- 	<ul>
 					<c:forEach var="data" items="">
 					
-						<li>${data.shulName}</li>
+						<li></li>
 					
 					</c:forEach>
 				
-				</ul>
+				</ul> --%>
 			</div>
 			
-		</div>
-	
 	</div>
+	
+	<input type="submit" value="제출하기">
 </form>
 <script>
 	let idStatus =false;
@@ -235,11 +234,52 @@
 	
 	
 	<script>
-		$("#schulsearch").on("click",function(){
-			$.ajax({
-				url : 
+		$("#schul_search").on("click",function(){
+			let schulName = $("#schul_name").val().trim();
+			let url = "http://openapi.seoul.go.kr:8088/4f584c4c61776a6433375a44634f47/json/neisSchoolInfoHs/1/318";
+		
+				$.ajax({
+					url : url,
+					type: "get",
+					dataType: "json",
+					success : function(data){
+						let rows=[];
+						let name =[];
+						let result="";
+						try{
+							if(data.neisSchoolInfoHs.row){
+								rows= data.neisSchoolInfoHs.row
+							}
+						}catch(e){
+							console.error("데이터 접근 실패");
+						}
+						for(const da of rows){
+							if (da.SCHUL_NM.includes(schulName)) {
+								name.push(da.SCHUL_NM);
+						      }
+						}
+						if(name.length===0){
+							$("#result_field").text("없는 학교입니다.");
+						}else{
+							for(let i = 0 ; i <name.length; i++){
+								result.append(name[i]+"<br>");
+							}
+						}
+						
+						
+						
+						
+					},
+					error: function(){
+						alert("요청실패");
+					}
+					
+				});
 			});
-		});
+				
+				
+		
+			
 	</script>
 	<script>
 	 $("#signUp").submit(function(e){

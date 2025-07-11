@@ -46,7 +46,7 @@
 		
 	</div>
 	<script>
-		$("member_login").submit(function(e){
+		$("#member_login").submit(function(e){
 			e.preventDefault();
 			
 			
