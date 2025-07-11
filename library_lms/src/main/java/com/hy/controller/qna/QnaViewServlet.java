@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.hy.dto.Qna;
-import com.hy.service.QnaService;
+import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

@@ -7,8 +7,8 @@ import org.json.simple.JSONObject;
 
 import com.hy.dto.Attach;
 import com.hy.dto.Qna;
-import com.hy.service.AttachService;
-import com.hy.service.QnaService;
+import com.hy.service.qna.AttachService;
+import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;

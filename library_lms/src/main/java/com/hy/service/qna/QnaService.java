@@ -10,7 +10,7 @@ import com.hy.dto.Attach;
 import com.hy.dto.Qna;
 
 public class QnaService {
-	QnaDao qnaDao = new QnaDao();
+private QnaDao qnaDao = new QnaDao();
 	
 	public List<Qna> selectQnaList(Qna param){
 		return qnaDao.selectQnaList(param);

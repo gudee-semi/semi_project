@@ -2,61 +2,73 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gn.mapper.QnaMapper">
-	<resultMap id="QnaResultMap" type="com.gn.dto.Qna">
-      <result property="boardNo" column="board_no" />
-      <result property="boardTitle" column="board_title" />
-      <result property="boardContent" column="board_content" />
-      <result property="boardWriter" column="board_writer" />
+<mapper namespace="com.hy.mapper.QnaMapper">
+	<resultMap id="qnaResultMap" type="com.hy.dto.Qna">
+      <result property="qnaId" column="qna_no" />
+      <result property="memberNo" column="member_no" />
+      <result property="category" column="category" />
+      <result property="title" column="title" />
+      <result property="content" column="content" />
       <result property="regDate" column="reg_date" />
       <result property="modDate" column="mod_date" />
-      <result property="memberId" column="member_id" />
+      <result property="visibility" column="visibility" />
+      <result property="viewCount" column="view_count" />
+      <result property="answerStatus" column="answer_status" />
 	</resultMap>
 	
-	<resultMap id="attachResultMap" type="com.gn.dto.Attach">
-      <result property="attachNo" column="attach_no" />
-      <result property="boardNo" column="board_no" />
+ 	<resultMap id="attachResultMap" type="com.hy.dto.Attach">
+      <result property="qnaAttachId" column="qna_attach_id" />
+      <result property="qnaId" column="qna_id" />
       <result property="oriName" column="ori_name" />
       <result property="reName" column="re_name" />
+      <result property="path" column="re_name" />
 	</resultMap>
 	
-	<select id="selectBoardList" resultMap="boardResultMap" parameterType="com.gn.dto.Board">
-		SELECT B.board_no 
-			,B.board_title 
-			,B.board_content 
-			,B.board_writer
-			,DATE_FORMAT(B.reg_date, '%Y-%m-%d') AS reg_date
-			,DATE_FORMAT(B.mod_date, '%Y-%m-%d') AS mod_date 
-			,M.member_id
-		FROM board B 
-		JOIN member M ON B.board_writer = M.member_no
+	<select id="selectQnaList" resultMap="qnaResultMap" parameterType="com.hy.dto.Qna">
+		SELECT Q.qna_id
+			,Q.category
+			,Q.title 
+			,Q.content 
+			,DATE_FORMAT(Q.reg_date, '%Y-%m-%d') AS reg_date
+			,DATE_FORMAT(Q.mod_date, '%Y-%m-%d') AS mod_date 
+			,Q.visibility
+			,Q.view_count
+			,Q.answer_status
+			,M.member_no
+		FROM qna Q 
+		JOIN member M ON Q.member_no = M.member_no
 		<where>
 			<if test='keyword != null and keyword != ""'>
-				B.board_title LIKE CONCAT('%',#{keyword}, '%')			
-				OR M.member_id LIKE CONCAT('%',#{keyword}, '%')
+				Q.qna_title LIKE CONCAT('%',#{keyword}, '%')			
+				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
 			</if>
 		</where>
 		LIMIT #{limitPageNo},#{numPerPage}
 	</select>
 	
-	<select id="selectBoardOne" resultMap="boardResultMap" parameterType="_int">
-		SELECT B.board_no 
-			,B.board_title
-			,B.board_content
-			,M.member_id
-			,DATE_FORMAT(B.reg_date, '%Y-%m-%d') AS reg_date
-		FROM board B
-		JOIN member M On B.board_writer = M.member_no
+	<select id="selectQnaOne" resultMap="qnaResultMap" parameterType="_int">
+		SELECT Q.qna_id
+			,Q.category
+			,Q.title 
+			,Q.content 
+			,DATE_FORMAT(Q.reg_date, '%Y-%m-%d') AS reg_date
+			,DATE_FORMAT(Q.mod_date, '%Y-%m-%d') AS mod_date 
+			,Q.visibility
+			,Q.view_count
+			,Q.answer_status
+			,M.member_no
+		FROM qna Q
+		JOIN member M On Q.member_no = M.member_no
 		<where>
-		board_no = #{boardNo}			
+		qna_id = #{qnaNo}			
 		</where>
 	</select>
 	
-	<select id="selectAttachByBoardNo" resultMap="attachResultMap" parameterType="_int">
+	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
 		FROM attach
 		<where>
-			board_no = #{boardNo}	
+			qna_id = #{qnaNo}	
 		</where>
 	</select>
 	
@@ -68,25 +80,25 @@
 		</where>
 	</select>
 			
-	<select id="selectBoardCount" resultType="_int" parameterType="com.gn.dto.Board">
+	<select id="selectQnaCount" resultType="_int" parameterType="com.hy.dto.Qna">
 		SELECT COUNT(*) 
-		FROM board B
-		JOIN member M ON B.board_writer = M.member_no
-		<where>
+		FROM qna Q
+		JOIN member M ON Q.member_no = M.member_no
+ 		<where>
 			<if test='keyword != null and keyword != ""'>
-				B.board_title LIKE CONCAT('%',#{keyword}, '%')
-				OR M.member_id LIKE CONCAT('%',#{keyword}, '%')
+				Q.title LIKE CONCAT('%',#{keyword}, '%')
+				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
 			</if>
 		</where>
 	</select>
 	
-	<insert id="insertBoard" parameterType="com.gn.dto.Board" useGeneratedKeys="true" keyProperty="boardNo">
-		INSERT INTO board(board_title ,board_content ,board_writer)
-		VALUES (#{boardTitle} ,#{boardContent} ,#{boardWriter})
+	<insert id="insertQna" parameterType="com.hy.dto.Qna" useGeneratedKeys="true" keyProperty="qnaNo">
+		INSERT INTO qna(qna_category ,title ,content)
+		VALUES (#{category} ,#{title} ,#{content})
 	</insert>
 	
-	<insert id="insertAttach" parameterType="com.gn.dto.Attach">
-		INSERT INTO attach(board_no ,ori_name ,re_name)
-		VALUES (#{boardNo} ,#{oriName} ,#{reName})
+	<insert id="insertAttach" parameterType="com.hy.dto.Attach">
+		INSERT INTO attach(qna_attach_id ,ori_name ,re_name)
+		VALUES (#{qnaAttachId} ,#{oriName} ,#{reName})
 	</insert>
 </mapper>
