@@ -14,13 +14,13 @@
 	<%@ include file="/views/include/sidebar.jsp" %>
 	<%@ include file="/views/include/header.jsp" %>
 
-	<a href="/calendar/view">준하님</a>
-	<a href="/tablet/view">두현님</a>
 	<a href="<c:url value='/calendar/view' />">준하님</a>
-	<a href="채워주세요!">두현님</a>
 	<a href="/seat/view">준수님</a>
-	<a href="채워주세요!">은빈님</a>
-	<a href="채워주세요!">길훈님</a>
+	<a href="/goal_score/view">은빈님 목표 성적</a>
+	<a href="/write_score/view">은빈님 성적 입력</a>
+	<a href="/analysis_score/view">은빈님 성적 분석</a>
+	<a href="<c:url value='/login/view'/>">길훈님</a>
 	<a href="/qna/view">혜원님</a>
+
 </body>
 </html>

@@ -8,13 +8,13 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 
 public class AttachService {
-	// 1. 업로드할 디렉토리 반환
+		// 1. 업로드할 디렉토리 반환
 		public static File getUploadDirectory() {
 			String dirPath="C://upload/qna";
 			
@@ -31,7 +31,7 @@ public class AttachService {
 			// form에서 파일 가져오기 -> name 속성 기준
 			Attach result = null;
 			try {
-				Part filePart = request.getPart("boardFile");
+				Part filePart = request.getPart("qnaFile");
 				if(filePart.getSize() > 0) {
 					result = getFileMeta(filePart, uploadDir);
 				}
@@ -67,10 +67,15 @@ public class AttachService {
 				e.printStackTrace();
 			}
 			
-			Attach a = new Attach();
+			Attach a =new Attach();
 			a.setOriName(oriName);
 			a.setReName(saveName+"."+ext);
 			
 			return a;
+			
+			
 		}
-}
+		
+		
+		
+	}
