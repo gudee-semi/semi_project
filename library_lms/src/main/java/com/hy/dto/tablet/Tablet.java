@@ -6,6 +6,6 @@ import lombok.Data;
 public class Tablet {
 	
 	private int tabletId;
-	private int available;
+	private int tabletAvailable;
 
 }

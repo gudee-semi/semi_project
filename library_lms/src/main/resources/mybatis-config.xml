@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	
 	<mappers>
-	    <package name="com.hy.mapper.tablet"/>
+	    <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
 	</mappers>
 	
 </configuration>

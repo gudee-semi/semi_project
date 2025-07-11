@@ -17,13 +17,6 @@ public class SessionTemplate {
 			String path = "mybatis-config.xml";
 			InputStream is = Resources.getResourceAsStream(path);
 
-			if (is == null) {
-				System.out.println("❌ 설정 파일 로딩 실패: " + path);
-				return null;
-			} else {
-				System.out.println("✅ 설정 파일 로딩 성공!");
-			}
-
 			SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
 			SqlSessionFactory factory = builder.build(is);
 
