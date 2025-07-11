@@ -36,46 +36,31 @@
 			</span></td>
 		</tr>
 	</c:forEach>
-
-<!-- 	<script>
-	$(function() {
-		$(".use-btn").click(function() {
-			var tabletId = $(this).data("id");
-			$.ajax({
-				url: "tablet/use",
-				type: "POST",
-				data: {tabletId: tabletId},
-				success: fuction(result) {
-					// 성공시 상태 텍스트 변경
-					$("#status-"+tabletId).text("사용중");
-					// 버튼 숨기기
-					$("use-btn[data-id='"+ tabletId + "']").hide();
-				},
-				error : function() {
-					alert("오류가 발생했습니다");
-				}
-			});
-		});
-	});
-	</script> -->
 	
-	<script>
-	$(function() {
-		$(".use-btn").click(function() {
-			var tabletId = $(this).data("id");
-			$.ajax({
-				url: "tablet/use",
-				type: "POST",
-				data: {tabletId : tabletId},
-				success: 
-			})
-		})
-	})
-	</script>
-
-
-
-
+	<%-- 1. 먼저 전체 리스트 중 사용 가능한게 있는지 변수 선언 --%>
+	<c:set var="canUse" value="false"/>
+	
+	<%-- 2. 리스트 전체에서 사용 가능한 게 있으면 canUse를 true로 --%>
+	<c:forEach var="t" items="${tabletList}">
+		<c:if test="${t.tabletAvailable == 0}">
+			<c:set var="canUse" value="true"/>
+		</c:if>	
+	</c:forEach>
+	
+	<%-- 3. 버튼 하나만 보여주기 (상태에 따라 활성/비활성) --%>
+	<c:choose>
+		<%-- 4. 하나라도 사용 가능하면 활성화 --%>
+		<c:when test="${canUse}">
+			<button id="use-btn">사용하기</button>
+		</c:when>
+		
+		<%-- 5. 모두 사용 중이면 비활성화 --%>
+		<c:otherwise>
+			<button id="use-btn" disabled>사용 불가</button>
+		</c:otherwise>		
+	</c:choose>
+	
+	
 
 </body>		
 </html>

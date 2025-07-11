@@ -8,5 +8,9 @@ public interface TabletMapper {
 	
 	// 테이블 전체 조회
 	List<Tablet> selectAll();
+	
+	int selectFirstAvailableTabletId();
+	
+	void useFirstAvailableTablet();
 
 }

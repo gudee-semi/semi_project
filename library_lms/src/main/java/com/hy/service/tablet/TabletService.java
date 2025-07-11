@@ -13,4 +13,11 @@ public class TabletService {
 		return dao.selectAll();
 	}
 	
+	// DAO 호출해서 가장 앞 태블릿 사용중으로 변경
+	public void useFirstAvailableTablet() {
+		dao.updateFirstAvailableTablet();
+	}
+	
+	
+	
 }
