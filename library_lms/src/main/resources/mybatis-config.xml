@@ -17,7 +17,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	
 	<mappers>
-	    <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
+
+	  <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
+
+		<mapper resource="/mappers/login/signUp-mapper.xml"/>
+
 	</mappers>
 	
 </configuration>
