@@ -27,6 +27,9 @@ public class TabletServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// 요청 파라미터에서 tabletId 받기
+		int tabletId = Integer.parseInt(request.getParameter("tabletId"));
+		
 		// DB에서 태블릿 리스트 가져오기
 		List<Tablet> tabletList = tabletService.getTabletList();
 		request.setAttribute("tabletList", tabletList);

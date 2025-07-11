@@ -58,6 +58,20 @@
 		});
 	});
 	</script> -->
+	
+	<script>
+	$(function() {
+		$(".use-btn").click(function() {
+			var tabletId = $(this).data("id");
+			$.ajax({
+				url: "tablet/use",
+				type: "POST",
+				data: {tabletId : tabletId},
+				success: 
+			})
+		})
+	})
+	</script>
 
 
 
