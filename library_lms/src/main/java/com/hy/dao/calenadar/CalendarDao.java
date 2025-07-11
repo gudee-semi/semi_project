@@ -32,4 +32,10 @@ public class CalendarDao {
 		List<Todo> result = session.selectList("com.hy.mapper.calendar.CalendarMapper.selectTodoByNo", memberNo);
 		return result;
 	}
+
+	public int updateCheck(Todo param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.hy.mapper.calendar.CalendarMapper.updateCheck", param);
+		return result;
+	}
 }

@@ -29,4 +29,9 @@
 		SELECT planner_id, member_no, title, detail, is_completed, due_date
 		FROM planner WHERE member_no = #{memberNo}
 	</select>
+	
+	<update id="updateCheck" parameterType="com.hy.dto.calendar.Todo">
+		UPDATE planner SET is_completed = #{isCompleted}
+		WHERE planner_id = #{plannerId}
+	</update>
 </mapper>

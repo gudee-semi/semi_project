@@ -36,4 +36,11 @@ public class CalendarService {
 		return dao.updateTodo(param);
 	}
 
+	public int updateCheck(int plannerId, int isCompleted) {
+		Todo param = new Todo();
+		param.setPlannerId(plannerId);
+		param.setIsCompleted(isCompleted);
+		return dao.updateCheck(param);
+	}
+
 }

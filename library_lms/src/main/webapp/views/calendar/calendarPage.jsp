@@ -3,17 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>학습 플래너</title>
-	 <!-- FullCalendar 라이브러리 -->
-  	<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
-  	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
-  	<!-- jquery -->
-  	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-  	<!-- Google 머티리얼 아이콘 -->
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
-  	<!-- CSS -->
-  	<link rel="stylesheet" type="text/css" href="/css/calendar/calendar.css">
+<meta charset="UTF-8">
+<title>학습 플래너</title>
+ <!-- FullCalendar 라이브러리 -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<!-- Google 머티리얼 아이콘 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="/css/calendar/calendar.css">
 </head>
 <body>
 	<h1>학습 플래너</h1>
@@ -88,6 +88,64 @@
 	        selectable: true,
 	        allDaySlot: false,
 	        eventDidMount: function(info) {
+	        	
+	        	 const event = info.event;
+	        	 const el = info.el;
+	        	 const titleEl = el.querySelector('.fc-event-title');
+	        	 
+	        	 el.style.backgroundColor = '#ffffff';
+	        	 titleEl.style.color = '#000000';
+	        	 if (event.extendedProps.is_completed === 1) {
+		        	 el.style.border = '2px solid blue';	        		 
+	        	 } else if (event.extendedProps.is_completed === 0) {
+	        		 el.style.border = '2px solid grey';
+	        	 }
+
+
+	        	  // 체크박스 생성
+	        	  const checkbox = document.createElement('input');
+	        	  checkbox.type = 'checkbox';
+	        	  checkbox.checked = event.extendedProps.is_completed === 1;
+	      		  
+	        	  checkbox.addEventListener('change', () => {
+	      		    const plannerId = info.event.extendedProps.planner_id;
+	      		    console.log(plannerId);
+	      		    const isCompleted = checkbox.checked ? 1 : 0;
+	      		    console.log(isCompleted);
+
+	      		    // 여기에 AJAX 보내는 코드 넣으면 됨!
+	      		    $.ajax({
+	      		    	url: '/calendar/check',
+	  					type: 'post',
+	  					data: {
+	  						plannerId: plannerId,
+	  						isCompleted: isCompleted
+	  					},
+	  					dataType: 'json',
+	  					success: (data) => {
+	  						console.log(data);
+	  						console.log(data.res_msg);
+	  					}
+	      		    	
+	      		    	
+	      		    })
+	      		  });
+
+	      		  checkbox.addEventListener('click', (e) => {
+	      		    e.stopPropagation();
+	      		  });	
+
+	        	  // 스타일: 우측 상단 고정
+	        	  checkbox.style.position = 'absolute';
+	        	  checkbox.style.top = '4px';
+	        	  checkbox.style.right = '6px';
+	        	  checkbox.style.zIndex = '10';
+	        	  checkbox.style.transform = 'scale(1.2)';
+	        	  checkbox.title = '완료 체크';
+
+	        	  // 카드에 체크박스 추가
+	        	  info.el.appendChild(checkbox);
+	        	  
 	            // 설명 추가
 	            if (info.event.extendedProps.description) {
 	              var descriptionEl = document.createElement('div');
@@ -147,6 +205,8 @@
         		  	
         		  	$('#todo-update').off('submit').on('submit', (e) => {
         				e.preventDefault();
+        				const dateToRearrange = editDate;
+        				console.log(editDate);
         				const todoTitle = $('.todo-update-title').val();
         				const todoDate = $('.todo-update-date').val();
         				const todoDetail = $('.todo-update-detail').val();
@@ -188,7 +248,27 @@
 
      								    addSmartEvent(newTodo); // ✅ 우리가 만든 시간 배치 함수로 등록
 
+     								   const date = dateToRearrange;
+     								   const eventsToReAdd = [];
+
+     								   calendar.getEvents().forEach(e => {
+     								     	if (e.startStr.startsWith(date)) {
+     								       		eventsToReAdd.push({
+	     								         	title: e.title,
+	     								         	start: date,
+	     								         	extendedProps: e.extendedProps
+     								       		});
+     								       		e.remove();
+     								     	}
+     								   	});
+
+     								   	// 재정렬해서 다시 추가
+     								   	eventsToReAdd.forEach(todo => addSmartEvent(todo));
+     								   	
+     								   	
      								    readmePopUp2.style.display = 'none'; // 모달 닫기
+     								    
+     								    
         							} else {
         								window.alert('오류!');
         							}
