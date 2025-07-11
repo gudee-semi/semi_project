@@ -81,7 +81,7 @@
  				error : function() {
  					alert("요청 실패!");
  				}
-			})
+			});
 		});
 	</script>
 </body>
