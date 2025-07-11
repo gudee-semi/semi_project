@@ -1,6 +1,12 @@
 package com.hy.dto.score;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 
 public class GoalScore {
 	private int memberNo;
