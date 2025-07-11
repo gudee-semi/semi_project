@@ -17,12 +17,10 @@
 </head>
 <body>
 	<h1>학습 플래너</h1>
-	
 	<div id='calendar'></div>
 
 	<script>
-	  
-	  	let calendar;
+		let calendar;
 	  	
 	  	const todoList = [
 	  		<c:forEach var="todo" items="${todoList}">
@@ -87,18 +85,38 @@
 	        editable: false,
 	        selectable: true,
 	        allDaySlot: false,
+	        eventTimeFormat: {
+	        	  month: 'short',
+	        	  day: 'numeric',
+	        	  weekday: 'short',
+	        	  locale: 'ko'
+	        	},
 	        eventDidMount: function(info) {
 	        	
 	        	 const event = info.event;
 	        	 const el = info.el;
 	        	 const titleEl = el.querySelector('.fc-event-title');
+	        	 const timeEl = el.querySelector('.fc-event-time');
 	        	 
-	        	 el.style.backgroundColor = '#ffffff';
-	        	 titleEl.style.color = '#000000';
+	        	 const eventDate = event.start;
+	        	 const formattedDate = eventDate.getMonth() + 1 + '월 ' + eventDate.getDate() + '일';
+	        	 timeEl.style.color = '#000000';
+	        	 
+	        	 el.style.backgroundColor = 'transparent';
+	        	 titleEl.style.fontWeight = 'bold';
+	        	 titleEl.style.fontSize = '14px';
 	        	 if (event.extendedProps.is_completed === 1) {
-		        	 el.style.border = '2px solid blue';	        		 
+		        	 el.style.border = '3px solid blue';
+		        	 titleEl.style.color = 'blue';
+					 if (descriptionEl){
+	  					 descriptionEl.style.color = 'blue';	  					    	
+  					 }
 	        	 } else if (event.extendedProps.is_completed === 0) {
-	        		 el.style.border = '2px solid grey';
+	        		 el.style.border = '3px solid grey';
+		        	 titleEl.style.color = 'grey';
+				     if (descriptionEl){
+  					    descriptionEl.style.color = 'grey';	  					    	
+ 					 }
 	        	 }
 
 
@@ -125,6 +143,23 @@
 	  					success: (data) => {
 	  						console.log(data);
 	  						console.log(data.res_msg);
+	  						// (1) is_completed UI 반영
+	  					  if (isCompleted === 1) {
+	  					    el.style.border = '3px solid blue';
+	  					    titleEl.style.color = 'blue';
+	  					    if (descriptionEl){
+		  					    descriptionEl.style.color = 'blue';	  					    	
+	  					    }
+	  					  } else {
+	  					    el.style.border = '3px solid grey';
+	  					    titleEl.style.color = 'grey';
+	  					    if (descriptionEl){
+		  					    descriptionEl.style.color = 'grey';	  					    	
+	  					    }
+	  					  }
+
+	  					  // (2) 이벤트 객체 값 업데이트
+	  					  event.setExtendedProp('is_completed', isCompleted);
 	  					}
 	      		    	
 	      		    	
@@ -150,9 +185,8 @@
 	            if (info.event.extendedProps.description) {
 	              var descriptionEl = document.createElement('div');
 	              descriptionEl.innerText = info.event.extendedProps.description;
-	              descriptionEl.style.fontSize = '0.8em';
+	              descriptionEl.style.fontSize = '0.7em';
 	              descriptionEl.style.marginTop = '4px';
-	              descriptionEl.style.color = '#555';
 
 	              // FullCalendar가 만들어준 카드에 추가
 	              info.el.querySelector('.fc-event-title').appendChild(descriptionEl);
