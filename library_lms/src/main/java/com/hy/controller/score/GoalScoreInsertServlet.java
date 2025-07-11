@@ -26,56 +26,44 @@ public class GoalScoreInsertServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 인코딩 한글 깨짐 방지
-		request.setCharacterEncoding("UTF-8");
-
-        // 1. 파라미터 받기
-        int memberNo = Integer.parseInt(request.getParameter("memberNo"));
-        int examTypeId = Integer.parseInt(request.getParameter("examTypeId"));
-        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-        int targetScore = Integer.parseInt(request.getParameter("targetScore"));
-        int targetGrade = Integer.parseInt(request.getParameter("targetGrade"));
-
-        // 2. DTO 생성
-        GoalScore dto = new GoalScore(memberNo, examTypeId, subjectId, targetScore, targetGrade);
-
-        // 3. 서비스 호출
-        GoalScoreService service = new GoalScoreService();
-        boolean result = service.insertGoalScore(dto);
-
-        // 4. 응답 처리 (AJAX용)
-        response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().write("{\"success\": " + result + "}");
+		
 	}
 
-
+	 @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 설정
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=UTF-8");
+		 // 1. 인코딩 및 응답 설정
+	        request.setCharacterEncoding("UTF-8");
+	        response.setContentType("application/json; charset=UTF-8");
 
-        // 2. JSON 데이터 읽기
-        BufferedReader reader = request.getReader();
-        String json = reader.lines().collect(Collectors.joining());
+	        boolean allSuccess = true;
 
-        // 3. JSON → GoalScore[]로 변환
-        Gson gson = new Gson();
-        GoalScore[] scoreList = gson.fromJson(json, GoalScore[].class);
+	        try {
+	            // 2. JSON 데이터 읽기
+	            BufferedReader reader = request.getReader();
+	            String json = reader.lines().collect(Collectors.joining());
 
-        // 4. Service 호출
-        GoalScoreService service = new GoalScoreService();
-        boolean allSuccess = true;
+	            // 3. JSON → GoalScore[]로 변환
+	            Gson gson = new Gson();
+	            GoalScore[] scoreList = gson.fromJson(json, GoalScore[].class);
 
-        for (GoalScore dto : scoreList) {
-            boolean inserted = service.insertGoalScore(dto);
-            if (!inserted) {
-                allSuccess = false;
-                break;
-            }
-        }
+	            // 4. Service 호출
+	            GoalScoreService service = new GoalScoreService();
 
-        // 5. 응답 반환
-        response.getWriter().write("{\"success\": " + allSuccess + "}");
-    }
+	            for (GoalScore dto : scoreList) {
+	                boolean inserted = service.insertGoalScore(dto);
+	                if (!inserted) {
+	                    allSuccess = false;
+	                    break;
+	                }
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            allSuccess = false;
+	        }
+
+	        // 5. JSON 응답 반환
+	        response.getWriter().write("{\"success\": " + allSuccess + "}");
+	    }
 	
 }
