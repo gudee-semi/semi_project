@@ -41,7 +41,11 @@
 	cursor: pointer;
 }
 
+.publicSeat:hover{
 
+	outline: 4px solid red;
+
+}
 
 
 
@@ -55,8 +59,10 @@ button {
 	width: 123px;
 	height: 47px;
 	pointer-events: none;
-
+	
 }
+
+
 
 .privateSeatBox {
 	height: 80px;
