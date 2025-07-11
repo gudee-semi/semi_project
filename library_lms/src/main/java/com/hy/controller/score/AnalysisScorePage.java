@@ -8,19 +8,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet("/goal_score/view")
-public class ScorePage extends HttpServlet {
+@WebServlet("/analysis_score/view")
+public class AnalysisScorePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
-    public ScorePage() {
+    public AnalysisScorePage() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/views/score/goal_scorePage.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/score/analysis_scorePage.jsp").forward(request, response);
 	}
 
 
