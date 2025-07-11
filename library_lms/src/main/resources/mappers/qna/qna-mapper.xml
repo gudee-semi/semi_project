@@ -16,7 +16,7 @@
       <result property="answerStatus" column="answer_status" />
 	</resultMap>
 	
- 	<resultMap id="attachResultMap" type="com.hy.dto.Attach">
+ 	<resultMap id="attachResultMap" type="com.hy.dto.qna.Attach">
       <result property="qnaAttachId" column="qna_attach_id" />
       <result property="qnaId" column="qna_id" />
       <result property="oriName" column="ori_name" />
@@ -97,7 +97,7 @@
 		VALUES (#{category} ,#{title} ,#{content})
 	</insert>
 	
-	<insert id="insertAttach" parameterType="com.hy.dto.Attach">
+	<insert id="insertAttach" parameterType="com.hy.dto.qna.Attach">
 		INSERT INTO attach(qna_attach_id ,ori_name ,re_name)
 		VALUES (#{qnaAttachId} ,#{oriName} ,#{reName})
 	</insert>
