@@ -2,7 +2,7 @@ package com.hy.mapper.qna;
 
 import java.util.List;
 
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
 public interface QnaMapper {

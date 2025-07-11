@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.qna.QnaDao;
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
 public class QnaService {

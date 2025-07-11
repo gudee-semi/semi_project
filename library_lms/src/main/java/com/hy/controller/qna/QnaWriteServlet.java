@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.service.qna.AttachService;
 import com.hy.service.qna.QnaService;

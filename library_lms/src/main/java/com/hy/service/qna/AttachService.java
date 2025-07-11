@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;

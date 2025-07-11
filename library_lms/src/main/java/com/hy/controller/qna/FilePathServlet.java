@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.hy.dto.Attach;
+import com.hy.dto.qna.Attach;
 import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
