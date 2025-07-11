@@ -60,6 +60,8 @@
 }
 
 
+
+
 button {
 	background-color: #D9D9D9;
 	border-radius: 10px;
@@ -224,6 +226,7 @@ button:disabled{
 	const changeButton = document.getElementById('changeButton');
 	const cancelButton = document.getElementById('cancelButton');
 	let selectedSeat = null;
+	let currentUsedSeat = null;
 	
 	
 	publicSeat.forEach(seatEl => {
@@ -232,8 +235,8 @@ button:disabled{
 				seat.classList.remove('active');
 			});
 			seatEl.classList.add('active');
-			
 			selectedSeat = seatEl;
+			
 			
 			// 버튼 활성화
 			useButton.disabled = false;
@@ -241,21 +244,38 @@ button:disabled{
 	});
 	
 	useButton.addEventListener('click', () => {
+		if(!selectedSeat) return; 
+		
 		const isYes = confirm('이 좌석으로 하시겠습니까?');
-		if(isYes) {
-			selectedSeat.classList.add('used');
-			selectedSeat.classList.remove('active');
+			
+			if(isYes){
+			
+				if(currentUsedSeat){
+					currentUsedSeat.classList.remove('used');
+				}
+				
+				// 새 좌석 사용 처리
+				selectedSeat.classList.add('used');
+				selectedSeat.classList.remove('active');
+				
+				
+				// 현재 사용 좌석 업데이트
+				currentUsedSeat = selectedSeat;
+				selectedSeat = null;
+			}
+
 			
 			useButton.disabled = true;
 			cancelButton.disabled = false;
-		} 
+		
 	});
 	
 	
 	cancelButton.addEventListener('click', () => {
 		const isYes = confirm('정말 취소 하시겠습니까?')
 		if(isYes){
-			selectedSeat.classList.remove('used');
+			
+			currentUsedSeat.classList.remove('used');
 			
 			cancelButton.disabled = true;
 		}
