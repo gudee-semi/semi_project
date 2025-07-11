@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,28 +31,53 @@
 	
 	<div id="layer" style="display:none;background-color:white;position :absolute;overflow:hidden;
 	z-index:1;border:1px solid;width:500px;height:400px;left:20px;top:200px; ">
-	<div style="background-color:blue; position:relative; height:35px; z-index:2;">
+		<div style="background-color:blue; position:relative; height:35px; z-index:2;">
 	
-	 <button type="button" id ="addressCloseBtn"style=" position :absolute; top:3px;
-	 right:3px; z-index:2;">닫기</button>
-	
-	
-	
-	</div>
+		 <button type="button" id ="addressCloseBtn"style=" position :absolute; top:3px;
+		 right:3px; z-index:2;">닫기</button>
 	
 	
-	<div id="addressWindow" style="width :100%; height : 100%;">
 	
-	</div>
+		</div>
+		<div id="addressWindow" style="width :100%; height : 100%;">
+		</div>
 	</div>
 	<p id= "member_address_msg"></p>
+	
+	<input type="button" id = "member_schul_search" value="학교검색"><br>
+	<input type="text" id="member_schul"  placeholder="학교이름"><br>
+	<p id = "member_schul_msg">
 	<input type="submit" value="제출하기">
 	
 	
+	<div id="schul_modal">
+		
+		<div id = "modal_title">
+		
+			<button type= "button" id ="modal_close_btn">닫기</button>
+		
+		</div>
+		<div id = "modal_content">
+			<div id = "search_field"></div>
+				<input id = "shcul_name" type="text" placeholder="학교이름 입력"> 
+				<button type= "button" id = "shcul_search"></button>
+			</div>
+			<div id = "result_field">
+				<ul>
+					<c:forEach var="data" items="">
+					
+						<li>${data.shulName}</li>
+					
+					</c:forEach>
+				
+				</ul>
+			</div>
+			
+		</div>
 	
+	</div>
 </form>
 <script>
-	let isStatus =false;
 	let idStatus =false;
 	let pwStatus =false;
 	let nameStatus = false;
@@ -63,8 +89,8 @@
 	let memberId="";
 	let memberPw="";
 	let member_pw_check="";
-	let memberName="" ;
-	let memberRrn="" ;
+	let memberName="";
+	let memberRrn="";
 	let memberAddress="";
 	// 아이디 값이 비어있는지 , 유효한 값인지 ,입력한 값이 중복인지 체크
 	$("#member_id").on("input blur",function(){
@@ -203,6 +229,17 @@
 	});
 	    
 	    
+	
+	</script>
+	
+	
+	
+	<script>
+		$("#schulsearch").on("click",function(){
+			$.ajax({
+				url : 
+			});
+		});
 	</script>
 	<script>
 	 $("#signUp").submit(function(e){
@@ -212,6 +249,29 @@
 		if(!memberId || memberId===""){
 			$("#member_id_msg").text("아이디는 필수정보 입니다.").css('color','red');
 		}
+		if(!memberPw || memberPw===""||!member_pw_check || member_pw_check ===""){
+			$("#member_pw_msg").text("비밀번호는 필수 정보 입니다.").css('color','red');
+		}
+		if(!memberName || memberName===""){
+			$("#member_name_msg").text("이름은 필수 정보 입니다.").css('color','red');
+		}
+		if(!memberRrn || memberRrn===""){
+			$("#member_rrn_msg").text("주민등록번호는 필수 정보 입니다.").css('color','red');
+		}
+		if(!memberAddress || memberAddress===""){
+			$("#member_address_msg").text("주소는 필수 정보 입니다.").css('color','red');
+		}
+
+		
+		//모든 유효성 검사가 완료 되었을 시
+	/* 	if(idStatus && pwStatus && nameStatus && rrnStatus && addressStatus){
+			$.ajax({
+				url :
+				
+			});
+		} */
+		
+		
 	});
 	
 	</script>
