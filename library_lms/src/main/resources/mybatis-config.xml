@@ -17,8 +17,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	
 	<mappers>
+
 	    <mapper resource="/mappers/qna/qna-mapper.xml"/>
-	    <package name="com.hy.mapper.tablet"/>
+		<mapper resource="/mappers/login/signUp-mapper.xml"/>
+
+
+
 	</mappers>
 	
 </configuration>
