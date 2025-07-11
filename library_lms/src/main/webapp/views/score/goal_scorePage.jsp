@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
   int studentGrade = 2;
+	Integer memberNo = (Integer) session.getAttribute("memberNo");
 %>
 <!DOCTYPE html>
 <html>

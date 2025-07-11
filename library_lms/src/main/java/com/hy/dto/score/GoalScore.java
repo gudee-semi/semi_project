@@ -9,10 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class GoalScore {
-	private int memberNo;
-	private int examTypeId;
-	private int subjectId;
-	private int targetScore;
-	private int targetLevel;
+	private int memberNo;  // 로그인된 사용자 번호
+	private int examTypeId;  // 시험 종류 ID(3월, 6월, 9월, 11월(수능))
+	private int subjectId;  // 과목 ID
+	private int targetScore;  // 목표 원점수
+	private int targetLevel;  // 목표 등급(1~9 등급)
 
 }
