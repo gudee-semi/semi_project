@@ -11,11 +11,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 				<property name="driver" value="${driver}"/>
 				<property name="url" value="${url}"/>
 				<property name="username" value="${username}"/>
-				<property name="password" value="${userpw}"/>
+				<property name="password" value="${password}"/>
 			</dataSource>
 		</environment>
 	</environments>
+	
 	<mappers>
-		<mapper resource="/mappers/qna-mapper.xml"/>
+	    <package name="com.hy.mapper.tablet"/>
 	</mappers>
+	
 </configuration>
