@@ -19,9 +19,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 
 	  <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
-
+	  <mapper resource="mybatis/mapper/goalScoreMapper.xml"/>
 		<mapper resource="/mappers/login/signUp-mapper.xml"/>
 
 	</mappers>
-	
 </configuration>
