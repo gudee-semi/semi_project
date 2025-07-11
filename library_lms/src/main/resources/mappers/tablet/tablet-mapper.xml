@@ -5,6 +5,7 @@
 
 <mapper namespace="com.hy.mapper.tablet.TabletMapper">
 
+
 	<!-- selectAll: tablet 테이블의 전체 데이터 조회 쿼리 -->
   <select id="selectAll" resultType="com.hy.dto.tablet.Tablet">
     SELECT tablet_id as tabletId,
