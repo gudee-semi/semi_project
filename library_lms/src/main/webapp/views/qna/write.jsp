@@ -20,7 +20,7 @@
 <body>
 <!-- include 넣기 -->
 	<h1>질의응답 작성</h1>
-		<form id="writeQnaFrm">
+		<form action="" method="" id="writeQnaFrm">
 			<div class="menu-name">카테고리</div>
 				<select name="qnaCategory" id="qnaCategory">
 				  <option value=0>--선택--</option>
@@ -54,12 +54,17 @@
 		$("#writeQnaFrm").submit(function(e){
 			e.preventDefault();
 			
+			const category = $("#qnaCategory").val();
 			const form = document.getElementById("writeQnaFrm");
 			const formData = new FormData(form);
 			// 유효성 검사
 			
+			if (category == 0) {
+				alert("카테고리를 선택하세요.");
+			}
+			
 			$.ajax({
-				url : "/qnaWrite",
+				url : "/qna/write",
 				type : "post",
 				data : formData,
 				enctype : "multipart/form-data",
@@ -72,7 +77,10 @@
 					if(data.res_code == 200){
 						location.href = "<%=request.getContextPath() %>/qna/view";
 					}
-				}
+				},
+ 				error : function() {
+ 					alert("요청 실패!");
+ 				}
 			})
 		});
 	</script>

@@ -1,9 +1,9 @@
-package com.hy.mapper;
+package com.hy.mapper.qna;
 
 import java.util.List;
 
 import com.hy.dto.Attach;
-import com.hy.dto.Qna;
+import com.hy.dto.qna.Qna;
 
 public interface QnaMapper {
 	List<Qna> selectQnaList(Qna param);

@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 import com.hy.dto.Attach;
-import com.hy.dto.Qna;
+import com.hy.dto.qna.Qna;
 import com.hy.service.qna.AttachService;
 import com.hy.service.qna.QnaService;
 
@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 20
 )
-@WebServlet("/qnaWrite")
+@WebServlet("/qna/write")
 public class QnaWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private QnaService qnaService = new QnaService();
@@ -36,14 +36,25 @@ public class QnaWriteServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 //		String memberId = ;
-		int category = Integer.parseInt(request.getParameter("qnaCategory"));
+		int categoryCode = Integer.parseInt(request.getParameter("qnaCategory"));
 		String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
 		
+		String categoryName = "";
+		switch(categoryCode) {
+        case 0: categoryName = "기타"; break;
+        case 1: categoryName = "시설"; break;
+        case 2: categoryName = "좌석"; break;
+        case 3: categoryName = "환불"; break;
+        case 4: categoryName = "기타"; break;
+    }
+		
 		Qna qna = new Qna();
-		qna.setCategory(category);
+		qna.setCategory(categoryName);
 		qna.setTitle(title);
 		qna.setContent(content);
 		qna.setVisibility(visibility);

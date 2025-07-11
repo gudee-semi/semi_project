@@ -60,7 +60,7 @@
 		</div>
 	</c:if>
 	
-	<a href="<c:url value='/qnaWrite'/>">
+	<a href="<c:url value='/qna/write'/>">
 		작성
 	</a>
 	
