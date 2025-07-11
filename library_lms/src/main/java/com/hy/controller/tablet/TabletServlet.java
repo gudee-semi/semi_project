@@ -1,40 +1,35 @@
 package com.hy.controller.tablet;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.hy.dto.tablet.Tablet;
+import com.hy.service.tablet.TabletService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-/**
- * Servlet implementation class TalbetServlet
- */
 @WebServlet("/tablet/view")
-public class TalbetServlet extends HttpServlet {
+public class TabletServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TalbetServlet() {
+
+    public TabletServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		TabletService service = new TabletService();
+		List<Tablet> tabletList = service.getTabletList();
+		
+		request.setAttribute("tabletList", tabletList);
+		request.getRequestDispatcher("/views/tablet/tabletPage.jsp").forward(request, response);
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
