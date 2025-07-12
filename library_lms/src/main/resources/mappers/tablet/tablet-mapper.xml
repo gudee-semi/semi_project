@@ -17,7 +17,7 @@
   </select>
   
   <!-- 가장 작은 id의 사용 가능한 태블릿을 사용중(1)으로 변경 -->
-  <update id="useFirstAvailableTablet">
+  <update id="useAvailableTablet">
   UPDATE tablet
   JOIN (
   	SELECT tablet_id

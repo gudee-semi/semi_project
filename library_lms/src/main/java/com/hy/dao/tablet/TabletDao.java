@@ -20,10 +20,10 @@ public class TabletDao {
 	}
 	
 	// SqlSession을 이용해서 Mapper를 가져와 호출
-	public void updateFirstAvailableTablet() {
+	public void useAvailableTablet() {
     try (SqlSession session = MyBatisUtil.getSqlSession()) { // 세션 생성
       TabletMapper mapper = session.getMapper(TabletMapper.class); // Mapper 얻기
-      mapper.useFirstAvailableTablet(); // XML과 매핑된 메서드 호출
+      mapper.useAvailableTablet(); // XML과 매핑된 메서드 호출
       session.commit(); // 꼭 commit!
   }
 	}
