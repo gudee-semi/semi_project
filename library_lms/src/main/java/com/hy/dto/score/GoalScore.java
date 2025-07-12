@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
+// 여러 과목별 점수 저장 및 조회
+
 public class GoalScore {
 	private int memberNo;  // 로그인된 사용자 번호
 	private int examTypeId;  // 시험 종류 ID(3월, 6월, 9월, 11월(수능))
