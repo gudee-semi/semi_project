@@ -21,8 +21,56 @@ body h1 {
 
 .container-burger {
 	width: 150px;
-	margin: 200px auto 0px;
 	text-align: center;
+	position: fixed;
+	top: 500px;
+	right: 50px;
+	z-index: 9999;
+}
+
+.container-burger .btn-burger {
+	width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    border-color: transparent;
+    background-color: lightblue;
+    color: white;
+    cursor: pointer;
+}
+
+.container-burger .btn-add {
+	width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    border-color: transparent;
+    background-color: gold;
+    color: white;
+    cursor: pointer;
+}
+
+.container-burger .btn-atd {
+	width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    border-color: transparent;
+    background-color: #4582EC;
+    color: white;
+    cursor: pointer;
+}
+
+.container-burger .btn-burger span {
+	font-size: 30px;
+    margin-top: 2px;
+}
+
+.container-burger .btn-add span {
+	font-size: 30px;
+    margin-top: 3px;
+}
+
+.container-burger .btn-atd span {
+	font-size: 30px;
+    margin-top: 2px;
 }
 /* --------------------- 기본 스타일 --------------------- */
 
@@ -79,4 +127,9 @@ input[type="checkbox"] {
 /* --------------------- 날짜 배경 --------------------- */
 .fc-day-today {
 	background-color: #F5F5F5 !important;
+}
+
+
+.fc-sticky {
+	position: static;
 }
