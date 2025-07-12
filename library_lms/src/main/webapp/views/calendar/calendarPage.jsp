@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>       
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>       
 <!DOCTYPE html>
 <html>
 <head>
@@ -506,7 +507,8 @@
 					        	allDay: false,
 					        	extendedProps: {
 					          		description: todoDetail,
-					          		planner_id: data.planner_id
+					          		planner_id: data.planner_id,
+					          		is_completed: 0
 					        	}
 				      		});	
 							
