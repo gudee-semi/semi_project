@@ -58,9 +58,7 @@
 		<c:otherwise>
 			<button id="use-btn" disabled>사용 불가</button>
 		</c:otherwise>		
-	</c:choose>
-	
-	
+	</c:choose>	
 
 </body>		
 </html>

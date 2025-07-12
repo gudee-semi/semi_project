@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/tablet/view")
 public class TabletServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 	private TabletService tabletService = new TabletService();
 
     public TabletServlet() {
@@ -25,7 +26,8 @@ public class TabletServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// DB에서 태블릿 리스트 가져오기
-		List<Tablet> tabletList = tabletService.getTabletList(); // Service를 통해 DB에서 태블릿 리스트 조회
+		// Service를 통해 DB에서 태블릿 리스트 조회
+		List<Tablet> tabletList = tabletService.getTabletList(); 
 
 		// 조회한 리스트를 request 영역에 저장 (JSP에서 사용 가능)
 		request.setAttribute("tabletList", tabletList);
