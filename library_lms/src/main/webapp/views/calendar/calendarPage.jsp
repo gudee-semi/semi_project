@@ -252,7 +252,6 @@
 		                $('#todo-update').off('submit').on('submit', (e) => {
 		                    e.preventDefault();
 		                    const dateToRearrange = editDate;
-		                    console.log(editDate);
 		                    const todoTitle = $('.todo-update-title').val();
 		                    const todoDate = $('.todo-update-date').val();
 		                    const todoDetail = $('.todo-update-detail').val();
@@ -308,8 +307,6 @@
 	
 		                                    // 재정렬해서 다시 추가
 		                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
-	
-		                                    readmePopUp2.style.display = 'none'; // 모달 닫기
 		                                } else {
 		                                    window.alert('오류!');
 		                                }
@@ -322,25 +319,53 @@
 		            });
 	
 		            popup.find('.delete-btn').on('click', () => {
-		                $.ajax({
-		                    url: '/calendar/delete',
-		                    type: 'post',
-		                    data: {
-		                        plannerId: plannerId
-		                    },
-		                    dataType: 'json',
-		                    success: (data) => {
-		                        console.log('삭제:', plannerId);
-		                        console.log(data.res_msg);
-		                        if (data.res_code == '200') {
-		                            window.alert('할 일 목록이 삭제되었습니다.');
-		                            event.remove();
-		                        } else {
-		                            window.alert('오류!');
-		                        }
-		                    }
-		                })
-		                popup.remove();
+		            	popup.remove();
+		            	readmePopUp3.style.display = 'flex';
+		            	
+		                const deleteTitle = event.title;
+		                const deleteDate = event.startStr.split('T')[0];
+		                $('.todo-delete-title').text('정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?');
+		                
+		                $('#todo-delete').off('submit').on('submit', (e) => {
+		                	e.preventDefault();
+		                    const dateToRearrange = deleteDate;
+			                $.ajax({
+			                    url: '/calendar/delete',
+			                    type: 'post',
+			                    data: {
+			                        plannerId: plannerId
+			                    },
+			                    dataType: 'json',
+			                    success: (data) => {
+			                        console.log('삭제:', plannerId);
+			                        console.log(data.res_msg);
+			                        if (data.res_code == '200') {
+			                            window.alert('할 일 목록이 삭제되었습니다.');
+			                            event.remove();
+	                                    const date = dateToRearrange;
+	                                    const eventsToReAdd = [];
+
+	                                    calendar.getEvents().forEach(e => {
+	                                        if (e.startStr.startsWith(date)) {
+	                                            eventsToReAdd.push({
+	                                                title: e.title,
+	                                                start: date,
+	                                                extendedProps: e.extendedProps
+	                                            });
+	                                            e.remove();
+	                                        }
+	                                    });
+
+	                                    // 재정렬해서 다시 추가
+	                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
+			                        } else {
+			                            window.alert('오류!');
+			                        }
+			                    }
+			                });
+			                popup.remove();
+		                }) 
+		            	
 		            });
 		        }
 	
@@ -412,14 +437,32 @@
     	</div>
   	</div>
   	
+	<div class="modal modal-3">
+    	<div class="modal-content">
+      		<div class="modal-header font-en">
+      			<span></span>
+        		<span class="material-symbols-outlined btn-add-close">close</span>
+      		</div>
+     		 <div class="modal-body">
+     		 	<form id="todo-delete">
+					<p class="todo-delete-title"></p>
+	        		<button type="submit">삭제하기</button>     		 	
+     		 	</form>
+      		</div>
+    	</div>
+  	</div>
+  	
   	<script>
 	  	const readmeBtn1 = document.querySelector('.btn-add');
 	  	const readmePopUp1 = document.querySelector('.modal.modal-1');
 	  	const readmePopUp2 = document.querySelector('.modal.modal-2');
+	  	const readmePopUp3 = document.querySelector('.modal.modal-3')
 	  	const readmeClose1 = document.querySelector('.modal.modal-1 .btn-add-close');
 	  	const readmeClose2 = document.querySelector('.modal.modal-2 .btn-add-close');
+	  	const readmeClose3 = document.querySelector('.modal.modal-3 .btn-add-close');
 	  	const todoForm = document.querySelector('#todo-input');
 	  	const updateForm = document.querySelector('#todo-update');
+	  	const deleteForm = document.querySelector('#todo-delete');
 	  	readmeBtn1.addEventListener('click', () => {
 	  		readmePopUp1.style.display = 'flex';
 	  	});
@@ -432,11 +475,17 @@
 	  	readmeClose2.addEventListener('click', () => {
 	  		readmePopUp2.style.display = 'none';
 	  	});
+	  	readmeClose3.addEventListener('click', () => {
+	  		readmePopUp3.style.display = 'none';
+	  	});
 	  	todoForm.addEventListener('submit', () => {
 	  		readmePopUp1.style.display = 'none';
 	  	});
 	  	updateForm.addEventListener('submit', () => {
 	  		readmePopUp2.style.display = 'none';
+	  	});
+	  	deleteForm.addEventListener('submit', () => {
+	  		readmePopUp3.style.display = 'none';
 	  	});
   	</script>
   	
