@@ -133,3 +133,11 @@ input[type="checkbox"] {
 .fc-sticky {
 	position: static;
 }
+
+.fc-timegrid-slot-label-cushion {
+	color: transparent;
+}
+
+thead .fc-scroller {
+	overflow: hidden !important;
+}

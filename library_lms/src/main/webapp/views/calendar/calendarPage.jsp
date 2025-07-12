@@ -107,6 +107,7 @@
 		            titleEl.style.fontSize = '14px';
 		            if (event.extendedProps.is_completed === 1) {
 		                el.style.border = '3px solid blue';
+		                el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
 		                titleEl.style.color = 'blue';
 		                if (descriptionEl) {
 		                    descriptionEl.style.color = 'blue';
@@ -146,6 +147,7 @@
 		                        // (1) is_completed UI 반영
 		                        if (isCompleted === 1) {
 		                            el.style.border = '3px solid blue';
+		                            el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
 		                            titleEl.style.color = 'blue';
 		                            if (descriptionEl) {
 		                                descriptionEl.style.color = 'blue';
@@ -222,7 +224,18 @@
 	
 		            // 3. 페이지에 붙이기
 		            $('body').append(popup);
-	
+		            
+
+		            
+		            // 팝업 외부를 클릭 시 닫기
+		            setTimeout(() => {
+			            $(document).on('click', (e) => {
+			            	if ($(e.target).closest('.event-popup').length === 0) {
+			            		popup.remove();
+			            		$(document).off('click');
+			            	}
+			            });
+	            	}, 0);
 		            // 4. 이벤트 바인딩
 		            popup.find('.edit-btn').on('click', () => {
 		                readmePopUp2.style.display = 'flex';
@@ -513,7 +526,6 @@
 		})
 		
 	</script>
-	
 	 
 </body>
 </html>
