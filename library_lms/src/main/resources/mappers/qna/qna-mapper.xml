@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hy.mapper.QnaMapper">
+<mapper namespace="com.hy.mapper.qna.QnaMapper">
 	<resultMap id="qnaResultMap" type="com.hy.dto.qna.Qna">
-      <result property="qnaId" column="qna_no" />
-      <result property="memberNo" column="member_no" />
+      <result property="qnaId" column="qna_id" />
+      <result property="memberId" column="member_id" />
       <result property="category" column="category" />
       <result property="title" column="title" />
       <result property="content" column="content" />
@@ -34,12 +34,12 @@
 			,Q.visibility
 			,Q.view_count
 			,Q.answer_status
-			,M.member_no
+			,M.member_id
 		FROM qna Q 
 		JOIN member M ON Q.member_no = M.member_no
 		<where>
 			<if test='keyword != null and keyword != ""'>
-				Q.qna_title LIKE CONCAT('%',#{keyword}, '%')			
+				Q.title LIKE CONCAT('%',#{keyword}, '%')			
 				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
 			</if>
 		</where>
@@ -52,31 +52,30 @@
 			,Q.title 
 			,Q.content 
 			,DATE_FORMAT(Q.reg_date, '%Y-%m-%d') AS reg_date
-			,DATE_FORMAT(Q.mod_date, '%Y-%m-%d') AS mod_date 
 			,Q.visibility
 			,Q.view_count
 			,Q.answer_status
-			,M.member_no
+			,M.member_id
 		FROM qna Q
 		JOIN member M On Q.member_no = M.member_no
 		<where>
-		qna_id = #{qnaNo}			
+		qna_id = #{qnaId}			
 		</where>
 	</select>
 	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
-		FROM attach
+		FROM qna_attach
 		<where>
-			qna_id = #{qnaNo}	
+			qna_id = #{qnaId}	
 		</where>
 	</select>
 	
 	<select id="selectAttachByAttachNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
-		FROM attach
+		FROM qna_attach
 		<where>
-			attach_no = #{attachNo}	
+			qna_attach_id = #{qnaAttachId}	
 		</where>
 	</select>
 			
@@ -87,18 +86,18 @@
  		<where>
 			<if test='keyword != null and keyword != ""'>
 				Q.title LIKE CONCAT('%',#{keyword}, '%')
-				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
+				OR M.member_id LIKE CONCAT('%',#{keyword}, '%')
 			</if>
 		</where>
 	</select>
 	
-	<insert id="insertQna" parameterType="com.hy.dto.qna.Qna" useGeneratedKeys="true" keyProperty="qnaNo">
-		INSERT INTO qna(category ,title ,content)
-		VALUES (#{category} ,#{title} ,#{content})
+	<insert id="insertQna" parameterType="com.hy.dto.qna.Qna" useGeneratedKeys="true" keyProperty="qnaId">
+		INSERT INTO qna(member_no, category ,title ,content, visibility)
+		VALUES (#{memberNo}, #{category} ,#{title} ,#{content} ,#{visibility})
 	</insert>
 	
 	<insert id="insertAttach" parameterType="com.hy.dto.qna.Attach">
-		INSERT INTO attach(qna_attach_id ,ori_name ,re_name)
+		INSERT INTO qna_attach(qna_attach_id ,ori_name ,re_name)
 		VALUES (#{qnaAttachId} ,#{oriName} ,#{reName})
 	</insert>
 </mapper>
