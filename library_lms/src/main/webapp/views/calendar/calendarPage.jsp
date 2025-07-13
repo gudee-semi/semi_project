@@ -78,9 +78,9 @@
 		    calendar = new FullCalendar.Calendar(calendarEl, {
 		        initialView: 'timeGridWeek', // 주간 뷰만 보기
 		        headerToolbar: {
-		            left: 'prev,next today',
-		            center: 'title',
-		            right: '' // 다른 뷰 버튼 제거
+		            left: 'title',
+		            center: '',
+		            right: 'today prev,next' // 다른 뷰 버튼 제거
 		        },
 		        locale: 'ko',
 		        editable: false,
@@ -92,6 +92,9 @@
 		            weekday: 'short',
 		            locale: 'ko'
 		        },
+		        buttonText: {
+		        	  today: '이번 주',
+	        	},
 		        eventDidMount: function (info) {
 	
 		            const event = info.event;

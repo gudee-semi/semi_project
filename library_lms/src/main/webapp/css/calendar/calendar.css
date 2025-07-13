@@ -141,3 +141,19 @@ input[type="checkbox"] {
 thead .fc-scroller {
 	overflow: hidden !important;
 }
+
+.fc-next-button,
+.fc-prev-button {
+	background-color: transparent !important;
+	border-color: transparent !important;
+}
+
+.fc-next-button span,
+.fc-prev-button span {
+	color: black !important;
+} 
+
+.fc-today-button {
+	background-color: #4582EC !important;
+	border-color: transparent !important;
+}
