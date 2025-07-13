@@ -32,7 +32,7 @@ public class TabletServlet extends HttpServlet {
 		request.setAttribute("tabletList", tabletList);
 
 		// JSP로 요청을 넘기는 역할 = 어느 JSP에 넘길지 지정
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/tablet/tabletPage.jsp"); // 응답을 담당할 JSP 지정
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/tablet/tabletPage.jsp");
 
 		// JSP로 화면 전환(포워드)
 		dispatcher.forward(request, response); 

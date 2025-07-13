@@ -51,14 +51,16 @@
 	<c:choose>
 		<%-- 4. 하나라도 사용 가능하면 활성화 --%>
 		<c:when test="${canUse}">
-			<button id="use-btn">사용하기</button>
+			<form action="/tablet/view" method="post" style="display: inline;">
+				<button id="use-btn" type="submit">사용하기</button>
+			</form>
 		</c:when>
-		
+
 		<%-- 5. 모두 사용 중이면 비활성화 --%>
-		<c:otherwise>
-			<button id="use-btn" disabled>사용 불가</button>
-		</c:otherwise>		
-	</c:choose>	
+    <c:otherwise>
+        <button id="use-btn" disabled>사용 불가</button>
+    </c:otherwise>  
+	</c:choose>
 
 </body>		
 </html>
