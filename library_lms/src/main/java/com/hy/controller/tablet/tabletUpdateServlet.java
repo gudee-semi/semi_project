@@ -29,7 +29,7 @@ public class tabletUpdateServlet extends HttpServlet {
 		int tabletId = Integer.parseInt(request.getParameter("tabletId"));
 		String available = request.getParameter("available");
 		
-		service.updateTabletAvailable(tabletId, available);
+//		service.updateTabletAvailable(tabletId, available);
 		
 		response.sendRedirect("/tablet/list");
 		
