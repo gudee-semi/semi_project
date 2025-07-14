@@ -9,7 +9,6 @@ public class Paging {
 	
 	// 3. 페이징바 구성에 필요한 정보
 	// (1) 페이징바 크기
-
 	private int pageBarSize = 10;
 	// (2) 현재 페이징바 시작 숫자
 	private int pageBarStart; // 1, 6, 11, ...
