@@ -6,14 +6,12 @@ import com.hy.dto.score.GoalScore;
 
 public interface ScoreMapper {
 
-	// 1. 과목별 목표점수 삽입
+	 // 개별 점수 저장
     int insertGoalScore(GoalScore dto);
 
-    // 2. 과목별 목표점수 전체 삭제(갱신할 때)
+    // 기존 점수 삭제 (시험별 갱신 시)
     int deleteGoalScoresByMemberAndExam(int memberNo, int examTypeId);
 
-    // 3. 특정 회원+시험분류별 점수 조회
+    // 시험별 저장 점수 조회
     List<GoalScore> selectGoalScoresByMemberAndExam(int memberNo, int examTypeId);
-
-   
 }

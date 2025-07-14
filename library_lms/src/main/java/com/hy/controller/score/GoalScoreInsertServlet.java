@@ -10,8 +10,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.google.gson.Gson;
+import com.hy.controller.tablet.MybatisUtil;
 import com.hy.dto.score.GoalScore;
+import com.hy.dto.score.GoalScoreRequest;
+import com.hy.mapper.score.ScoreMapper;
+import com.hy.mapper.score.SubjectMapper;
 import com.hy.service.score.GoalScoreService;
 
 
@@ -28,42 +34,61 @@ public class GoalScoreInsertServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
-
+	
+	
 	 @Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 // 1. 인코딩 및 응답 설정
+	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
+
 	        request.setCharacterEncoding("UTF-8");
 	        response.setContentType("application/json; charset=UTF-8");
 
 	        boolean allSuccess = true;
+	        SqlSession session = MybatisUtil.getSqlSession(); // ⭐ 트랜잭션 단위 유지
 
 	        try {
-	            // 2. JSON 데이터 읽기
 	            BufferedReader reader = request.getReader();
 	            String json = reader.lines().collect(Collectors.joining());
+	            GoalScoreRequest reqDto = new Gson().fromJson(json, GoalScoreRequest.class);
 
-	            // 3. JSON → GoalScore[]로 변환
-	            Gson gson = new Gson();
-	            GoalScore[] scoreList = gson.fromJson(json, GoalScore[].class);
+	            SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
+	            ScoreMapper scoreMapper = session.getMapper(ScoreMapper.class); // Service 대신 직접 사용
 
-	            // 4. Service 호출
-	            GoalScoreService service = new GoalScoreService();
+	            for (GoalScore dto : reqDto.getSubjectScores()) {
+	                Integer subjectId = subjectMapper.selectSubjectIdByName(dto.getSubjectName());
+	                if (subjectId == null) {
+	                    allSuccess = false;
+	                    break;
+	                }
 
-	            for (GoalScore dto : scoreList) {
-	                boolean inserted = service.insertGoalScore(dto);
-	                if (!inserted) {
+	                dto.setSubjectId(subjectId);
+	                dto.setMemberNo(reqDto.getMemberNo());
+	                dto.setExamTypeId(reqDto.getExamTypeId());
+
+	                int result = scoreMapper.insertGoalScore(dto);
+	                if (result <= 0) {
 	                    allSuccess = false;
 	                    break;
 	                }
 	            }
 
+	            if (allSuccess) session.commit();
+	            else session.rollback();
+
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            allSuccess = false;
+	            session.rollback();
+	        } finally {
+	            session.close();
 	        }
 
-	        // 5. JSON 응답 반환
 	        response.getWriter().write("{\"success\": " + allSuccess + "}");
 	    }
-	
+	    ✅ 결론
 }
+}
+}
+
+
+	

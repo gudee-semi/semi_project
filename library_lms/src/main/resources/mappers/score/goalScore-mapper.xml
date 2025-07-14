@@ -3,36 +3,37 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="goalScoreMapper">
+<mapper namespace="com.hy.mapper.score.ScoreMapper">
 
-  <!-- 목표 성적 INSERT -->
-  <insert id="insertGoalScore" parameterType="com.hy.dto.score.GoalScore">
-    INSERT INTO goal_score (
-      member_no,
-      exam_type_id,
-      subject_id,
-      target_score,
-      target_level
-    )
-    VALUES (
-      #{memberNo},
-      #{examTypeId},
-      #{subjectId},
-      #{targetScore},
-      #{targetLevel}
-    )
-  </insert>
-  
- <!-- 목표 성적 조회 -->
-  <select id="selectGoalScoresByMember" resultType="com.hy.dto.score.GoalScore">
+
+ <!-- 목표 성적 INSERT -->
+<insert id="insertGoalScore" parameterType="com.hy.dto.score.GoalScore">
+  INSERT INTO goal_score (
+    member_no, exam_type_id, subject_id, target_score, target_level
+  )
+  VALUES (
+    #{memberNo}, #{examTypeId}, #{subjectId}, #{targetScore}, #{targetLevel}
+  )
+</insert>
+
+
+  <!-- 기존 점수 삭제 (갱신용) -->
+  <delete id="deleteGoalScoresByMemberAndExam">
+    DELETE FROM goal_score
+    WHERE member_no = #{memberNo}
+      AND exam_type_id = #{examTypeId}
+  </delete>
+
+  <!-- 조회 -->
+  <select id="selectGoalScoresByMemberAndExam" resultType="com.hy.dto.score.GoalScore">
     SELECT
-      member_no,
-      exam_type_id,
-      subject_id,
-      target_score,
-      target_level AS targetLevel
+      member_no, exam_type_id, subject_id,
+      target_score, target_level
     FROM goal_score
     WHERE member_no = #{memberNo}
+      AND exam_type_id = #{examTypeId}
   </select>
 
 </mapper>
+
+

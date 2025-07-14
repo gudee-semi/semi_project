@@ -346,82 +346,87 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   document.getElementById('final-submit').addEventListener('click', function () {
-	  let isValid = true;
 	  const examType = document.querySelector('.exam-type:checked')?.value;
+	  if (!examType) {
+	    showModal('시험 분류를 선택하세요.');
+	    return;
+	  }
+
 	  const data = [];
-
 	  const gradeInputs = document.querySelectorAll('.grade-input');
+	  const scoreInputs = document.querySelectorAll('.score-input');
 
-	  document.querySelectorAll('.score-input').forEach((input, i) => {
-	    const score = parseInt(input.value, 10);
-	    const grade = parseInt(gradeInputs[i].value, 10);
-	    const sub = input.dataset.subject;
+	  const subjectNames = [];
+	  const scoreValues = [];
+	  const gradeValues = [];
 
-	    if (isNaN(score) || score < 0 || score > 100) {
-	      isValid = false;
+	  for (let i = 0; i < scoreInputs.length; i++) {
+	    const scoreRaw = scoreInputs[i].value.trim();
+	    const gradeRaw = gradeInputs[i].value.trim();
+	    const sub = scoreInputs[i].dataset.subject;
+
+	    if (scoreRaw !== '' && (isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100)) {
 	      showModal('원점수는 0~100 사이여야 합니다.');
-	      return; // 이건 콜백 함수 내부에서 forEach만 종료됨
+	      return;
 	    }
 
-	    if (isNaN(grade) || grade < 1 || grade > 9) {
-	      isValid = false;
+	    if (gradeRaw !== '' && (isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9)) {
 	      showModal('등급은 1~9 사이여야 합니다.');
 	      return;
 	    }
 
 	    data.push({
-	      examTypeId: parseInt(examType),
 	      subjectName: sub,
-	      targetScore: score,
-	      targetLevel: grade
+	      targetScore: scoreRaw === '' ? null : parseInt(scoreRaw),
+	      targetLevel: gradeRaw === '' ? null : parseInt(gradeRaw)
 	    });
+
+	    subjectNames.push(sub);
+	    scoreValues.push(scoreRaw === '' ? '-' : scoreRaw);
+	    gradeValues.push(gradeRaw === '' ? '-' : gradeRaw);
+	  }
+
+	  // ✅ 올바른 GoalScoreRequest 형식으로 서버에 보냄
+	  const requestPayload = {
+	    memberNo: memberNo,                         // 전역 변수 또는 세션에서 가져온 값이어야 함
+	    examTypeId: parseInt(examType),
+	    subjectScores: data
+	  };
+
+	  fetch('/goal_score/insert', {
+	    method: 'POST',
+	    headers: { 'Content-Type': 'application/json' },
+	    body: JSON.stringify(requestPayload)
+	  })
+	  .then(res => res.json())
+	  .then(res => {
+	    showModal(res.success ? '저장 성공!' : '저장 실패');
+
+	    // 2. 읽기전용 테이블로 변환
+	    renderResultTable(subjectNames, scoreValues, gradeValues);
+
+	    // 3. 입력폼 숨기기
+	    document.querySelectorAll('.score-input, .grade-input').forEach(inp => inp.style.display = 'none');
+	    document.getElementById('final-submit').style.display = 'none';
 	  });
+	});
 
-	  if (!isValid) return;
+	// [helper] 읽기전용 테이블 렌더 함수
+	function renderResultTable(subjects, scoreInputs, gradeInputs) {
+	  let html = '';
+	  for (let i = 0; i < subjects.length; i++) {
+	    html += `<tr>
+	      <td>${subjects[i]}</td>
+	      <td>${scoreInputs[i]}</td>
+	      <td>${gradeInputs[i]}</td>
+	    </tr>`;
+	  }
+	  document.getElementById('score-body').innerHTML = html;
+	}
 
-    // 1. AJAX 저장
-    fetch('/goal_score/insert', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        memberNo,
-        examTypeId: parseInt(examType),
-        year: currentYear,
-        subjectScores: data
-      })
-    }).then(res => res.json())
-      .then(res => {
-        showModal(res.success ? '저장 성공!' : '저장 실패');
-        // 2. 입력값 읽기
-        const subjectNames = [];
-        const scoreValues = [];
-        const gradeValues = [];
-        document.querySelectorAll('#score-body tr').forEach(tr => {
-          subjectNames.push(tr.children[0].textContent);
-          scoreValues.push(tr.children[1].querySelector('input').value);
-          gradeValues.push(tr.children[2].querySelector('input').value);
-        });
-        // 3. 읽기전용 테이블로 변환
-        renderResultTable(subjectNames, scoreValues, gradeValues);
-        // 4. 입력폼 숨기기
-        document.querySelectorAll('.score-input, .grade-input').forEach(inp => inp.style.display = 'none');
-        document.getElementById('final-submit').style.display = 'none';
-      });
-  });
-
-  // [helper] 읽기전용 테이블 렌더 함수
-  function renderResultTable(subjects, scoreInputs, gradeInputs) {
-    let html = '';
-    for (let i = 0; i < subjects.length; i++) {
-      html += `<tr>
-        <td>${subjects[i]}</td>
-        <td>${scoreInputs[i]}</td>
-        <td>${gradeInputs[i]}</td>
-      </tr>`;
-    }
-    document.getElementById('score-body').innerHTML = html;
-  }
-}); // DOMContentLoaded
+  
+  
+});
 </script>
 
 <!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->

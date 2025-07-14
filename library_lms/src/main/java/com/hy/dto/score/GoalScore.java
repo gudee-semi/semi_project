@@ -15,8 +15,9 @@ import lombok.Setter;
 public class GoalScore {
 	private int memberNo;  // 로그인된 사용자 번호
 	private int examTypeId;  // 시험 종류 ID(3월, 6월, 9월, 11월(수능))
-	private int subjectId;  // 과목 ID
-	private int targetScore;  // 목표 원점수
-	private int targetLevel;  // 목표 등급(1~9 등급)
+	private int subjectId;  // 과목 ID (DB 저장용)
+	private String subjectName; // 과목명 (프론트에서 보내는 값 → 서버에서 매핑)
+	private Integer targetScore;   // null 허용 (입력 안 할 수도 있으니까)
+	private Integer targetLevel;   // null 허용 (입력 안 할 수도 있음)
 
 }
