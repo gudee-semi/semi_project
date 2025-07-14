@@ -239,7 +239,13 @@ button:disabled{
 			
 			
 			// 버튼 활성화
-			useButton.disabled = false;
+			
+			if(currentUsedSeat && selectedSeat){
+					changeButton.disabled = false;
+			} else{
+				useButton.disabled = false;
+			} 
+			
 		});
 	});
 	
@@ -271,15 +277,44 @@ button:disabled{
 	});
 	
 	
+	changeButton.addEventListener('click', () => {
+		if(!selectedSeat) return; 
+		
+		const isYes = confirm('이 좌석으로 하시겠습니까?');
+			
+			if(isYes){
+			
+				if(currentUsedSeat){
+					currentUsedSeat.classList.remove('used');
+				}
+				
+				// 새 좌석 사용 처리
+				selectedSeat.classList.add('used');
+				selectedSeat.classList.remove('active');
+				
+				
+				// 현재 사용 좌석 업데이트
+				currentUsedSeat = selectedSeat;
+				selectedSeat = null;
+			}
+
+			
+			changeButton.disabled = true;
+			cancelButton.disabled = false;
+		
+	});
+	
+	
 	cancelButton.addEventListener('click', () => {
 		const isYes = confirm('정말 취소 하시겠습니까?')
 		if(isYes){
 			
 			currentUsedSeat.classList.remove('used');
+			currentUsedSeat = null;
 			
 			cancelButton.disabled = true;
 		}
-	})
+	});
 	
 	</script>
 	
