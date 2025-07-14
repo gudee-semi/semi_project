@@ -25,4 +25,5 @@ public class Qna extends Paging{
 	
 	private int memberNo; // 맞는지..
 	private String keyword;
+	private String keywordIn;
 }

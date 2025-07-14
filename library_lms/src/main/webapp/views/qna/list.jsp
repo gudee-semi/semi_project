@@ -16,9 +16,10 @@
     	
     }
     .row {
+    	background-color: ;
      	width: 900px;
     	padding: 10px;
-    	margin: 2px;
+    	margin: 1px;
     }
     .no {
     	text-align: center;
@@ -59,7 +60,7 @@
 	
 	<div class="searchBox">
 		<form method="get" action="<c:url value='/qna/view'/>">
-			<select name="keywordFor">
+			<select name="keywordIn">
 				<option value="">구분</option>
 				<option value="제목">제목</option>
 				<option value="작성자">작성자</option>
