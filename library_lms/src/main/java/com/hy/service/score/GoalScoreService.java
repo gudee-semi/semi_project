@@ -1,6 +1,6 @@
 package com.hy.service.score;
 
-import java.sql.Connection;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -10,19 +10,30 @@ import com.hy.dto.score.GoalScore;
 
 public class GoalScoreService {
 
-	 private GoalScoreDAO dao = new GoalScoreDAO();
+    private GoalScoreDAO dao = new GoalScoreDAO();
 
-	    public boolean insertGoalScore(GoalScore dto) {
-	        boolean result = false;
+    // 목표 성적 insert
+    public boolean insertGoalScore(GoalScore dto) {
+        boolean result = false;
 
-	        // MyBatis 세션 가져오기
-	        try (SqlSession session = SqlSessionTemplate.getSqlSession(true)) { // autoCommit = true
-	            int row = dao.insertGoalScore(session, dto);
-	            if (row > 0) result = true;
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+        try (SqlSession session = SqlSessionTemplate.getSqlSession(true)) {
+            int row = dao.insertGoalScore(session, dto);
+            if (row > 0) result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	        return result;
-	    }
+        return result;
+    }
+
+    // 특정 회원의 목표 성적 조회
+    public List<GoalScore> getGoalScoresByMember(int memberNo) {
+        List<GoalScore> result = null;
+        try (SqlSession session = SqlSessionTemplate.getSqlSession(true)) {
+            result = dao.selectGoalScoresByMember(session, memberNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

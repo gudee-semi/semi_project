@@ -1,356 +1,433 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-  int studentGrade = 2;
+  // [1] 로그인 대신 예시 세션 설정 (실서비스에서는 로그인에서 세팅)
+  session.setAttribute("memberNo", 2);
+  session.setAttribute("studentGrade", 3);
+  int studentGrade = (session.getAttribute("studentGrade") != null) ? (Integer) session.getAttribute("studentGrade") : 1;
+  Integer memberNo = (Integer) session.getAttribute("memberNo");
+  if (memberNo == null) memberNo = -1;
+  int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
 %>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>목표 성적 설정 페이지</title>
+  <title>목표 성적 설정</title>
   <style>
-    body {
-      font-family: 'Pretendard', sans-serif;
-      margin: 40px;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
-
-    .section {
-      margin-bottom: 25px;
-    }
-
+    body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
+    h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
+    h2, h3 { text-align: left; font-size: 18px; font-weight: bold; margin: 24px 0 8px 10%; }
+    .section { margin-bottom: 24px; }
     .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px 30px;
+      display: flex; flex-wrap: wrap; gap: 15px 30px; margin: 0 10%;
+      align-items: center;
     }
-
-    .line-break {
-      width: 100%;
-      height: 1em;
-    }
-
-    input[type="checkbox"] {
-      accent-color: #3b82f6;
-    }
-
+    label { font-size: 16px; }
     .btn {
-      display: block;
-      margin: 40px auto 0;
-      padding: 8px 20px;
-      border: 1px solid #3b82f6;
-      background-color: white;
-      color: #3b82f6;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
+      display: block; margin: 35px auto 0; padding: 10px 24px;
+      border: 1.5px solid #3b82f6; background: white;
+      color: #3b82f6; border-radius: 6px; font-weight: 500;
+      font-size: 16px; cursor: pointer; transition: .2s;
     }
-
-    .btn:hover {
-      background-color: #3b82f6;
-      color: white;
-    }
-
-    #result {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 16px;
-    }
-
-    #score-section h2 {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-align: left;
-      margin-left: 160px;
-    }
-
-    #score-table {
-      border-collapse: collapse;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    #score-table th, #score-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-
-    textarea {
-      width: 100%;
-      max-width: 600px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    
-    /* 모달 스타일 */
-	#modal {
-	  display: none;
-	  position: fixed;
-	  top: 0; left: 0;
-	  width: 100%; height: 100%;
-	  background-color: rgba(0,0,0,0.5);
-	  z-index: 9999;
-	}
-	
-	.modal-content {
-	  background-color: white;
-	  width: 300px;
-	  margin: 15% auto;
-	  padding: 20px;
-	  border-radius: 10px;
-	  text-align: center;
-	}
-	
-	#modal-close-btn {
-	  margin-top: 10px;
-	  padding: 6px 16px;
-	  background: royalblue;
-	  color: white;
-	  border: none;
-	  border-radius: 5px;
-	  cursor: pointer;
-	}
-    
-    
+    .btn:hover { background: #3b82f6; color: white; }
+    table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
+    th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
+    #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
+    #selected-subjects { text-align: center; margin-bottom: 20px; font-size: 16px;}
+    #score-table {  margin: 30px auto 0 auto;  width: 70%;  min-width: 520px;  border-collapse: collapse;  font-size: 17px; background: #fff; }
+	#score-table th, #score-table td {  border: 1px solid #bbb;  padding: 20px 0;  text-align: center; }
+	.input-center {  width: 110px;  height: 34px;  font-size: 17px;  text-align: center;  border: 1.5px solid #bbb;  border-radius: 6px;  margin: 0 auto;  display: block;  background: #fafcff;  transition: border 0.18s; }
+	.input-center:focus {  outline: none;  border: 1.5px solid #3b82f6; }
+    #modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.32); z-index: 999; }
+    .modal-content { background: #fff; padding: 24px; margin: 22% auto 0;  width: 320px; border-radius: 10px; text-align: center;  box-shadow: 0 6px 30px #2222;  }
+    #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
   </style>
 </head>
-
 <body>
 
-  <h1>목표 성적 설정</h1>
+<script>
+  // [0] 서버-side 변수 JS로 전달
+  const studentGrade = <%= studentGrade %>;
+  const memberNo = <%= memberNo %>;
+  const currentYear = <%= currentYear %>;
 
-  <!-- 시험 분류 -->
-  <div class="section" id="exam-section">
-    <h2>시험 분류</h2>
-    <div id="exam-checkboxes" class="checkbox-group">
-      <input type="checkbox" name="exam" value="3" class="exam-type" id="exam3"><label for="exam3">3월</label>
-      <input type="checkbox" name="exam" value="6" class="exam-type" id="exam6"><label for="exam6">6월</label>
-      <input type="checkbox" name="exam" value="9" class="exam-type" id="exam9"><label for="exam9">9월</label>
-      <input type="checkbox" name="exam" value="11" class="exam-type" id="exam11"><label for="exam11">11월(수능)</label>
-    </div>
+  // [A] 시험 분류 체크박스 활성/비활성 (지나간 시험 비활성화 & 안내문구 추가) ---------
+  document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    const nowMonth = now.getMonth() + 1; // JS 0~11, 실제는 1~12
+    const examCheckboxes = document.querySelectorAll('.exam-type');
+    let availableCount = 0;
+
+    examCheckboxes.forEach(cb => {
+      const examMonth = parseInt(cb.value, 10);
+      if (examMonth < nowMonth) {
+        cb.disabled = true;
+        cb.checked = false;
+      } else {
+        cb.disabled = false;
+        availableCount++;
+      }
+    });
+
+    // 3학년: 10~12월이면 11월만 선택 가능
+    if (studentGrade === 3 && nowMonth >= 10 && nowMonth <= 12) {
+      examCheckboxes.forEach(cb => {
+        if (cb.value !== '11') {
+          cb.disabled = true;
+          cb.checked = false;
+        } else if (cb.value === '11') {
+          cb.disabled = false;
+          cb.checked = true;
+        }
+      });
+      availableCount = 1;
+    } 
+    // 1,2학년: 10~12월이면 전부 불가
+    else if ((studentGrade === 1 || studentGrade === 2) && nowMonth >= 10 && nowMonth <= 12) {
+      examCheckboxes.forEach(cb => {
+        cb.disabled = true;
+        cb.checked = false;
+      });
+      availableCount = 0;
+    }
+
+    // 선택 가능한 시험이 0개면 안내
+    if (availableCount === 0) {
+      const guide = document.createElement('div');
+      guide.textContent = "선택 가능한 시험이 없습니다.";
+      guide.style = "color:#dc2626; margin:10px 0 0 10%; font-size:16px; font-weight:500;";
+      document.getElementById('exam-options').appendChild(guide);
+    }
+  });
+</script>
+
+<h1>목표 성적 설정</h1>
+
+<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
+<div class="section">
+  <h2>시험 분류</h2>
+  <div class="checkbox-group" id="exam-options">
+    <c:forEach var="month" items="${examOptions}">
+      <c:choose>
+        <c:when test="${month == autoExamMonth}">
+          <label>
+            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
+            <c:out value="${month}"/>월
+            <c:if test="${month == 11}">(수능)</c:if>
+          </label>
+        </c:when>
+        <c:otherwise>
+          <label>
+            <input type="checkbox" class="exam-type" name="exam" value="${month}">
+            <c:out value="${month}"/>월
+            <c:if test="${month == 11}">(수능)</c:if>
+          </label>
+        </c:otherwise>
+      </c:choose>
+    </c:forEach>
   </div>
+</div>
 
-  <!-- 과목 선택 -->
-  <div class="section" id="subject-section">
-    <h3>필수 과목</h3>
-    <div class="checkbox-group">
-      <label><input type="checkbox" checked disabled> 국어</label>
-      <label><input type="checkbox" checked disabled> 수학</label>
-      <label><input type="checkbox" checked disabled> 영어</label>
-      <label><input type="checkbox" checked disabled> 한국사</label>
-    </div>
-
-    <h3>사회탐구</h3>
-    <div class="checkbox-group">
-      <label><input type="checkbox" class="social-subject"> 경제</label>
-      <label><input type="checkbox" class="social-subject"> 사회문화</label>
-      <label><input type="checkbox" class="social-subject"> 법과 정치</label>
-      <label><input type="checkbox" class="social-subject"> 윤리와 사상</label>
-      <label><input type="checkbox" class="social-subject"> 세계지리</label>
-      <label><input type="checkbox" class="social-subject"> 한국지리</label>
-      <label><input type="checkbox" class="social-subject"> 세계사</label>
-      <label><input type="checkbox" class="social-subject"> 동아시아사</label>
-      <label><input type="checkbox" class="social-subject"> 생활과 윤리</label>
-    </div>
-
-    <h3>과학탐구</h3>
-    <div class="checkbox-group">
-      <label><input type="checkbox" class="science-subject"> 물리1</label>
-      <label><input type="checkbox" class="science-subject"> 화학1</label>
-      <label><input type="checkbox" class="science-subject"> 생명과학1</label>
-      <label><input type="checkbox" class="science-subject"> 지구과학1</label>
-      <label><input type="checkbox" class="science2-subject"> 물리2</label>
-      <label><input type="checkbox" class="science2-subject"> 화학2</label>
-      <label><input type="checkbox" class="science2-subject"> 생명과학2</label>
-      <label><input type="checkbox" class="science2-subject"> 지구과학2</label>
-    </div>
-
-    <h3>제2외국어</h3>
-    <div class="checkbox-group">
-      <label><input type="checkbox" class="lang2-subject"> 독일어</label>
-      <label><input type="checkbox" class="lang2-subject"> 프랑스어</label>
-      <label><input type="checkbox" class="lang2-subject"> 스페인어</label>
-      <label><input type="checkbox" class="lang2-subject"> 중국어</label>
-      <label><input type="checkbox" class="lang2-subject"> 일본어</label>
-      <label><input type="checkbox" class="lang2-subject"> 러시아어</label>
-      <label><input type="checkbox" class="lang2-subject"> 아랍어</label>
-      <label><input type="checkbox" class="lang2-subject"> 베트남어</label>
-      <label><input type="checkbox" class="lang2-subject"> 한문</label>
-    </div>
+<!-- 필수 과목 (항상 체크/비활성) -->
+<div class="section">
+  <h3>필수 과목</h3>
+  <div class="checkbox-group">
+    <label><input type="checkbox" checked disabled> 국어</label>
+    <label><input type="checkbox" checked disabled> 수학</label>
+    <label><input type="checkbox" checked disabled> 영어</label>
+    <label><input type="checkbox" checked disabled> 한국사</label>
   </div>
+</div>
 
-  <button class="btn">선택완료</button>
-  
-  <div id="modal">
+<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
+<!-- 사회탐구 -->
+<div class="section">
+  <h3>사회탐구</h3>
+  <div class="checkbox-group" id="social-subjects-group">
+    <c:forEach var="subject" items="${socialSubjects}">
+      <label>
+        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+        <c:out value="${subject}"/>
+      </label>
+    </c:forEach>
+  </div>
+</div>
+
+<!-- 과학탐구1 -->
+<div class="section">
+  <h3>과학탐구1</h3>
+  <div class="checkbox-group" id="science1-subjects-group">
+    <c:forEach var="subject" items="${science1Subjects}">
+      <label>
+        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+        <c:out value="${subject}"/>
+      </label>
+    </c:forEach>
+  </div>
+</div>
+
+<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
+<div class="section" id="science2-section">
+  <h3>과학탐구2</h3>
+  <div class="checkbox-group">
+    <c:forEach var="subject" items="${science2Subjects}">
+      <label>
+        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+        <c:out value="${subject}"/>
+      </label>
+    </c:forEach>
+  </div>
+</div>
+
+<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
+<div class="section" id="lang2-section">
+  <h3>제2외국어</h3>
+  <div class="checkbox-group">
+    <c:forEach var="subject" items="${lang2Subjects}">
+      <label>
+        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+        <c:out value="${subject}"/>
+      </label>
+    </c:forEach>
+  </div>
+</div>
+
+<button id="confirm-subjects" class="btn" style="margin-bottom:24px;">선택완료</button>
+
+<!-- 선택 과목/점수 입력 영역 -->
+<h2 id="exam-title" style="display:block;"></h2>
+<div id="selected-subjects"></div>
+<table id="score-table" style="display:none;">
+  <thead>
+    <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
+
+<!-- 세부목표 입력 영역 완전 삭제! -->
+
+<!-- 모달창 -->
+<div id="modal">
   <div class="modal-content">
-    <p id="modal-message">메시지</p>
+    <p id="modal-message"></p>
     <button id="modal-close-btn">확인</button>
   </div>
 </div>
-  
-  
 
-  <div id="result"></div>
-
-  <!-- 점수 입력 테이블 -->
-  <div id="score-section" style="display: none;">
-    <h2>점수 입력</h2>
-
-    <table id="score-table">
-      <thead>
-        <tr>
-          <th>과목</th>
-          <th>원점수</th>
-          <th>등급</th>
-        </tr>
-      </thead>
-      <tbody id="score-body"></tbody>
-    </table>
-
-    <div id="goal-section" style="margin-top: 40px;">
-  <h3>세부 목표 작성</h3>
-  <textarea id="goal-text" rows="5" placeholder="50자 이상 입력해주세요." style="resize: none;"></textarea>
-  <p id="char-warning" style="color: red; display: none;">※ 50자 이상 반드시 작성해야 합니다.</p>
-  <button id="final-submit" class="btn" style="margin-top: 20px;">설정완료</button>
-</div>
-    
-
-  <script>
-  const examCheckboxes = document.querySelectorAll('.exam-type');
-  examCheckboxes.forEach(cb => {
-    cb.addEventListener('change', () => {
-      if (cb.checked) {
-        examCheckboxes.forEach(other => {
-          if (other !== cb) other.checked = false;
-        });
-      }
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // -----------------------------
+  // [1] 시험 분류 1개만 선택(radio처럼)
+  // -----------------------------
+  function toggleExtraSubjectsSection() {
+    const examChecked = document.querySelector('.exam-type:checked');
+    const selectedMonth = examChecked ? examChecked.value : null;
+    // 3학년 + (6/9/11)일 때만 추가 과목 표시
+    if (studentGrade === 3 && ['6','9','11'].includes(selectedMonth)) {
+      document.getElementById('science2-section').style.display = '';
+      document.getElementById('lang2-section').style.display = '';
+    } else {
+      document.getElementById('science2-section').style.display = 'none';
+      document.getElementById('lang2-section').style.display = 'none';
+      // 숨길 때 해당 체크 해제
+      document.querySelectorAll('.science2-subject, .lang2-subject').forEach(cb => cb.checked = false);
+    }
+  }
+  // radio처럼 체크
+  document.querySelectorAll('.exam-type').forEach(cb => {
+    cb.addEventListener('change', function() {
+      document.querySelectorAll('.exam-type').forEach(other => {
+        if (other !== cb) other.checked = false;
+      });
+   // ★ 초기화 동작 추가
+      document.querySelectorAll('.explore-subject, .lang2-subject').forEach(input => {
+        input.checked = false;
+      });
+      document.getElementById('exam-title').style.display = 'none';
+      document.getElementById('exam-title').textContent = '';
+      document.getElementById('selected-subjects').textContent = '';
+      document.getElementById('score-table').style.display = 'none';
+      document.getElementById('score-body').innerHTML = '';
+      document.getElementById('final-submit').style.display = 'none';
+      
+      toggleExtraSubjectsSection();
     });
   });
+  toggleExtraSubjectsSection(); // 최초 호출
 
+  // -----------------------------
+  // [2] 사회/과학탐구(1,2 합산) 최대 2개 + 제2외국어 1개만 선택(체크 자체 제한)
+  // -----------------------------
   function setupCombinedLimit() {
-    const social = document.querySelectorAll('.social-subject');
-    const science = document.querySelectorAll('.science-subject, .science2-subject');
-    const all = [...social, ...science];
-    all.forEach(cb => {
-      cb.addEventListener('change', () => {
-        if (all.filter(c => c.checked).length > 2) {
+    // 탐구(사회/과학1/과학2) 모두 explore-subject 클래스
+    const exploreCheckboxes = document.querySelectorAll('.explore-subject');
+    function countChecked() { return Array.from(exploreCheckboxes).filter(cb => cb.checked).length; }
+    exploreCheckboxes.forEach(cb => {
+      cb.addEventListener('change', function(e) {
+        if (cb.checked && countChecked() > 2) {
+          // 초과시 바로 해제 + 알림
           cb.checked = false;
-          showModal('탐구과목은 최대 2개까지만 선택할 수 있습니다.');
+          showModal("탐구과목은 2개까지 선택 가능합니다.");
+        }
+      });
+    });
+    // 제2외국어(1개만) - lang2-subject 클래스
+    const lang2Checkboxes = document.querySelectorAll('.lang2-subject');
+    function countLang2() { return Array.from(lang2Checkboxes).filter(cb => cb.checked).length; }
+    lang2Checkboxes.forEach(cb => {
+      cb.addEventListener('change', function() {
+        if (cb.checked && countLang2() > 1) {
+          cb.checked = false;
+          showModal("제2외국어는 1개만 선택 가능합니다.");
         }
       });
     });
   }
-
-  function setupLang2Limit() {
-    const lang = document.querySelectorAll('.lang2-subject');
-    lang.forEach(cb => {
-      cb.addEventListener('change', () => {
-        if ([...lang].filter(c => c.checked).length > 1) {
-          cb.checked = false;
-          showModal('제2외국어는 최대 1개까지만 선택할 수 있습니다.');
-        }
-      });
-    });
-  }
-
   setupCombinedLimit();
-  setupLang2Limit();
 
-  function createScoreRow(subject) {
-    return `
+  // -----------------------------
+  //[3] 선택완료 클릭 시 과목 선택 확인/테이블 출력
+  // -----------------------------
+  document.getElementById('confirm-subjects').addEventListener('click', () => {
+    const selectedMonth = document.querySelector('.exam-type:checked')?.value;
+    if (!selectedMonth) return showModal('시험 분류를 선택해주세요.');
+    const selected = ['국어','수학','영어','한국사'];
+    document.querySelectorAll('.explore-subject:checked, .lang2-subject:checked')
+      .forEach(cb => selected.push(cb.value));
+    if (selected.length < 5) return showModal('탐구/선택 과목을 1개 이상 선택해주세요.');
+
+    // 기존 점수 테이블 등 표시
+    const titleString = `${currentYear}년 ${selectedMonth}월 모의고사`;
+    document.getElementById('exam-title').textContent = titleString;
+    document.getElementById('exam-title').style.display = 'block';
+    document.getElementById('selected-subjects').textContent = selected.join(' | ');
+    document.getElementById('score-body').innerHTML = selected.map(sub => `
       <tr>
-        <td>${subject}</td>
-        <td><input type="number" class="score-input" data-subject="${subject}" placeholder="입력" style="width:60px; text-align:center;"></td>
-        <td><input type="number" class="grade-input" data-subject="${subject}" placeholder="입력" style="width:60px; text-align:center;"></td>
-      </tr>`;
+        <td>${sub}</td>
+        <td><input type="text" class="score-input" data-subject="${sub}" min="0" max="100" placeholder="입력"></td>
+        <td><input type="text" class="grade-input" data-subject="${sub}" min="1" max="9" placeholder="입력"></td>
+      </tr>`).join('');
+    document.getElementById('score-table').style.display = 'table';
+
+    // ★ 설정완료 버튼 표시!
+    document.getElementById('final-submit').style.display = 'inline-block';
+
+    setScoreInputValidation();
+  });
+
+  // -----------------------------
+  // [4] 점수/등급 입력값 유효성(포커스아웃)
+  // -----------------------------
+  function setScoreInputValidation() {
+    document.querySelectorAll('.score-input').forEach(input => {
+      input.addEventListener('blur', function() {
+        if (this.value && (this.value < 0 || this.value > 100))
+          showModal("원점수는 0~100 사이여야 합니다.");
+      });
+    });
+    document.querySelectorAll('.grade-input').forEach(input => {
+      input.addEventListener('blur', function() {
+        if (this.value && (this.value < 1 || this.value > 9))
+          showModal("등급은 1~9 사이여야 합니다.");
+      });
+    });
   }
 
-  document.querySelector('.btn').addEventListener('click', () => {
-    const selectedExam = [...document.querySelectorAll('.exam-type')].find(cb => cb.checked);
-    if (!selectedExam) return showModal('시험 분류를 선택해주세요.');
-
-    const year = new Date().getFullYear();
-    const month = selectedExam.value === '11' ? '11월(수능)' : selectedExam.value + '월';
-    document.getElementById('result').innerHTML = `<strong>${year}년도 ${month} 모의고사</strong><br><br>`;
-
-    const subjects = ['국어', '수학', '영어', '한국사'];
-    const getCheckedSubjects = (selector) =>
-      [...document.querySelectorAll(selector)]
-        .filter(cb => cb.checked)
-        .map(cb => cb.parentElement.textContent.trim());
-
-    subjects.push(...getCheckedSubjects('.social-subject'));
-    subjects.push(...getCheckedSubjects('.science-subject'));
-    subjects.push(...getCheckedSubjects('.science2-subject'));
-    subjects.push(...getCheckedSubjects('.lang2-subject'));
-
-    document.getElementById('score-body').innerHTML = subjects.map(createScoreRow).join('');
-    document.getElementById('score-section').style.display = 'block';
-  });
-
-  // 세부 목표 작성 체크
-  document.getElementById('final-submit').addEventListener('click', () => {
-    const content = document.getElementById('goal-text').value.trim();
-    const warning = document.getElementById('char-warning');
-    warning.style.display = content.length < 50 ? 'block' : 'none';
-    if (content.length >= 50) showModal('목표가 성공적으로 저장되었습니다!');
-  });
-
-  // 모달창 닫기 버튼 이벤트 추가
-  document.getElementById('modal-close-btn').addEventListener('click', () => {
-    document.getElementById('modal').style.display = 'none';
-  });
-
-  function showModal(message) {
-    document.getElementById('modal-message').textContent = message;
+  // -----------------------------
+  // [6~8] 설정완료 클릭 시 저장/읽기전용 변환/모달 (한 번만!)
+  // -----------------------------
+  function showModal(msg) {
+    document.getElementById('modal-message').textContent = msg;
     document.getElementById('modal').style.display = 'block';
   }
+  document.getElementById('modal-close-btn').onclick = () => {
+    document.getElementById('modal').style.display = 'none';
+  };
 
-  // 🔥 변경된 부분: 포커스가 벗어났을 때 (blur 이벤트) 유효성 검사
-  document.getElementById('score-body').addEventListener('blur', (event) => {
-    const input = event.target;
-    
-    if (input.classList.contains('score-input')) {
-      const subject = input.dataset.subject;
-      const num = Number(input.value.trim());
+  document.getElementById('final-submit').addEventListener('click', function () {
+	  let isValid = true;
+	  const examType = document.querySelector('.exam-type:checked')?.value;
+	  const data = [];
 
-      if (input.value === '') return;
+	  const gradeInputs = document.querySelectorAll('.grade-input');
 
-      if (["한국사", "물리1", "화학1", "생명과학1", "지구과학1", "물리2", "화학2", "생명과학2", "지구과학2", "경제", "사회문화", "법과 정치", "윤리와 사상", "세계지리", "한국지리", "세계사", "동아시아사", "생활과 윤리", "독일어", "프랑스어", "스페인어", "중국어", "일본어", "러시아어", "아랍어", "베트남어", "한문"].includes(subject)) {
-        if(num < 0 || num > 50) {
-          showModal("원점수는 0~50 사이의 숫자만 입력 가능합니다.");
-          input.value = '';
-          input.focus();
-        }
-      } else {
-        if(num < 0 || num > 100) {
-          showModal("원점수는 0~100 사이의 숫자만 입력 가능합니다.");
-          input.value = '';
-          input.focus();
-        }
-      }
+	  document.querySelectorAll('.score-input').forEach((input, i) => {
+	    const score = parseInt(input.value, 10);
+	    const grade = parseInt(gradeInputs[i].value, 10);
+	    const sub = input.dataset.subject;
+
+	    if (isNaN(score) || score < 0 || score > 100) {
+	      isValid = false;
+	      showModal('원점수는 0~100 사이여야 합니다.');
+	      return; // 이건 콜백 함수 내부에서 forEach만 종료됨
+	    }
+
+	    if (isNaN(grade) || grade < 1 || grade > 9) {
+	      isValid = false;
+	      showModal('등급은 1~9 사이여야 합니다.');
+	      return;
+	    }
+
+	    data.push({
+	      examTypeId: parseInt(examType),
+	      subjectName: sub,
+	      targetScore: score,
+	      targetLevel: grade
+	    });
+	  });
+
+	  if (!isValid) return;
+
+    // 1. AJAX 저장
+    fetch('/goal_score/insert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        memberNo,
+        examTypeId: parseInt(examType),
+        year: currentYear,
+        subjectScores: data
+      })
+    }).then(res => res.json())
+      .then(res => {
+        showModal(res.success ? '저장 성공!' : '저장 실패');
+        // 2. 입력값 읽기
+        const subjectNames = [];
+        const scoreValues = [];
+        const gradeValues = [];
+        document.querySelectorAll('#score-body tr').forEach(tr => {
+          subjectNames.push(tr.children[0].textContent);
+          scoreValues.push(tr.children[1].querySelector('input').value);
+          gradeValues.push(tr.children[2].querySelector('input').value);
+        });
+        // 3. 읽기전용 테이블로 변환
+        renderResultTable(subjectNames, scoreValues, gradeValues);
+        // 4. 입력폼 숨기기
+        document.querySelectorAll('.score-input, .grade-input').forEach(inp => inp.style.display = 'none');
+        document.getElementById('final-submit').style.display = 'none';
+      });
+  });
+
+  // [helper] 읽기전용 테이블 렌더 함수
+  function renderResultTable(subjects, scoreInputs, gradeInputs) {
+    let html = '';
+    for (let i = 0; i < subjects.length; i++) {
+      html += `<tr>
+        <td>${subjects[i]}</td>
+        <td>${scoreInputs[i]}</td>
+        <td>${gradeInputs[i]}</td>
+      </tr>`;
     }
+    document.getElementById('score-body').innerHTML = html;
+  }
+}); // DOMContentLoaded
+</script>
 
-    if (input.classList.contains('grade-input')) {
-      const num = Number(input.value.trim());
-      if (input.value === '') return;
+<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
+<div style="width:70%;margin:28px auto 0;text-align:center;">
+  <button id="final-submit" class="btn" style="display:none;">설정완료</button>
+</div>
 
-      if(num < 1 || num > 9) {
-        showModal("등급은 1~9 사이의 숫자만 입력 가능합니다.");
-        input.value = '';
-        input.focus();
-      }
-    }
-  }, true); // 캡처링 사용 필수
-
-
-  </script>
 </body>
 </html>
