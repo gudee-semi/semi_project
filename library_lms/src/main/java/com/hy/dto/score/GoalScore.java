@@ -19,5 +19,7 @@ public class GoalScore {
 	private String subjectName; // 과목명 (프론트에서 보내는 값 → 서버에서 매핑)
 	private Integer targetScore;   // null 허용 (입력 안 할 수도 있으니까)
 	private Integer targetLevel;   // null 허용 (입력 안 할 수도 있음)
+	
+	private int grade;  // 학년
 
 }

@@ -5,10 +5,11 @@
 
 <mapper namespace="com.hy.mapper.score.SubjectMapper">
 
-  <select id="selectSubjectIdByName" resultType="int" parameterType="string">
-    SELECT subject_id
-    FROM subject
-    WHERE subject_name = #{subjectName}
-  </select>
+ <select id="selectSubjectIdByName" parameterType="string" resultType="int">
+  SELECT subject_id
+  FROM subject
+  WHERE TRIM(subject_name) = TRIM(#{subjectName})
+</select>
+
 
 </mapper>

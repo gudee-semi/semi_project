@@ -18,6 +18,21 @@ public class GoalScoreService {
     public boolean insertGoalScore(GoalScore dto) {
         try {
             ScoreMapper mapper = MybatisUtil.getSqlSession().getMapper(ScoreMapper.class);
+            int temp = dto.getExamTypeId();
+            if (dto.getGrade() == 1) {
+            	if(temp == 3) dto.setExamTypeId(1);
+            	else if(temp == 6) dto.setExamTypeId(2);
+            	else if(temp == 9) dto.setExamTypeId(3);
+            } else if (dto.getGrade() == 2) {
+            	if(temp == 3) dto.setExamTypeId(4);
+            	else if(temp == 6) dto.setExamTypeId(5);
+            	else if(temp == 9) dto.setExamTypeId(6);
+            } else {
+            	if(temp == 3) dto.setExamTypeId(7);
+            	else if(temp == 6) dto.setExamTypeId(8);
+            	else if(temp == 9) dto.setExamTypeId(9);
+            	else if(temp == 11) dto.setExamTypeId(10);
+            }
             int result = mapper.insertGoalScore(dto);
             return result > 0;
         } catch (Exception e) {

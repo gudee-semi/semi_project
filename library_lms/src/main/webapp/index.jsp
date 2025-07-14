@@ -17,6 +17,7 @@
 	<a href="<c:url value='/calendar/view' />">준하님</a>
 	<a href="/seat/view">준수님</a>
 	<a href="/goal_score/view">은빈님 목표 성적</a>
+	<a href="/goal_score_view/view">은빈님 목표 성적 조회</a>
 	<a href="/write_score/view">은빈님 성적 입력</a>
 	<a href="/analysis_score/view">은빈님 성적 분석</a>
 	<a href="<c:url value='/login/view'/>">길훈님</a>

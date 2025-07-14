@@ -6,7 +6,6 @@
 <mapper namespace="com.hy.mapper.score.ScoreMapper">
 
 
- <!-- 목표 성적 INSERT -->
 <insert id="insertGoalScore" parameterType="com.hy.dto.score.GoalScore">
   INSERT INTO goal_score (
     member_no, exam_type_id, subject_id, target_score, target_level
@@ -15,6 +14,7 @@
     #{memberNo}, #{examTypeId}, #{subjectId}, #{targetScore}, #{targetLevel}
   )
 </insert>
+
 
 
   <!-- 기존 점수 삭제 (갱신용) -->
