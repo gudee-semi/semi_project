@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%
   // [1] 로그인 대신 예시 세션 설정 (실서비스에서는 로그인에서 세팅)
   session.setAttribute("memberNo", 2);
   session.setAttribute("studentGrade", 3);
@@ -13,11 +14,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>목표 성적 설정</title>
-  <%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
+<meta charset="UTF-8">
+<title>목표 성적 조회</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <style>
+    <style>
     body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
     h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
     h2, h3 { text-align: left; font-size: 18px; font-weight: bold; margin: 24px 0 8px 10%; }
@@ -27,13 +27,13 @@
       align-items: center;
     }
     label { font-size: 16px; }
-    .btn {
+/*     .btn {
       display: block; margin: 35px auto 0; padding: 10px 24px;
       border: 1.5px solid #3b82f6; background: white;
       color: #3b82f6; border-radius: 6px; font-weight: 500;
       font-size: 16px; cursor: pointer; transition: .2s;
     }
-    .btn:hover { background: #3b82f6; color: white; }
+    .btn:hover { background: #3b82f6; color: white; } */
     table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
     th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
     #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
@@ -46,9 +46,9 @@
     .modal-content { background: #fff; padding: 24px; margin: 22% auto 0;  width: 320px; border-radius: 10px; text-align: center;  box-shadow: 0 6px 30px #2222;  }
     #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
   </style>
+  
 </head>
 <body>
-
 <script>
   // [0] 서버-side 변수 JS로 전달
   const studentGrade = <%= studentGrade %>;
@@ -105,109 +105,31 @@
   });
 </script>
 
-<h1>목표 성적 설정</h1>
+<h1>목표 성적 조회</h1>
 
-<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
+<!-- 시험 분류 -->
 <div class="section">
   <h2>시험 분류</h2>
   <div class="checkbox-group" id="exam-options">
     <c:forEach var="month" items="${examOptions}">
-      <c:choose>
-        <c:when test="${month == autoExamMonth}">
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:when>
-        <c:otherwise>
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}">
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 필수 과목 (항상 체크/비활성) -->
-<div class="section">
-  <h3>필수 과목</h3>
-  <div class="checkbox-group">
-    <label><input type="checkbox" checked disabled> 국어</label>
-    <label><input type="checkbox" checked disabled> 수학</label>
-    <label><input type="checkbox" checked disabled> 영어</label>
-    <label><input type="checkbox" checked disabled> 한국사</label>
-  </div>
-</div>
-
-<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
-<!-- 사회탐구 -->
-<div class="section">
-  <h3>사회탐구</h3>
-  <div class="checkbox-group" id="social-subjects-group">
-    <c:forEach var="subject" items="${socialSubjects}">
       <label>
-        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-        <c:out value="${subject}"/>
+        <input type="radio" class="exam-type" name="exam" value="${month}"
+          <c:if test="${month == autoExamMonth}">checked</c:if>> ${month}월
+        <c:if test="${month == 11}">(수능)</c:if>
       </label>
     </c:forEach>
   </div>
 </div>
 
-<!-- 과학탐구1 -->
-<div class="section">
-  <h3>과학탐구1</h3>
-  <div class="checkbox-group" id="science1-subjects-group">
-    <c:forEach var="subject" items="${science1Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="science2-section">
-  <h3>과학탐구2</h3>
-  <div class="checkbox-group">
-    <c:forEach var="subject" items="${science2Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="lang2-section">
-  <h3>제2외국어</h3>
-  <div class="checkbox-group">
-    <c:forEach var="subject" items="${lang2Subjects}">
-      <label>
-        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<button id="confirm-subjects" class="btn" style="margin-bottom:24px;">선택완료</button>
-
-<!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title" style="display:block;"></h2>
+<!-- 출력 영역 -->
+<h2 id="exam-title" style="display: none;"></h2>
 <div id="selected-subjects"></div>
-<table id="score-table" style="display:none;">
+<table id="score-table">
   <thead>
     <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
   </thead>
   <tbody id="score-body"></tbody>
 </table>
-
 
 <!-- 모달창 -->
 <div id="modal">
@@ -217,12 +139,16 @@
   </div>
 </div>
 
-<script src="../../js/goal_score.js"></script>
+<!-- JS 변수 전달 -->
+<script>
+  const memberNo = <%= memberNo %>;
+  const studentGrade = <%= studentGrade %>;
+  const currentYear = <%= currentYear %>;
+</script>
 
-<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
-<div style="width:70%;margin:28px auto 0;text-align:center;">
-  <button id="final-submit" class="btn" style="display:none;">설정완료</button>
-</div>
+<!-- 외부 JS -->
+<script src="../../js/goal_score_view.js"></script>
+
 
 </body>
 </html>

@@ -17,13 +17,6 @@
 
 
 
-  <!-- 기존 점수 삭제 (갱신용) -->
-  <delete id="deleteGoalScoresByMemberAndExam">
-    DELETE FROM goal_score
-    WHERE member_no = #{memberNo}
-      AND exam_type_id = #{examTypeId}
-  </delete>
-
   <!-- 조회 -->
   <select id="selectGoalScoresByMemberAndExam" resultType="com.hy.dto.score.GoalScore">
     SELECT
@@ -34,6 +27,14 @@
       AND exam_type_id = #{examTypeId}
   </select>
 
+
+
+  <!-- 기존 점수 삭제 (갱신용) -->
+  <delete id="deleteGoalScoresByMemberAndExam">
+    DELETE FROM goal_score
+    WHERE member_no = #{memberNo}
+      AND exam_type_id = #{examTypeId}
+  </delete>
 </mapper>
 
 
