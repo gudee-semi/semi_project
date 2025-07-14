@@ -45,7 +45,7 @@ public class LoginPage extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String memberId = request.getParameter("memberId");
-		String memberPw = request.getParameter("memberPw");
+		String memberPw = request.getParameter("member_pw");
 		Member member = service.selectMember(memberId, memberPw);
 		JSONObject obj = new JSONObject();
 		if(member==null) {

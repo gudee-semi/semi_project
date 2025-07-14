@@ -51,8 +51,10 @@ public class LoginSearch extends HttpServlet {
 		
 		if(memberName != null ) {
 			//아이디 찾기
+		
 			Member member = service.searchId(memberName,memberPhone);
 			if(member ==null) {
+		
 				obj.put("id", "no");
 			}else {
 				obj.put("id",member.getMemberId());

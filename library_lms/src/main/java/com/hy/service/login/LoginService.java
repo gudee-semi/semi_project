@@ -25,4 +25,12 @@ public class LoginService {
 		return dao.searchPw(member);
 		
 	}
+	public int updatePw(String memberId, String memberPw) {
+		Member member =new Member();
+		member.setMemberId(memberId);
+		member.setMemberPw(memberPw);
+		int result = dao.updatePw(member);
+		
+		return result;
+	}
 }

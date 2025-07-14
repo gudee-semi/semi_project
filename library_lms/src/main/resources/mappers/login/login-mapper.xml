@@ -46,4 +46,9 @@
 			member_phone = #{memberPhone}
 		</where>
 	</select>
+	<update id="updatePw" parameterType="com.hy.dto.Member">
+		UPDATE member
+		SET member_pw = #{memberPw}
+		WHERE member_id= #{memberId}
+	</update>
 </mapper>

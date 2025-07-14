@@ -26,4 +26,11 @@ public class LoginDao {
 		session.close();
 		return member;
 	}
+
+	public int updatePw(Member param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result =session.update("com.hy.mapper.login.LoginMapper.updatePw", param);
+		session.close();
+		return result;
+	}
 }

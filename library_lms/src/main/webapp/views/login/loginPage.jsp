@@ -68,7 +68,7 @@
     				url : "/login/view",
     				type : "post",
     				data : {memberId : memberId,
-    					  memberPw : memberPw },
+    					  member_pw : memberPw },
     				dataType : "json",
     				success : function(data){
     					if(data.checkId=="no"){

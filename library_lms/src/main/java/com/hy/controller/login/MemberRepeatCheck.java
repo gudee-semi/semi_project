@@ -41,7 +41,7 @@ public class MemberRepeatCheck extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String memberId = request.getParameter("memberId");
-		String memberRrn = request.getParameter("memberRrn");
+		String memberRrn = request.getParameter("member_rrn");
 		
 		JSONObject obj = new JSONObject();
 		

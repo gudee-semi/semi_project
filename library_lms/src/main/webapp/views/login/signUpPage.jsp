@@ -215,7 +215,7 @@
 			$.ajax({
 				url : "/member/repeatcheck",
 				type : "post",
-				data : {memberRrn  : memberRrn},
+				data : {member_rrn  : memberRrn},
 				dataType :"json",
 				success : function(data) {
 					if(data.rrnCheck=="no"){
