@@ -1,13 +1,14 @@
 package com.hy.dao.tablet;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.controller.tablet.MyBatisUtil;
 import com.hy.dto.tablet.Tablet;
-import com.hy.mapper.tablet.TabletMapper;
+import com.hy.mapper.tablet.LogTabletMapper;
 
 public class TabletDao {
 	
@@ -25,24 +26,26 @@ public class TabletDao {
     // 조회 결과(태블릿 목록) 반환
     return list;
 	}
-	
-  // 사용 가능한 태블릿을 사용중(1)으로 변경하는 메서드
-  public void useAvailableTablet() {
-    // try-with-resources 구문으로 SqlSession을 생성 (종료시 자동 close)
-    try (SqlSession session = MyBatisUtil.getSqlSession()) { // 세션 생성
-
-        // MyBatis Mapper 인터페이스의 구현체를 동적으로 얻음
-        TabletMapper mapper = session.getMapper(TabletMapper.class);
-
-        // Mapper의 useAvailableTablet() 메서드 호출 → 
-        // 실제로는 XML의 <update id="useAvailableTablet"> 쿼리 실행
-        mapper.useAvailableTablet();
-
-        // DB에 변경사항을 저장(커밋). (UPDATE, INSERT, DELETE 등에는 필수)
-        session.commit();
+  
+	// 사용 가능한 태블릿 중 첫 번째 사용(실제 구현은 프로젝트 목적에 따라 다름)
+  public void useAvailableTablet(int memberNo) {
+    try (SqlSession session = MyBatisUtil.getSqlSession(true)) {
+        int result = session.update(
+            "com.hy.mapper.tablet.TabletMapper.useAvailableTablet",
+            Map.of("memberNo", memberNo)
+        );
     }
-    // try-with-resources라 세션은 자동으로 닫힘
+  }
+  
+//  // 태블릿 로그 추가
+//  public void insertLogTablet(int tabletId, int status) {
+//    try (SqlSession session = MyBatisUtil.getSqlSession(true)) {
+//        LogTabletMapper mapper = session.getMapper(LogTabletMapper.class);
+//        mapper.insertLogTablet(tabletId, status);
+//    }
+//  }
+	
+	
 
-	}	
 
 }
