@@ -28,8 +28,10 @@
 		<div>		
 			<form id ="member_login">
 			
-				<input type="text" placeholder="아이디 : ">
-				<input type="password" placeholder="비밀번호 : ">	
+				<input type="text" name ="member_id"placeholder="아이디 : ">
+				<p id="member_id_msg">
+				<input type="password" name="member_pw" placeholder="비밀번호 : ">	
+				<p id="member_pw_msg">
 				<input type="submit" value ="로그인">
 			</form>
 			
@@ -48,6 +50,19 @@
 	<script>
 		$("#member_login").submit(function(e){
 			e.preventDefault();
+			const memberId = $("#member_id").val();
+    		const memberPw = $("#member_pw").val();
+    		
+    		if(!memberId){
+    			$("#member_id_msg").text("아이디를 입력하세요").css("color","red");
+    			
+    		}else if(!memberPw){
+    			$("#member_id_msg").text("비밀번호를 입력하세요").css("color","red");
+    		}else{
+    			
+    			
+    			
+    		}
 			
 			
 		});

@@ -441,10 +441,6 @@
 			profileStatus && checkStatus){
 				const form = $("#signUp")[0];
 				const formData = new FormData(form);
-				console.log("--- FormData 내용 확인 ---");
-				for (let [key, value] of formData.entries()) {
-				  console.log(key, value);
-				}
 				$.ajax({
 					url : "/login/signup",
 					type : "post",
@@ -465,8 +461,6 @@
 					
 				});
 		} 
-		
-		
 	});
 	
 	</script>
