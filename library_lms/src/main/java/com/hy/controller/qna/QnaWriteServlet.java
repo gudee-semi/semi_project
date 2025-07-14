@@ -37,34 +37,33 @@ public class QnaWriteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		System.out.println("여기도????");
 		
 		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-//		String memberId = ;
-		int categoryCode = Integer.parseInt(request.getParameter("qnaCategory"));
+//		String memberId = 세션 키,값으로 멤버객체의 memberno 받아서 아이디 가져오기, 메소드;
+		int memberNo = 3; // 임시로 넣음
 		String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
-		
-		String categoryName = "";
-		switch(categoryCode) {
-        case 0: categoryName = "기타"; break;
-        case 1: categoryName = "시설"; break;
-        case 2: categoryName = "좌석"; break;
-        case 3: categoryName = "환불"; break;
-        case 4: categoryName = "기타"; break;
-    }
+		String category = request.getParameter("qnaCategory");
+		System.out.println("여긴????");
 		
 		Qna qna = new Qna();
-		qna.setCategory(categoryName);
+		qna.setMemberNo(memberNo);
+		qna.setCategory(category);
 		qna.setTitle(title);
 		qna.setContent(content);
 		qna.setVisibility(visibility);
+		System.out.println("여긴??");
 		
 		// 2. 파일 정보 추출
 		File uploadDir = AttachService.getUploadDirectory();
+//		System.out.println("파일업로드?");
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
+//		System.out.println("파일정보추출까지?");
 		
 		// 3. 게시글과 파일 정보 데이터베이스에 추가
 		int result = qnaService.createQnaWithAttach(qna,attach);
+//		System.out.println("게시글 파일추가 처리확인" + result);
 		
 		JSONObject obj = new JSONObject();
 		

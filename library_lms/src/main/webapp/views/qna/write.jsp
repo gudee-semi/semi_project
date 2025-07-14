@@ -20,14 +20,14 @@
 <body>
 <!-- include 넣기 -->
 	<h1>질의응답 작성</h1>
-		<form action="" method="" id="writeQnaFrm">
+		<form id="writeQnaFrm">
 			<div class="menu-name">카테고리</div>
 				<select name="qnaCategory" id="qnaCategory">
 				  <option value=0>--선택--</option>
-				  <option value=1>시설</option>
-				  <option value=2>좌석</option>
-				  <option value=3>환불</option>
-				  <option value=4>기타</option>
+				  <option value='시설'>시설</option>
+				  <option value='좌석'>좌석</option>
+				  <option value='환불'>환불</option>
+				  <option value='기타'>기타</option>
 				</select>
 			
 			<div class="menu-name">공개여부</div>
@@ -53,16 +53,16 @@
 	<script>
 		$("#writeQnaFrm").submit(function(e){
 			e.preventDefault();
-			
+			console.log("1: 동작");
 			const category = $("#qnaCategory").val();
 			const form = document.getElementById("writeQnaFrm");
 			const formData = new FormData(form);
 			// 유효성 검사
-			
+			console.log("2: 동작");
 			if (category == 0) {
 				alert("카테고리를 선택하세요.");
 			}
-			
+			console.log("3: 동작");
 			$.ajax({
 				url : "/qna/write",
 				type : "post",
@@ -81,7 +81,7 @@
  				error : function() {
  					alert("요청 실패!");
  				}
-			})
+			});
 		});
 	</script>
 </body>

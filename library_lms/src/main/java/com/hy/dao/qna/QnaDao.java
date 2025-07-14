@@ -11,46 +11,46 @@ import com.hy.dto.qna.Qna;
 public class QnaDao {
 	public List<Qna> selectQnaList(Qna param){
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Qna> list = session.selectList("com.hy.mapper.QnaMapper.selectQnaList", param);
+		List<Qna> list = session.selectList("com.hy.mapper.qna.QnaMapper.selectQnaList", param);
 		session.close();
 		return list;
 	}
 	
 	public int selectQnaCount(Qna param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int count = session.selectOne("com.hy.mapper.QnaMapper.selectQnaCount", param);
+		int count = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaCount", param);
 		session.close();
 		return count;
 	}
 	
 	public Qna selectQnaOne(int qnaNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Qna qna = session.selectOne("com.hy.mapper.QnaMapper.selectQnaOne", qnaNo);
+		Qna qna = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaOne", qnaNo);
 		session.close();
 		return qna;
 	}
 	
-	public Attach selectAttachByQnaNo(int qnaNo) {
+	public Attach selectAttachByQnaNo(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Attach attach = session.selectOne("com.hy.mapper.QnaMapper.selectAttachByQnaNo", qnaNo);
+		Attach attach = session.selectOne("com.hy.mapper.qna.QnaMapper.selectAttachByQnaNo", qnaId);
 		session.close();
 		return attach;
 	}
 	
 	public Attach selectAttachByAttachNo(int attachNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Attach attach = session.selectOne("com.hy.mapper.QnaMapper.selectAttachByAttachNo", attachNo);
+		Attach attach = session.selectOne("com.hy.mapper.qna.QnaMapper.selectAttachByAttachNo", attachNo);
 		session.close();
 		return attach;
 	}
 	
 	public int insertQna(SqlSession session, Qna qna) {
-		int result = session.insert("com.hy.mapper.QnaMapper.insertQna", qna);
+		int result = session.insert("com.hy.mapper.qna.QnaMapper.insertQna", qna);
 		return result;
 	}
 	
 	public int insertAttach(SqlSession session, Attach attach) {
-		int result = session.insert("com.hy.mapper.QnaMapper.insertAttach", attach);
+		int result = session.insert("com.hy.mapper.qna.QnaMapper.insertAttach", attach);
 		return result;
 	}
 }
