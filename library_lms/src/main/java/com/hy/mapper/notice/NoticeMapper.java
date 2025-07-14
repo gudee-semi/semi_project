@@ -9,5 +9,7 @@ public interface NoticeMapper {
 	List<Notice> selectNoticeList(Notice param);
 	
 	int selectNoticeCount(Notice param);
+	
+	Notice selectNoticeByNo(int noticeId);
 
 }

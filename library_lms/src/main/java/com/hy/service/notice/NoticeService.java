@@ -16,6 +16,10 @@ public class NoticeService {
 	public int selectNoticeCount(Notice param) {
 		return noticeDao.selectNoticeCount(param);
 	}
+
+	public Notice selectNoticeByNo(int noticeId) {
+		return noticeDao.selectNoticeByNo(noticeId);
+	}
 	
 	
 

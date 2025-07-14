@@ -66,7 +66,7 @@
 		</div>
 		
 		<c:forEach var="notice" items="${ noticeList }">
-			<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+			<div  class="row" onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'">
 				<div class="no">${ notice.noticeId }</div>
 				<div class="category">${ notice.category }</div>
 				<div class="title">${ notice.title }</div>

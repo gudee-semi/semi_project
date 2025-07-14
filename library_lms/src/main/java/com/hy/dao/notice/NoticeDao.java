@@ -23,4 +23,10 @@ public class NoticeDao {
 		return result;
 	}
 
+	public Notice selectNoticeByNo(int noticeId) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Notice result = session.selectOne("com.hy.mapper.notice.NoticeMapper.selectNoticeByNo", noticeId);
+		return result;
+	}
+
 }
