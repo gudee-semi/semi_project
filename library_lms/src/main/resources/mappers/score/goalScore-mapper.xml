@@ -12,7 +12,7 @@
       exam_type_id,
       subject_id,
       target_score,
-      target_grade
+      target_level
     )
     VALUES (
       #{memberNo},
@@ -22,5 +22,17 @@
       #{targetLevel}
     )
   </insert>
+  
+ <!-- 목표 성적 조회 -->
+  <select id="selectGoalScoresByMember" resultType="com.hy.dto.score.GoalScore">
+    SELECT
+      member_no,
+      exam_type_id,
+      subject_id,
+      target_score,
+      target_level AS targetLevel
+    FROM goal_score
+    WHERE member_no = #{memberNo}
+  </select>
 
 </mapper>
