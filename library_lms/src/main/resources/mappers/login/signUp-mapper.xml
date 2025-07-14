@@ -18,6 +18,36 @@
 		<result property="registeredAt"  column = "registered_at"/>
 		<result property="activeStatus"  column = "active_status"/>
 	</resultMap>
+	<resultMap id= "userInfo" type= "com.hy.dto.login.User">
+	
+		<result  property="userNo"  column = "user_no"/>
+		<result  property="userName"  column = "user_name"/>
+		<result  property="userRrn"  column = "user_rrn"/>
+		<result  property="userSeat"  column = "user_seat"/>
+	</resultMap>
+<insert id="insertMember" parameterType="com.hy.dto.Member" useGeneratedKeys="true" keyProperty="memberNo">
+	INSERT INTO member(
+					user_no	
+					, member_id 
+					, member_name
+					, member_pw
+					, member_phone
+					, member_rrn
+					, member_address
+					, member_school
+					, member_grade
+					, member_seat)
+	VALUES(#{userNo},#{memberId},#{memberName},#{memberPw},#{memberPhone}
+		  ,#{memberRrn},#{memberAddress},#{memberSchool},#{memberGrade},#{memberSeat})
+
+</insert>
+<insert id ="insertMemberAvatar" parameterType="com.hy.dto.login.ProfileAttach">
+	INSERT INTO member_avatar(
+		member_no,ori_name,re_name,path)
+	VALUES(#{memberNo},#{oriName },#{reName },#{path })
+	
+
+</insert>
 <select id ="checkId" resultMap="memberAccount" parameterType="string">
 	SELECT * 
 	FROM member
@@ -31,6 +61,14 @@
 	<where>
 		member_rrn=#{memberRrn}
 	</where>	
+</select>
+<select id = "searchUser" resultMap = "userInfo" parameterType ="com.hy.dto.login.User">
+	SELECT *
+	FROM user
+	<where>
+		user_rrn=#{userRrn} AND
+		user_name=#{userName} 
+	</where>
 </select>
 
 
