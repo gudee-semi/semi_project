@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
 	.container {
     	width: 80vw;
@@ -56,6 +58,23 @@
 	<div class="container">
 		<h1>공지사항</h1>
 		
+		<div class="searchBox">
+			<form method="get" action="<c:url value='/notice/list' />">
+				<select name="category" id="category_crate">
+					<option value="">전체</option>
+					<option value="일반공지">일반공지</option>
+					<option value="중요공지">중요공지</option>
+					<option value="시설공지">시설공지</option>
+				</select>
+				<input type="text" name="keyword" placeholder="검색 기준 선택" value="${ paging.keyword }">
+				<input type="submit" value="검색">
+			</form>
+		</div>
+		
+		<script>
+			$("#category_crate").val("${paging.searchCategory}").attr("selected","selected");	
+		</script>
+		
 		<div class="row">
 			<div class="no">No</div>
 			<div class="category">분류</div>
@@ -79,17 +98,17 @@
 		<c:if test="${ not empty noticeList }">
 			<div>
 				<c:if test="${ paging.prev }">
-					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}' />">
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
 						&laquo;
 					</a>
 				</c:if>
 				<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-					<a href="<c:url value='/notice/list?nowPage=${ i }' />">
+					<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
 						${ i }
 					</a>	
 				</c:forEach>
 				<c:if test="${ paging.next }">
-					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }' />">
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
 						&raquo;
 					</a>
 				</c:if>

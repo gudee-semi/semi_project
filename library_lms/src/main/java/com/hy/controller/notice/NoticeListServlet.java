@@ -37,10 +37,18 @@ public class NoticeListServlet extends HttpServlet {
 		request.setAttribute("memberNo", memberNo);
 		
 		Notice param = new Notice();
+		
 		int nowPage = 1;
 		String nowPageStr = request.getParameter("nowPage");
 		if (nowPageStr != null) nowPage = Integer.parseInt(nowPageStr);
 		param.setNowPage(nowPage);
+		
+		
+		String category = request.getParameter("category");
+		String keyword = request.getParameter("keyword");
+		System.out.println(category + " " + keyword);
+		param.setSearchCategory(category);
+		param.setKeyword(keyword);
 		
 		int totalData = service.selectNoticeCount(param);
 		param.setTotalData(totalData);

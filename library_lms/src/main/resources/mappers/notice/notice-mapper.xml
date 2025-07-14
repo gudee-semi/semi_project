@@ -15,11 +15,89 @@
 	<select id="selectNoticeList" resultMap="noticeResultMap" parameterType="com.hy.dto.notice.Notice">
 		SELECT notice_id, title, content, view_count, category, DATE_FORMAT(create_at, '%Y-%m-%d') AS create_at, DATE_FORMAT(update_at, '%Y-%m-%d') AS update_at  
 		FROM notice
+		<where>
+			<choose>
+				<when test='searchCategory == ""'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+					</if>
+				</when>
+				<when test='searchCategory == "일반공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '일반공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '일반공지'
+					</if>
+				</when>
+				<when test='searchCategory == "중요공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '중요공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '중요공지'
+					</if>
+				</when>
+				<when test='searchCategory == "시설공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '시설공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '시설공지'
+					</if>
+				</when>
+			</choose>
+		</where>
 		LIMIT #{limitPageNo}, #{numPerPage}
 	</select>
 	
 	<select id="selectNoticeCount" parameterType="com.hy.dto.notice.Notice" resultType="_int">
 		SELECT COUNT(*) FROM notice
+		<where>
+			<choose>
+				<when test='searchCategory == ""'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+					</if>
+				</when>
+				<when test='searchCategory == "일반공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '일반공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '일반공지'
+					</if>
+				</when>
+				<when test='searchCategory == "중요공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '중요공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '중요공지'
+					</if>
+				</when>
+				<when test='searchCategory == "시설공지"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+						AND
+						category = '시설공지'
+					</if>
+					<if test='keyword != null and keyword == ""'>
+						category = '시설공지'
+					</if>
+				</when>
+			</choose>
+		</where>
 	</select>
 	
 	<select id="selectNoticeByNo" parameterType="_int" resultMap="noticeResultMap">

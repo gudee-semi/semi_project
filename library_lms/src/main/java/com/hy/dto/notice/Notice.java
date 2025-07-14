@@ -23,5 +23,6 @@ public class Notice extends Paging {
 	
 	// 커스텀
 	private String keyword;
+	private String searchCategory;
 	
 }
