@@ -240,6 +240,17 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.exam-type').forEach(other => {
         if (other !== cb) other.checked = false;
       });
+   // ★ 초기화 동작 추가
+      document.querySelectorAll('.explore-subject, .lang2-subject').forEach(input => {
+        input.checked = false;
+      });
+      document.getElementById('exam-title').style.display = 'none';
+      document.getElementById('exam-title').textContent = '';
+      document.getElementById('selected-subjects').textContent = '';
+      document.getElementById('score-table').style.display = 'none';
+      document.getElementById('score-body').innerHTML = '';
+      document.getElementById('final-submit').style.display = 'none';
+      
       toggleExtraSubjectsSection();
     });
   });
@@ -257,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cb.checked && countChecked() > 2) {
           // 초과시 바로 해제 + 알림
           cb.checked = false;
-          showModal("사회/과학탐구 과목은 합쳐서 최대 2개까지 선택 가능합니다.");
+          showModal("탐구과목은 2개까지 선택 가능합니다.");
         }
       });
     });
@@ -294,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('score-body').innerHTML = selected.map(sub => `
       <tr>
         <td>${sub}</td>
-        <td><input type="number" class="score-input" data-subject="${sub}" min="0" max="100" placeholder="입력"></td>
-        <td><input type="number" class="grade-input" data-subject="${sub}" min="1" max="9" placeholder="입력"></td>
+        <td><input type="text" class="score-input" data-subject="${sub}" min="0" max="100" placeholder="입력"></td>
+        <td><input type="text" class="grade-input" data-subject="${sub}" min="1" max="9" placeholder="입력"></td>
       </tr>`).join('');
     document.getElementById('score-table').style.display = 'table';
 
@@ -312,13 +323,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.score-input').forEach(input => {
       input.addEventListener('blur', function() {
         if (this.value && (this.value < 0 || this.value > 100))
-          showModal("조건 이외의 숫자를 입력했습니다. (0~100)");
+          showModal("원점수는 0~100 사이여야 합니다.");
       });
     });
     document.querySelectorAll('.grade-input').forEach(input => {
       input.addEventListener('blur', function() {
         if (this.value && (this.value < 1 || this.value > 9))
-          showModal("조건 이외의 숫자를 입력했습니다. (1~9)");
+          showModal("등급은 1~9 사이여야 합니다.");
       });
     });
   }
@@ -334,19 +345,39 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('modal').style.display = 'none';
   };
 
-  document.getElementById('final-submit').addEventListener('click', function() {
-    let isValid = true;
-    const examType = document.querySelector('.exam-type:checked')?.value;
-    const data = [];
-    document.querySelectorAll('.score-input').forEach((input, i) => {
-      const score = parseInt(input.value, 10);
-      const grade = parseInt(document.querySelectorAll('.grade-input')[i].value, 10);
-      const sub = input.dataset.subject;
-      if (isNaN(score) || score < 0 || score > 100) { isValid = false; showModal('원점수는 0~100 사이여야 합니다.'); }
-      if (isNaN(grade) || grade < 1 || grade > 9) { isValid = false; showModal('등급은 1~9 사이여야 합니다.'); }
-      data.push({ examTypeId: parseInt(examType), subjectName: sub, targetScore: score, targetLevel: grade });
-    });
-    if (!isValid) return;
+  document.getElementById('final-submit').addEventListener('click', function () {
+	  let isValid = true;
+	  const examType = document.querySelector('.exam-type:checked')?.value;
+	  const data = [];
+
+	  const gradeInputs = document.querySelectorAll('.grade-input');
+
+	  document.querySelectorAll('.score-input').forEach((input, i) => {
+	    const score = parseInt(input.value, 10);
+	    const grade = parseInt(gradeInputs[i].value, 10);
+	    const sub = input.dataset.subject;
+
+	    if (isNaN(score) || score < 0 || score > 100) {
+	      isValid = false;
+	      showModal('원점수는 0~100 사이여야 합니다.');
+	      return; // 이건 콜백 함수 내부에서 forEach만 종료됨
+	    }
+
+	    if (isNaN(grade) || grade < 1 || grade > 9) {
+	      isValid = false;
+	      showModal('등급은 1~9 사이여야 합니다.');
+	      return;
+	    }
+
+	    data.push({
+	      examTypeId: parseInt(examType),
+	      subjectName: sub,
+	      targetScore: score,
+	      targetLevel: grade
+	    });
+	  });
+
+	  if (!isValid) return;
 
     // 1. AJAX 저장
     fetch('/goal_score/insert', {
