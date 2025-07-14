@@ -32,8 +32,8 @@ public class NoticeListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 추후 세션에서 가져오기
-		int memberNo = 3; // 사용자
-		// int memberNo = 1; // 관리자
+		// int memberNo = 3; // 사용자
+		int memberNo = 1; // 관리자
 		request.setAttribute("memberNo", memberNo);
 		
 		Notice param = new Notice();

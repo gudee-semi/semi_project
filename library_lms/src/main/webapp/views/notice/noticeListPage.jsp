@@ -114,6 +114,10 @@
 				</c:if>
 			</div>
 		</c:if>
+		
+		<c:if test="${ memberNo eq 1 }">
+			<button onclick="location.href='<c:url value="/notice/write" />'">글쓰기</button>
+		</c:if>
 	</div>
 </body>
 </html>
