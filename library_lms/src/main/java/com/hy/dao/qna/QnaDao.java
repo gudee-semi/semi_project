@@ -18,6 +18,7 @@ public class QnaDao {
 	
 	public int selectQnaCount(Qna param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		System.out.println(param.getKeyword());
 		int count = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaCount", param);
 		session.close();
 		return count;

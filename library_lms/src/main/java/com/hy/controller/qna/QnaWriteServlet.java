@@ -45,7 +45,6 @@ public class QnaWriteServlet extends HttpServlet {
 		String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
 		String category = request.getParameter("qnaCategory");
-		System.out.println("여긴????");
 		
 		Qna qna = new Qna();
 		qna.setMemberNo(memberNo);
@@ -53,7 +52,6 @@ public class QnaWriteServlet extends HttpServlet {
 		qna.setTitle(title);
 		qna.setContent(content);
 		qna.setVisibility(visibility);
-		System.out.println("여긴??");
 		
 		// 2. 파일 정보 추출
 		File uploadDir = AttachService.getUploadDirectory();

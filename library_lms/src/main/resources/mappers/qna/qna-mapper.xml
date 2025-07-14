@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hy.mapper.QnaMapper">
+<mapper namespace="com.hy.mapper.qna.QnaMapper">
 	<resultMap id="qnaResultMap" type="com.hy.dto.qna.Qna">
       <result property="qnaId" column="qna_no" />
       <result property="memberNo" column="member_no" />
@@ -67,7 +67,7 @@
 	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
-		FROM attach
+		FROM qna_attach
 		<where>
 			qna_id = #{qnaNo}	
 		</where>
@@ -75,7 +75,7 @@
 	
 	<select id="selectAttachByAttachNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
-		FROM attach
+		FROM qna_attach
 		<where>
 			attach_no = #{attachNo}	
 		</where>
@@ -93,14 +93,14 @@
 		</where>
 	</select>
 	
-	<insert id="insertQna" parameterType="com.hy.dto.qna.Qna" useGeneratedKeys="true" keyProperty="qnaNo">
-		INSERT INTO qna(category ,title ,content)
-		VALUES (#{category} ,#{title} ,#{content})
+	<insert id="insertQna" parameterType="com.hy.dto.qna.Qna" useGeneratedKeys="true" keyProperty="qnaId">
+		INSERT INTO qna(category ,title ,content ,member_no)
+		VALUES (#{category} ,#{title} ,#{content} ,#{memberNo})
 	</insert>
 	
 
 	<insert id="insertAttach" parameterType="com.hy.dto.qna.Attach">
-		INSERT INTO attach(qna_attach_id ,ori_name ,re_name)
+		INSERT INTO qna_attach(qna_attach_id ,ori_name ,re_name)
 		VALUES (#{qnaAttachId} ,#{oriName} ,#{reName})
 	</insert>
 </mapper>
