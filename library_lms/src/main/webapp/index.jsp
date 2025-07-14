@@ -15,6 +15,7 @@
 	<%@ include file="/views/include/header.jsp" %>
 
 	<a href="<c:url value='/calendar/view' />">준하님</a>
+	<a href="<c:url value='/notice/list' />">준하님2</a>
 	<a href="/seat/view">준수님</a>
 	<a href="/goal_score/view">은빈님 목표 성적</a>
 	<a href="/write_score/view">은빈님 성적 입력</a>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.mapper.notice.NoticeMapper">
+
+	<resultMap type="com.hy.dto.notice.Notice" id="noticeResultMap">
+		<result property="noticeId" column="notice_id"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="viewCount" column="view_count"/>
+		<result property="category" column="category"/>
+		<result property="createAt" column="create_at"/>
+		<result property="updateAt" column="update_at"/>
+	</resultMap>
+	
+	<select id="selectNoticeList" resultMap="noticeResultMap" parameterType="com.hy.dto.notice.Notice">
+		SELECT notice_id, title, content, view_count, category, DATE_FORMAT(create_at, '%Y-%m-%d') AS create_at, DATE_FORMAT(update_at, '%Y-%m-%d') AS update_at  
+		FROM notice
+		LIMIT #{limitPageNo}, #{numPerPage}
+	</select>
+	
+	<select id="selectNoticeCount" parameterType="com.hy.dto.notice.Notice" resultType="_int">
+		SELECT COUNT(*) FROM notice
+	</select>
+
+</mapper>
