@@ -2,8 +2,12 @@ package com.hy.service.notice;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.notice.NoticeDao;
 import com.hy.dto.notice.Notice;
+import com.hy.dto.notice.NoticeAttach;
 
 public class NoticeService {
 	
@@ -19,6 +23,37 @@ public class NoticeService {
 
 	public Notice selectNoticeByNo(int noticeId) {
 		return noticeDao.selectNoticeByNo(noticeId);
+	}
+
+	public int createNoticeWithAttach(Notice notice, NoticeAttach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = noticeDao.insertNotice(session, notice);
+			System.out.println(notice.getNoticeId());
+			
+			if (attach != null && result > 0) {
+				attach.setNoticeId(notice.getNoticeId());
+				result = noticeDao.insertAttach(session, attach);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
+	public NoticeAttach selectAttachByNo(int noticeId) {
+		return noticeDao.selectAttachByNo(noticeId);
 	}
 	
 	

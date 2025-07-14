@@ -12,6 +12,14 @@
 		<result property="updateAt" column="update_at"/>
 	</resultMap>
 	
+	<resultMap type="com.hy.dto.notice.NoticeAttach" id="noticeAttachResultMap">
+		<result property="noticeAttachId" column="notice_attach_id"/>
+		<result property="noticeId" column="notice_id"/>
+		<result property="oriName" column="ori_name"/>
+		<result property="reName" column="re_name"/>
+		<result property="path" column="path"/>
+	</resultMap>
+	
 	<select id="selectNoticeList" resultMap="noticeResultMap" parameterType="com.hy.dto.notice.Notice">
 		SELECT notice_id, title, content, view_count, category, DATE_FORMAT(create_at, '%Y-%m-%d') AS create_at, DATE_FORMAT(update_at, '%Y-%m-%d') AS update_at  
 		FROM notice
@@ -102,6 +110,18 @@
 	
 	<select id="selectNoticeByNo" parameterType="_int" resultMap="noticeResultMap">
 		SELECT * FROM notice WHERE notice_id = #{noticeId}
+	</select>
+	
+	<insert id="insertNotice" parameterType="com.hy.dto.notice.Notice" useGeneratedKeys="true" keyProperty="noticeId">
+		INSERT INTO notice (title, content, category) VALUES (#{title}, #{content}, #{category})
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.hy.dto.notice.NoticeAttach">
+		INSERT INTO notice_attach (notice_id, ori_name, re_name, path) VALUES (#{noticeId}, #{oriName}, #{reName}, #{path})
+	</insert>
+	
+	<select id="selectAttachByNo" parameterType="_int" resultMap="noticeAttachResultMap">
+		SELECT * FROM notice_attach WHERE notice_id = #{noticeId}
 	</select>
 
 </mapper>

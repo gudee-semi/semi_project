@@ -57,6 +57,7 @@ public class NoticeAttachService {
 		NoticeAttach na = new NoticeAttach();
 		na.setOriName(oriName);
 		na.setReName(saveName + "." + ext);
+		na.setPath("C://upload/notice/" + saveName + "." + ext);
 		
 		return na;
 		

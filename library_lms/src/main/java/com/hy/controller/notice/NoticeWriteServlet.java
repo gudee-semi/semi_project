@@ -6,9 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.File;
 import java.io.IOException;
 
 import com.hy.dto.notice.Notice;
+import com.hy.dto.notice.NoticeAttach;
+import com.hy.service.notice.NoticeAttachService;
+import com.hy.service.notice.NoticeService;
 
 /**
  * Servlet implementation class NoticeWriteServlet
@@ -21,6 +26,7 @@ import com.hy.dto.notice.Notice;
 @WebServlet("/notice/write")
 public class NoticeWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private NoticeService noticeService = new NoticeService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,7 +60,12 @@ public class NoticeWriteServlet extends HttpServlet {
 		notice.setContent(content);
 		notice.setCategory(category);
 		
+		File uploadDir = NoticeAttachService.getUploadDirectory();
+		NoticeAttach attach = NoticeAttachService.handleUploadFile(request, uploadDir);
+		System.out.println(attach.getPath());
 		
+		int result = noticeService.createNoticeWithAttach(notice, attach);
+		System.out.println(result);
 	}
 
 }

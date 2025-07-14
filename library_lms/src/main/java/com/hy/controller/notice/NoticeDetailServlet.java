@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.hy.dto.notice.Notice;
+import com.hy.dto.notice.NoticeAttach;
 import com.hy.service.notice.NoticeService;
 
 /**
@@ -34,9 +35,13 @@ public class NoticeDetailServlet extends HttpServlet {
 		System.out.println(noticeId);
 		
 		Notice notice = service.selectNoticeByNo(noticeId);
-		System.out.println(notice);
+		NoticeAttach attach = service.selectAttachByNo(noticeId);
 		
 		request.setAttribute("notice", notice);
+		request.setAttribute("attach", attach);
+		
+		System.out.println(attach);
+		
 		request.getRequestDispatcher("/views/notice/noticeDetailPage.jsp").forward(request, response);
 	}
 
