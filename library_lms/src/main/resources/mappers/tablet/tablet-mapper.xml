@@ -5,10 +5,28 @@
 
 <mapper namespace="com.hy.mapper.tablet.TabletMapper">
 
+<resultMap id="TabletResultMap" type="com.hy.dto.tablet.Tablet">
+    <!-- DB 컬럼명과 DTO 필드명 매핑 -->
+    <id property="tabletId" column="tablet_id"/>
+    <result property="tabletAvailable" column="tablet_available"/>
+</resultMap>
+
 	<!-- selectAll: tablet 테이블의 전체 데이터 조회 쿼리 -->
-  <select id="selectAll" resultType="com.hy.dto.tablet.Tablet">
-    SELECT tablet_id as tabletId,
-    tablet_available as tabletAvailable FROM tablet
+  <select id="selectAll" resultMap="TabletResultMap">
+		SELECT * FROM tablet
   </select>
+  
+  <!-- 가장 작은 id의 사용 가능한 태블릿을 사용중(1)으로 변경 -->
+  <update id="useAvailableTablet">
+  UPDATE tablet
+  JOIN (
+  	SELECT tablet_id
+  	FROM tablet
+  	WHERE tablet_available = 0
+  	ORDER BY tablet_id ASC
+  	LIMIT 1
+  ) t2 ON tablet.tablet_id = t2.tablet_id
+  SET tablet.tablet_available = 1
+  </update>
 
 </mapper>
