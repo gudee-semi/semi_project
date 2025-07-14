@@ -31,7 +31,7 @@ public class QnaDetailServlet extends HttpServlet {
 		System.out.println(attach);
 		
 		// 조회수 올리기
-//		qnaService.update
+		qnaService.updateViewCount(qnaId);
 		
 		request.setAttribute("qna", qna);
 		request.setAttribute("attach", attach);

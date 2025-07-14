@@ -8,6 +8,8 @@ import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
+import lombok.extern.slf4j.Slf4j;
+
 public class QnaDao {
 	public List<Qna> selectQnaList(Qna param){
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -24,9 +26,25 @@ public class QnaDao {
 		return count;
 	}
 	
-	public Qna selectQnaOne(int qnaNo) {
+	public int updateViewCount(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Qna qna = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaOne", qnaNo);
+		int result = session.update("com.hy.mapper.qna.QnaMapper.updateViewCount", qnaId);
+		session.close();
+		return result;
+	}
+	
+	public int updateQna(Qna qna) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		System.out.println(qna.toString());
+		int result = session.update("com.hy.mapper.qna.QnaMapper.updateQna", qna);
+		
+		session.close();
+		return result;
+	}
+	
+	public Qna selectQnaOne(int qnaId) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Qna qna = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaOne", qnaId);
 		session.close();
 		return qna;
 	}

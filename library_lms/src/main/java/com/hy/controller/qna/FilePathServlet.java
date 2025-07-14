@@ -59,11 +59,6 @@ public class FilePathServlet extends HttpServlet {
 				out.write(buffer,0,byteRead);
 			}
 		}
-		
-		
-		
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

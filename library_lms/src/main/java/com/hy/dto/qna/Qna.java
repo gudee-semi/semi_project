@@ -5,10 +5,12 @@ import com.hy.common.vo.Paging;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Qna extends Paging{
 	private int qnaId;
 	private String memberId;

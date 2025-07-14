@@ -4,8 +4,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hy.mapper.qna.QnaMapper">
 	<resultMap id="qnaResultMap" type="com.hy.dto.qna.Qna">
-      <result property="qnaId" column="qna_no" />
-      <result property="memberNo" column="member_no" />
+      <result property="qnaId" column="qna_id" />
+      <result property="memberId" column="member_id" />
       <result property="category" column="category" />
       <result property="title" column="title" />
       <result property="content" column="content" />
@@ -35,7 +35,7 @@
 			,Q.visibility
 			,Q.view_count
 			,Q.answer_status
-			,M.member_no
+			,M.member_id
 		FROM qna Q 
 		JOIN member M ON Q.member_no = M.member_no
 		<where>
@@ -44,6 +44,7 @@
 				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
 			</if>
 		</where>
+		ORDER BY Q.qna_id DESC
 		LIMIT #{limitPageNo},#{numPerPage}
 	</select>
 	
@@ -57,19 +58,36 @@
 			,Q.visibility
 			,Q.view_count
 			,Q.answer_status
-			,M.member_no
+			,M.member_id
 		FROM qna Q
 		JOIN member M On Q.member_no = M.member_no
 		<where>
-		qna_id = #{qnaNo}			
+			qna_id = #{qnaNo}			
 		</where>
 	</select>
+	
+	<update id="updateViewCount" parameterType="_int">
+		UPDATE qna
+		SET view_count = view_count + 1
+		<where>
+		qna_id = #{qnaId}				
+		</where>	
+	</update>
+	
+	<update id="updateQna" parameterType="com.hy.dto.qna.Qna">
+		UPDATE qna
+		SET category = #{category},
+			visibility = #{visibility},
+			title = #{title},
+			content = #{content}
+		WHERE qna_id = #{qnaId}			
+	</update>
 	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
 		FROM qna_attach
 		<where>
-			qna_id = #{qnaNo}	
+			qna_id = #{qnaId}	
 		</where>
 	</select>
 	
@@ -77,7 +95,7 @@
 		SELECT *
 		FROM qna_attach
 		<where>
-			attach_no = #{attachNo}	
+			qna_attach_id = #{qnaAttachId}	
 		</where>
 	</select>
 			
@@ -100,7 +118,7 @@
 	
 
 	<insert id="insertAttach" parameterType="com.hy.dto.qna.Attach">
-		INSERT INTO qna_attach(qna_attach_id ,ori_name ,re_name)
-		VALUES (#{qnaAttachId} ,#{oriName} ,#{reName})
+		INSERT INTO qna_attach(qna_id ,ori_name ,re_name ,path)
+		VALUES (#{qnaId} ,#{oriName} ,#{reName} ,#{path})
 	</insert>
 </mapper>

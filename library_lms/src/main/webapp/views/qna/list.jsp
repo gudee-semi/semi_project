@@ -16,8 +16,7 @@
     	
     }
     .row {
-    	border: 0.5px solid black;
-    	width: 900px;
+     	width: 900px;
     	padding: 10px;
     	margin: 2px;
     }
@@ -91,7 +90,7 @@
 	<c:if test="${not empty qnaList }">
 		<div>
 			<c:if test="${paging.prev }">
-				<a href="<c:url value='/qna/view?nowPage=$&keyword=${paging.keyword }'/>">
+				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1} &keyword=${paging.keyword }'/>">
 					&laquo;
 				</a>
 			</c:if>		

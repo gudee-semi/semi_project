@@ -20,6 +20,14 @@ private QnaDao qnaDao = new QnaDao();
 		return qnaDao.selectQnaCount(param);
 	}
 	
+	public int updateViewCount(int qnaId) {
+		return qnaDao.updateViewCount(qnaId);
+	}
+	
+	public int updateQna(Qna qna) {
+		return qnaDao.updateQna(qna);
+	}
+	
 	public Qna selectQnaOne(int qnaNo) {
 		return qnaDao.selectQnaOne(qnaNo);
 	}
@@ -39,12 +47,15 @@ private QnaDao qnaDao = new QnaDao();
 		try {
 			// 1. 게시글 등록
 			result = qnaDao.insertQna(session,qna);
+			System.out.println("qna"+result);
 			
 			// 2. 파일 정보 등록
 			if(attach != null && result > 0) {
 				attach.setQnaId(qna.getQnaId());
+				attach.setPath("C:\\upload\\qna\\");
 				result = qnaDao.insertAttach(session,attach);
 			}
+			System.out.println("attach"+result);
 			
 			// 3. commit 또는 rollback 
 			if(result > 0) {
