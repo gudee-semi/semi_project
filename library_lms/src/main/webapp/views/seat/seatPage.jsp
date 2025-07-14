@@ -59,9 +59,6 @@
 
 }
 
-
-
-
 button {
 	background-color: #D9D9D9;
 	border-radius: 10px;
@@ -245,7 +242,6 @@ button:disabled{
 			} else{
 				useButton.disabled = false;
 			} 
-			
 		});
 	});
 	
@@ -308,6 +304,7 @@ button:disabled{
 	cancelButton.addEventListener('click', () => {
 		const isYes = confirm('정말 취소 하시겠습니까?')
 		if(isYes){
+
 			
 			currentUsedSeat.classList.remove('used');
 			currentUsedSeat = null;
@@ -315,6 +312,7 @@ button:disabled{
 			cancelButton.disabled = true;
 		}
 	});
+
 	
 	</script>
 	
