@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.controller.tablet.MyBatisUtil;
 import com.hy.dto.tablet.Tablet;
+import com.hy.mapper.tablet.TabletMapper;
 
 public class TabletDao {
 	
