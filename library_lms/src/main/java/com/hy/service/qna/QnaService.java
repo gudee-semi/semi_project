@@ -24,8 +24,8 @@ private QnaDao qnaDao = new QnaDao();
 		return qnaDao.selectQnaOne(qnaNo);
 	}
 	
-	public Attach selectAttachByQnaNo(int qnaNo) {
-		return qnaDao.selectAttachByQnaNo(qnaNo);
+	public Attach selectAttachByQnaNo(int qnaId) {
+		return qnaDao.selectAttachByQnaNo(qnaId);
 	}
 	
 	public Attach selectAttachByAttachNo(int attachNo) {
@@ -34,7 +34,7 @@ private QnaDao qnaDao = new QnaDao();
 	// 게시글 + 파일 트랜젝션 처리
 	public int createQnaWithAttach(Qna qna, Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false); // 아무때나 commit 되면 안되고 지정한 순간에 되야함
-		int result =0;
+		int result = 0;
 		
 		try {
 			// 1. 게시글 등록

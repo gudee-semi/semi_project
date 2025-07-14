@@ -44,16 +44,27 @@ public class QnaViewServlet extends HttpServlet {
 		param.setNowPage(nowPage);
 		
 		// 검색어 셋팅
+		String keywordFor = request.getParameter("keywordFor");
+		System.out.println("검색기준: "+keywordFor); // 처리완료 확인
+		
 		String keyword = request.getParameter("keyword");
 		param.setKeyword(keyword);
 		
 		// 전체 게시글 개수 조회
 		int totalData = service.selectQnaCount(param);
+		
+		// 키워드 기준 2가지로 메소드 각각 만들기
+		System.out.println("현재페이지,키워드 적용한 글 개수: "+totalData); // 처리완료 확인
+		
 		param.setTotalData(totalData);
+		
+		int totaldata = param.getTotalData();
+		System.out.println(totaldata); // 처리완료 확인
 		
 		// 게시글 목록 정보 조회
 		List<Qna> qnaList = service.selectQnaList(param);
-		
+	
+		System.out.println(qnaList);
 		request.setAttribute("paging", param);
 		request.setAttribute("qnaList", qnaList);
 		request.getRequestDispatcher("/views/qna/list.jsp").forward(request, response);

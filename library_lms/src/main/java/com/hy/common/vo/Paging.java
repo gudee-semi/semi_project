@@ -9,7 +9,7 @@ public class Paging {
 	
 	// 3. 페이징바 구성에 필요한 정보
 	// (1) 페이징바 크기
-	private int pageBarSize = 5;
+	private int pageBarSize = 10;
 	// (2) 현재 페이징바 시작 숫자
 	private int pageBarStart; // 1, 6, 11, ...
 	// (3) 현재 페이징바 마지막 숫자
@@ -18,7 +18,7 @@ public class Paging {
 	// 4. 현재 페이지
 	private int nowPage;
 	// 5. 한 페이지당 게시글의 개수
-	private int numPerPage = 5;
+	private int numPerPage = 10;
 	// 6. LIMIT 시작 번호
 	private int limitPageNo;
 	

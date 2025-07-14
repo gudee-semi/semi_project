@@ -7,104 +7,30 @@
 <title>Insert title here</title>
 
   <style>
-    body {
-      font-family: 'Pretendard', sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
+    body { font-family: 'Pretendard', sans-serif;  text-align: center;  padding: 40px;  }
+    h1 { font-size: 36px; font-weight: bold;  }
+    .exam-type {  margin: 10px;  }
+    .score-table {  margin: 10px auto;  border-collapse: collapse;  width: 860px;  }
+    .score-table th,  .score-table td { border: 1px solid #ddd;  padding: 10px;  }    
+    .highlight { font-size: 20px;  font-weight: bold;  margin-top: 20px;  color: #333;  }
+    .input-select {  width: 160px;   padding: 6px;  text-align: center; box-sizing: border-box;  }
 
-    h1 {
-      font-size: 36px;
-      font-weight: bold;
-    }
+    span.display-value { display: inline-block;  width: 160px;  padding: 6px; box-sizing: border-box;   }
+    .button {  margin-top: 20px;  padding: 10px 20px;  background-color: royalblue;  color: white;      border: none;
+      border-radius: 5px;  cursor: pointer;   }
 
-    .exam-type {
-      margin: 10px;
-    }
+    .table-wrapper {  width: 860px;  margin: 50px auto 0; }
 
-    .score-table {
-      margin: 10px auto;
-      border-collapse: collapse;
-      width: 860px;
-    }
+    .table-header, .table-footer { display: flex;  justify-content: space-between;   align-items: flex-start;  width: 100%;  }
 
-    .score-table th,
-    .score-table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-    }
+    .left-title {  font-weight: bold; font-size: 25px; color: #000;  }
 
-    .highlight {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 20px;
-      color: #333;
-    }
+    .right-note { font-size: 13px; color: #666;  text-align: right;  line-height: 1.4;  }
 
-    .input-select {
-      width: 160px;
-      padding: 6px;
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    span.display-value {
-      display: inline-block;
-      width: 160px;
-      padding: 6px;
-      box-sizing: border-box;
-    }
-
-    .button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: royalblue;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .table-wrapper {
-      width: 860px;
-      margin: 50px auto 0;
-    }
-
-    .table-header,
-    .table-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      width: 100%;
-    }
-
-    .left-title {
-      font-weight: bold;
-      font-size: 25px;
-      color: #000;
-    }
-
-    .right-note {
-      font-size: 13px;
-      color: #666;
-      text-align: right;
-      line-height: 1.4;
-    }
-
-    .bottom-note {
-      font-size: 13px;
-      color: red;
-      margin-top: 5px;
-      text-align: left;
-    }
+    .bottom-note { font-size: 13px; color: red;  margin-top: 5px;  text-align: left;  }
 
     /* 모달 스타일 */
-    #modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+    #modal {  display: none;  position: fixed; top: 0; left: 0;  width: 100%;  height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 9999;
     }
