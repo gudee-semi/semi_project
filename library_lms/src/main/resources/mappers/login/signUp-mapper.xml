@@ -52,7 +52,7 @@
 	SELECT * 
 	FROM member
 	<where>
-		member_Id=#{memberId}
+		member_id=#{memberId}
 	</where>	
 </select>
 <select id ="checkRrn" resultMap="memberAccount" parameterType="string">
@@ -70,10 +70,4 @@
 		user_name=#{userName} 
 	</where>
 </select>
-
-
-
-
-
-
 </mapper>

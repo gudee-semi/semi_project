@@ -1,0 +1,28 @@
+package com.hy.service.login;
+
+import com.hy.dao.login.LoginDao;
+import com.hy.dto.Member;
+
+public class LoginService {
+	
+		LoginDao dao = new LoginDao();
+	public Member selectMember(String memberId , String memberPw) {
+		Member member = new Member();
+		member.setMemberId(memberId);
+		member.setMemberPw(memberPw);
+		return dao.selectMember(member);
+	}
+	public Member searchId(String memberName, String memberPhone) {
+		Member member = new Member();
+		member.setMemberName(memberName);
+		member.setMemberPhone(memberPhone);
+		return dao.searchId(member);
+	}
+	public Member searchPw(String memberId, String memberPhone) {
+		Member member = new Member();
+		member.setMemberId(memberId);
+		member.setMemberPhone(memberPhone);
+		return dao.searchPw(member);
+		
+	}
+}
