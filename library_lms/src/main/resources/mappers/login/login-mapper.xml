@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.mapper.login.LoginMapper">
+	<resultMap id ="memberAccount" type = "com.hy.dto.Member">
+		<result property="memberNo"  column = "member_no"/>
+		<result property="userNo"  column = "user_no"/>
+		<result property="memberId"  column = "member_id"/>
+		<result property="memberName"  column = "member_name"/>
+		<result property="memberPw"  column = "member_pw"/>
+		<result property="memberPhone"  column = "member_phone"/>
+		<result property="memberRrn"  column = "member_rrn"/>
+		<result property="memberAddress"  column = "member_address"/>
+		<result property="memberSchool"  column = "member_school"/>
+		<result property="memberGrade"  column = "member_grade"/>
+		<result property="memberSeat"  column = "member_seat"/>
+		<result property="memberPenalty"  column = "member_penalty"/>
+		<result property="registeredAt"  column = "registered_at"/>
+		<result property="activeStatus"  column = "active_status"/>
+	</resultMap>
+	
+	<select id = "selectMember" resultMap = "memberAccount" parameterType="com.hy.dto.Member">
+		SELECT *
+		FROM member
+		<where>
+			member_id = #{memberId} 
+			AND 
+			member_pw = #{memberPw}
+		</where>
+	</select>
+	<select id = "searchId" resultMap = "memberAccount" parameterType="com.hy.dto.Member">
+		SELECT *
+		FROM member
+		<where>
+			member_name = #{memberName} 
+			AND 
+			member_phone = #{memberPhone}
+		</where>
+	</select>	
+	<select id = "searchPw" resultMap = "memberAccount" parameterType="com.hy.dto.Member">
+		SELECT *
+		FROM member
+		<where>
+			member_id = #{memberId} 
+			AND 
+			member_phone = #{memberPhone}
+		</where>
+	</select>
+	<update id="updatePw" parameterType="com.hy.dto.Member">
+		UPDATE member
+		SET member_pw = #{memberPw}
+		WHERE member_id= #{memberId}
+	</update>
+</mapper>
