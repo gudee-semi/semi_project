@@ -12,9 +12,11 @@ public interface QnaMapper {
 	
 	Qna selectQnaOne(int qnaNo);
 
-	Attach selectAttachByQnaNo(int qnoNo);
+	Attach selectAttachByQnaNo(int qnaId);
 	
 	Attach selectAttachByAttachNo(int attachNo);
 	
 	int insertQna(Qna param);
+	
+	int insertAttach(Attach param);
 }

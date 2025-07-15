@@ -24,7 +24,16 @@ public class CalendarService {
 	}
 
 	public List<Todo> selectTodoByNo(int memberNo) {
-		return dao.selectTodoByNo(memberNo);
+		List<Todo> list = dao.selectTodoByNo(memberNo);
+		for (Todo t : list) {
+			String detail = t.getDetail();
+			if (detail != null) {
+				detail = detail.replace("\n", "\\n");
+				t.setDetail(detail);
+			}
+		}
+		
+		return list;
 	}
 
 	public int updateTodo(String todoTitle, Date todoDate, String todoDetail, int plannerId) {

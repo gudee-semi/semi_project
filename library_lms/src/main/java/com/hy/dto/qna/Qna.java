@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Qna extends Paging{
 	private int qnaId;
-	private int memberNo;
+	private String memberId;
 	private String category;
 	private String title;
 	private String content;
 	private String regDate;
 	private String modDate;
 	private int visibility;
-	private int viewCount = 0;
+	private int viewCount;
 	private int answerStatus;
 	
+	private int memberNo; // 맞는지..
 	private String keyword;
 }
