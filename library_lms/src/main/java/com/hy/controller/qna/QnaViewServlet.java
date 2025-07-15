@@ -45,7 +45,7 @@ public class QnaViewServlet extends HttpServlet {
 		
 		// 검색어 셋팅
 		String keywordIn = request.getParameter("keywordIn");
-		System.out.println("검색기준: "+keywordIn); // 처리완료 확인
+		param.setKeywordIn(keywordIn);
 		
 		String keyword = request.getParameter("keyword");
 		param.setKeyword(keyword);

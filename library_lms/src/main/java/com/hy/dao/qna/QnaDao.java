@@ -49,6 +49,13 @@ public class QnaDao {
 		return qna;
 	}
 	
+	public int deleteQna(int qnaId) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.hy.mapper.qna.QnaMapper.deleteQna", qnaId);
+		session.close();
+		return result;
+	}
+	
 	public Attach selectAttachByQnaNo(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Attach attach = session.selectOne("com.hy.mapper.qna.QnaMapper.selectAttachByQnaNo", qnaId);

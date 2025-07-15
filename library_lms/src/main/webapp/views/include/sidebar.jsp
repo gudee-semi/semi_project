@@ -91,7 +91,7 @@
         </li>
         
         <li class="nav-item">
-          <a class="dropdown-item" href="<c:url value='/' />">질의응답</a>
+          <a class="dropdown-item" href="<c:url value='/qna/view' />">질의응답</a>
         </li>
             
         

@@ -16,6 +16,8 @@ public interface QnaMapper {
 	
 	Qna selectQnaOne(int qnaId);
 
+	int deleteQna(int qnaId);
+	
 	Attach selectAttachByQnaNo(int qnaId);
 	
 	Attach selectAttachByAttachNo(int attachNo);

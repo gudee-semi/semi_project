@@ -16,7 +16,6 @@
       <result property="answerStatus" column="answer_status" />
 	</resultMap>
 	
-
  	<resultMap id="attachResultMap" type="com.hy.dto.qna.Attach">
       <result property="qnaAttachId" column="qna_attach_id" />
       <result property="qnaId" column="qna_id" />
@@ -39,13 +38,51 @@
 		FROM qna Q 
 		JOIN member M ON Q.member_no = M.member_no
 		<where>
-			<if test='keyword != null and keyword != ""'>
-				Q.qna_title LIKE CONCAT('%',#{keyword}, '%')			
-				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
-			</if>
+			<choose>
+				<when test='keywordIn == "구분"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+					</if>
+				</when>
+				<when test='keywordIn == "작성자"'>
+					<if test='keyword != null and keyword != ""'>
+						M.member_id LIKE CONCAT('%',#{keyword}, '%')
+					</if>
+				</when>
+				<when test='keywordIn == "제목"'>
+					<if test='keyword != null and keyword != ""'>
+						Q.title LIKE CONCAT('%',#{keyword}, '%')
+					</if>
+				</when>
+			</choose>
 		</where>
 		ORDER BY Q.qna_id DESC
 		LIMIT #{limitPageNo},#{numPerPage}
+	</select>
+				
+	<select id="selectQnaCount" resultType="_int" parameterType="com.hy.dto.qna.Qna">
+		SELECT COUNT(*) 
+		FROM qna Q
+		JOIN member M ON Q.member_no = M.member_no
+ 		<where>
+			<choose>
+				<when test='keywordIn == "구분"'>
+					<if test='keyword != null and keyword != ""'>
+						title LIKE CONCAT('%',#{keyword},'%')
+					</if>
+				</when>
+				<when test='keywordIn == "작성자"'>
+					<if test='keyword != null and keyword != ""'>
+						M.member_id LIKE CONCAT('%',#{keyword}, '%')
+					</if>
+				</when>
+				<when test='keywordIn == "제목"'>
+					<if test='keyword != null and keyword != ""'>
+						Q.title LIKE CONCAT('%',#{keyword}, '%')
+					</if>
+				</when>
+			</choose>
+		</where>
 	</select>
 	
 	<select id="selectQnaOne" resultMap="qnaResultMap" parameterType="_int">
@@ -83,6 +120,13 @@
 		WHERE qna_id = #{qnaId}			
 	</update>
 	
+	<delete id="deleteQna" parameterType="_int">
+		DELETE FROM qna
+		<where>
+		qna_id = #{qnaId}
+		</where>
+	</delete>
+	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">
 		SELECT *
 		FROM qna_attach
@@ -96,18 +140,6 @@
 		FROM qna_attach
 		<where>
 			qna_attach_id = #{qnaAttachId}	
-		</where>
-	</select>
-			
-	<select id="selectQnaCount" resultType="_int" parameterType="com.hy.dto.qna.Qna">
-		SELECT COUNT(*) 
-		FROM qna Q
-		JOIN member M ON Q.member_no = M.member_no
- 		<where>
-			<if test='keyword != null and keyword != ""'>
-				Q.title LIKE CONCAT('%',#{keyword}, '%')
-				OR M.member_no LIKE CONCAT('%',#{keyword}, '%')
-			</if>
 		</where>
 	</select>
 	

@@ -8,11 +8,12 @@
 <title>질의응답 상세 페이지</title>
 </head>
 <body>
+	<p>No : ${qna.qnaId }</p>
 	<p>카테고리 : ${qna.category }</p>
 	<p>제목 : ${qna.title }</p>
 	<p>작성자 : ${qna.memberId } </p>
 	
-	<p>공개여부 : ${qna.visibility } </p>
+	<p>공개여부 : ${qna.visibility == 1 ? '공개' : '비공개' } </p>
 	<p>내용 : ${qna.content } </p>
 	<p>작성일 : ${qna.regDate } </p>
 	

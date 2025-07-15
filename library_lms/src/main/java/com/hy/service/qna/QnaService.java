@@ -10,7 +10,7 @@ import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
 public class QnaService {
-private QnaDao qnaDao = new QnaDao();
+	private QnaDao qnaDao = new QnaDao();
 	
 	public List<Qna> selectQnaList(Qna param){
 		return qnaDao.selectQnaList(param);
@@ -30,6 +30,10 @@ private QnaDao qnaDao = new QnaDao();
 	
 	public Qna selectQnaOne(int qnaNo) {
 		return qnaDao.selectQnaOne(qnaNo);
+	}
+	
+	public int deleteQna(int qnaNo) {
+		return qnaDao.deleteQna(qnaNo);
 	}
 	
 	public Attach selectAttachByQnaNo(int qnaId) {
