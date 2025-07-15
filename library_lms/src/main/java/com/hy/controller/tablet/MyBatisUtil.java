@@ -24,7 +24,7 @@ public class MyBatisUtil {
 
   // SqlSession(=DB연결)을 쉽게 만들어주는 메서드!
   public static SqlSession getSqlSession(boolean autoCommit) {
-      return factory.openSession();
+      return factory.openSession(autoCommit);
   }
 
 }
