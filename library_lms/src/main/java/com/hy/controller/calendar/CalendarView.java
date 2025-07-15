@@ -5,12 +5,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.calendar.Todo;
 import com.hy.service.calendar.CalendarService;
 
@@ -35,15 +38,33 @@ public class CalendarView extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int memberNo = 3; // 여기는 세선에서 값을 가져오도록!!
+		HttpSession session = request.getSession(false);
+		int memberNo = 0; // 여기는 세선에서 값을 가져오도록!!
 		
-		List<Todo> todoList = service.selectTodoByNo(memberNo);
-		for (Todo t : todoList) {
-			System.out.println(t);
+		if (session == null) {
+			response.sendRedirect(request.getContentType() + "/");
+			return;
+		} else {
+			if (session.getAttribute("loginMember") == null) {
+				response.sendRedirect(request.getContextPath() + "/");
+				return;
+			} else {
+				Member member = (Member)session.getAttribute("loginMember");
+				memberNo = member.getMemberNo();
+			}
 		}
 		
-		request.setAttribute("todoList", todoList);
-		request.getRequestDispatcher("/views/calendar/calendarPage.jsp").forward(request, response);
+		if (memberNo != 0) {
+			List<Todo> todoList = service.selectTodoByNo(memberNo);
+			for (Todo t : todoList) {
+				System.out.println(t);
+			}
+			
+			request.setAttribute("todoList", todoList);
+			request.getRequestDispatcher("/views/calendar/calendarPage.jsp").forward(request, response);			
+		} else {
+			response.sendRedirect(request.getContextPath() + "/");
+		}
 	}
 
 	/**
@@ -52,36 +73,59 @@ public class CalendarView extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		int memberNo = 3;
-		String todoTitle = request.getParameter("todoTitle");
-		java.sql.Date todoDate = java.sql.Date.valueOf( request.getParameter("todoDate"));
-		String todoDetail = null;
-		if (!request.getParameter("todoDetail").equals("")) {
-			todoDetail = request.getParameter("todoDetail");			
-		}
+		HttpSession session = request.getSession(false);
+		int memberNo = 0; // 여기는 세선에서 값을 가져오도록!!
 		
-		System.out.println(memberNo);
-		System.out.println(todoTitle);
-		System.out.println(todoDate);
-		System.out.println(todoDetail);
-		
-		int result = service.insertTodo(memberNo, todoTitle, todoDate, todoDetail);
-		System.out.println(result);
-		
-		JSONObject obj = new JSONObject();
-		
-		if (result > 0) {
-			obj.put("res_code", "200");
-			obj.put("res_msg", "할 일 목록 입력 성공");
-			obj.put("planner_id", result);
+		if (session == null) {
+			response.sendRedirect(request.getContentType() + "/");
+			return;
 		} else {
-			obj.put("res_code", "500");
-			obj.put("res_msg", "할 일 목록 입력 실패");	
+			System.out.println(session);
+			if (session.getAttribute("loginMember") == null) {
+				response.sendRedirect(request.getContextPath() + "/");
+				return;
+			} else {
+				Member member = (Member)session.getAttribute("loginMember");
+				memberNo = member.getMemberNo();
+				System.out.println(memberNo);
+			}
 		}
 		
-		response.setContentType("application/json; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.print(obj);
+		
+		if (memberNo != 0) {			
+			String todoTitle = request.getParameter("todoTitle");
+			java.sql.Date todoDate = java.sql.Date.valueOf( request.getParameter("todoDate"));
+			String todoDetail = null;
+			if (!request.getParameter("todoDetail").equals("")) {
+				todoDetail = request.getParameter("todoDetail");			
+			}
+			
+			System.out.println(memberNo);
+			System.out.println(todoTitle);
+			System.out.println(todoDate);
+			System.out.println(todoDetail);
+			
+			int result = service.insertTodo(memberNo, todoTitle, todoDate, todoDetail);
+			System.out.println(result);
+			
+			JSONObject obj = new JSONObject();
+			
+			if (result > 0) {
+				obj.put("res_code", "200");
+				obj.put("res_msg", "할 일 목록 입력 성공");
+				obj.put("planner_id", result);
+			} else {
+				obj.put("res_code", "500");
+				obj.put("res_msg", "할 일 목록 입력 실패");	
+			}
+			
+			response.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.print(obj);
+		} else {
+			response.sendRedirect(request.getContextPath() + "/");
+		}
+		
 		
 	}
 
