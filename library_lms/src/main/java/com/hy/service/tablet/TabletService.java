@@ -27,7 +27,7 @@ public class TabletService {
 	
 	// 태블릿 로그
     public void insertTabletLog(int tabletId, int memberNo, int tabletStatus) {
-        tabletDao.insertTabletLog(tabletId, memberNo, tabletStatus);
+        tabletDao.insertTabletLog(memberNo, tabletStatus);
     }
     
     // 태블릿 로그 조회
