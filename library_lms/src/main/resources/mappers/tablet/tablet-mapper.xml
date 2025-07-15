@@ -9,24 +9,38 @@
     <!-- DB 컬럼명과 DTO 필드명 매핑 -->
     <id property="tabletId" column="tablet_id"/>
     <result property="tabletAvailable" column="tablet_available"/>
+    <result property="memberNo" column="member_no"/>
 </resultMap>
 
 	<!-- selectAll: tablet 테이블의 전체 데이터 조회 쿼리 -->
-  <select id="selectAll" resultMap="TabletResultMap">
-		SELECT * FROM tablet
-  </select>
+	<select id="selectAll" resultMap="TabletResultMap">
+    SELECT * FROM tablet
+	</select>
   
-  <!-- 가장 작은 id의 사용 가능한 태블릿을 사용중(1)으로 변경 -->
-  <update id="useAvailableTablet">
-  UPDATE tablet
-  JOIN (
-  	SELECT tablet_id
-  	FROM tablet
-  	WHERE tablet_available = 0
-  	ORDER BY tablet_id ASC
-  	LIMIT 1
-  ) t2 ON tablet.tablet_id = t2.tablet_id
-  SET tablet.tablet_available = 1
-  </update>
+  <!-- 태블릿 사용 -->
+	<update id="useTablet">
+    UPDATE tablet
+    JOIN (
+        SELECT tablet_id
+        FROM tablet
+        WHERE tablet_available = 0
+        ORDER BY tablet_id ASC
+        LIMIT 1
+    ) t2 ON tablet.tablet_id = t2.tablet_id
+    SET tablet.tablet_available = 1,
+        tablet.member_no = #{memberNo}
+	</update>
+	
+	<!-- 태블릿 반납 -->
+	<update id="returnTablet">
+    UPDATE tablet
+    SET tablet_available = 0, member_no = NULL
+    WHERE tablet_id = #{tabletId} AND member_no = #{memberNo}
+	</update>
+  
+	<insert id="insertLogTablet">
+    INSERT INTO log_tablet (tablet_id, currenttime, status)
+    VALUES (#{tabletId}, NOW(), #{status})
+	</insert>
 
 </mapper>

@@ -2,6 +2,8 @@ package com.hy.mapper.tablet;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.hy.dto.tablet.Tablet;
 
 public interface TabletMapper {
@@ -11,6 +13,9 @@ public interface TabletMapper {
 	// 테이블 전체 조회
 	List<Tablet> selectAll();
 	
-	void useAvailableTablet();
+	// 사용 가능한 테블릿	
+	void useTablet(@Param("tabletId") int tabletId, @Param("memberNo") int memberNo);
+
+	void returnTablet(@Param("tabletId") int tabletId, @Param("memberNo") int memberNo);
 
 }
