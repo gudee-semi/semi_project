@@ -1,19 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.hy.dto.Member" %>
+
 <%
-  // [1] 로그인 대신 예시 세션 설정 (실서비스에서는 로그인에서 세팅)
-  session.setAttribute("memberNo", 2);           // 로그인된 회원번호
-  session.setAttribute("studentGrade", 1);       // 🔁 1학년으로 변경
+  // 로그인한 사용자 정보 세션에서 가져오기
+  Member loginMember = (Member) session.getAttribute("loginMember");
+  int memberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+  int studentGrade = (loginMember != null) ? loginMember.getMemberGrade() : 1;
 
-  int studentGrade = (session.getAttribute("studentGrade") != null) 
-                      ? (Integer) session.getAttribute("studentGrade") : 1;
-
-  Integer memberNo = (Integer) session.getAttribute("memberNo");
-  if (memberNo == null) memberNo = -1;
-
+  // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-  session.setAttribute("currentYear", currentYear); // 현재 연도 세션 저장
+  session.setAttribute("currentYear", currentYear);
 %>
+
 
 <!DOCTYPE html>
 <html>
@@ -58,7 +57,7 @@
   // [0] 서버-side 변수 JS로 전달
   const studentGrade = <%= studentGrade %>;
   const memberNo = <%= memberNo %>;
-  const currentYear = <%= currentYear %>;
+  const currentYear = <%= currentYear%>;
 
   // [A] 시험 분류 체크박스 활성/비활성
   document.addEventListener('DOMContentLoaded', function() {

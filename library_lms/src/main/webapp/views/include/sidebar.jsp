@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>  
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>  
 
    <style>
 
@@ -68,6 +70,7 @@
 		    	<a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적 관리</a>
 		    	<ul class="dropdown-menu">
 			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표성적</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/goal_score_view/view' />">목표성적조회</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/write_score/view' />">성적입력</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/analysis_score/view' />">성적분석</a></li>
 		    	</ul>

@@ -21,5 +21,7 @@ public class GoalScore {
 	private Integer targetLevel;   // null 허용 (입력 안 할 수도 있음)
 	
 	private int grade;  // 학년
+	private int examType; 
+	
 
 }

@@ -1,3 +1,4 @@
+// GoalScoreInsertServlet.java
 package com.hy.controller.score;
 
 import jakarta.servlet.ServletException;
@@ -5,130 +6,101 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.ibatis.session.SqlSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.hy.controller.tablet.MybatisUtil;
+import com.hy.dto.Member;
 import com.hy.dto.score.GoalScore;
 import com.hy.dto.score.GoalScoreRequest;
-import com.hy.mapper.score.ScoreMapper;
-import com.hy.mapper.score.SubjectMapper;
 import com.hy.service.score.GoalScoreService;
-
+import com.hy.common.sql.SqlSessionTemplate;
+import org.apache.ibatis.session.SqlSession;
+import com.hy.mapper.score.SubjectMapper;
 
 @WebServlet("/goal_score/insert")
 public class GoalScoreInsertServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
+    private GoalScoreService service = new GoalScoreService();
 
-    public GoalScoreInsertServlet() {
-        super();
-    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-	
-	
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
- 
-	    request.setCharacterEncoding("UTF-8");
-	    response.setContentType("application/json; charset=UTF-8");
+        boolean allSuccess = true;
+        JsonObject resultJson = new JsonObject();
 
-	    boolean allSuccess = true;
-        JsonObject resultJson = new JsonObject(); // ✅ 응답 구조
-        SqlSession session = MybatisUtil.getSqlSession(); // 트랜잭션 유지
+        SqlSession session = SqlSessionTemplate.getSqlSession(false);
 
         try {
+            // 1. 세션에서 로그인된 사용자 정보
+            HttpSession httpSession = request.getSession();
+            Member student = (Member) httpSession.getAttribute("loginMember");
+            if (student == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("{\"success\": false, \"reason\": \"unauthorized\"}");
+                return;
+            }
+
+            int memberNo = student.getMemberNo();
+            int grade = student.getMemberGrade();
+
+            // 2. JSON 요청 파싱
             BufferedReader reader = request.getReader();
             String json = reader.lines().collect(Collectors.joining());
             GoalScoreRequest reqDto = new Gson().fromJson(json, GoalScoreRequest.class);
 
+            // 3. 과목명 → subjectId 매핑
             SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
-            ScoreMapper scoreMapper = session.getMapper(ScoreMapper.class);
-
-            int memberNo = reqDto.getMemberNo();
-            int examTypeId = reqDto.getExamTypeId();
-
-            // ✅ 1. 중복 확인: 이미 해당 memberNo + examTypeId 조합이 존재하는지
-            int count = scoreMapper.countGoalScoreByMemberAndExam(memberNo, examTypeId);
-            if (count > 0) {
-                resultJson.addProperty("success", false);
-                resultJson.addProperty("reason", "duplicate");
-                response.getWriter().write(resultJson.toString());
-                return;
-            }
-
-            // ✅ 2. 실제 insert 처리
+            List<GoalScore> scoreList = new ArrayList<>();
             for (GoalScore dto : reqDto.getSubjectScores()) {
-
                 String subjectName = dto.getSubjectName() != null ? dto.getSubjectName().trim() : "";
                 Integer subjectId = subjectMapper.selectSubjectIdByName(subjectName);
-
                 if (subjectId == null) {
                     allSuccess = false;
                     break;
                 }
-
                 dto.setSubjectId(subjectId);
                 dto.setMemberNo(memberNo);
-                dto.setExamTypeId(examTypeId);
-                dto.setGrade(3); // 학년 정보 설정
+                dto.setGrade(grade);
+                dto.setExamTypeId(reqDto.getExamTypeId());
+                scoreList.add(dto);
+            }
 
-                // 🔁 학년에 따라 examTypeId 다시 매핑 (1~3학년)
-                int temp = examTypeId;
-                if (dto.getGrade() == 1) {
-                    if (temp == 3) dto.setExamTypeId(1);
-                    else if (temp == 6) dto.setExamTypeId(2);
-                    else if (temp == 9) dto.setExamTypeId(3);
-                } else if (dto.getGrade() == 2) {
-                    if (temp == 3) dto.setExamTypeId(4);
-                    else if (temp == 6) dto.setExamTypeId(5);
-                    else if (temp == 9) dto.setExamTypeId(6);
-                } else {
-                    if (temp == 3) dto.setExamTypeId(7);
-                    else if (temp == 6) dto.setExamTypeId(8);
-                    else if (temp == 9) dto.setExamTypeId(9);
-                    else if (temp == 11) dto.setExamTypeId(10);
-                }
-
-                int result = scoreMapper.insertGoalScore(dto);
-                if (result <= 0) {
-                    allSuccess = false;
-                    break;
-                }
+            // 4. 실제 insert 서비스 호출(트랜잭션)
+            if (allSuccess) {
+                allSuccess = new GoalScoreService().insertGoalScores(scoreList);
             }
 
             if (allSuccess) {
                 session.commit();
-                resultJson.addProperty("success", true);
             } else {
                 session.rollback();
-                resultJson.addProperty("success", false);
-                resultJson.addProperty("reason", "insert_fail");
             }
 
         } catch (Exception e) {
+            if (session != null) session.rollback();
             e.printStackTrace();
             allSuccess = false;
-            session.rollback();
-            resultJson.addProperty("success", false);
-            resultJson.addProperty("reason", "exception");
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
 
-        response.getWriter().write(resultJson.toString());
+        response.getWriter().write("{\"success\": " + allSuccess + "}");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // doPost만 사용
     }
 }
-
-
-	
