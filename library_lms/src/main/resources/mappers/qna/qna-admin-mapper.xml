@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hy.mapper.qna.QnaAdminMapper">
+
+	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaAdmin">
+    <id property="qnaReplyId" column="qna_reply_id"/>
+	</resultMap>
+	
+
+	<!-- 전체 테이터 조회 -->
+	<select id="selectAll" resultMap="QnaAdminMap">
+		SELECT * FROM qna
+	</select>
+
+
+
+
+
+
+
+
+</mapper>
