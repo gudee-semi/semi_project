@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
-import com.hy.dto.Member;
 import com.hy.service.login.LoginService;
 
 import jakarta.servlet.RequestDispatcher;
@@ -13,20 +12,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class loginPage
+ * Servlet implementation class ChangePw
  */
-@WebServlet("/login/view")
-public class LoginPage extends HttpServlet {
+@WebServlet("/login/changePw/view")
+public class ChangePw extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService service = new LoginService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginPage() {
+    public ChangePw() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,16 +33,10 @@ public class LoginPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
-		RequestDispatcher view;
-		if(session.getAttribute("loginMember")!=null) {
-			 view = request.getRequestDispatcher("/views/login/mainPage.jsp");
-		}else {
-			
-			 view = request.getRequestDispatcher("/views/login/loginPage.jsp");
-		}
+		String memberId =request.getParameter("memberId");
+		request.setAttribute("memberId", memberId);
+		RequestDispatcher view = request.getRequestDispatcher("/views/login/loginChangePw.jsp");
 		view.forward(request, response);
-
 	}
 
 	/**
@@ -52,29 +44,21 @@ public class LoginPage extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String memberId = request.getParameter("memberId");
+		String memberId =request.getParameter("memberId");
 		String memberPw = request.getParameter("member_pw");
-		Member member = service.selectMember(memberId, memberPw);
 		JSONObject obj = new JSONObject();
-		if(member==null) {
-			obj.put("checkId","no");
+		
+		int result = service.updatePw(memberId,memberPw);
+		
+		if(result>0){
+			obj.put("res_code", "200"); 
 			
 		}else {
-			//TODO 아이디 저장체크박스 만들고 다시 쿠키설정
-//			Cookie cookie = new Cookie("memberId", memberId);
-//			cookie.setMaxAge(60 * 60 * 24 * 7);
-//			response.addCookie(cookie);
-
-			HttpSession session = request.getSession(true);
-			session.setAttribute("loginMember", member);
-			session.setMaxInactiveInterval(30*60);
+			obj.put("res_code", "500"); 
 		}
 		
 		response.setContentType("application/json;charset=utf-8");
 		response.getWriter().print(obj);
-		
-		
-		
 		
 	}
 

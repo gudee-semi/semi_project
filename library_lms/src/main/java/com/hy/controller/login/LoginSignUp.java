@@ -1,14 +1,5 @@
 package com.hy.controller.login;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-
-import java.awt.color.ProfileDataException;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,6 +11,14 @@ import com.hy.dto.login.User;
 import com.hy.service.login.AdminService;
 import com.hy.service.login.ProfileAttachService;
 import com.hy.service.login.SignUpService;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class loginSignUp
@@ -50,7 +49,8 @@ public class LoginSignUp extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/views/login/signUpPage.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/views/login/signUpPage.jsp");
+		view.forward(request, response);
 	}
 
 	/**
