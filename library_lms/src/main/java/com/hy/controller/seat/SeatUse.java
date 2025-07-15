@@ -8,19 +8,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
 
 import com.hy.dto.Member;
-import com.hy.dto.seat.Seat;
 import com.hy.service.seat.SeatService;
 
-
-@WebServlet("/seat/view")
-public class SeatCheck extends HttpServlet {
+/**
+ * Servlet implementation class SeatUse
+ */
+@WebServlet("/seat/use")
+public class SeatUse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private SeatService service = new SeatService();   
-   
-    public SeatCheck() {
+	private SeatService service = new SeatService();
+       
+    
+    public SeatUse() {
         super();
         
     }
@@ -28,7 +32,17 @@ public class SeatCheck extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// 1. 사용자 정보 가져오기
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		// 좌석 번호
+		int seatNo = Integer.parseInt(request.getParameter("seatNo"));
+		
+		// 현재 사용자
 		HttpSession session = request.getSession(false);
 		int memberNo = 0; // 여기는 세선에서 값을 가져오도록!!
 		
@@ -44,23 +58,22 @@ public class SeatCheck extends HttpServlet {
 				memberNo = member.getMemberNo();
 			}
 		}
-		request.setAttribute("memberNo", memberNo);
 		
-		System.out.println(memberNo);
+		int result = service.useSeat(seatNo, memberNo);
 		
-		// 2. DB 조회해서 전체 좌석목록 가져오기
-		// 1. dto 작성(완) -> 2. service 작성 -> 3. dao 작성 -> 4. mapper 인터페이스 작성 -> 5. mapper xml 작성
+		JSONObject obj = new JSONObject();
 		
-		List<Seat> list = service.selectAllSeat();
-		request.setAttribute("list", list);
+		if (result > 0) {
+			obj.put("res_code", "200");
+			obj.put("res_msg", "좌석 사용 성공");
+		} else {
+			obj.put("res_code", "500");
+			obj.put("res_msg", "좌석 사용 실패");	
+		}
 		
-		request.getRequestDispatcher("/views/seat/seatPage.jsp").forward(request, response);
-	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		doGet(request, response);
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 	}
 
 }

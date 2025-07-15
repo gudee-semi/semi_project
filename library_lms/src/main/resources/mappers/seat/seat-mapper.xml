@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.mapper.seat.SeatMapper">
+	
+	<resultMap type="com.hy.dto.seat.Seat" id="seatResultMap">
+		<result property="seatId" column="seat_id"/>
+		<result property="memberNo" column="member_no"/>
+		<result property="seatStatus" column="seat_status"/>
+	</resultMap>
+	
+	
+	<select id="selectAllSeat" resultMap="seatResultMap">
+		SELECT *
+		FROM seat
+	</select>
+	
+	<update id="useSeat" parameterType="com.hy.dto.seat.Seat" >
+		UPDATE seat
+		SET member_no = #{memberNo} ,seat_status = 0
+		WHERE seat_id = #{seatId}
+	</update>
+	
+	<update id="cancelSeat" parameterType="com.hy.dto.seat.Seat" >
+		UPDATE seat
+		SET member_no = null ,seat_status = 1
+		WHERE seat_id = #{seatId}
+	</update>
+</mapper>
