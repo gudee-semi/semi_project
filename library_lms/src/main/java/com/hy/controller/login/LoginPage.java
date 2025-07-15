@@ -67,7 +67,7 @@ public class LoginPage extends HttpServlet {
 
 			HttpSession session = request.getSession(true);
 			session.setAttribute("loginMember", member);
-			session.setMaxInactiveInterval(30*60);
+			session.setMaxInactiveInterval(60*30);
 		}
 		
 		response.setContentType("application/json;charset=utf-8");

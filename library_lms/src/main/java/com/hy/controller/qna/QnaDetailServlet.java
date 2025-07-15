@@ -22,6 +22,9 @@ public class QnaDetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
 		// 1. no라는 이름의 게시글 pk값 전달받기
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		

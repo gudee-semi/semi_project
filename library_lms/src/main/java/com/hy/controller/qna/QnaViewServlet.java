@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qna/view")
 public class QnaViewServlet extends HttpServlet {
@@ -23,16 +24,16 @@ public class QnaViewServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인이 안된 사람은 처음 메인페이지로 가게되어있음 현재 로그인페이지가 index가 아니어서
-//		HttpSession session = request.getSession(false);
-//		if(session == null) {
-//			response.sendRedirect(request.getContextPath()+"/");
-//			return;
-//		} else {
-//			if(session.getAttribute("loginMember") == null) {
-//				response.sendRedirect(request.getContextPath()+"/");
-//				return;
-//			}
-//		}
+		HttpSession session = request.getSession(false);
+		if(session == null) {
+			response.sendRedirect(request.getContextPath()+"/");
+			return;
+		} else {
+			if(session.getAttribute("loginMember") == null) {
+				response.sendRedirect(request.getContextPath()+"/");
+				return;
+			}
+		}
 		
 		Qna param = new Qna();
 		// 현재 페이지 정보 셋팅
@@ -54,12 +55,9 @@ public class QnaViewServlet extends HttpServlet {
 		int totalData = service.selectQnaCount(param);
 		
 		// 키워드 기준 2가지로 메소드 각각 만들기
-		System.out.println("현재페이지,키워드 적용한 글 개수: "+totalData); // 처리완료 확인
-		
 		param.setTotalData(totalData);
 		
 		int totaldata = param.getTotalData();
-		System.out.println(totaldata); // 처리완료 확인
 		
 		// 게시글 목록 정보 조회
 		List<Qna> qnaList = service.selectQnaList(param);

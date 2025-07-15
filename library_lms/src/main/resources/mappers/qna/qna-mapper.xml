@@ -144,8 +144,8 @@
 	</select>
 	
 	<insert id="insertQna" parameterType="com.hy.dto.qna.Qna" useGeneratedKeys="true" keyProperty="qnaId">
-		INSERT INTO qna(category ,title ,content ,member_no)
-		VALUES (#{category} ,#{title} ,#{content} ,#{memberNo})
+		INSERT INTO qna(category ,title ,content ,member_no, visibility)
+		VALUES (#{category} ,#{title} ,#{content} ,#{memberNo} ,#{visibility})
 	</insert>
 	
 

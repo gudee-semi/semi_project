@@ -84,15 +84,26 @@
 	</div>
 	
 	<c:forEach var="q" items="${qnaList }">
-		<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-			<div class="no">${q.qnaId }</div>
-			<div class="category">${q.category }</div>
-			<div class="title">${q.title }</div>
-			<%-- <div class="title">${qna.visibility == 1 ? 'qna.title' : '비공개된 글입니다.' }</div> --%>
-			<div class="writer">${q.memberId }</div>
-			<div class="count">${q.viewCount }</div>
-			<div class="regDate">${q.regDate }</div>
-		</div>
+		<c:if test ="${q.memberId eq loginMember.memberId}">
+			<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+				<div class="no">${q.qnaId }</div>
+				<div class="category">${q.category }</div>
+				<div class="title">${q.title }</div>
+				<div class="writer">${q.memberId }</div>
+				<div class="count">${q.viewCount }</div>
+				<div class="regDate">${q.regDate }</div>
+			</div>
+		</c:if>
+		<c:if test ="${q.memberId ne loginMember.memberId}">
+			<div  class="row">
+				<div class="no">${q.qnaId }</div>
+				<div class="category">${q.category }</div>
+				<div class="title">${q.visibility == 1 ? q.title : '비공개된 글입니다.' }</div>
+				<div class="writer">${q.memberId }</div>
+				<div class="count">${q.viewCount }</div>
+				<div class="regDate">${q.regDate }</div>
+			</div>
+		</c:if>
 	</c:forEach>
 		
 	<c:if test="${not empty qnaList }">

@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.service.qna.AttachService;
@@ -16,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -38,12 +40,26 @@ public class QnaWriteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-//		String memberId = 세션 키,값으로 멤버객체의 memberno 받아서 아이디 가져오기, 메소드;
-		int memberNo = 3; // 임의로 넣음
-		String title = request.getParameter("qnaTitle");
+		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
+		Member member = null;
+		
+	    if (session != null) {
+	        member = (Member) session.getAttribute("loginMember");
+	        if (member != null) {
+	        	System.out.println(member.getMemberId());
+	        } else {
+	        	System.out.println("로그인 정보가 없습니다.");
+	        }
+	    } else {
+	    	System.out.println("세션이 존재하지 않습니다.");
+	    }
+	    
+		int memberNo = member.getMemberNo();
+		
+	    String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
 		String category = request.getParameter("qnaCategory");
+		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 		
 		Qna qna = new Qna();
 		qna.setMemberNo(memberNo);
@@ -54,13 +70,10 @@ public class QnaWriteServlet extends HttpServlet {
 		
 		// 2. 파일 정보 추출
 		File uploadDir = AttachService.getUploadDirectory();
-//		System.out.println("파일업로드?");
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
-//		System.out.println("파일정보추출까지?");
 		
 		// 3. 게시글과 파일 정보 데이터베이스에 추가
 		int result = qnaService.createQnaWithAttach(qna,attach);
-//		System.out.println("게시글 파일추가 처리확인" + result);
 		
 		JSONObject obj = new JSONObject();
 		
