@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 질의응답 페이지</title>
+<title>관리자 질의응답 목록 페이지</title>
 
 <style>
 	.container {
@@ -84,17 +84,15 @@
 	</div>
 	
 	<c:forEach var="q" items="${qnaList }">
-		<c:if test ="${q.memberId eq loginMember.memberId}">
-			<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-				<div class="no">${q.qnaId }</div>
-				<div class="category">${q.category }</div>
-				<div class="title">${q.title }</div>
-				<div class="answerStatus">${q.answerStatus }</div>
-				<div class="writer">관리자</div>
-				<div class="count">${q.viewCount }</div>
-				<div class="regDate">${q.regDate }</div>
-			</div>
-		</c:if>
+		<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+			<div class="no">${q.qnaId }</div>
+			<div class="category">${q.category }</div>
+			<div class="title">${q.title }</div>
+			<div class="answerStatus">${q.answerStatus }</div>
+			<div class="writer">관리자</div>
+			<div class="count">${q.viewCount }</div>
+			<div class="regDate">${q.regDate }</div>
+		</div>
 	</c:forEach>
 		
 	<c:if test="${not empty qnaList }">

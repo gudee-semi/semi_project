@@ -15,11 +15,13 @@
     .searchBox {
     	
     }
+    .listhead {
+    	background-color: lightblue;
+    }
     .row {
     	background-color: ;
      	width: 900px;
     	padding: 10px;
-    	margin: 1px;
     }
     .no {
     	text-align: center;
@@ -51,6 +53,9 @@
     	width: 130px;
     	display: inline-block;
     }
+    .pageButton a {
+    	text-decoration: none;
+    }
 </style>
 
 </head>
@@ -74,40 +79,59 @@
 		$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
 	</script>
 	
-	<div class="row">
+	<div class="row listhead">
 		<div class="no">No</div>
 		<div class="category">분류</div>
 		<div class="title">제목</div>
 		<div class="writer">작성자</div>
-		<div class="count">조회수</div>
 		<div class="regDate">작성일</div>
+		<div class="count">조회수</div>
 	</div>
 	
 	<c:forEach var="q" items="${qnaList }">
+	
 		<c:if test ="${q.memberId eq loginMember.memberId}">
 			<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
 				<div class="no">${q.qnaId }</div>
 				<div class="category">${q.category }</div>
-				<div class="title">${q.title }</div>
+				<c:if test="${q.visibility == 1 }">
+					<div class="title">${q.title}</div>
+				</c:if>
+				<c:if test="${q.visibility == 0 }">
+					<div class="title">🔒 ${q.title }</div>
+				</c:if>
 				<div class="writer">${q.memberId }</div>
-				<div class="count">${q.viewCount }</div>
 				<div class="regDate">${q.regDate }</div>
+				<div class="count">${q.viewCount }</div>
 			</div>
 		</c:if>
+		
 		<c:if test ="${q.memberId ne loginMember.memberId}">
-			<div  class="row">
-				<div class="no">${q.qnaId }</div>
-				<div class="category">${q.category }</div>
-				<div class="title">${q.visibility == 1 ? q.title : '비공개된 글입니다.' }</div>
-				<div class="writer">${q.memberId }</div>
-				<div class="count">${q.viewCount }</div>
-				<div class="regDate">${q.regDate }</div>
-			</div>
+			<c:if test = "${q.visibility == 1}">
+				<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+					<div class="no">${q.qnaId }</div>
+					<div class="category">${q.category }</div>
+					<div class="title">${q.title }</div>
+					<div class="writer">${q.memberId }</div>
+					<div class="regDate">${q.regDate }</div>
+					<div class="count">${q.viewCount }</div>
+				</div>
+			</c:if>
+			<c:if test = "${q.visibility == 0}">
+				<div  class="row">
+					<div class="no">${q.qnaId }</div>
+					<div class="category">${q.category }</div>
+					<div class="title">🔒비공개된 글입니다.</div>
+					<div class="writer">${q.memberId }</div>
+					<div class="regDate">${q.regDate }</div>
+					<div class="count">${q.viewCount }</div>
+				</div>
+			</c:if>
 		</c:if>
 	</c:forEach>
 		
 	<c:if test="${not empty qnaList }">
-		<div>
+		<div class="pageButton">
 			<c:if test="${paging.prev }">
 				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }'/>">
 					&laquo;

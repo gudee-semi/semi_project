@@ -27,7 +27,7 @@ public class QnaUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 화면단에서 전달받은 정보 가져오기
 		int qnaId = Integer.parseInt(request.getParameter("no"));
-		System.out.println(qnaId);
+		System.out.println("qnaId : "+ qnaId);
 		
 		Qna qna = qnaService.selectQnaOne(qnaId);
 		request.setAttribute("qna", qna);

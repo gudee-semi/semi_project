@@ -19,6 +19,11 @@ public class QnaDeleteServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
 		int result = qnaService.deleteQna(qnaId);
@@ -28,10 +33,6 @@ public class QnaDeleteServlet extends HttpServlet {
 		} else {
 			response.sendRedirect("/qna/detail");
 		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

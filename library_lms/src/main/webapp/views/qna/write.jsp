@@ -51,6 +51,11 @@
 		    <br>
 		    <input type="submit" value="등록">
 		</form>
+		
+		<form action="/qna/view" method="get">
+			<button>목록</button>
+		</form>
+	
 	<script>
 		$("#writeQnaFrm").submit(function(e){
 			e.preventDefault();

@@ -6,10 +6,17 @@
 <meta charset="UTF-8">
 <title>질의응답 수정</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script>
+		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
+		function confirmDelete() {
+		// confirm 창을 띄우고 결과를 반환
+		return confirm("수정하시겠습니까?");
+	    }
+	</script>
 </head>
 <body>
 	<h1>질의응답 수정</h1>
-	<form id="updateQnaFrm" action="./update" method="post">
+	<form id="updateQnaFrm" action="./update" method="post" onsubmit="return confirmDelete();">
 	    <input type="hidden" name="no" value="${qna.qnaId }">
 	    
 	    카테고리 
@@ -30,42 +37,8 @@
 	    <p>작성자 ${qna.memberId }</p>
 	    내용 <input type="text" name="qnaContent" id="qnaContent" value="${qna.content }"><br>
 	    <p>작성일 : ${qna.regDate }</p>
-	    <input type="submit" value="수정완료">
+	    
+    	<input type="submit" value="수정완료">
 	</form>
-	
-	<script>
-<%-- 		$("#updateQnaFrm").submit(function(e){
-			e.preventDefault();
-			console.log("update1: 동작");
-			const category = $("#qnaCategory").val();
-			const form = document.getElementById("updateQnaFrm");
-			const formData = new FormData(form);
-			// 유효성 검사
-			console.log("update2: 동작");
-			if (category == 0) {
-				alert("카테고리를 선택하세요.");
-			}
-			console.log("update3: 동작");
-			$.ajax({
-				url : "/qna/update",
-				type : "post",
-				data : formData,
-				enctype : "multipart/form-data",
-				contentType : false,
-				processData : false,
-				cache : false,
-				dataType : "json",
-				success : function(data){
-					alert(data.res_msg);
-					if(data.res_code == 200){
-						location.href = "<%=request.getContextPath() %>/qna/detail";
-					}
-				},
-					error : function() {
-						alert("요청 실패!");
-					}
-			});
-		}); --%>
-	</script>
 </body>
 </html>

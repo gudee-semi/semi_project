@@ -54,6 +54,16 @@ public class QnaWriteServlet extends HttpServlet {
 	    	System.out.println("세션이 존재하지 않습니다.");
 	    }
 	    
+//	    if(session == null) {
+//			response.sendRedirect(request.getContextPath()+"/");
+//			return;
+//		} else {
+//			if(session.getAttribute("loginMember") == null) {
+//				response.sendRedirect(request.getContextPath()+"/");
+//				return;
+//			}
+//		}
+	    
 		int memberNo = member.getMemberNo();
 		
 	    String title = request.getParameter("qnaTitle");
