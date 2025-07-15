@@ -12,9 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class TabletUseServlet
- */
 @WebServlet("/tablet/use")
 public class TabletUseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,14 +44,14 @@ public class TabletUseServlet extends HttpServlet {
         }
         
         int memberNo = loginMember.getMemberNo();
-
-        // 파라미터로 tabletId 받기
         int tabletId = Integer.parseInt(request.getParameter("tabletId"));
 
-        // 사용처리
+        // 태블릿 사용 처리
         tabletService.useTablet(tabletId, memberNo);
 
-        // 완료 후 리스트 페이지로 이동
+        // 로그 남기기 (1: 사용중)
+        tabletService.insertTabletLog(tabletId, memberNo, 1);
+
         response.sendRedirect(request.getContextPath() + "/tablet/view");
 	
 	}

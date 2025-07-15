@@ -6,6 +6,8 @@
 
    <style>
 
+
+
     body {
     
       font-weight: bolder;
@@ -68,7 +70,7 @@
 	        </li>
 	        
 		    <li class="nav-item dropdown">
-		    	<a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적 관리</a>
+		    	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적 관리</a>
 		    	<ul class="dropdown-menu">
 			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표성적</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/write_score/view' />">성적입력</a></li>
@@ -90,6 +92,10 @@
 	        
 	        <li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/qna/view' />">질의응답</a>
+	        </li>
+	        
+	       	<li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/qna/view/admin' />">질의응답 관리자페이지</a>
 	        </li>
 	        
      	    <li class="nav-item">

@@ -34,11 +34,17 @@ public class TabletReturnServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login/view");
             return;
         }
+        
         int memberNo = loginMember.getMemberNo();
         int tabletId = Integer.parseInt(request.getParameter("tabletId"));
-        tabletService.returnTablet(tabletId, memberNo); // Service에 이 메소드 반드시 추가!
+
+        // 태블릿 반납 처리
+        tabletService.returnTablet(tabletId, memberNo);
+
+        // 로그 남기기 (0: 반납/사용 가능)
+        tabletService.insertTabletLog(tabletId, memberNo, 0);
+
         response.sendRedirect(request.getContextPath() + "/tablet/view");
-            
             
 	}
 
