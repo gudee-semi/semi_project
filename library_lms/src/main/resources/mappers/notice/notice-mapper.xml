@@ -62,6 +62,7 @@
 				</when>
 			</choose>
 		</where>
+		ORDER BY notice_id DESC
 		LIMIT #{limitPageNo}, #{numPerPage}
 	</select>
 	

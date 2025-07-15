@@ -56,8 +56,6 @@ public class NoticeWriteServlet extends HttpServlet {
 		String content = request.getParameter("content");
 		String category = request.getParameter("category");
 		
-		System.out.println(title + " " + content + " " + category);
-		
 		Notice notice = new Notice();
 		notice.setTitle(title);
 		notice.setContent(content);

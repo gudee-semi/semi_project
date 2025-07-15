@@ -18,7 +18,7 @@
 <body>
 	<h1>게시글 수정</h1>
 	
-	<form id="writeUpdateFrm">
+	<form id="updateNoticeFrm">
 		<div class="menu-name">카테고리</div>
 		<select name="category" id="category">
 	  		<option value=0>--선택--</option>
@@ -43,13 +43,14 @@
 	    
    	    <c:if test="${ not empty attach }">
 	    	<div class="file-now">
-			    첨부파일 <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a><button class="file-change">X</button><br>
+			    첨부파일 <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a>
+			    <button class="file-change">X</button><br>
 	    	</div>
 	    	<div class="file-reupload show">
 	    		<div><input type="file" name="file"></div>
 	    	</div>
 		</c:if>
-		
+		<input type="hidden" name="check" value="0" class="check">
 	    <input type="submit" value="수정">
 	</form>	
 	
@@ -58,11 +59,33 @@
 			e.preventDefault();
 			$('.file-reupload').removeClass("show");
 			$('.file-now').addClass("show");
+			$('.check').val('1');
 		})
 	</script>
 	
 	<script>
-		$('#writeUpdateFrm')
+		$('#updateNoticeFrm').on('submit', (e) => {
+			e.preventDefault();
+			const formData = new FormData(document.getElementById('updateNoticeFrm'));
+			$.ajax({	
+				url: '/notice/update',
+				type: 'post',
+				data: formData,
+				enctype: 'multipart/form-data',
+				contentType: false,
+				processData: false,
+				cache: false,
+				dataType: 'json',
+				success: (data) => {	
+					window.alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/notice/list";
+					} else {						
+						location.href = "<%= request.getContextPath() %>/notice/list";
+					}
+				}
+			});
+		});
 	</script>
 	
 </body>

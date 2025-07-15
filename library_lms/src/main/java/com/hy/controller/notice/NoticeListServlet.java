@@ -72,7 +72,6 @@ public class NoticeListServlet extends HttpServlet {
 		param.setTotalData(totalData);
 		
 		List<Notice> noticeList = service.selectNoticeList(param);
-		for (Notice n : noticeList) System.out.println(n);
 		
 		request.setAttribute("paging", param);
 		request.setAttribute("noticeList", noticeList);

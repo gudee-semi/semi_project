@@ -37,9 +37,8 @@
 		$('#writeNoticeFrm').on('submit', (e) => {
 			e.preventDefault();
 			const formData = new FormData(document.getElementById('writeNoticeFrm'));
-			console.log(formData);
 			$.ajax({	
-				url: '/notice/write',
+				url: '/notice/update',
 				type: 'post',
 				data: formData,
 				enctype: 'multipart/form-data',
