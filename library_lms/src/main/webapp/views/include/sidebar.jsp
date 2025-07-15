@@ -41,61 +41,58 @@
 <body>
 	<div class="container text-center">
 
-    <img src="" class="img-fluid use" alt="...">
+	    <img src="" class="img-fluid use" alt="...">
+	
+	    <div class="col">홍길동</div>
+	
+		<div class="container text-center">
+			<div class="row align-items-start">
+			    <div class="col">입실</div>
+			    <div class="col">퇴실</div>
+			    <div class="col">외출</div>
+		    </div>
+		</div>
 
-    <div class="col">
-      홍길동
-    </div>
-
-
-     <div class="container text-center">
-  <div class="row align-items-start">
-    <div class="col">
-      입실
-    </div>
-    <div class="col">
-      퇴실
-    </div>
-    <div class="col">
-      외출
-    </div>
-  </div>
-</div>
-
-     <div class="container text-center">
-  <div class="row align-items-start">
-    <div class="col">
-      로그아웃
-    </div>
-
-  </div>
-</div>    
-    
-    <ul class="nav flex-column">
-  	 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적관리</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
-                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
-                <li><a class="dropdown-item" href="<c:url value='/' />">성적입력</a></li>
-              </ul>
-            </li>            
-        
-        <li class="nav-item">
-          <a class="dropdown-item" href="<c:url value='/tablet/view' />">태블릿</a>
-        </li>
-        
-         <li class="nav-item">
-          <a class="dropdown-item" href="<c:url value='/' />">학습플래너</a>
-        </li>
-        
-        <li class="nav-item">
-          <a class="dropdown-item" href="<c:url value='/qna/view' />">질의응답</a>
-        </li>
-            
-        
-      </ul>
-
-</div>
+     	<div class="container text-center">
+  			<div class="row align-items-start">
+    			<div class="col">로그아웃</div>
+  			</div>
+		</div>    
+		
+		<ul class="nav flex-column">
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/calendar/view' />">학습플래너</a>
+	        </li>
+	        
+		    <li class="nav-item dropdown">
+		    	<a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적 관리</a>
+		    	<ul class="dropdown-menu">
+			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표성적</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/write_score/view' />">성적입력</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/analysis_score/view' />">성적분석</a></li>
+		    	</ul>
+		    </li>
+		    
+   	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/seat/views' />">좌석</a>
+	        </li>            
+	        
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/tablet/view' />">태블릿</a>
+	        </li>
+	        
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/notice/list' />">공지사항</a>
+	        </li>
+	        
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/qna/view' />">질의응답</a>
+	        </li>
+	        
+     	    <li class="nav-item">
+	        	<a class="dropdown-item" href="#">마이페이지</a>
+	        </li>
+        </ul>
+	</div>
+	
 </body>
