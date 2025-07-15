@@ -18,12 +18,12 @@ public class EncryptorWrapper extends HttpServletRequestWrapper{
 		String result = super.getParameter(name);
 		
 		//비밀번호 암호화
-		if(name.equals("memberPw")){
+		if(name.equals("member_Pw")){
 			return getSHA512(result);
 		}
 		
 		//주민번호 생년월일+성별구분 코드까지 추출
-		if(name.equals("memberRrn")) {
+		if(name.equals("member_Rrn")) {
 			return result.substring(0,7)+getSHA512(result);
 			
 		}
