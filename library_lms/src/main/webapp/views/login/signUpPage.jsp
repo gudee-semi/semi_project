@@ -138,7 +138,7 @@
 			$("#member_id_msg").text("아이디:6~12자의 영문 소문자,숫자만 사용가능합니다. ").css('color','red');
 		}else{
 			$.ajax({
-				url : "/member/repeatcheck",
+				url : "/login/member/repeatcheck",
 				type : "post",
 				data : {memberId : memberId},
 				dataType :"json",
@@ -213,7 +213,7 @@
 		}
 		else{
 			$.ajax({
-				url : "/member/repeatcheck",
+				url : "/login/member/repeatcheck",
 				type : "post",
 				data : {member_rrn  : memberRrn},
 				dataType :"json",

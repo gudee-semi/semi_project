@@ -1,20 +1,22 @@
 package com.hy.controller.login;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
 import com.hy.service.login.LoginService;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Servlet implementation class ChangePw
  */
-@WebServlet("/changePw/view")
+@WebServlet("/login/changePw/view")
 public class ChangePw extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService service = new LoginService();
@@ -32,7 +34,9 @@ public class ChangePw extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String memberId =request.getParameter("memberId");
-		response.sendRedirect("/views/login/loginChangePw.jsp?memberId="+memberId);		
+		request.setAttribute("memberId", memberId);
+		RequestDispatcher view = request.getRequestDispatcher("/views/login/loginChangePw.jsp");
+		view.forward(request, response);
 	}
 
 	/**

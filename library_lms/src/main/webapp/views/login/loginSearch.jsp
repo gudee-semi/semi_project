@@ -78,7 +78,7 @@
 	                if (data.pw === "no") {
 	                    $("#search_id_msg").text("일치하는 정보가 없습니다.").css("color", "red");
 	                } else{
-	                	location.href="<%=request.getContextPath()%>/changePw/view?memberId="+data.pw;
+	                	location.href="<%=request.getContextPath()%>/login/changePw/view?memberId="+data.pw;
 	                }
 	            }
 	        });

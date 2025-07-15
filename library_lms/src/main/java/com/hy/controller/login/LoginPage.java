@@ -7,9 +7,9 @@ import org.json.simple.JSONObject;
 import com.hy.dto.Member;
 import com.hy.service.login.LoginService;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,7 +35,15 @@ public class LoginPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/views/login/loginPage.jsp");
+		HttpSession session = request.getSession(true);
+		RequestDispatcher view;
+		if(session.getAttribute("loginMember")!=null) {
+			 view = request.getRequestDispatcher("/views/login/mainPage.jsp");
+		}else {
+			
+			 view = request.getRequestDispatcher("/views/login/loginPage.jsp");
+		}
+		view.forward(request, response);
 
 	}
 
@@ -59,7 +67,7 @@ public class LoginPage extends HttpServlet {
 
 			HttpSession session = request.getSession(true);
 			session.setAttribute("loginMember", member);
-			session.setMaxInactiveInterval(60*30);
+			session.setMaxInactiveInterval(30*60);
 		}
 		
 		response.setContentType("application/json;charset=utf-8");

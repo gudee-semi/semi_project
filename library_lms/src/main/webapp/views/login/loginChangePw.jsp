@@ -44,7 +44,7 @@ $("#change_pw").on("submit",function(e){
 	}
 	if(pwStatus){
 		$.ajax({
-			url : "/changePw/view",
+			url : "/login/changePw/view",
 			type : "post",
 			data : {member_pw : memberPw,
 					memberId : memberId},

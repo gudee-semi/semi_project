@@ -15,7 +15,7 @@ import com.hy.service.login.SignUpService;
 /**
  * Servlet implementation class MemberRepeatCheck
  */
-@WebServlet("/member/repeatcheck")
+@WebServlet("/login/member/repeatcheck")
 public class MemberRepeatCheck extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private SignUpService service = new SignUpService();
