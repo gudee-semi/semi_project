@@ -15,8 +15,8 @@
 	
 	<c:if test="${ not empty attach }">
 	    <h4>첨부파일</h4>
-	    <img src="<c:url value='/filePath?no=${ attach.noticeAttachId }' />"><br>
-	    <a href="<c:url value='/fileDownload?no=${ attach.noticeAttachId }' />">${ attach.oriName } 다운로드</a>
+	    <img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
+	    <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>
 	</c:if>
 </body>
 </html>
