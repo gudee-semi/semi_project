@@ -17,8 +17,8 @@
     SELECT * FROM tablet
 	</select>
   
-  <!-- 가장 작은 id의 사용 가능한 태블릿을 사용중(1)으로 변경 -->
-	<update id="useAvailableTablet">
+  <!-- 태블릿 사용 -->
+	<update id="useTablet">
     UPDATE tablet
     JOIN (
         SELECT tablet_id
@@ -29,6 +29,13 @@
     ) t2 ON tablet.tablet_id = t2.tablet_id
     SET tablet.tablet_available = 1,
         tablet.member_no = #{memberNo}
+	</update>
+	
+	<!-- 태블릿 반납 -->
+	<update id="returnTablet">
+    UPDATE tablet
+    SET tablet_available = 0, member_no = NULL
+    WHERE tablet_id = #{tabletId} AND member_no = #{memberNo}
 	</update>
   
 	<insert id="insertLogTablet">

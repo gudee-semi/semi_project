@@ -14,6 +14,8 @@ public interface TabletMapper {
 	List<Tablet> selectAll();
 	
 	// 사용 가능한 테블릿	
-	void useAvailableTablet();
+	void useTablet(@Param("tabletId") int tabletId, @Param("memberNo") int memberNo);
+
+	void returnTablet(@Param("tabletId") int tabletId, @Param("memberNo") int memberNo);
 
 }

@@ -1,14 +1,10 @@
 package com.hy.controller.tablet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.hy.dto.Member;
-import com.hy.dto.tablet.Tablet;
 import com.hy.service.tablet.TabletService;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,18 +12,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/tablet/view")
-public class TabletServlet extends HttpServlet {
+/**
+ * Servlet implementation class TabletUseServlet
+ */
+@WebServlet("/tablet/use")
+public class TabletUseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	private TabletService tabletService = new TabletService();
 
-	public TabletServlet() {
-		super();
-	}
+    public TabletUseServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
 		// 1. 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -43,28 +48,15 @@ public class TabletServlet extends HttpServlet {
         
         int memberNo = loginMember.getMemberNo();
 
-        // 2. 태블릿 목록 조회
-        List<Tablet> tabletList = tabletService.selectAll();
+        // 파라미터로 tabletId 받기
+        int tabletId = Integer.parseInt(request.getParameter("tabletId"));
 
-        // 3. 각 태블릿별로 내가 사용중인지 체크하는 리스트 생성
-        List<Boolean> usingList = new ArrayList<>();
-        for (Tablet tablet : tabletList) {
-            boolean using = tablet.getMemberNo() != null && tablet.getMemberNo().equals(memberNo);
-            usingList.add(using);
-        }
+        // 사용처리
+        tabletService.useTablet(tabletId, memberNo);
 
-        // 4. JSP에서 사용할 데이터 저장
-        request.setAttribute("tabletList", tabletList);
-        request.setAttribute("usingList", usingList);
-
-        // 5. JSP로 포워드
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/tablet/tabletPage.jsp");
-        dispatcher.forward(request, response);
-
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    
+        // 완료 후 리스트 페이지로 이동
+        response.sendRedirect(request.getContextPath() + "/tablet/view");
+	
 	}
 
 }
