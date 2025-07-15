@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.apache.ibatis.session.SqlSession;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hy.controller.tablet.MybatisUtil;
 import com.hy.dto.score.GoalScore;
 import com.hy.dto.score.GoalScoreRequest;
@@ -43,89 +44,91 @@ public class GoalScoreInsertServlet extends HttpServlet {
 	    response.setContentType("application/json; charset=UTF-8");
 
 	    boolean allSuccess = true;
-	    SqlSession session = MybatisUtil.getSqlSession(); // ⭐ 트랜잭션 유지
+        JsonObject resultJson = new JsonObject(); // ✅ 응답 구조
+        SqlSession session = MybatisUtil.getSqlSession(); // 트랜잭션 유지
 
-	    try {
-	        BufferedReader reader = request.getReader();
-	        String json = reader.lines().collect(Collectors.joining());
-	        GoalScoreRequest reqDto = new Gson().fromJson(json, GoalScoreRequest.class);
+        try {
+            BufferedReader reader = request.getReader();
+            String json = reader.lines().collect(Collectors.joining());
+            GoalScoreRequest reqDto = new Gson().fromJson(json, GoalScoreRequest.class);
 
-	        SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
-	        ScoreMapper scoreMapper = session.getMapper(ScoreMapper.class);
+            SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
+            ScoreMapper scoreMapper = session.getMapper(ScoreMapper.class);
 
-	        for (GoalScore dto : reqDto.getSubjectScores()) {
+            int memberNo = reqDto.getMemberNo();
+            int examTypeId = reqDto.getExamTypeId();
 
-	            // 🔽 과목명 전처리 및 로깅
-	            String subjectName = dto.getSubjectName() != null ? dto.getSubjectName().trim() : "";
-	            System.out.println("과목명 (전처리 후): " + subjectName);
+            // ✅ 1. 중복 확인: 이미 해당 memberNo + examTypeId 조합이 존재하는지
+            int count = scoreMapper.countGoalScoreByMemberAndExam(memberNo, examTypeId);
+            if (count > 0) {
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "duplicate");
+                response.getWriter().write(resultJson.toString());
+                return;
+            }
 
-	            Integer subjectId = subjectMapper.selectSubjectIdByName(subjectName);
-	            System.out.println("매핑된 subject_id: " + subjectId);
-	            
-	            System.out.println("target score :"+dto.getTargetScore());
-	            
-	            System.out.println("과목명: " + subjectName);
-	            System.out.println("subjectId: " + subjectId);
-	            System.out.println("memberNo: " + reqDto.getMemberNo());
-	            System.out.println("examTypeId: " + reqDto.getExamTypeId());
-	            System.out.println("targetScore: " + dto.getTargetScore());
+            // ✅ 2. 실제 insert 처리
+            for (GoalScore dto : reqDto.getSubjectScores()) {
 
-	            
+                String subjectName = dto.getSubjectName() != null ? dto.getSubjectName().trim() : "";
+                Integer subjectId = subjectMapper.selectSubjectIdByName(subjectName);
 
-	            if (subjectId == null) {
-	                allSuccess = false;
-	                break;
-	            }
+                if (subjectId == null) {
+                    allSuccess = false;
+                    break;
+                }
 
-	            dto.setSubjectId(subjectId);
-	            dto.setMemberNo(reqDto.getMemberNo());
-	            dto.setExamTypeId(reqDto.getExamTypeId());
-	            
-	            int grade = 3;
-	            dto.setGrade(grade);
-	            
-	            int temp = dto.getExamTypeId();
-	            if (dto.getGrade() == 1) {
-	            	if(temp == 3) dto.setExamTypeId(1);
-	            	else if(temp == 6) dto.setExamTypeId(2);
-	            	else if(temp == 9) dto.setExamTypeId(3);
-	            } else if (dto.getGrade() == 2) {
-	            	if(temp == 3) dto.setExamTypeId(4);
-	            	else if(temp == 6) dto.setExamTypeId(5);
-	            	else if(temp == 9) dto.setExamTypeId(6);
-	            } else {
-	            	if(temp == 3) dto.setExamTypeId(7);
-	            	else if(temp == 6) dto.setExamTypeId(8);
-	            	else if(temp == 9) dto.setExamTypeId(9);
-	            	else if(temp == 11) dto.setExamTypeId(10);
-	            }
+                dto.setSubjectId(subjectId);
+                dto.setMemberNo(memberNo);
+                dto.setExamTypeId(examTypeId);
+                dto.setGrade(3); // 학년 정보 설정
 
-	           
-	            int result = scoreMapper.insertGoalScore(dto);
-	            if (result <= 0) {
-	                allSuccess = false;
-	                break;
-	            }
-	        }
+                // 🔁 학년에 따라 examTypeId 다시 매핑 (1~3학년)
+                int temp = examTypeId;
+                if (dto.getGrade() == 1) {
+                    if (temp == 3) dto.setExamTypeId(1);
+                    else if (temp == 6) dto.setExamTypeId(2);
+                    else if (temp == 9) dto.setExamTypeId(3);
+                } else if (dto.getGrade() == 2) {
+                    if (temp == 3) dto.setExamTypeId(4);
+                    else if (temp == 6) dto.setExamTypeId(5);
+                    else if (temp == 9) dto.setExamTypeId(6);
+                } else {
+                    if (temp == 3) dto.setExamTypeId(7);
+                    else if (temp == 6) dto.setExamTypeId(8);
+                    else if (temp == 9) dto.setExamTypeId(9);
+                    else if (temp == 11) dto.setExamTypeId(10);
+                }
 
-	        if (allSuccess) {
-	            session.commit();
-	        } else {
-	            session.rollback();
-	        }
+                int result = scoreMapper.insertGoalScore(dto);
+                if (result <= 0) {
+                    allSuccess = false;
+                    break;
+                }
+            }
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        allSuccess = false;
-	        session.rollback();
-	    } finally {
-	        session.close();
-	    }
+            if (allSuccess) {
+                session.commit();
+                resultJson.addProperty("success", true);
+            } else {
+                session.rollback();
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "insert_fail");
+            }
 
-	    response.getWriter().write("{\"success\": " + allSuccess + "}");
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            allSuccess = false;
+            session.rollback();
+            resultJson.addProperty("success", false);
+            resultJson.addProperty("reason", "exception");
+        } finally {
+            session.close();
+        }
+
+        response.getWriter().write(resultJson.toString());
+    }
 }
-
 
 
 	

@@ -1,43 +1,49 @@
 $(document).ready(function () {
-  // [A] 시험 분류 체크박스 활성/비활성 (지나간 시험 비활성화)
-  const now = new Date();
-  const nowMonth = now.getMonth() + 1;
+  const examCheckboxes = $('input[name="exam"]');
   let availableCount = 0;
-  $('.exam-type').each(function () {
+
+  // [A] 시험 분류 체크박스 활성화 조건
+  examCheckboxes.each(function () {
     const examMonth = parseInt($(this).val(), 10);
-    if (examMonth < nowMonth) {
-      $(this).prop('disabled', true).prop('checked', false);
+
+    if (examMonth === 11) {
+      // 11월(수능): 3학년만 허용
+      if (studentGrade === 3) {
+        $(this).prop('disabled', false).prop('checked', false);
+        availableCount++;
+      } else {
+        $(this).prop('disabled', true).prop('checked', false);
+      }
     } else {
-      $(this).prop('disabled', false);
+      // 3, 6, 9월: 모든 학년 가능
+      $(this).prop('disabled', false).prop('checked', false);
       availableCount++;
     }
   });
-  if (studentGrade === 3 && nowMonth >= 10 && nowMonth <= 12) {
-    $('.exam-type').each(function () {
-      if ($(this).val() !== '11') {
-        $(this).prop('disabled', true).prop('checked', false);
-      } else {
-        $(this).prop('disabled', false).prop('checked', true);
-      }
-    });
-    availableCount = 1;
-  } else if ((studentGrade === 1 || studentGrade === 2) && nowMonth >= 10 && nowMonth <= 12) {
-    $('.exam-type').prop('disabled', true).prop('checked', false);
-    availableCount = 0;
-  }
+
+  // [B] 선택 가능한 시험이 없으면 안내 문구 출력
   if (availableCount === 0) {
-    $('#exam-options').append('<div style="color:#dc2626;margin:10px 0 0 10%;font-size:16px;font-weight:500;">선택 가능한 시험이 없습니다.</div>');
+    $('#exam-options').append(`
+      <div style="color:#dc2626;margin:10px 0 0 10%;font-size:16px;font-weight:500;">
+        선택 가능한 시험이 없습니다.
+      </div>
+    `);
   }
 
-  // [1] 시험 분류 1개만 선택 + 추가 과목 토글
-  $('.exam-type').change(function () {
-    $('.exam-type').not(this).prop('checked', false);
-    $('.explore-subject, .lang2-subject').prop('checked', false);
+  // [C] 시험 분류 선택 이벤트: 단일 선택 + 추가 과목 토글 처리
+  examCheckboxes.change(function () {
+    // 하나만 선택되도록 다른 체크 해제
+    examCheckboxes.not(this).prop('checked', false);
+
+    // 성적표 초기화
     $('#exam-title').hide().text('');
     $('#selected-subjects').text('');
     $('#score-table').hide();
     $('#score-body').empty();
     $('#final-submit').hide();
+
+    // 탐구/제2외국어 과목 초기화
+    $('.explore-subject, .lang2-subject').prop('checked', false);
 
     const val = $(this).val();
     if (studentGrade === 3 && ['6', '9', '11'].includes(val)) {
@@ -47,6 +53,7 @@ $(document).ready(function () {
       $('.science2-subject, .lang2-subject').prop('checked', false);
     }
   }).trigger('change');
+});
 
   // [2] 탐구 2개 제한 + 제2외국어 1개 제한
   $('.explore-subject').change(function () {
@@ -120,11 +127,11 @@ $(document).ready(function () {
       const gradeRaw = gradeInput.val().trim();
       const sub = scoreInput.data('subject');
 
-      // 💬 입력 칸 초기화
+      // 입력 칸 초기화
       scoreInput.css('border', '');
       gradeInput.css('border', '');
 
-      // 💬 미입력 검사 및 시각 표시
+      // 미입력 검사 및 시각 표시
       if (scoreRaw === '' || gradeRaw === '') {
         if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
         if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
@@ -133,6 +140,7 @@ $(document).ready(function () {
       }
 
       // 유효성 검사
+	  // 원점수는 0~100 사이의 값, 등급은 1~0 사이의 값만 입력 가능
       if ((isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100)) return showModal('원점수는 0~100 사이여야 합니다.');
       if ((isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9)) return showModal('등급은 1~9 사이여야 합니다.');
 
@@ -147,6 +155,7 @@ $(document).ready(function () {
       gradeValues.push(gradeRaw);
     });
 
+	// 입력하지 않은 칸이 존재하면 모달창 뜨기
     if (emptyFound) {
       return showModal('입력하지 않은 항목이 있습니다.');
     }
@@ -163,12 +172,19 @@ $(document).ready(function () {
       contentType: 'application/json',
       data: JSON.stringify(requestPayload),
       success: function (res) {
-        showModal(res.success ? '저장 성공!' : '저장 실패');
-        if (res.success) {
-          renderResultTable(subjectNames, scoreValues, gradeValues);
-          $('.score-input, .grade-input').hide();
-          $('#final-submit').hide();
+        // 수정: 중복 응답 처리
+        if (!res.success) {
+          if (res.reason === 'duplicate') {
+            return showModal('이미 목표 성적을 입력하였습니다.');
+          }
+          return showModal('입력실패');
         }
+
+        // ✅ 정상 응답 처리
+        showModal('입력완료');
+        renderResultTable(subjectNames, scoreValues, gradeValues);
+        $('.score-input, .grade-input').hide();
+        $('#final-submit').hide();
       },
       error: function () {
         showModal('서버 오류로 저장에 실패했습니다.');
@@ -188,5 +204,6 @@ $(document).ready(function () {
     $('#modal-message').text(msg);
     $('#modal').show();
   }
+
   $('#modal-close-btn').click(() => $('#modal').hide());
 });

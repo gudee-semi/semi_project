@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -27,30 +28,57 @@ public class GoalScoreSelectServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	request.setCharacterEncoding("UTF-8");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         response.setContentType("application/json; charset=UTF-8");
 
-        int memberNo = Integer.parseInt(request.getParameter("memberNo"));
-        int examTypeId = Integer.parseInt(request.getParameter("examTypeId"));
+        String memberNoParam = request.getParameter("memberNo");
+        String examTypeIdParam = request.getParameter("examTypeId");
+
+        Gson gson = new Gson();
+        String json;
+
+        // ✅ 파라미터 유효성 검사
+        if (memberNoParam == null || memberNoParam.isEmpty()) {
+            response.getWriter().write("[]");
+            return;
+        }
+
+        int memberNo;
+        try {
+            memberNo = Integer.parseInt(memberNoParam);
+        } catch (NumberFormatException e) {
+            response.getWriter().write("[]");
+            return;
+        }
 
         SqlSession session = MybatisUtil.getSqlSession();
+        ScoreMapper mapper = session.getMapper(ScoreMapper.class);
 
         try {
-            ScoreMapper scoreMapper = session.getMapper(ScoreMapper.class);
-            List<GoalScore> scores = scoreMapper.selectGoalScoresByMemberAndExam(memberNo, examTypeId);
+            if (examTypeIdParam == null || examTypeIdParam.isEmpty()) {
+                // ✅ 시험 분류 체크박스 활성화용
+                List<Integer> availableExamTypes = mapper.selectAvailableExamTypeIds(memberNo);
+                json = gson.toJson(availableExamTypes);
+            } else {
+                // ✅ 특정 시험의 목표 성적 리스트 반환
+                int examTypeId = Integer.parseInt(examTypeIdParam);
+                List<GoalScore> scoreList = mapper.selectGoalScores(memberNo, examTypeId);
+                json = gson.toJson(scoreList);
+            }
 
-            String json = new Gson().toJson(scores);
             response.getWriter().write(json);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().write("{\"success\": false, \"message\": \"조회 중 오류 발생\"}");
+            e.printStackTrace(); // (개발 중 로그)
+            response.getWriter().write(gson.toJson(Collections.emptyList()));
         } finally {
             session.close();
         }
     }
-    
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

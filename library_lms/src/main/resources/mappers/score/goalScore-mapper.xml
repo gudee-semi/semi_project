@@ -5,36 +5,70 @@
 
 <mapper namespace="com.hy.mapper.score.ScoreMapper">
 
+<!-- ✅ 목표 성적 삽입 -->
+  <insert id="insertGoalScore" parameterType="com.hy.dto.score.GoalScore">
+    INSERT INTO goal_score (
+      member_no, exam_type_id, subject_id, target_score, target_level
+    )
+    VALUES (
+      #{memberNo}, #{examTypeId}, #{subjectId}, #{targetScore}, #{targetLevel}
+    )
+  </insert>
 
-<insert id="insertGoalScore" parameterType="com.hy.dto.score.GoalScore">
-  INSERT INTO goal_score (
-    member_no, exam_type_id, subject_id, target_score, target_level
-  )
-  VALUES (
-    #{memberNo}, #{examTypeId}, #{subjectId}, #{targetScore}, #{targetLevel}
-  )
-</insert>
-
-
-
-  <!-- 조회 -->
+  <!-- ✅ 시험 분류와 사용자 번호로 성적 조회 (이 경우 param1 = memberNo, param2 = examTypeId) -->
   <select id="selectGoalScoresByMemberAndExam" resultType="com.hy.dto.score.GoalScore">
     SELECT
       member_no, exam_type_id, subject_id,
       target_score, target_level
     FROM goal_score
-    WHERE member_no = #{memberNo}
-      AND exam_type_id = #{examTypeId}
+    WHERE member_no = #{param1}
+      AND exam_type_id = #{param2}
   </select>
 
+  <!-- ✅ 사용자의 특정 시험에 대해 입력한 목표 성적 개수 반환 -->
+  <select id="countGoalScoreByMemberAndExam" resultType="int">
+    SELECT COUNT(*) 
+    FROM goal_score
+    WHERE member_no = #{param1}
+      AND exam_type_id = #{param2}
+  </select>
 
+  <!-- ✅ 특정 사용자(memberNo)의 시험(examTypeId) 목표 성적 + 과목명 함께 조회 -->
+  <select id="selectGoalScores" resultMap="GoalScoreWithSubject">
+    SELECT 
+      g.member_no, g.exam_type_id, g.subject_id,
+      g.target_score, g.target_level,
+      s.subject_name
+    FROM goal_score g
+    JOIN subject s ON g.subject_id = s.subject_id
+    WHERE g.member_no = #{param1}
+      AND g.exam_type_id = #{param2}
+  </select>
 
-  <!-- 기존 점수 삭제 (갱신용) -->
+  <!-- ✅ 목표 성적 입력이 존재하는 시험 분류 ID 목록 반환 -->
+  <select id="selectAvailableExamTypeIds" resultType="int">
+    SELECT DISTINCT exam_type_id
+    FROM goal_score
+    WHERE member_no = #{param1}
+  </select>
+
+  <!-- ✅ 기존 목표 성적 삭제 (갱신 시 사용) -->
   <delete id="deleteGoalScoresByMemberAndExam">
     DELETE FROM goal_score
-    WHERE member_no = #{memberNo}
-      AND exam_type_id = #{examTypeId}
+    WHERE member_no = #{param1}
+      AND exam_type_id = #{param2}
   </delete>
+
+  <!-- ✅ 과목명까지 포함된 결과 매핑 (ResultMap 설정) -->
+  <resultMap id="GoalScoreWithSubject" type="com.hy.dto.score.GoalScore">
+    <result property="memberNo" column="member_no"/>
+    <result property="examTypeId" column="exam_type_id"/>
+    <result property="subjectId" column="subject_id"/>
+    <result property="targetScore" column="target_score"/>
+    <result property="targetLevel" column="target_level"/>
+    <result property="subjectName" column="subject_name"/>
+  </resultMap>
+
 </mapper>
 
 

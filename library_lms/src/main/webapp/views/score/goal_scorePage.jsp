@@ -2,14 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
   // [1] 로그인 대신 예시 세션 설정 (실서비스에서는 로그인에서 세팅)
-  session.setAttribute("memberNo", 2);
-  session.setAttribute("studentGrade", 3);
-  int studentGrade = (session.getAttribute("studentGrade") != null) ? (Integer) session.getAttribute("studentGrade") : 1;
+  session.setAttribute("memberNo", 2);           // 로그인된 회원번호
+  session.setAttribute("studentGrade", 1);       // 🔁 1학년으로 변경
+
+  int studentGrade = (session.getAttribute("studentGrade") != null) 
+                      ? (Integer) session.getAttribute("studentGrade") : 1;
+
   Integer memberNo = (Integer) session.getAttribute("memberNo");
   if (memberNo == null) memberNo = -1;
+
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-  session.setAttribute("currentYear", currentYear);
+  session.setAttribute("currentYear", currentYear); // 현재 연도 세션 저장
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,47 +60,39 @@
   const memberNo = <%= memberNo %>;
   const currentYear = <%= currentYear %>;
 
-  // [A] 시험 분류 체크박스 활성/비활성 (지나간 시험 비활성화 & 안내문구 추가) ---------
+  // [A] 시험 분류 체크박스 활성/비활성
   document.addEventListener('DOMContentLoaded', function() {
-    const now = new Date();
-    const nowMonth = now.getMonth() + 1; // JS 0~11, 실제는 1~12
     const examCheckboxes = document.querySelectorAll('.exam-type');
     let availableCount = 0;
 
     examCheckboxes.forEach(cb => {
       const examMonth = parseInt(cb.value, 10);
-      if (examMonth < nowMonth) {
-        cb.disabled = true;
-        cb.checked = false;
-      } else {
+
+      // 3월, 6월, 9월은 누구나 가능
+      if (examMonth === 3 || examMonth === 6 || examMonth === 9) {
         cb.disabled = false;
         availableCount++;
       }
-    });
 
-    // 3학년: 10~12월이면 11월만 선택 가능
-    if (studentGrade === 3 && nowMonth >= 10 && nowMonth <= 12) {
-      examCheckboxes.forEach(cb => {
-        if (cb.value !== '11') {
+      // 11월은 3학년만 가능
+      else if (examMonth === 11) {
+        if (studentGrade === 3) {
+          cb.disabled = false;
+          availableCount++;
+        } else {
           cb.disabled = true;
           cb.checked = false;
-        } else if (cb.value === '11') {
-          cb.disabled = false;
-          cb.checked = true;
         }
-      });
-      availableCount = 1;
-    } 
-    // 1,2학년: 10~12월이면 전부 불가
-    else if ((studentGrade === 1 || studentGrade === 2) && nowMonth >= 10 && nowMonth <= 12) {
-      examCheckboxes.forEach(cb => {
+      }
+
+      // 기타 (예외적 값) 처리
+      else {
         cb.disabled = true;
         cb.checked = false;
-      });
-      availableCount = 0;
-    }
+      }
+    });
 
-    // 선택 가능한 시험이 0개면 안내
+    // 선택 가능한 시험이 0개면 안내 메시지 추가
     if (availableCount === 0) {
       const guide = document.createElement('div');
       guide.textContent = "선택 가능한 시험이 없습니다.";
@@ -104,6 +101,7 @@
     }
   });
 </script>
+
 
 <h1>목표 성적 설정</h1>
 
