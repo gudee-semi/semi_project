@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
 
 import com.hy.dto.notice.Notice;
 import com.hy.dto.notice.NoticeAttach;
@@ -40,7 +43,7 @@ public class NoticeWriteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/views/notice/noticeWritePage.jsp").forward(request, response);;
+		request.getRequestDispatcher("/views/notice/noticeWritePage.jsp").forward(request, response);
 	}
 
 	/**
@@ -62,10 +65,23 @@ public class NoticeWriteServlet extends HttpServlet {
 		
 		File uploadDir = NoticeAttachService.getUploadDirectory();
 		NoticeAttach attach = NoticeAttachService.handleUploadFile(request, uploadDir);
-		System.out.println(attach.getPath());
 		
 		int result = noticeService.createNoticeWithAttach(notice, attach);
-		System.out.println(result);
+		
+		JSONObject obj = new JSONObject();
+		
+		if (result > 0) {
+			obj.put("res_msg", "공지사항 등록이 성공적으로 완료되었습니다.");
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_msg", "공지사항 등록이 실패했습니다.");
+			obj.put("res_code", "500");			
+		}
+		
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
+		
 	}
 
 }

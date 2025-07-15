@@ -18,5 +18,9 @@
 	    <img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
 	    <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>
 	</c:if>
+	
+	<c:if test="${ memberNo eq 2 }">
+		<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
+	</c:if>
 </body>
 </html>
