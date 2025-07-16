@@ -152,6 +152,14 @@ public class NoticeService {
 		return noticeDao.selectAttachByNo(noticeId);
 	}
 
+	public int deleteNotice(int noticeId) {
+		return noticeDao.deleteNotice(noticeId);
+	}
+
+	public int updateViewCount(int noticeId) {
+		return noticeDao.updateViewCount(noticeId);
+	}
+
 
 
 	

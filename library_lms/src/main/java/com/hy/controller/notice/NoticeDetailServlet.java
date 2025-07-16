@@ -57,11 +57,14 @@ public class NoticeDetailServlet extends HttpServlet {
 		
 		Notice notice = service.selectNoticeByNo(noticeId);
 		NoticeAttach attach = service.selectAttachByNo(noticeId);
-		
 		request.setAttribute("notice", notice);
 		request.setAttribute("attach", attach);
+		
+		int result = service.updateViewCount(noticeId);
+		if (result > 0) {
+			request.getRequestDispatcher("/views/notice/noticeDetailPage.jsp").forward(request, response);			
+		}
 
-		request.getRequestDispatcher("/views/notice/noticeDetailPage.jsp").forward(request, response);
 	}
 
 	/**

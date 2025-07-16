@@ -139,5 +139,14 @@
 	<select id="selectAttachByNo" parameterType="_int" resultMap="noticeAttachResultMap">
 		SELECT * FROM notice_attach WHERE notice_id = #{noticeId}
 	</select>
+	
+	<delete id="deleteNotice" parameterType="_int">
+		DELETE FROM notice WHERE notice_id = #{noticeId}
+	</delete>
+	
+	<update id="updateViewCount" parameterType="_int">
+		UPDATE notice SET view_count = view_count + 1
+		WHERE notice_id = #{noticeId}
+	</update>
 
 </mapper>

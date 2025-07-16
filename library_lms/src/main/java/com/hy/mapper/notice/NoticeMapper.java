@@ -24,5 +24,9 @@ public interface NoticeMapper {
 	int updateAttach(NoticeAttach param);
 	
 	int deleteAttach(Notice param);
+	
+	int deleteNotice(int noticeId);
+	
+	int updateViewCount(int noticeId);
 
 }

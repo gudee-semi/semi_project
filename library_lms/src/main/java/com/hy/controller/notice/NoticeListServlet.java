@@ -64,7 +64,6 @@ public class NoticeListServlet extends HttpServlet {
 		
 		String category = request.getParameter("category");
 		String keyword = request.getParameter("keyword");
-		System.out.println(category + " " + keyword);
 		param.setSearchCategory(category);
 		param.setKeyword(keyword);
 		
