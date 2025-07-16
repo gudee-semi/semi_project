@@ -30,4 +30,19 @@ public class SeatDao {
 		return result;
 	}
 
+	// 트랜잭션 처리용 오버로딩
+	public int useSeat(SqlSession session, Seat param) {
+		return session.update("com.hy.mapper.seat.SeatMapper.useSeat", param);
+	}
+	
+	public int cancelSeat(SqlSession session, Seat param) {
+		return session.update("com.hy.mapper.seat.SeatMapper.cancelSeat", param);
+	}
+
+	public Seat selectSeatByMember(int memberNo) {
+	    SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	    Seat seat = session.selectOne("com.hy.mapper.seat.SeatMapper.selectSeatByMember", memberNo);
+	    session.close();
+	    return seat;
+	}
 }

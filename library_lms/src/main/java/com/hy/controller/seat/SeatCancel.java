@@ -42,20 +42,18 @@ public class SeatCancel extends HttpServlet {
 		
 		// 현재 사용자
 		HttpSession session = request.getSession(false);
-		int memberNo = 0; // 여기는 세선에서 값을 가져오도록!!
 		
-		if (session == null) {
+		
+		if (session == null || session.getAttribute("loginMember") == null) {
 			response.sendRedirect(request.getContentType() + "/");
 			return;
-		} else {
-			if (session.getAttribute("loginMember") == null) {
-				response.sendRedirect(request.getContextPath() + "/");
-				return;
-			} else {
-				Member member = (Member)session.getAttribute("loginMember");
-				memberNo = member.getMemberNo();
-			}
-		}
+		} 
+		
+		
+		Member member = (Member)session.getAttribute("loginMember");
+		int memberNo = member.getMemberNo();
+		
+		
 		
 		int result = service.cancelSeat(seatNo, memberNo);
 		

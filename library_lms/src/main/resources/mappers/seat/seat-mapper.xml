@@ -17,12 +17,17 @@
 	<update id="useSeat" parameterType="com.hy.dto.seat.Seat" >
 		UPDATE seat
 		SET member_no = #{memberNo} ,seat_status = 0
-		WHERE seat_id = #{seatId}
+		WHERE seat_id = #{seatId} AND seat_status = 1
 	</update>
 	
 	<update id="cancelSeat" parameterType="com.hy.dto.seat.Seat" >
 		UPDATE seat
 		SET member_no = null ,seat_status = 1
 		WHERE seat_id = #{seatId}
+		 AND member_no = #{memberNo}
 	</update>
+	
+	<select id="selectSeatByMember" parameterType="int" resultMap="seatResultMap">
+		SELECT * FROM seat WHERE member_no = #{memberNo}
+	</select>
 </mapper>

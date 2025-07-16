@@ -57,7 +57,7 @@
 
 .publicSeat.used{
 
-	background-color: FF9500;
+	background-color: #FF9500;
 
 }
 
@@ -247,12 +247,26 @@ button:disabled{
 	
 	<script>
 	
+	// 서버에서 전달한 currentUsedSeatNo 값 읽기 (null 체크 포함)
+	const currentUsedSeatNo = <%= request.getAttribute("currentUsedSeatNo") 
+			!= null ? request.getAttribute("currentUsedSeatNo") : "null" %>;
+	
+	
 	const publicSeat = document.querySelectorAll('.publicSeat');
 	const useButton = document.getElementById('useButton');
 	const changeButton = document.getElementById('changeButton');
 	const cancelButton = document.getElementById('cancelButton');
 	let selectedSeat = null;
 	let currentUsedSeat = null;
+	
+	// --- 페이지 로딩 시 현재 사용중인 좌석 있으면 표시 + 버튼 활성화 ---
+	if(currentUsedSeatNo !== null) {
+		currentUsedSeat = document.querySelector(`.publicSeat[data-seat-no='${currentUsedSeatNo}']`);
+		if(currentUsedSeat){
+			currentUsedSeat.classList.add('used');
+			cancelButton.disabled = false;  // 취소 버튼 활성화
+		}
+	}
 	
 	
 	publicSeat.forEach(seatEl => {
@@ -328,30 +342,54 @@ button:disabled{
 			
 			if(isYes){
 			
-				if(currentUsedSeat){
-					currentUsedSeat.classList.remove('used');
-				}
+				const newSeatNo = selectedSeat.dataset.seatNo;
+				const oldSeatNo = currentUsedSeat ? currentUsedSeat.dataset.seatNo : null;
 				
-				// 새 좌석 사용 처리
-				selectedSeat.classList.add('used');
-				selectedSeat.classList.remove('active');
-				
-				
-				// 현재 사용 좌석 업데이트
-				currentUsedSeat = selectedSeat;
-				selectedSeat = null;
+				$.ajax({
+					url: '/seat/change',
+					type: 'post',
+					data: {
+						oldSeatNo: oldSeatNo,
+						newSeatNo: newSeatNo
+					},
+					dataType: 'json',
+					success: (data) =>{
+						if(data.res_code === "200"){
+							// UI 반영
+							if(currentUsedSeat){
+								currentUsedSeat.classList.remove('used');
+							}
+							// 새 좌석 사용 처리
+							selectedSeat.classList.add('used');
+							selectedSeat.classList.remove('active');
+							
+							
+							// 현재 사용 좌석 업데이트
+							currentUsedSeat = selectedSeat;
+							selectedSeat = null;
+							
+							
+							changeButton.disabled = true;
+							cancelButton.disabled = false;
+						} else {
+							alert("좌석 변경 실패: " + data.res_msg);
+						}
+					},
+					error: () => {
+						alert("서버 오류 발생");
+					}
+				});
 			}
-
-			
-			changeButton.disabled = true;
-			cancelButton.disabled = false;
-		
-	});
+		});
 	
 	
 	cancelButton.addEventListener('click', () => {
 		const isYes = confirm('정말 취소 하시겠습니까?')
 		if(isYes){
+			if (!currentUsedSeat) {
+	            alert('현재 사용 중인 좌석이 없습니다.');
+	            return;
+	        }
 			
 		const seatNo = currentUsedSeat.dataset.seatNo;	
 			
@@ -365,13 +403,20 @@ button:disabled{
                 success: (data) => {
                 	console.log(data.res_msg);	
                 }
-			})
-
+			});
+			
 			
 			currentUsedSeat.classList.remove('used');
 			currentUsedSeat = null;
 			
+			if (selectedSeat) {
+	            selectedSeat.classList.remove('active');
+	            selectedSeat = null;
+	        }
+			
 			cancelButton.disabled = true;
+			useButton.disabled = true;
+			changeButton.disabled = true;
 		}
 	});
 

@@ -52,7 +52,10 @@ public class SeatCheck extends HttpServlet {
 		// 1. dto 작성(완) -> 2. service 작성 -> 3. dao 작성 -> 4. mapper 인터페이스 작성 -> 5. mapper xml 작성
 		
 		List<Seat> list = service.selectAllSeat();
+		Seat currentSeat = service.getSeatByMember(memberNo);
+		
 		request.setAttribute("list", list);
+		request.setAttribute("currentUsedSeatNo", currentSeat != null ? currentSeat.getSeatId() : null);
 		
 		request.getRequestDispatcher("/views/seat/seatPage.jsp").forward(request, response);
 	}
