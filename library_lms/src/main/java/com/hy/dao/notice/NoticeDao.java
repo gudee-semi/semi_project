@@ -45,23 +45,6 @@ public class NoticeDao {
 		return result;
 	}
 
-	public int insertNotice(SqlSession session, Notice notice) {
-		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertNotice", notice);
-		return result;
-	}
-
-	public int insertAttach(SqlSession session, NoticeAttach attach) {
-		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertAttach", attach);
-		return result;
-	}
-
-	public NoticeAttach selectAttachByNo(int noticeId) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		NoticeAttach result = session.selectOne("com.hy.mapper.notice.NoticeMapper.selectAttachByNo", noticeId);
-		session.close();
-		return result;
-	}
-
 	public int updateNotice(SqlSession session, Notice notice) {
 		return session.update("com.hy.mapper.notice.NoticeMapper.updateNotice", notice);
 	}
