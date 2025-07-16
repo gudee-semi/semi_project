@@ -27,20 +27,50 @@ public class NoticeDao {
 	public Notice selectNoticeByNo(int noticeId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Notice result = session.selectOne("com.hy.mapper.notice.NoticeMapper.selectNoticeByNo", noticeId);
+		session.close();
 		return result;
 	}
 
 	public int insertNotice(SqlSession session, Notice notice) {
-		return session.insert("com.hy.mapper.notice.NoticeMapper.insertNotice", notice);
+		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertNotice", notice);
+		return result;
 	}
 
 	public int insertAttach(SqlSession session, NoticeAttach attach) {
-		return session.insert("com.hy.mapper.notice.NoticeMapper.insertAttach", attach);
+		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertAttach", attach);
+		return result;
 	}
 
 	public NoticeAttach selectAttachByNo(int noticeId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		NoticeAttach result = session.selectOne("com.hy.mapper.notice.NoticeMapper.selectAttachByNo", noticeId);
+		session.close();
+		return result;
+	}
+
+	public int updateNotice(SqlSession session, Notice notice) {
+		return session.update("com.hy.mapper.notice.NoticeMapper.updateNotice", notice);
+	}
+
+	public int updateAttach(SqlSession session, NoticeAttach attach) {
+		return session.update("com.hy.mapper.notice.NoticeMapper.updateAttach", attach);
+	}
+
+	public int deleteAttach(SqlSession session, Notice notice) {
+		return session.delete("com.hy.mapper.notice.NoticeMapper.deleteAttach", notice);
+	}
+
+	public int deleteNotice(int noticeId) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.hy.mapper.notice.NoticeMapper.deleteNotice", noticeId);
+		session.close();
+		return result;
+	}
+
+	public int updateViewCount(int noticeId) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.hy.mapper.notice.NoticeMapper.updateViewCount", noticeId);
+		session.close();
 		return result;
 	}
 
