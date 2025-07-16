@@ -10,8 +10,14 @@ public interface QnaMapper {
 	
 	int selectQnaCount(Qna param);
 	
-	Qna selectQnaOne(int qnaNo);
+	int updateViewCount(int qnaId);
+	
+	int updateQna(Qna qna);
+	
+	Qna selectQnaOne(int qnaId);
 
+	int deleteQna(int qnaId);
+	
 	Attach selectAttachByQnaNo(int qnaId);
 	
 	Attach selectAttachByAttachNo(int attachNo);

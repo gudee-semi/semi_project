@@ -17,12 +17,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	
 	<mappers>
-	  <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
-	  <mapper resource="/mappers/score/goalScore-mapper.xml"/>
+	    <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
+	    <mapper resource="/mappers/score/goalScore-mapper.xml"/>
 		<mapper resource="/mappers/calendar/calendar-mapper.xml"/>
 		<mapper resource="/mappers/notice/notice-mapper.xml"/>
 		<mapper resource="/mappers/login/signUp-mapper.xml"/>
-	  <mapper resource="/mappers/qna/qna-mapper.xml"/>
-	  <mapper resource="/mappers/login/login-mapper.xml"/>
+	    <mapper resource="/mappers/qna/qna-mapper.xml"/>
+	    <mapper resource="/mappers/login/login-mapper.xml"/>
+		<mapper resource="/mappers/qna/qna-admin-mapper.xml"/>
 	</mappers>
 </configuration>
