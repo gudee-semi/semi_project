@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hy.mapper.score.ScoreMapper">
+<mapper namespace="com.hy.mapper.score.ActualScoreMapper">
 
   <!-- 과목명까지 포함된 결과 매핑 (ResultMap 설정) -->
   <resultMap id="ActualScoreWithSubject" type="com.hy.dto.score.ActualScore">
@@ -26,6 +26,30 @@
       #{memberNo}, #{examTypeId}, #{subjectId}, #{actualScore}, #{actualLevel}, #{actualPercentage}, #{actualRank}
     )
   </insert>
+  
+   <!-- 2. 시험별 저장된 실제 성적 조회 -->
+  <select id="selectActualScoresByMemberAndExam" resultMap="ActualScoreWithSubject" parameterType="map">
+    SELECT A.*, S.subject_name, E.exam_type
+    FROM actual_score A
+    INNER JOIN subject S ON A.subject_id = S.subject_id
+    INNER JOIN exam_type E ON A.exam_type_id = E.exam_type_id
+    WHERE A.member_no = #{memberNo}
+      AND A.exam_type_id = #{examTypeId}
+  </select>
+  
+  <!-- 3. 해당 회원이 입력한 시험 목록만 조회 -->
+  <select id="selectAvailableExamTypeIds" resultType="int" parameterType="int">
+    SELECT DISTINCT exam_type_id
+    FROM actual_score
+    WHERE member_no = #{param1}
+  </select>
+
+  <!-- 4. 기존 실제 성적 삭제 (시험+회원 기준) -->
+  <delete id="deleteActualScoresByMemberAndExam" parameterType="map">
+    DELETE FROM actual_score
+    WHERE member_no = #{memberNo}
+      AND exam_type_id = #{examTypeId}
+  </delete>
 
 
 

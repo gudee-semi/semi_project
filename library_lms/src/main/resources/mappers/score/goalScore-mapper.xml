@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hy.mapper.score.ScoreMapper">
+<mapper namespace="com.hy.mapper.score.GoalScoreMapper">
 
   <!-- 과목명까지 포함된 결과 매핑 (ResultMap 설정) -->
   <resultMap id="GoalScoreWithSubject" type="com.hy.dto.score.GoalScore">

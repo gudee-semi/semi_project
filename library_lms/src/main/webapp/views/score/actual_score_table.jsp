@@ -15,5 +15,14 @@
 		<th>백분위</th>
 		<th>학교 석차</th>
 	</tr>
+	<c:forEach items="${scores}" var="a">
+	<tr>
+		<td>${a.subjectName}</td>
+		<td>${a.actualScore}</td>
+		<td>${a.actualLevel}</td>
+		<td>${a.actualPercentage}</td>
+		<td>${a.actualRank}</td>
+	</tr>
+</c:forEach>
 
 </table>
