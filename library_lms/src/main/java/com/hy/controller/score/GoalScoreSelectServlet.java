@@ -56,7 +56,7 @@ public class GoalScoreSelectServlet extends HttpServlet {
                 int examTypeId = Integer.parseInt(examTypeIdParam);
                 List<GoalScore> scoreList = service.selectGoalScoresByMemberAndExam(memberNo, examTypeId);
                 request.setAttribute("scores",scoreList);
-                request.getRequestDispatcher("/views/score/score_table.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/score/goal_score_table.jsp").forward(request, response);
                 //json = gson.toJson(scoreList);
                 return;
             }

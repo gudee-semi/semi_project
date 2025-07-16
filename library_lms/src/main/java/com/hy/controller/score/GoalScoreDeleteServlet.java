@@ -39,7 +39,6 @@ public class GoalScoreDeleteServlet extends HttpServlet {
             examTypeId = Integer.parseInt(request.getParameter("examTypeId"));
             result = service.deleteScoresByMemberAndExam(memberNo, examTypeId);
         } catch (NumberFormatException e) {
-        	System.out.println("asd");
             String msg = URLEncoder.encode("잘못된 요청입니다", "UTF-8");
             // 삭제 실패도 동일하게 모달 띄우는 방식 적용(아래와 동일 구조)
             response.sendRedirect("/goal_score_view/view?delete=fail&msg=" + msg);

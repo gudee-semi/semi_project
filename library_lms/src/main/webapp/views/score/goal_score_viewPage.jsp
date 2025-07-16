@@ -53,6 +53,7 @@
 
 <!-- 시험 분류 체크박스 동적 생성 -->
 <div class="checkbox-group" id="exam-options">
+  <span style="font-weight: 500;">시험 분류</span>
  <c:forEach var="exam" items="${examTypeList}">
   <label>
     <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />
@@ -66,6 +67,9 @@
 
 <!-- 선택된 과목 목록 표시 영역 -->
 <div id="selected-subjects"></div>
+
+
+<button id="delete-submit" class="btn">삭제하기</button>
 
 
 <!-- 별도 JS 파일 불러오기 -->

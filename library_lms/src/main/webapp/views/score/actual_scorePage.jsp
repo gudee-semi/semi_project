@@ -13,16 +13,13 @@
   session.setAttribute("currentYear", currentYear);
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>목표 성적 설정</title>
-  
-  <%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
+  <title>성적 입력</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  
+
   <style>
     body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
     h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
@@ -53,6 +50,7 @@
     #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
   </style>
 </head>
+
 <body>
 
 <script>
@@ -103,8 +101,7 @@
   });
 </script>
 
-
-<h1>목표 성적 설정</h1>
+<h1>성적 입력</h1>
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section">
@@ -202,26 +199,27 @@
 <div id="selected-subjects"></div>
 <table id="score-table" style="display:none;">
   <thead>
-    <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
+    <tr><th>과목</th><th>원점수</th><th>등급</th><th>백분위</th><th>학교 석차</th></tr>
   </thead>
   <tbody id="score-body"></tbody>
 </table>
 
 
-<!-- 모달창 -->
+
+<!-- 모달 -->
 <div id="modal">
   <div class="modal-content">
-    <p id="modal-message"></p>
+    <p id="modal-message">메시지</p>
     <button id="modal-close-btn">확인</button>
   </div>
 </div>
 
-<!-- js 연동 -->
-<script src="../../js/goal_score.js"></script>
+<!-- JS 연동 -->
+<script src="../../js/actual_score.js"></script>
 
 <!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
 <div style="width:70%;margin:28px auto 0;text-align:center;">
-  <button id="final-submit" class="btn" style="display:none;">설정완료</button>
+  <button id="final-submit" class="btn" style="display:none;">입력완료</button>
 </div>
 
 </body>

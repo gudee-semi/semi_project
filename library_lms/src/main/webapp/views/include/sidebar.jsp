@@ -71,7 +71,7 @@
 		    	<ul class="dropdown-menu">
 			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표성적</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/goal_score_view/view' />">목표성적조회</a></li>
-			        <li><a class="dropdown-item" href="<c:url value='/write_score/view' />">성적입력</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/actual_score/view' />">성적입력</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/analysis_score/view' />">성적분석</a></li>
 		    	</ul>
 		    </li>

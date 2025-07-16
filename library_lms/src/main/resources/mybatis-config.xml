@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 	  <mapper resource="/mappers/tablet/tablet-mapper.xml"/>
 	  <mapper resource="/mappers/score/goalScore-mapper.xml"/>
+	  <mapper resource="/mappers/score/actualScore-mapper.xml"/>
 	  <mapper resource="/mappers/score/subject-mapper.xml"/>
 		<mapper resource="/mappers/calendar/calendar-mapper.xml"/>
 		<mapper resource="/mappers/notice/notice-mapper.xml"/>

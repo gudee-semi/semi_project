@@ -54,15 +54,16 @@ $(document).ready(function () {
     }
 
     const examTypeId = parseInt($(this).val());
-    console.log("선택된 examTypeId:", examTypeId);
 
     // [C] 선택된 시험의 목표 성적 조회 AJAX
     $.ajax({
       url: '/goal_score_view/select',
       method: 'GET',
-      data: { memberNo: memberNo, examTypeId: examTypeId },
+      data: { 
+		memberNo: memberNo,
+		 examTypeId: examTypeId 
+	 	},
       success: function (res) {
-        console.log(res);
         $('#exam-title').html(res);
         // 여기서 테이블, 점수 등 필요한 화면 렌더링 추가
         // 삭제 버튼 활성화
@@ -75,7 +76,7 @@ $(document).ready(function () {
   });
 
   // [D] 삭제 버튼 클릭 시 AJAX로 삭제 요청 보내기
-  $('#delete-btn').click(function (e) {
+  $('#delete-submit').on('click', (e) => {
 	e.preventDefault();
     // 항상 최신 선택값을 읽음
     const selectedExamTypeId = $('input[name="exam"]:checked').val();
@@ -85,9 +86,10 @@ $(document).ready(function () {
       return;
     }
 
+	
     $.ajax({
       url: '/goal_score/delete',
-      type: 'post', // (POST로 해도 됨, 서버와 맞추세요)
+      type: 'post',
       data: { 
 		memberNo: memberNo, 
 		examTypeId: selectedExamTypeId 
