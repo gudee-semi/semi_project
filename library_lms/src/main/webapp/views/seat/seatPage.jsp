@@ -284,9 +284,7 @@ button:disabled{
 			seatEl.classList.add('active');
 			selectedSeat = seatEl;
 
-
 			// 버튼 활성화
-
 			if (currentUsedSeat && selectedSeat) {
 				changeButton.disabled = false;
 			} else {
@@ -313,7 +311,6 @@ button:disabled{
 				
 				// 현재 사용 좌석 업데이트
 				currentUsedSeat = selectedSeat;
-
 				const seatNo = selectedSeat.dataset.seatNo;
 				
 				
@@ -344,7 +341,6 @@ button:disabled{
 		const isYes = confirm('이 좌석으로 하시겠습니까?');
 			
 			if(isYes){
-			
 
 				const newSeatNo = selectedSeat.dataset.seatNo;
 				const oldSeatNo = currentUsedSeat ? currentUsedSeat.dataset.seatNo : null;
@@ -390,7 +386,6 @@ button:disabled{
 	cancelButton.addEventListener('click', () => {
 		const isYes = confirm('정말 취소 하시겠습니까?')
 		if(isYes){
-
 			if (!currentUsedSeat) {
 	            alert('현재 사용 중인 좌석이 없습니다.');
 	            return;
