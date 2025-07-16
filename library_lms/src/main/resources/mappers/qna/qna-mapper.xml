@@ -6,6 +6,7 @@
 	<resultMap id="qnaResultMap" type="com.hy.dto.qna.Qna">
       <result property="qnaId" column="qna_id" />
       <result property="memberId" column="member_id" />
+      <result property="memberName" column="member_name" />
       <result property="category" column="category" />
       <result property="title" column="title" />
       <result property="content" column="content" />
@@ -35,6 +36,7 @@
 			,Q.view_count
 			,Q.answer_status
 			,M.member_id
+			,M.member_name
 		FROM qna Q 
 		JOIN member M ON Q.member_no = M.member_no
 		<where>
@@ -46,7 +48,7 @@
 				</when>
 				<when test='keywordIn == "작성자"'>
 					<if test='keyword != null and keyword != ""'>
-						M.member_id LIKE CONCAT('%',#{keyword}, '%')
+						M.member_name LIKE CONCAT('%',#{keyword}, '%')
 					</if>
 				</when>
 				<when test='keywordIn == "제목"'>
@@ -73,7 +75,7 @@
 				</when>
 				<when test='keywordIn == "작성자"'>
 					<if test='keyword != null and keyword != ""'>
-						M.member_id LIKE CONCAT('%',#{keyword}, '%')
+						M.member_name LIKE CONCAT('%',#{keyword}, '%')
 					</if>
 				</when>
 				<when test='keywordIn == "제목"'>
@@ -96,6 +98,7 @@
 			,Q.view_count
 			,Q.answer_status
 			,M.member_id
+			,M.member_name
 		FROM qna Q
 		JOIN member M On Q.member_no = M.member_no
 		<where>

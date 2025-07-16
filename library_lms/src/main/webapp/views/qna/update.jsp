@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script>
 		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
-		function confirmDelete() {
+		function confirmUpdate() {
 		// confirm 창을 띄우고 결과를 반환
 		return confirm("수정하시겠습니까?");
 	    }
@@ -16,7 +16,7 @@
 </head>
 <body>
 	<h1>질의응답 수정</h1>
-	<form id="updateQnaFrm" action="./update" method="post" onsubmit="return confirmDelete();">
+	<form id="updateQnaFrm" action="/qna/update" method="post" onsubmit="return confirmUpdate();">
 	    <input type="hidden" name="no" value="${qna.qnaId }">
 	    
 	    카테고리 
