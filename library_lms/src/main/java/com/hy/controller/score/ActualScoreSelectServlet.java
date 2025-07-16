@@ -16,7 +16,7 @@ import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.GoalScore;
 import com.hy.service.score.ActualScoreService;
 
-@WebServlet("/actual_score/select")
+@WebServlet("/analysis_score/select")
 public class ActualScoreSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -42,30 +42,35 @@ public class ActualScoreSelectServlet extends HttpServlet {
 	        }
 
 	        int memberNo = loginMember.getMemberNo();
+	        int studentGrade = loginMember.getMemberGrade();
 	        String examTypeIdParam = request.getParameter("examTypeId");
 	        
 
 	        try {
-				if (examTypeIdParam == null || examTypeIdParam.isEmpty()) {
-					// [1] 시험 목록 조회 (입력된 성적 기준)
-					List<Integer> availableExamTypes = service.selectAvailableExamTypeIds(memberNo); // 🔧 이 메서드 ActualScoreService에 있어야 함
-					String json = gson.toJson(availableExamTypes);
-					response.getWriter().write(json);
-				} else {
-					// [2] 특정 시험 성적 조회
-					int examTypeId = Integer.parseInt(examTypeIdParam);
-					List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, examTypeId);
+	            if (examTypeIdParam == null || examTypeIdParam.isEmpty()) {
+	                // [1] 시험 목록 조회 (입력된 성적 기준)
+	                List<Integer> availableExamTypes = service.selectAvailableExamTypeIds(memberNo);
+	                String json = gson.toJson(availableExamTypes);
+	                response.getWriter().write(json);
+	            } else {
+	                // [2] 특정 시험 성적 조회
+	                int examTypeId = Integer.parseInt(examTypeIdParam);
 
-					// JSP로 포워딩하여 성적 테이블 렌더링
-					request.setAttribute("scores", scoreList);
-					request.getRequestDispatcher("/views/score/actual_score_table.jsp").forward(request, response);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().write("[]");
-			}
-		}
+	                // ✅ 학년 기반으로 examTypeId 매핑
+	                int mappedExamTypeId = service.mapExamTypeId(examTypeId, studentGrade);
+
+	                List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, mappedExamTypeId);
+
+	                // JSP로 포워딩하여 성적 테이블 렌더링
+	                request.setAttribute("scores", scoreList);
+	                request.getRequestDispatcher("/views/score/actual_score_table.jsp").forward(request, response);
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	            response.getWriter().write("[]");
+	        }
+	    }
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -18,7 +18,7 @@ public class ActualScoreService {
 	
 	//시험월과 학년을 조합하여 실제 exam_type_id로 매핑
 	// (예: 3월 + 1학년 → ID 1, 6월 + 3학년 → ID 8, 11월 수능 + 3학년 → ID 10) 
-    private int mapExamTypeId(int examTypeId, int grade) {
+    public int mapExamTypeId(int examTypeId, int grade) {
         if (grade == 1) {
             switch (examTypeId) {
                 case 3: return 1;
@@ -127,31 +127,22 @@ public class ActualScoreService {
     }
 
     // 실제 성적 삭제 (회원 + 시험 기준)
-    public boolean deleteActualScoresByMemberAndExam(int memberNo, int examTypeId) {
+    public int deleteActualScoresByMemberAndExam(int memberNo, int examTypeId) {
         SqlSession session = null;
         try {
-            session = SqlSessionTemplate.getSqlSession(false);
+            session = SqlSessionTemplate.getSqlSession(true);
             Map<String, Integer> param = new HashMap<>();
             param.put("memberNo", memberNo);
             param.put("examTypeId", examTypeId);
-
-            int result = dao.deleteActualScoresByMemberAndExam(session, param);
-            if (result > 0) {
-                session.commit();
-                return true;
-            } else {
-                session.rollback();
-                return false;
-            }
-
+            return dao.deleteActualScoresByMemberAndExam(session, param);
         } catch (Exception e) {
-            if (session != null) session.rollback();
             e.printStackTrace();
-            return false;
+            return 0;
         } finally {
             if (session != null) session.close();
         }
     }
+
 
 }
     

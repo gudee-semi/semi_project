@@ -22,7 +22,7 @@ $(document).ready(function () {
 
     // [A] DB에 입력된 시험만 체크박스 활성화
     $.ajax({
-      url: '/goal_score_view/select',
+      url: '/analysis_score/select',
       method: 'GET',
       data: { memberNo: memberNo },
       success: function (data) {
@@ -58,7 +58,7 @@ $(document).ready(function () {
 	  
 	  // 선택된 시험의 성적 조회 AJAX
 	  $.ajax({
-		url: 'analysis_score/select',
+		url: '/analysis_score/select',
 		method: 'GET',
 		data:{
 			memberNo: memberNo,
@@ -89,7 +89,7 @@ $(document).ready(function () {
 		}
 		
 		$.ajax({
-			url: 'analysis_score/delete',
+			url: '/analysis_score/delete',
 			type: 'post',
 			data: {
 				memberNo: memberNo,
@@ -108,11 +108,4 @@ $(document).ready(function () {
 		});
 	 });
  });  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  

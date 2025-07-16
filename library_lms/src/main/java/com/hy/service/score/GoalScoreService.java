@@ -11,7 +11,6 @@ import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.score.GoalScoreDAO;
 import com.hy.dto.score.ExamType;
 import com.hy.dto.score.GoalScore;
-import com.hy.mapper.score.GoalScoreMapper;
 
 public class GoalScoreService {
 

@@ -10,12 +10,12 @@
     <result property="memberNo" column="member_no"/>
     <result property="examTypeId" column="exam_type_id"/>
     <result property="subjectId" column="subject_id"/>
-    <result property="targetScore" column="target_score"/>
-    <result property="targetLevel" column="target_level"/>
+    <result property="actualScore" column="actual_score"/>
+    <result property="actualLevel" column="actual_level"/>
+    <result property="actualPercentage" column="actual_percentage"/>
+    <result property="actualRank" column="actual_rank"/>
     <result property="subjectName" column="subject_name"/>
     <result property="examType" column="exam_type"/>
-    
-    
   </resultMap>
 
 	<!-- 실제 성적 삽입 (백분위, 석차 포함) -->
@@ -27,24 +27,39 @@
     )
   </insert>
   
-   <!-- 2. 시험별 저장된 실제 성적 조회 -->
+    <!-- 시험 분류와 사용자 번호로 성적 조회 -->
   <select id="selectActualScoresByMemberAndExam" resultMap="ActualScoreWithSubject" parameterType="map">
     SELECT A.*, S.subject_name, E.exam_type
-    FROM actual_score A
-    INNER JOIN subject S ON A.subject_id = S.subject_id
-    INNER JOIN exam_type E ON A.exam_type_id = E.exam_type_id
-    WHERE A.member_no = #{memberNo}
-      AND A.exam_type_id = #{examTypeId}
+	FROM actual_score A 
+		 inner join 
+	     subject S
+		 on A.subject_id = S.subject_id 
+	     inner join
+	     exam_type E
+	     on A.exam_type_id = E.exam_type_id
+	WHERE A.member_no = #{memberNo} AND A.exam_type_id = #{examTypeId}
   </select>
   
-  <!-- 3. 해당 회원이 입력한 시험 목록만 조회 -->
+	<!-- 시험 분류 학년별 조회 -->
+	<select id="selectExamTypesByGrade" resultType="com.hy.dto.score.ExamType" parameterType="int">
+	  SELECT
+      exam_type_id AS examTypeId,
+      member_grade AS memberGrade,
+      exam_type AS examType
+    FROM exam_type
+    WHERE member_grade = #{memberGrade}
+    ORDER BY exam_type
+	</select>
+8
+  
+  <!-- 해당 회원이 입력한 시험 목록만 조회 -->
   <select id="selectAvailableExamTypeIds" resultType="int" parameterType="int">
     SELECT DISTINCT exam_type_id
     FROM actual_score
-    WHERE member_no = #{param1}
+    WHERE member_no = #{memberNo}
   </select>
 
-  <!-- 4. 기존 실제 성적 삭제 (시험+회원 기준) -->
+  <!-- 기존 실제 성적 삭제 (시험+회원 기준) -->
   <delete id="deleteActualScoresByMemberAndExam" parameterType="map">
     DELETE FROM actual_score
     WHERE member_no = #{memberNo}

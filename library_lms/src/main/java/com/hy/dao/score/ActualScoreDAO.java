@@ -12,7 +12,7 @@ public class ActualScoreDAO {
 	
 	// 1. INSERT - 실제 성적 저장
 	 public int insertActualScore(SqlSession session, ActualScore dto) {
-	        return session.insert("com.hy.mapper.score.ScoreMapper.insertActualScore", dto);
+	        return session.insert("com.hy.mapper.score.ActualScoreMapper.insertActualScore", dto);
 	 }
 	 
 	 // 여러 과목에 대한 실제 성적을 DB에 저장
@@ -28,24 +28,24 @@ public class ActualScoreDAO {
 	
 	 // 학년별 시험 분류 조회
 	 public List<ExamType> selectExamTypesByGrade(SqlSession session, int grade) {
-		    return session.selectList("com.hy.mapper.score.ExamTypeMapper.selectExamTypesByGrade", grade);
+		    return session.selectList("com.hy.mapper.score.ActualScoreMapper.selectExamTypesByGrade", grade);
 		}
 
 	 // 사용자 + 시험분류 기준 실제 성적 조회
 	 public List<ActualScore> selectActualScoresByMemberAndExam(SqlSession session, int memberNo, int examTypeId) {
 	        // mapper에서 parameterType="map"이므로 Map 사용
 	        Map<String, Integer> param = Map.of("memberNo", memberNo, "examTypeId", examTypeId);
-	        return session.selectList("com.hy.mapper.score.ScoreMapper.selectActualScoresByMemberAndExam", param);
+	        return session.selectList("com.hy.mapper.score.ActualScoreMapper.selectActualScoresByMemberAndExam", param);
 	    }
 	 
 	 public List<Integer> selectAvailableExamTypeIds(SqlSession session, int memberNo) {
-			return session.selectList("com.hy.mapper.score.ScoreMapper.selectAvailableExamTypeIds", memberNo);
+			return session.selectList("com.hy.mapper.score.ActualScoreMapper.selectAvailableExamTypeIds", memberNo);
 		}
 
 	 
 	 // 사용자 + 시험 분류 기준 실제 성적 삭제
 	 public int deleteActualScoresByMemberAndExam(SqlSession session, Map<String, Integer> param) {
-	        return session.delete("com.hy.mapper.score.ScoreMapper.deleteActualScoresByMemberAndExam", param);
+	        return session.delete("com.hy.mapper.score.ActualScoreMapper.deleteActualScoresByMemberAndExam", param);
 	    }
 
 }

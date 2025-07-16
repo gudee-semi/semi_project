@@ -11,7 +11,7 @@ public interface ActualScoreMapper {
     int insertActualScore(ActualScore dto);
 
     // 시험별 저장 점수 조회 (param1 = memberNo, param2 = examTypeId)
-    List<ActualScore> selectActualScoresByMemberAndExam(int memberNo, int examTypeId);
+    List<ActualScore> selectActualScoresByMemberAndExam(Map<String, Integer> param);
 
     // 입력된 실제 성적이 있는 시험 목록 조회 (param1 = memberNo)
     List<Integer> selectAvailableExamTypeIds(int memberNo);
