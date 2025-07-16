@@ -16,4 +16,10 @@
 		</choose>
 		WHERE member_no = #{memberNo}
 	</update>
+	
+	<select id="getUseStatusByNo" parameterType="_int" resultType="com.hy.dto.use.Use">
+		SELECT use_status_id AS useStatusId ,member_no AS memberNo ,status AS status
+		FROM use_status
+		WHERE member_no = #{memberNo}
+	</select>
 </mapper>

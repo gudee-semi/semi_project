@@ -14,4 +14,11 @@ public class UseDao {
 		return result;
 	}
 
+	public Use getUseStatusByNo(int memberNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Use result = session.selectOne("com.hy.mapper.use.UseMapper.getUseStatusByNo", memberNo);
+		session.close();
+		return result;
+	}
+
 }

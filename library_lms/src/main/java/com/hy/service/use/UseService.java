@@ -14,4 +14,8 @@ public class UseService {
 		return dao.updateUseCheckIn(param);
 	}
 
+	public Use getUseStatusByNo(int memberNo) {
+		return dao.getUseStatusByNo(memberNo);
+	}
+
 }

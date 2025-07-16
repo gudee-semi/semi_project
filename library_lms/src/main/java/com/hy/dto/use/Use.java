@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Use {
-	private int useId;
+	private int useStatusId;
 	private int memberNo;
 	private int status;
 }

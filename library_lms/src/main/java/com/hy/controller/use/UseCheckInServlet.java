@@ -5,11 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.use.Use;
 import com.hy.service.use.UseService;
 
 /**
@@ -52,6 +55,11 @@ public class UseCheckInServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_msg", "입실 처리 되었습니다.");
 			obj.put("res_code", "200");
+			HttpSession session = request.getSession(false);
+			if (session != null) {
+				Use param = service.getUseStatusByNo(memberNo);
+				session.setAttribute("useStatus", param);
+			}
 		} else {
 			obj.put("res_msg", "입실 실패.");
 			obj.put("res_code", "500");			
