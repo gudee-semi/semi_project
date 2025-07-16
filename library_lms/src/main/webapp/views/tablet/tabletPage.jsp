@@ -86,24 +86,5 @@
 	}
 	</script>
 
-
-	<script>
-		function confirmUse() {
-    	return confirm("태블릿을 사용하시겠습니까?");
-		}
-	</script>
-
-	<script>
-	function confirmReturn() {
-    return confirm("태블릿을 반납하시겠습니까?");
-	}
-	</script>
-
-		<%-- 5. 모두 사용 중이면 비활성화 --%>
-    <c:otherwise>
-        <button id="use-btn" disabled>사용 불가</button>
-    </c:otherwise>  
-	</c:choose>
-
 </body>		
 </html>
