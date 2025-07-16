@@ -7,29 +7,33 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/qnaSearch")
-public class QnaSearchServlet extends HttpServlet {
+import com.hy.service.qna.QnaService;
+
+@WebServlet("/qna/delete")
+public class QnaDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private QnaService qnaService = new QnaService();
        
-    public QnaSearchServlet() {
+    public QnaDeleteServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String searchBy = request.getParameter("searchBy");
-		String keyword = request.getParameter("keyword");
+		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
+		int result = qnaService.deleteQna(qnaId);
+		System.out.println(result + " asdasdsadsa");
 		
-		// 시험 출력
-//		System.out.println(searchBy);
-//		System.out.println(keyword);
-//		response.setContentType("text/html; charset=UTF-8");
-//		response.getWriter().print(searchBy);
-//		response.getWriter().print(keyword);
+		if(result > 0) {
+			response.sendRedirect("/qna/view");
+		} else {
+			response.sendRedirect("/qna/detail");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		
 	}
 
 }

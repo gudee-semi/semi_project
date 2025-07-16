@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.service.qna.AttachService;
@@ -16,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -46,6 +48,30 @@ public class QnaWriteServlet extends HttpServlet {
 		String content = request.getParameter("qnaContent");
 		String category = request.getParameter("qnaCategory");
 		System.out.println("여긴????");
+		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
+		
+		Member member = (Member)session.getAttribute("loginMember");
+		
+	    if (session != null) {
+	        if (member != null) {
+	        	System.out.println(member);
+	        } else {
+	        	System.out.println("로그인 정보가 없습니다.");
+	        	response.sendRedirect(request.getContextPath()+"/");
+	        	return;
+	        }
+	    } else {
+	    	System.out.println("세션이 존재하지 않습니다.");
+	    	response.sendRedirect(request.getContextPath()+"/");
+	    	return;
+	    }
+	    
+		int memberNo = member.getMemberNo();
+		
+	    String title = request.getParameter("qnaTitle");
+		String content = request.getParameter("qnaContent");
+		String category = request.getParameter("qnaCategory");
+		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 		
 		Qna qna = new Qna();
 		qna.setMemberNo(memberNo);

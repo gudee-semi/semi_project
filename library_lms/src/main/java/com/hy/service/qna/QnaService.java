@@ -10,7 +10,7 @@ import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
 public class QnaService {
-private QnaDao qnaDao = new QnaDao();
+	private QnaDao qnaDao = new QnaDao();
 	
 	public List<Qna> selectQnaList(Qna param){
 		return qnaDao.selectQnaList(param);
@@ -20,8 +20,20 @@ private QnaDao qnaDao = new QnaDao();
 		return qnaDao.selectQnaCount(param);
 	}
 	
+	public int updateViewCount(int qnaId) {
+		return qnaDao.updateViewCount(qnaId);
+	}
+	
+	public int updateQna(Qna qna) {
+		return qnaDao.updateQna(qna);
+	}
+	
 	public Qna selectQnaOne(int qnaNo) {
 		return qnaDao.selectQnaOne(qnaNo);
+	}
+	
+	public int deleteQna(int qnaNo) {
+		return qnaDao.deleteQna(qnaNo);
 	}
 	
 	public Attach selectAttachByQnaNo(int qnaId) {
@@ -39,12 +51,15 @@ private QnaDao qnaDao = new QnaDao();
 		try {
 			// 1. 게시글 등록
 			result = qnaDao.insertQna(session,qna);
+			System.out.println("qna"+result);
 			
 			// 2. 파일 정보 등록
 			if(attach != null && result > 0) {
 				attach.setQnaId(qna.getQnaId());
+				attach.setPath("C:\\upload\\qna\\");
 				result = qnaDao.insertAttach(session,attach);
 			}
+			System.out.println("attach"+result);
 			
 			// 3. commit 또는 rollback 
 			if(result > 0) {

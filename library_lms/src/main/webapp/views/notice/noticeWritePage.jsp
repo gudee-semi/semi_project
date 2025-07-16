@@ -50,6 +50,33 @@
 				success: (data) => {	
 					window.alert(data.res_msg);
 					if (data.res_code == 200) {
+	    <div><input type="file" name="file"></div>
+    
+    	<div class="menu-name">내용</div>
+    	<div><textarea name="content" rows="15" cols="80" required></textarea></div>
+	    
+	    <br>
+	    <input type="submit" value="등록">
+	</form>	
+	
+	<script>
+		$('#writeNoticeFrm').on('submit', (e) => {
+			e.preventDefault();
+			const formData = new FormData(document.getElementById('writeNoticeFrm'));
+			$.ajax({	
+				url: '/notice/write',
+				type: 'post',
+				data: formData,
+				enctype: 'multipart/form-data',
+				contentType: false,
+				processData: false,
+				cache: false,
+				dataType: 'json',
+				success: (data) => {	
+					window.alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/notice/list";
+					} else {						
 						location.href = "<%= request.getContextPath() %>/notice/list";
 					}
 				}

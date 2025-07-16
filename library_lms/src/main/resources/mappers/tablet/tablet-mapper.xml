@@ -28,5 +28,46 @@
   ) t2 ON tablet.tablet_id = t2.tablet_id
   SET tablet.tablet_available = 1
   </update>
+    <id property="tabletId" column="tablet_id"/>
+    <result property="tabletAvailable" column="tablet_available"/>
+    <result property="memberNo" column="member_no"/>
+</resultMap>
+
+	<!-- 태블릿 전체 데이터 조회 -->
+	<select id="selectAll" resultMap="TabletResultMap">
+    SELECT * FROM tablet
+	</select>
+	
+	<!-- 태블릿 로그 전체 조회 -->
+	<select id="selectAllTabletLog" resultType="com.hy.dto.tablet.TabletLog">
+    SELECT * FROM tablet_log
+    ORDER BY tablet_log_id DESC
+	</select>
+  
+  <!-- 태블릿 사용 -->
+	<update id="useTablet">
+    UPDATE tablet
+    JOIN (
+        SELECT tablet_id
+        FROM tablet
+        WHERE tablet_available = 0
+        ORDER BY tablet_id ASC
+        LIMIT 1
+    ) t2 ON tablet.tablet_id = t2.tablet_id
+    SET tablet.tablet_available = 1,
+        tablet.member_no = #{memberNo}
+	</update>
+	
+	<!-- 태블릿 반납 -->
+	<update id="returnTablet">
+    UPDATE tablet
+    SET tablet_available = 0, member_no = NULL
+    WHERE tablet_id = #{tabletId} AND member_no = #{memberNo}
+	</update>
+  
+<insert id="insertTabletLog">
+    INSERT INTO tablet_log (member_no, tablet_status)
+    VALUES (#{memberNo}, #{tabletStatus})
+</insert>
 
 </mapper>
