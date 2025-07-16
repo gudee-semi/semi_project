@@ -35,8 +35,8 @@
 <h1>성적 조회 및 분석</h1>
 
 <!-- 로그인 정보 숨겨서 JS에서 참조 -->
-<input type="hidden" id="memberNo" value="<%= memberNo %>">
-<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
+<%-- <input type="hidden" id="memberNo" value="<%= memberNo %>">
+<input type="hidden" id="studentGrade" value="<%= studentGrade %>"> --%>
 
 <!-- 시험 분류 체크박스 동적 생성 -->
 <div class="checkbox-group" id="exam-options">
