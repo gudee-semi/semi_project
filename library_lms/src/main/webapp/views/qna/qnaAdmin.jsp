@@ -25,7 +25,7 @@
     <tbody>
         <c:forEach var="t" items="${qnaList}">
             <tr style="cursor:pointer;"
-                onclick="location.href='/qna/detail?no=${t.qna.qnaId}'">
+                onclick="location.href='/qna/detailAdmin?no=${t.qna.qnaId}'">
                 <td>${t.qna.qnaId}</td>
                 <td>${t.qna.category}</td>
                 <td>${t.qna.title}</td>

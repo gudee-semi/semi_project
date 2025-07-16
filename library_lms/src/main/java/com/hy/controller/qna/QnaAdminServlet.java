@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import com.hy.dto.Member;
-import com.hy.dto.qna.QnaAdmin;
+import com.hy.dto.qna.Qna;
 import com.hy.service.qna.QnaAdminService;
+import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -20,7 +21,8 @@ public class QnaAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private QnaAdminService qnaAdminService = new QnaAdminService();
-
+	private QnaService qnaService = new QnaService();
+	
     public QnaAdminServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -44,7 +46,7 @@ public class QnaAdminServlet extends HttpServlet {
         int memberNo = loginMember.getMemberNo();
 		
 		// 게시글 목록 조회
-		List<QnaAdmin> qnaList = qnaAdminService.selectAll();
+		List<Qna> qnaList = qnaService.selectQnaList(new Qna());
 		
 		// JSP에서 사용할 데이터 저장
 		request.setAttribute("qnaList", qnaList);

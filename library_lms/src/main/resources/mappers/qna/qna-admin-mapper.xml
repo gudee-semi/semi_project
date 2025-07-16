@@ -25,15 +25,25 @@
 		<result property="content" column="content" />
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
-		
-		<association property="qna" javaType="com.hy.dto.qna.Qna" resultMap="QnaMap"/>
+
+	<association property="qna" javaType="com.hy.dto.qna.Qna"
+		resultMap="QnaMap" />
 	</resultMap>
+	
+	  <select id="selectQnaList" resultMap="QnaAdminMap">
+        SELECT * FROM qna
+    </select>
 
+    <select id="selectReplyList" parameterType="int" resultType="com.hy.dto.qna.QnaAdmin">
+        SELECT * FROM qna_reply
+        WHERE qna_id = #{qnaId}
+    </select>
 
-	<!-- 전체 테이터 조회 -->
-	<select id="selectAll" resultMap="QnaAdminMap">
-		SELECT * FROM qna
-	</select>
+	<insert id="insertReply">
+		INSERT INTO qna_reply (qna_id, content, member_no,
+		reg_date)
+		VALUES (#{qnaId}, #{content}, #{adminId}, NOW())
+	</insert>
 	
 
 	

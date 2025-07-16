@@ -8,5 +8,9 @@ public interface QnaAdminMapper {
 	
 	// 테이블 전체 조회
 	List<QnaAdmin> selectAll();
+	
+	List<QnaAdmin> selectReplyList(int qnaId);
+	
+    void insertReply(int qnaId, String content);
 
 }
