@@ -1,38 +1,37 @@
-package com.hy.controller.qna;
+package com.hy.controller.tablet;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.hy.dto.tablet.Tablet;
+import com.hy.service.tablet.TabletService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-import com.hy.service.qna.QnaService;
-
-@WebServlet("/qna/delete")
-public class QnaDeleteServlet extends HttpServlet {
+@WebServlet("/tablet/admin")
+public class TabletAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private QnaService qnaService = new QnaService();
-       
-    public QnaDeleteServlet() {
+    private TabletService tabletService = new TabletService();   
+	
+    public TabletAdminServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int qnaId = Integer.parseInt(request.getParameter("no"));
-		
-		int result = qnaService.deleteQna(qnaId);
-		System.out.println(result + " asdasdsadsa");
-		
-		if(result > 0) {
-			response.sendRedirect("/qna/view");
-		} else {
-			response.sendRedirect("/qna/detail");
-		}
+		request.getRequestDispatcher("views/tablet/tabletAdmin.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
+		List<Tablet> tabletList = tabletService.selectAll();
+		
+		
+		
 		
 	}
 
