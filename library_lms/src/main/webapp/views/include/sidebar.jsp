@@ -57,16 +57,28 @@
 			<div class="row align-items-start">
 			    <div class="col">
 			    	<form id="check-in">
-			    		<input type="hidden" name="check" value="1" id="check">
+			    		<input type="hidden" name="check" value="1" id="check1">
 			    		<input type="submit" value="입실" id="check-in">
 			    	</form>
 			    </div>
    			    <div class="col">
 			    	<form id="check-out">
+			    		<input type="hidden" name="check" value="0" id="check2">
 			    		<input type="submit" value="퇴실" id="check-out">
 			    	</form>
 			    </div>
-			    <div class="col"><a href="/use/tempOut?memberNo=${ loginMember.memberNo }">외출</a></div>
+    			<div class="col">
+			    	<form id="temp-out">
+			    		<input type="hidden" name="check" value="2" id="check3">
+			    		<input type="submit" value="외출" id="temp-out">
+			    	</form>
+			    </div>
+      			<div class="col">
+			    	<form id="temp-in">
+			    		<input type="hidden" name="check" value="1" id="check4">
+			    		<input type="submit" value="재입실" id="temp-in">
+			    	</form>
+			    </div>
 		    </div>			
 		</div>
 		<c:set var="memberNo" value="${ loginMember.memberNo }"/>
@@ -74,24 +86,91 @@
 		<script>
 			$('#check-in').on('submit', (e) => {
 				e.preventDefault();
-				const memberNo = ${ loginMember.memberNo };
-				const check = $('#check').val();
-				
-				$.ajax({
-					url: '/use/checkIn',
-	                type: 'post',
-	                data: {
-	                    memberNo: memberNo,
-	                    check: check;
-	                },
-	                dataType: 'json',
-	                success: (data) => {
-	                	window.alert(data.res_msg);
-	                }
-				})
+				const checker1 = confirm('입실하시겠습니까?');
+				if (checker1) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = $('#check1').val();
+					
+					$.ajax({
+						url: '/use/checkIn',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                }
+					});					
+				}
 			});
 			
+			$('#check-out').on('submit', (e) => {
+				e.preventDefault();
+				const checker2 = confirm('퇴실하시겠습니까?');
+				if (checker2) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = $('#check2').val();
+					
+					$.ajax({
+						url: '/use/checkOut',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                }
+					});					
+				}
+			});
 			
+			$('#temp-out').on('submit', (e) => {
+				e.preventDefault();
+				const checker3 = confirm('외출하시겠습니까?');
+				if (checker3) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = $('#check3').val();
+					
+					$.ajax({
+						url: '/use/tempOut',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                }
+					});					
+				}
+			});
+			
+			$('#temp-in').on('submit', (e) => {
+				e.preventDefault();
+				const checker4 = confirm('재입실하시겠습니까?');
+				if (checker4) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = $('#check4').val();
+					
+					$.ajax({
+						url: '/use/tempIn',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                }
+					});					
+				}
+			});
 		</script>
 
      	<div class="container text-center">

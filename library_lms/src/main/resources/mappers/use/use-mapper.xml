@@ -2,7 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hy.mapper.use.UseMapper">
 	
-	<update id="updateUseCheckIn" parameterType="_int">
-		UPDATE use_status SET status = 1 WHERE member_no = #{memberNo}
+	<update id="updateUseCheckIn" parameterType="com.hy.dto.use.Use">
+		<choose>
+			<when test="status == 1">
+				UPDATE use_status SET status = 1 		
+			</when>
+			<when test="status == 0">
+				UPDATE use_status SET status = 0 		
+			</when>
+			<when test="status == 2">
+				UPDATE use_status SET status = 2
+			</when>
+		</choose>
+		WHERE member_no = #{memberNo}
 	</update>
 </mapper>

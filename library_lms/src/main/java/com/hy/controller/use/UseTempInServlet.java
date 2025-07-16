@@ -13,17 +13,17 @@ import org.json.simple.JSONObject;
 import com.hy.service.use.UseService;
 
 /**
- * Servlet implementation class UseCheckInServlet
+ * Servlet implementation class UseTempInServlet
  */
-@WebServlet("/use/checkIn")
-public class UseCheckInServlet extends HttpServlet {
+@WebServlet("/use/tempIn")
+public class UseTempInServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UseService service = new UseService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UseCheckInServlet() {
+    public UseTempInServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,8 +32,8 @@ public class UseCheckInServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -44,23 +44,23 @@ public class UseCheckInServlet extends HttpServlet {
 		
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 		int check = Integer.parseInt(request.getParameter("check"));
+		System.out.println(check);
 		
 		int result = service.updateUseCheckIn(memberNo, check);
 		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
-			obj.put("res_msg", "입실 처리 되었습니다.");
+			obj.put("res_msg", "재입실 처리 되었습니다.");
 			obj.put("res_code", "200");
 		} else {
-			obj.put("res_msg", "입실 실패.");
+			obj.put("res_msg", "재입실 실패.");
 			obj.put("res_code", "500");			
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print(obj);
-		
 	}
 
 }

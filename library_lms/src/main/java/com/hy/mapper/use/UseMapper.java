@@ -1,5 +1,7 @@
 package com.hy.mapper.use;
 
+import com.hy.dto.use.Use;
+
 public interface UseMapper {
-	int updateUseCheckIn(int memberNo);
+	int updateUseCheckIn(Use param);
 }
