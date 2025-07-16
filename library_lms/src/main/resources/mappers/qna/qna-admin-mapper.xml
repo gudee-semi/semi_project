@@ -3,17 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hy.mapper.qna.QnaAdminMapper">
+<mapper namespace="com.hy.mapper.qna.QnaAdminMapper">		
 
-	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaAdmin">
-    <id property="qnaReplyId" column="qna_reply_id"/>
+	<resultMap id="QnaMap" type="com.hy.dto.qna.Qna">
+		<id property="qnaId" column="qna_id" />
+		<result property="memberId" column="member_no" />
+		<result property="category" column="category" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		<result property="visibility" column="visibility" />
+		<result property="viewCount" column="view_count" />
+		<result property="answerStatus" column="answer_status" />
+		<result property="memberNo" column="member_no" />
 	</resultMap>
-	
+		
+	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaAdmin">
+		<id property="qnaReplyId" column="qna_reply_id" />
+		<result property="qnaId" column="qna_id" />
+		<result property="content" column="content" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		
+		<association property="qna" javaType="com.hy.dto.qna.Qna" resultMap="QnaMap"/>
+	</resultMap>
+
 
 	<!-- 전체 테이터 조회 -->
 	<select id="selectAll" resultMap="QnaAdminMap">
 		SELECT * FROM qna
 	</select>
+	
+
+	
+	
 
 
 
