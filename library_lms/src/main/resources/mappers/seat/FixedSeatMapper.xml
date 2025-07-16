@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hy.mapper.seat.FixedSeatMapper">
+
+    <select id="selectAllFixedSeatMembers" resultType="com.hy.dto.seat.FixedSeatMemberView">
+		SELECT 
+		    m.member_no,
+		    m.member_name,
+		    m.member_grade,
+		    m.member_school,
+		    m.member_penalty,
+		    f.seat_no
+		FROM member m
+		JOIN fixed_seat f ON f.member_no = m.member_no
+		WHERE m.member_seat = 1
+
+    </select>
+
+	<update id="updateFixedSeat">
+	    UPDATE fixed_seat
+	    SET seat_no = #{seatNo}
+	    WHERE member_no = #{memberNo}
+	</update>
+	
+</mapper>

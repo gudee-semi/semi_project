@@ -26,5 +26,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	  <mapper resource="/mappers/login/login-mapper.xml"/>
 	  <mapper resource="/mappers/seat/seat-mapper.xml"/>
 	 	<mapper resource="/mappers/qna/qna-admin-mapper.xml"/>
+	 	<mapper resource="mappers/seat/FixedSeatMapper.xml"/>
 	</mappers>
 </configuration>

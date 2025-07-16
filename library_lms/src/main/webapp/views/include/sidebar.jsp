@@ -104,6 +104,10 @@
 	        	<a class="dropdown-item" href="<c:url value='/qna/view/admin' />">질의응답 관리자페이지</a>
 	        </li>
 	        
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/admin/fixed-seat' />">좌석관리 관리자페이지</a>
+	        </li>
+	        
      	    <li class="nav-item">
 	        	<a class="dropdown-item" href="#">마이페이지</a>
 	        </li>
