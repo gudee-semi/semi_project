@@ -46,7 +46,7 @@
 <body>
 	<div class="container text-center">
 
-	    <img src="" class="img-fluid use" alt="...">
+	    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="img-fluid use" alt="...">
 	
 	    <div class="col">홍길동</div>
 	
