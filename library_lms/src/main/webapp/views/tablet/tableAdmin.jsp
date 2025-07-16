@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>태블릿 사용현황</title>
 
 <style>
 table {
@@ -32,19 +32,25 @@ tr:last-child td {
 		<thead>
 			<tr>
 				<th>태블릿 No</th>
-				<th>회원 이름</th>
-				<th>반납여부</th>
+				<th>사용자</th>
+				<th></th>
 			</tr>
 		</thead>
 	    <tbody>
-	        <c:forEach var="t" items="${tabletList}">
-	            <tr style="cursor:pointer;"
-	                onclick="location.href='/qna/admin?qnaId=${t.qnaId}'">
-	                <td>${t.qnaId}</td>
-	                <td>${t.category}</td>
-	                <td>${t.modDate}</td>
-	            </tr>
-	        </c:forEach>
+	        <c:forEach var="t" items="${tabletList}" varStatus="status">
+				<tr>
+				<td>${t.tablet_id}</td>
+				<c:forEach var="tl" items="${tabletLogList}">
+					<c:if test="${t.memberNo eq tl.memberNo and tl.tablet_status == 1}">
+						<td>${t.memberName}</td>
+						<td><input type="checkbox" id="using" name="using" value="${t.memberNo}"></td>
+					</c:if>
+					<c:if test="${t.memberNo ne tl.memberNo and tl.tablet_status == 0}">
+						<td></td>
+						<td></td>
+					</c:if>
+				</c:forEach>
+			</c:forEach>
 	    </tbody>
 	</table>
 	

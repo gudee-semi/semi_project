@@ -38,5 +38,8 @@ public class TabletService {
         return tabletDao.selectAllTabletLog();
     }
 
+    public List<Tablet> selectAllTabletMemberName() {
+		return tabletDao.selectAllTabletMemberName();
+	}	
 	
 }

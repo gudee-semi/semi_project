@@ -63,6 +63,8 @@
 	<div class="container">
 	<h1>질의응답 목록</h1>
 	
+	<a href="/tablet/admin">f</a>
+	
 	<div class="searchBox">
 		<form method="get" action="<c:url value='/qna/view'/>">
 

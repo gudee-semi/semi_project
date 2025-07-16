@@ -27,4 +27,5 @@ public interface TabletMapper {
 	// 로그 전체 조회
 	List<TabletLog> selectAllTabletLog();
     
+	List<Tablet> selectAllTabletMemberName();
 }
