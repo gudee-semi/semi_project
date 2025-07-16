@@ -59,8 +59,15 @@
 			re_name= #{reName},
 			path = #{path}
 		WHERE member_no =#{memberNo}
-
 	</update>
+	<delete id ="deleteMember" parameterType="_int">
+		DELETE FROM member
+		WHERE member_no = #{memberNo}
+	</delete>
+	<delete id ="deleteMemberAvatar" parameterType="_int">
+		DELETE FROM member_avatar
+		WHERE member_no = #{memberNo}
+	</delete>
 	
 	
 	

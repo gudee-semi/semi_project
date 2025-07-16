@@ -11,4 +11,6 @@ public interface MypageMapper {
 	 int updateMemberGrade(Member param);
 	 int updateProfileAttach(ProfileAttach param);
 	 Member selectMember(int memberNo);
+	 int deleteMember(int memberNo);
+	 int deleteMemberAvatar(int memberNo);
 }

@@ -52,5 +52,14 @@ public class MyPageService {
 	public Member selectMember(int memberNo) {
 		return dao.selectMember(memberNo);
 	}
+
+	public int deleteMember(int memberNo) {
+		int result = 0;
+		if(dao.deleteMemberAvatar(memberNo)>0 && dao.deleteMember(memberNo)>0) {
+			result=1;
+		}
+		
+		return result;
+	}
 	
 }

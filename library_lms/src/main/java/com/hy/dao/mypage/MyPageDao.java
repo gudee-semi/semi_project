@@ -57,4 +57,18 @@ public class MyPageDao {
 		return member;
 	}
 
+	public int deleteMember(int memberNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.hy.mapper.mypage.MypageMapper.deleteMember", memberNo);
+		session.close();
+		return result;
+	}
+
+	public int deleteMemberAvatar(int memberNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.hy.mapper.mypage.MypageMapper.deleteMemberAvatar", memberNo);
+		session.close();
+		return result;
+	}
+
 }
