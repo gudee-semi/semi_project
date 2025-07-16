@@ -24,7 +24,7 @@
 	    <div><textarea name="title" rows="1" cols="80" required></textarea></div>
     
 	    <div class="menu-name">파일첨부</div>
-	    <div><input type="file" name="file" ></div>
+	    <div><input type="file" name="file"></div>
     
     	<div class="menu-name">내용</div>
     	<div><textarea name="content" rows="15" cols="80" required></textarea></div>
@@ -37,7 +37,6 @@
 		$('#writeNoticeFrm').on('submit', (e) => {
 			e.preventDefault();
 			const formData = new FormData(document.getElementById('writeNoticeFrm'));
-			console.log(formData);
 			$.ajax({	
 				url: '/notice/write',
 				type: 'post',
@@ -50,6 +49,8 @@
 				success: (data) => {	
 					window.alert(data.res_msg);
 					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/notice/list";
+					} else {						
 						location.href = "<%= request.getContextPath() %>/notice/list";
 					}
 				}
