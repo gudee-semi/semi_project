@@ -24,7 +24,7 @@ public class Qna extends Paging{
 	private int answerStatus;
 	
 	private int memberNo;
-	private int memberName;
+	private String memberName;
 	private String keyword;
 	private String keywordIn;
 

@@ -40,7 +40,6 @@ public class ProfileAttachService {
 		return result;
 		
 	}
-	
 	public static ProfileAttach getFileMeta(Part part, File uploadDir) {
 		//원본 파일 이름
 		String dirPath="C://upload/profile";
@@ -60,6 +59,7 @@ public class ProfileAttachService {
 			OutputStream output = Files.newOutputStream(file.toPath())
 			){
 			//output 경로에 input에 담긴 데이터 보내기
+			
 			input.transferTo(output);
 			
 			
@@ -74,4 +74,5 @@ public class ProfileAttachService {
 		a.setPath(dirPath+"/"+saveName+"."+ext);
 		return a;		
 	}
+	
 }

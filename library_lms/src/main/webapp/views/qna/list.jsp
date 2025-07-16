@@ -76,7 +76,6 @@
 		</form>
 	</div>
 	
-
 	<!-- <script>
 		$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
 	</script> -->
@@ -134,7 +133,6 @@
 	<c:if test="${not empty qnaList }">
 		<div class="pageButton">
 			<c:if test="${paging.prev }">
-
 				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${keywordIn }'/>">
 					&laquo;
 				</a>
