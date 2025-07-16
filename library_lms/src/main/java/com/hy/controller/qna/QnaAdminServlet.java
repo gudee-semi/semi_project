@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 public class QnaAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	//서비스 객체 생성
 	private QnaAdminService qnaAdminService = new QnaAdminService();
 	
     public QnaAdminServlet() {
@@ -44,21 +43,15 @@ public class QnaAdminServlet extends HttpServlet {
 
 		int memberNo = loginMember.getMemberNo();
 
-    // ★ 여기! qnaId 파싱(안전 가드) 넣는 자리
-    String idStr = request.getParameter("qnaId");   // 또는 no, idx 등
-    if (idStr == null || idStr.isEmpty()) {         // 없으면 목록으로
-        response.sendRedirect(request.getContextPath() + "/qna/list/admin");
-        return;
-    }
-    int qnaId = Integer.parseInt(idStr);            // 안전하게 int 변환 완료
+    // 1. QnA 목록 데이터 조회 (Service 호출)
+    List<QnaAdmin> qnaAdminList = qnaAdminService.selectAll();
 
-    // 질문 + 답글 목록 조회
-    QnaAdmin reply = qnaAdminService.selectReplyOne(qnaId);
-    request.setAttribute("reply", reply);
+    // 2. 조회한 리스트를 request 영역에 저장 (JSP에서 사용 가능)
+    request.setAttribute("qnaAdminList", qnaAdminList);
 
-    // JSP 포워드
-    RequestDispatcher rd = request.getRequestDispatcher("/views/qna/detailAdmin.jsp");
-    rd.forward(request, response);
+    // 3. qnalistadmin.jsp로 포워딩 (화면 전환)
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/views/qna/qnaListAdmin.jsp");
+    dispatcher.forward(request, response);
 		
 	}
 

@@ -26,10 +26,10 @@ public class QnaListAdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 
-    List<QnaAdmin> qnaAdminList = qnaAdminService.selectQnaList();
+    List<QnaAdmin> qnaAdminList = qnaAdminService.selectAll();
     request.setAttribute("qnaAdminList", qnaAdminList);
 
-    request.getRequestDispatcher("/views/qna/list.jsp").forward(request, response);
+    request.getRequestDispatcher("/views/qna/list/admin.jsp").forward(request, response);
 	
 	}
 

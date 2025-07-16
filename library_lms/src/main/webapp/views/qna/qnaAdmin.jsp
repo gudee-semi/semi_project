@@ -25,7 +25,7 @@
     <tbody>
         <c:forEach var="t" items="${qnaList}">
             <tr style="cursor:pointer;"
-                onclick="location.href='/qna/detailAdmin?no=${t.qna.qnaId}'">
+                onclick="location.href='/qna/detail/Admin?no=${t.qna.qnaId}'">
                 <td>${t.qna.qnaId}</td>
                 <td>${t.qna.category}</td>
                 <td>${t.qna.title}</td>
@@ -37,18 +37,7 @@
     </tbody>
 </table>
 
-<!-- 답글 1건만 출력 -->
-<c:if test="${not empty reply}">
-    <h3>관리자 답글</h3>
-    <table>
-        <tr><th>No</th><td>${reply.qnaReplyId}</td></tr>
-        <tr><th>내용</th><td>${reply.content}</td></tr>
-        <tr><th>작성일</th><td>${reply.regDate}</td></tr>
-    </table>
-</c:if>
-<c:if test="${empty reply}">
-    <p>아직 답글이 없습니다.</p>
-</c:if>
+
 
 <style>
 table {

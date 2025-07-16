@@ -30,7 +30,7 @@
 		resultMap="QnaMap" />
 	</resultMap>
 	
-	  <select id="selectQnaList" resultMap="QnaAdminMap">
+	  <select id="selectAll" resultMap="QnaAdminMap">
         SELECT * FROM qna
     </select>
 

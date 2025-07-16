@@ -13,13 +13,12 @@ import com.hy.dto.qna.QnaAdmin;
 public class QnaAdminDao {
 	
 	// 전체 목록 조회
-	public List<QnaAdmin> selectQnaList() {
-		
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
-		List<QnaAdmin> list = session.selectList("com.hy.mapper.qna.QnaAdminMapper.selectQnaList");
-		session.close();		
-		return list;
-	}
+  public List<QnaAdmin> selectAll() {
+    SqlSession session = SqlSessionTemplate.getSqlSession(true);
+    List<QnaAdmin> list = session.selectList("com.hy.mapper.qna.QnaAdminMapper.selectAll");
+    session.close();
+    return list;
+}
 	
 	// 답글 한개 조회
 	public QnaAdmin selectReplyOne(int qnaId) {

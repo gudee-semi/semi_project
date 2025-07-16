@@ -9,9 +9,9 @@ public class QnaAdminService {
 	
 	private QnaAdminDao qnaAdminDao = new QnaAdminDao();
 	
-	// 게시글 조회
-	public List<QnaAdmin> selectQnaList() {
-		return qnaAdminDao.selectQnaList();
+	// 문의글 조회
+	public List<QnaAdmin> selectAll() {
+		return qnaAdminDao.selectAll();
 	}
 
 	// 답글(댓글) 한개 메서드

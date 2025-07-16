@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/qna/detailAdmin")
+@WebServlet("/qna/detail/Admin")
 public class QnaDetailAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
