@@ -6,15 +6,20 @@
 <mapper namespace="com.hy.mapper.tablet.TabletMapper">
 
 <resultMap id="TabletResultMap" type="com.hy.dto.tablet.Tablet">
-    <!-- DB 컬럼명과 DTO 필드명 매핑 -->
     <id property="tabletId" column="tablet_id"/>
     <result property="tabletAvailable" column="tablet_available"/>
     <result property="memberNo" column="member_no"/>
 </resultMap>
 
-	<!-- selectAll: tablet 테이블의 전체 데이터 조회 쿼리 -->
+	<!-- 태블릿 전체 데이터 조회 -->
 	<select id="selectAll" resultMap="TabletResultMap">
     SELECT * FROM tablet
+	</select>
+	
+	<!-- 태블릿 로그 전체 조회 -->
+	<select id="selectAllTabletLog" resultType="com.hy.dto.tablet.TabletLog">
+    SELECT * FROM tablet_log
+    ORDER BY tablet_log_id DESC
 	</select>
   
   <!-- 태블릿 사용 -->
@@ -38,9 +43,9 @@
     WHERE tablet_id = #{tabletId} AND member_no = #{memberNo}
 	</update>
   
-	<insert id="insertLogTablet">
-    INSERT INTO log_tablet (tablet_id, currenttime, status)
-    VALUES (#{tabletId}, NOW(), #{status})
-	</insert>
+<insert id="insertTabletLog">
+    INSERT INTO tablet_log (member_no, tablet_status)
+    VALUES (#{memberNo}, #{tabletStatus})
+</insert>
 
 </mapper>

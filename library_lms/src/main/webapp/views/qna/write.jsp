@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>질의응답 작성 페이지</title>
-<script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script>
+<%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
 	textarea {
       resize: none;
@@ -50,6 +51,11 @@
 		    <br>
 		    <input type="submit" value="등록">
 		</form>
+		
+		<form action="/qna/view" method="get">
+			<button>목록</button>
+		</form>
+	
 	<script>
 		$("#writeQnaFrm").submit(function(e){
 			e.preventDefault();

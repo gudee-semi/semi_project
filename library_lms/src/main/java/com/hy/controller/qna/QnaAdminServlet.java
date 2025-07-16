@@ -1,10 +1,13 @@
-package com.hy.controller.tablet;
+package com.hy.controller.qna;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.hy.dto.Member;
-import com.hy.service.tablet.TabletService;
+import com.hy.dto.qna.QnaAdmin;
+import com.hy.service.qna.QnaAdminService;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,25 +15,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/tablet/use")
-public class TabletUseServlet extends HttpServlet {
+@WebServlet("/qna/view/admin")
+public class QnaAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private TabletService tabletService = new TabletService();
+	private QnaAdminService qnaAdminService = new QnaAdminService();
 
-    public TabletUseServlet() {
+    public QnaAdminServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		// 1. 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
+		
+		// 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login/view");
@@ -44,16 +42,22 @@ public class TabletUseServlet extends HttpServlet {
         }
         
         int memberNo = loginMember.getMemberNo();
-        int tabletId = Integer.parseInt(request.getParameter("tabletId"));
+		
+		// 게시글 목록 조회
+		List<QnaAdmin> qnaList = qnaAdminService.selectAll();
+		
+		// JSP에서 사용할 데이터 저장
+		request.setAttribute("qnaList", qnaList);
+		
+		// JSP로 포워드
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/qna/qnaAdmin.jsp");
+		dispatcher.forward(request, response);
+		
+	}
 
-        // 태블릿 사용 처리
-        tabletService.useTablet(tabletId, memberNo);
-
-        // 로그 남기기 (1: 사용중)
-        tabletService.insertTabletLog(tabletId, memberNo, 1);
-
-        response.sendRedirect(request.getContextPath() + "/tablet/view");
-	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

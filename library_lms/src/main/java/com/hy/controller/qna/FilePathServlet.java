@@ -27,7 +27,7 @@ public class FilePathServlet extends HttpServlet {
 		int attachNo = Integer.parseInt(request.getParameter("no"));
 		Attach attach = service.selectAttachByAttachNo(attachNo);
 		// attach_no, board_no, ori_name, re_name
-		System.out.println(attach);
+		System.out.println("attach : "+attach);
 		
 		// 1. 파일의 경로 지정
 		String filePath = "C:\\upload\\qna\\"+attach.getReName();
@@ -59,11 +59,6 @@ public class FilePathServlet extends HttpServlet {
 				out.write(buffer,0,byteRead);
 			}
 		}
-		
-		
-		
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

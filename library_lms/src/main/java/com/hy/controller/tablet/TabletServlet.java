@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.hy.dto.Member;
 import com.hy.dto.tablet.Tablet;
+import com.hy.dto.tablet.TabletLog;
 import com.hy.service.tablet.TabletService;
 
 import jakarta.servlet.RequestDispatcher;
@@ -28,7 +29,7 @@ public class TabletServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// 1. 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
+		// 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login/view");
@@ -43,21 +44,25 @@ public class TabletServlet extends HttpServlet {
         
         int memberNo = loginMember.getMemberNo();
 
-        // 2. 태블릿 목록 조회
+        // 태블릿 목록 조회
         List<Tablet> tabletList = tabletService.selectAll();
+        
+        // 태블릿 로그 목록 조회
+        List<TabletLog> tabletLogList = tabletService.selectAllTabletLog();
+        request.setAttribute("tabletLogList", tabletLogList);
 
-        // 3. 각 태블릿별로 내가 사용중인지 체크하는 리스트 생성
+        // 각 태블릿별로 내가 사용중인지 체크하는 리스트 생성
         List<Boolean> usingList = new ArrayList<>();
         for (Tablet tablet : tabletList) {
             boolean using = tablet.getMemberNo() != null && tablet.getMemberNo().equals(memberNo);
             usingList.add(using);
         }
 
-        // 4. JSP에서 사용할 데이터 저장
+        // JSP에서 사용할 데이터 저장
         request.setAttribute("tabletList", tabletList);
         request.setAttribute("usingList", usingList);
 
-        // 5. JSP로 포워드
+        // JSP로 포워드
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/tablet/tabletPage.jsp");
         dispatcher.forward(request, response);
 
