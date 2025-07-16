@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<p>제목 : ${ notice.title }</p>
@@ -18,5 +20,45 @@
 	    <img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
 	    <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>
 	</c:if>
+	
+	<a href="/notice/list">목록</a>
+	
+	<c:if test="${ memberNo eq 1 }">
+		<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
+		
+		<form id="noticeDeleteFrm">
+			<input type="submit" value="삭제">
+		</form>
+	</c:if>	
+	<c:set var="noticeId" value="${ notice.noticeId }"/>
+	
+	<script>
+		$("#noticeDeleteFrm").on('submit', (e) => {
+			e.preventDefault();
+			
+			const check = confirm('정말로 게시물을 삭제하시겠습니까?');
+			
+			if (check) {
+				const noticeId = ${noticeId}
+				
+				$.ajax({
+					 url: '/notice/delete',
+	                 type: 'post',
+	                 data: {
+	                     noticeId: noticeId
+	                 },
+	                 dataType: 'json',
+	                 success: (data) => {
+	                	window.alert(data.res_msg);
+	 					if (data.res_code == 200) {
+	 						location.href = "<%= request.getContextPath() %>/notice/list";
+	 					} else {						
+	 						location.href = "<%= request.getContextPath() %>/notice/list";
+	 					}
+	                 }
+				});
+			}
+		});
+	</script>
 </body>
 </html>
