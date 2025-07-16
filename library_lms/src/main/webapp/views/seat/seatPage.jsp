@@ -341,7 +341,7 @@ button:disabled{
 		const isYes = confirm('이 좌석으로 하시겠습니까?');
 			
 			if(isYes){
-			
+
 				const newSeatNo = selectedSeat.dataset.seatNo;
 				const oldSeatNo = currentUsedSeat ? currentUsedSeat.dataset.seatNo : null;
 				

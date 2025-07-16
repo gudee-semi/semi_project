@@ -7,7 +7,9 @@ import com.hy.dto.tablet.Tablet;
 import com.hy.dto.tablet.TabletLog;
 
 public class TabletService {	
+
 	
+
 	private TabletDao tabletDao = new TabletDao();
 	
 	// 태블릿 조회
@@ -20,6 +22,7 @@ public class TabletService {
 		tabletDao.useTablet(tabletId, memberNo);
 	}
 	
+
 	// 태블릿 반납
 	public void returnTablet(int tabletId, int memberNo) {
 		tabletDao.returnTablet(tabletId, memberNo);

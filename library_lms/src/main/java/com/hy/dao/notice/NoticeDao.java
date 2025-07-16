@@ -27,18 +27,15 @@ public class NoticeDao {
 	public Notice selectNoticeByNo(int noticeId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Notice result = session.selectOne("com.hy.mapper.notice.NoticeMapper.selectNoticeByNo", noticeId);
-		session.close();
 		return result;
 	}
 
 	public int insertNotice(SqlSession session, Notice notice) {
-		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertNotice", notice);
-		return result;
+		return session.insert("com.hy.mapper.notice.NoticeMapper.insertNotice", notice);
 	}
 
 	public int insertAttach(SqlSession session, NoticeAttach attach) {
-		int result = session.insert("com.hy.mapper.notice.NoticeMapper.insertAttach", attach);
-		return result;
+		return session.insert("com.hy.mapper.notice.NoticeMapper.insertAttach", attach);
 	}
 
 	public NoticeAttach selectAttachByNo(int noticeId) {
