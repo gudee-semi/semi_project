@@ -18,7 +18,7 @@
 		<c:if test="${t.tabletAvailable == 0}">
 			<c:set var="usable" value="${usable + 1}" />
 		</c:if>
-
+    
 	</c:forEach>
 
 
