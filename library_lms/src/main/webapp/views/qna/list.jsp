@@ -66,18 +66,18 @@
 	<div class="searchBox">
 		<form method="get" action="<c:url value='/qna/view'/>">
 			<select name="keywordIn" id="keywordIn">
-				<option value="">구분</option>
-				<option value="제목">제목</option>
-				<option value="작성자">작성자</option>
+				<option value="구분"${paging.keywordIn == "구분" ? "selected" : "" }>구분</option>
+				<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
+				<option value="작성자"${paging.keywordIn == "작성자" ? "selected" : "" }>작성자</option>
 			</select>
 			<input type="text" name="keyword" placeholder="검색 기준 선택" value="${paging.keyword }">
 			<input type="submit" value="검색">
 		</form>
 	</div>
 	
-	<script>
+	<!-- <script>
 		$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
-	</script>
+	</script> -->
 	
 	<div class="row listhead">
 		<div class="no">No</div>
@@ -89,7 +89,6 @@
 	</div>
 	
 	<c:forEach var="q" items="${qnaList }">
-	
 		<c:if test ="${q.memberId eq loginMember.memberId}">
 			<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
 				<div class="no">${q.qnaId }</div>
@@ -100,7 +99,7 @@
 				<c:if test="${q.visibility == 0 }">
 					<div class="title">🔒 ${q.title }</div>
 				</c:if>
-				<div class="writer">${q.memberId }</div>
+				<div class="writer">${q.memberName }</div>
 				<div class="regDate">${q.regDate }</div>
 				<div class="count">${q.viewCount }</div>
 			</div>
@@ -112,7 +111,7 @@
 					<div class="no">${q.qnaId }</div>
 					<div class="category">${q.category }</div>
 					<div class="title">${q.title }</div>
-					<div class="writer">${q.memberId }</div>
+					<div class="writer">${q.memberName }</div>
 					<div class="regDate">${q.regDate }</div>
 					<div class="count">${q.viewCount }</div>
 				</div>
@@ -122,7 +121,7 @@
 					<div class="no">${q.qnaId }</div>
 					<div class="category">${q.category }</div>
 					<div class="title">🔒비공개된 글입니다.</div>
-					<div class="writer">${q.memberId }</div>
+					<div class="writer">${q.memberName }</div>
 					<div class="regDate">${q.regDate }</div>
 					<div class="count">${q.viewCount }</div>
 				</div>
@@ -133,17 +132,17 @@
 	<c:if test="${not empty qnaList }">
 		<div class="pageButton">
 			<c:if test="${paging.prev }">
-				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }'/>">
+				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${keywordIn }'/>">
 					&laquo;
 				</a>
 			</c:if>		
 			<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
-				<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }'/>">
+				<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }&keywordIn=${keywordIn }'/>">
 					${i }
 				</a>
 			</c:forEach>
 			<c:if test="${paging.next }">
-				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }'/>">
+				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${keywordIn }'/>">
 					&raquo;
 				</a>
 			</c:if>
