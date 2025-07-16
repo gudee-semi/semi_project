@@ -32,7 +32,7 @@ public class QnaReplyWriteAdminServlet extends HttpServlet {
         // qnaAdminService.insertReply(qnaId, content, adminId);
 
         // 등록 후 다시 상세로 리다이렉트
-        response.sendRedirect("/qna/detailAdmin?no=" + qnaId);
+        response.sendRedirect("/qna/detail/Admin?no=" + qnaId);
 	}
 
 }

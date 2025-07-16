@@ -1,11 +1,10 @@
 package com.hy.controller.qna;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaAdmin;
 import com.hy.service.qna.QnaAdminService;
+import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -37,15 +36,19 @@ public class QnaDetailAdminServlet extends HttpServlet {
             response.sendRedirect("/qna/view");
             return;
         }
-
+        
+        // 문의글 내용 조회
+        QnaAdmin qna = Integer.par.selectQnaOne("qnaNo");
+        
         // QnA 상세 데이터, 답글(댓글) 리스트 조회
-        List<QnaAdmin> replyList = qnaAdminService.selectReplyList(qnaId);
+        QnaAdmin replyList = qnaAdminService.selectReplyOne(qnaId);
 
         // JSP에서 사용할 데이터 저장
+        request.setAttribute("qnaAdminList", qna);
         request.setAttribute("replyList", replyList);
 
         // 관리자용 상세 JSP로 포워드
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/qna/detailAdmin.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/qna/qnaDetailAdmin.jsp");
         dispatcher.forward(request, response);
 	
 	}

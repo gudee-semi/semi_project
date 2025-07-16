@@ -57,16 +57,7 @@ public class QnaAdminServlet extends HttpServlet {
 
   // POST : 답글 등록
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		// 파라미터 수집
-		int qnaId = Integer.parseInt(request.getParameter("qnaId"));
-		String content = request.getParameter("replyContent");
-
-		// 서비스 호출 – 답글 저장
-		qnaAdminService.insertReply(qnaId, content);
-
-		// 다시 상세 화면으로 리다이렉트
-		response.sendRedirect(request.getContextPath() + "/qna/detailAdmin?no=" + qnaId);
+		doGet(request, response);
 
 	}
 

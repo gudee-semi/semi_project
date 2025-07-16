@@ -36,7 +36,7 @@ public class QnaReplyAdminServlet extends HttpServlet {
         qnaAdminService.insertReply(qnaId, content);
 
         // 답글 등록 후 관리자 상세로 리다이렉트
-        response.sendRedirect("/qna/detailAdmin?no=" + qnaId);
+        response.sendRedirect("/qna/detail/Admin?no=" + qnaId);
 	}
 
 }
