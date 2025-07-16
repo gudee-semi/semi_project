@@ -18,5 +18,11 @@ public interface NoticeMapper {
 	int insertAttach(NoticeAttach param);
 	
 	NoticeAttach selectAttachByNo(int noticeId);
+	
+	int updateNotice(Notice param);
+	
+	int updateAttach(NoticeAttach param);
+	
+	int deleteAttach(Notice param);
 
 }

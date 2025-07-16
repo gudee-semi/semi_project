@@ -54,7 +54,6 @@ public class NoticeDetailServlet extends HttpServlet {
 		
 		
 		int noticeId = Integer.parseInt(request.getParameter("no"));
-		System.out.println(noticeId);
 		
 		Notice notice = service.selectNoticeByNo(noticeId);
 		NoticeAttach attach = service.selectAttachByNo(noticeId);

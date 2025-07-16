@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
 
 import com.hy.dto.notice.Notice;
 import com.hy.dto.notice.NoticeAttach;
@@ -26,7 +29,7 @@ import com.hy.service.notice.NoticeService;
 @WebServlet("/notice/update")
 public class NoticeUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private NoticeService service = new NoticeService();
+	private NoticeService noticeService = new NoticeService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,8 +45,8 @@ public class NoticeUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int noticeId = Integer.parseInt(request.getParameter("id"));
 		
-		Notice notice = service.selectNoticeByNo(noticeId);
-		NoticeAttach attach = service.selectAttachByNo(noticeId);
+		Notice notice = noticeService.selectNoticeByNo(noticeId);
+		NoticeAttach attach = noticeService.selectAttachByNo(noticeId);
 		
 		request.setAttribute("notice", notice);
 		request.setAttribute("attach", attach);
@@ -60,9 +63,11 @@ public class NoticeUpdateServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String category = request.getParameter("category");
+		int noticeId = Integer.parseInt(request.getParameter("id"));
 		int check =  Integer.parseInt(request.getParameter("check"));
 		
 		Notice notice = new Notice();
+		notice.setNoticeId(noticeId);
 		notice.setTitle(title);
 		notice.setContent(content);
 		notice.setCategory(category);
@@ -73,15 +78,37 @@ public class NoticeUpdateServlet extends HttpServlet {
 		int result = 0;
 		
 		if (attach != null) {
-			// 첨부파일이 업데이트 된 경우
-			result = 
+			attach.setNoticeId(noticeId);
+			if (check == 2) {
+				// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
+				result = noticeService.updateNoticeNewAttach(notice, attach);
+			} else {
+				// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
+				result = noticeService.updateNoticeWithAttach(notice, attach);				
+			}
 		} else {
 			if (check == 1) {
-				// 첨부파일을 삭제한 경우
-			} else if (check == 0) {
-				// 첨부파일을 유지하는 경우
+				// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
+				result = noticeService.updateNoticeDeleteAttach(notice);
+			} else if (check == 0 || check == 2) {
+				// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
+				result = noticeService.updateNoticeSameAttach(notice);
 			}
 		}
+		
+		JSONObject obj = new JSONObject();
+		
+		if (result > 0) {
+			obj.put("res_msg", "공지사항이 성공적으로 수정되었습니다.");
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_msg", "공지사항 수정이 실패했습니다.");
+			obj.put("res_code", "500");			
+		}
+		
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 		
 		
 	}

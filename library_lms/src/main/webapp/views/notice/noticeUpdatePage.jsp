@@ -50,7 +50,14 @@
 	    		<div><input type="file" name="file"></div>
 	    	</div>
 		</c:if>
+		<c:if test="${ empty attach }">
+			<input type="hidden" name="check" value="2" class="check">
+	    	<div class="file-reupload">
+	    		<div><input type="file" name="file"></div>
+	    	</div>
+		</c:if>
 		<input type="hidden" name="check" value="0" class="check">
+		<input type="hidden" name="id" value="${ notice.noticeId }">
 	    <input type="submit" value="수정">
 	</form>	
 	

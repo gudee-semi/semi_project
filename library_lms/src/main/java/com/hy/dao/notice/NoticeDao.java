@@ -44,4 +44,16 @@ public class NoticeDao {
 		return result;
 	}
 
+	public int updateNotice(SqlSession session, Notice notice) {
+		return session.update("com.hy.mapper.notice.NoticeMapper.updateNotice", notice);
+	}
+
+	public int updateAttach(SqlSession session, NoticeAttach attach) {
+		return session.update("com.hy.mapper.notice.NoticeMapper.updateAttach", attach);
+	}
+
+	public int deleteAttach(SqlSession session, Notice notice) {
+		return session.delete("com.hy.mapper.notice.NoticeMapper.deleteAttach", notice);
+	}
+
 }
