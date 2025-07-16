@@ -56,5 +56,9 @@
 	<br>
 	<a href="/qna/view">목록으로</a>
 
+	<c:forEach var="a" items="${qnaAdminList}">
+    ${a.qna.qnaId}
+	</c:forEach>
+
 </body>
 </html>

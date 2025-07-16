@@ -34,9 +34,13 @@
         SELECT * FROM qna
     </select>
 
-    <select id="selectReplyList" parameterType="int" resultType="com.hy.dto.qna.QnaAdmin">
-        SELECT * FROM qna_reply
+    <!-- 답글 1건 조회 -->
+    <select id="selectReplyOne" parameterType="int"
+            resultType="com.hy.dto.qna.QnaAdmin">
+        SELECT *
+        FROM qna_reply
         WHERE qna_id = #{qnaId}
+        LIMIT 1           <!-- ★ 한 건만 반환 -->
     </select>
 
 	<insert id="insertReply">
