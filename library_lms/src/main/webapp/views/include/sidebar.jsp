@@ -2,13 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>    
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>    
 
    <style>
 
@@ -52,7 +49,50 @@
 <body>
 	<div class="container text-center">
 
-
+	    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="img-fluid use" alt="...">
+	
+	    <div class="col">${ loginMember.memberName }</div>
+	
+		<div class="container text-center">
+			<div class="row align-items-start">
+			    <div class="col">
+			    	<form id="check-in">
+			    		<input type="hidden" name="check" value="1" id="check">
+			    		<input type="submit" value="입실" id="check-in">
+			    	</form>
+			    </div>
+   			    <div class="col">
+			    	<form id="check-out">
+			    		<input type="submit" value="퇴실" id="check-out">
+			    	</form>
+			    </div>
+			    <div class="col"><a href="/use/tempOut?memberNo=${ loginMember.memberNo }">외출</a></div>
+		    </div>			
+		</div>
+		<c:set var="memberNo" value="${ loginMember.memberNo }"/>
+		
+		<script>
+			$('#check-in').on('submit', (e) => {
+				e.preventDefault();
+				const memberNo = ${ loginMember.memberNo };
+				const check = $('#check').val();
+				
+				$.ajax({
+					url: '/use/checkIn',
+	                type: 'post',
+	                data: {
+	                    memberNo: memberNo,
+	                    check: check;
+	                },
+	                dataType: 'json',
+	                success: (data) => {
+	                	window.alert(data.res_msg);
+	                }
+				})
+			});
+			
+			
+		</script>
 
      	<div class="container text-center">
   			<div class="row align-items-start">
