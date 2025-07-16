@@ -54,6 +54,10 @@
 		width: 70px;
 		background-color: rgba(32, 93, 172, 1);
 	}
+	
+	.button-group {
+		display: flex;
+	}
 	</style>
 
 
@@ -94,16 +98,29 @@
 				</tr>
 			</c:if>
 			
-			<c:if test ="${qna.memberId eq loginMember.memberId}">
-				<a href="/qna/update?no=${qna.qnaId }">수정</a>
+		</table>
 			
-				<a href="/qna/delete?no=${qna.qnaId }">삭제</a>
-			</c:if>
+			<form action="<c:url value='/qna/update'/>" method="get">
+				<button class="btn blue">수정</button>
+			</form>
+			
+			<form action="<c:url value='/qna/delete'/>" method="get">
+				<input type="hidden" name="qnaId" value="${qna.qnaId}"/>
+				<button class="btn blue">삭제</button>
+			</form>
 			
 			<form action="<c:url value='/qna/view'/>" method="get">
 				<button class="btn blue">목록</button>
 			</form>
-		</table>
+			
 	</section>
+
+	<script>
+		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
+		function confirmDelete() {
+			// confirm 창을 띄우고 결과를 반환
+			return confirm("정말로 삭제하시겠습니까?");
+		}
+	</script>
 </body>
 </html>
