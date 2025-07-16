@@ -13,4 +13,7 @@ public class Attach {
 	private String oriName;
 	private String reName;
 	private String path;
+	
+	
 }
+

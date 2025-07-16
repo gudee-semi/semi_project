@@ -31,7 +31,7 @@ public class NoticeService {
 		
 		try {
 			result = noticeDao.insertNotice(session, notice);
-			System.out.println(notice.getNoticeId());
+
 			
 			if (attach != null && result > 0) {
 				attach.setNoticeId(notice.getNoticeId());
@@ -51,10 +51,118 @@ public class NoticeService {
 		
 		return result;
 	}
+	
+	public int updateNoticeWithAttach(Notice notice, NoticeAttach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = noticeDao.updateNotice(session, notice);
+			
+			if (attach != null && result > 0) {
+				result = noticeDao.updateAttach(session, attach);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
 
+	public int updateNoticeDeleteAttach(Notice notice) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = noticeDao.updateNotice(session, notice);
+			
+			if (result > 0) {
+				result = noticeDao.deleteAttach(session, notice);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	public int updateNoticeSameAttach(Notice notice) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = noticeDao.updateNotice(session, notice);
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	public int updateNoticeNewAttach(Notice notice, NoticeAttach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		
+		int result = 0;
+		
+		try {
+			result = noticeDao.updateNotice(session, notice);
+			
+			if (attach != null && result > 0) {
+				result = noticeDao.insertAttach(session, attach);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+	
 	public NoticeAttach selectAttachByNo(int noticeId) {
 		return noticeDao.selectAttachByNo(noticeId);
 	}
+
+	public int deleteNotice(int noticeId) {
+		return noticeDao.deleteNotice(noticeId);
+	}
+
+	public int updateViewCount(int noticeId) {
+		return noticeDao.updateViewCount(noticeId);
+	}
+
+
+
 	
 	
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.hy.mapper.notice.NoticeMapper">
 
 	<resultMap type="com.hy.dto.notice.Notice" id="noticeResultMap">
-		<result property="noticeId" column="notice_id"/>
+		<id property="noticeId" column="notice_id"/>
 		<result property="title" column="title"/>
 		<result property="content" column="content"/>
 		<result property="viewCount" column="view_count"/>
@@ -13,7 +13,7 @@
 	</resultMap>
 	
 	<resultMap type="com.hy.dto.notice.NoticeAttach" id="noticeAttachResultMap">
-		<result property="noticeAttachId" column="notice_attach_id"/>
+		<id property="noticeAttachId" column="notice_attach_id"/>
 		<result property="noticeId" column="notice_id"/>
 		<result property="oriName" column="ori_name"/>
 		<result property="reName" column="re_name"/>
@@ -62,6 +62,7 @@
 				</when>
 			</choose>
 		</where>
+		ORDER BY notice_id DESC
 		LIMIT #{limitPageNo}, #{numPerPage}
 	</select>
 	
@@ -116,12 +117,36 @@
 		INSERT INTO notice (title, content, category) VALUES (#{title}, #{content}, #{category})
 	</insert>
 	
+	<update id="updateNotice" parameterType="com.hy.dto.notice.Notice">
+		UPDATE notice SET title = #{title} ,content = #{content} ,category=#{category}
+		WHERE notice_id = #{noticeId}
+	</update>
+	
 	<insert id="insertAttach" parameterType="com.hy.dto.notice.NoticeAttach">
 		INSERT INTO notice_attach (notice_id, ori_name, re_name, path) VALUES (#{noticeId}, #{oriName}, #{reName}, #{path})
 	</insert>
 	
+	<update id="updateAttach" parameterType="com.hy.dto.notice.NoticeAttach">
+		UPDATE notice_attach SET ori_name = #{oriName} ,re_name = #{reName} ,path = #{path}
+		WHERE notice_id = #{noticeId}
+	</update>
+	
+	<delete id="deleteAttach" parameterType="com.hy.dto.notice.Notice">
+		DELETE FROM notice_attach 
+		WHERE notice_id = #{noticeId}
+	</delete>
+	
 	<select id="selectAttachByNo" parameterType="_int" resultMap="noticeAttachResultMap">
 		SELECT * FROM notice_attach WHERE notice_id = #{noticeId}
 	</select>
+	
+	<delete id="deleteNotice" parameterType="_int">
+		DELETE FROM notice WHERE notice_id = #{noticeId}
+	</delete>
+	
+	<update id="updateViewCount" parameterType="_int">
+		UPDATE notice SET view_count = view_count + 1
+		WHERE notice_id = #{noticeId}
+	</update>
 
 </mapper>
