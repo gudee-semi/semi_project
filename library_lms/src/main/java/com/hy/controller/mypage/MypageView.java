@@ -1,4 +1,4 @@
-package com.hy.controller.score;
+package com.hy.controller.mypage;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,23 +7,32 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet("/write_score/view")
-public class WriteScorePage extends HttpServlet {
+/**
+ * Servlet implementation class Mypage
+ */
+@WebServlet("/mypage/view")
+public class MypageView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-    public WriteScorePage() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public MypageView() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/views/score/write_scorePage.jsp").forward(request, response);
+			response.sendRedirect("/views/mypage/mypageView.jsp");
+		
 	}
 
-
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

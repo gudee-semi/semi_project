@@ -18,7 +18,5 @@ import lombok.Setter;
 public class GoalScoreRequest {
 	private int memberNo;
     private int examTypeId;
-    private String goalDetail;
-    private List<GoalScore> subjectScores; // 여러 과목 점수들
-
+    private List<GoalScore> subjectScores; // 여러 과목
 }
