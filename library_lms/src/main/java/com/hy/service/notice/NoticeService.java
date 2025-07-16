@@ -31,6 +31,7 @@ public class NoticeService {
 		
 		try {
 			result = noticeDao.insertNotice(session, notice);
+
 			
 			if (attach != null && result > 0) {
 				attach.setNoticeId(notice.getNoticeId());

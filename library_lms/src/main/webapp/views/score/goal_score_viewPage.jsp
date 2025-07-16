@@ -1,13 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.hy.dto.Member" %>
+
+<%
+  // 로그인한 사용자 정보 세션에서 가져오기
+  Member loginMember = (Member) session.getAttribute("loginMember");
+  int memberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+  int studentGrade = (loginMember != null) ? loginMember.getMemberGrade() : 1;
+
+  // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
+  int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+  session.setAttribute("currentYear", currentYear);
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>성적 조회 및 분석</title>
+  <meta charset="UTF-8">
+  <title>목표 성적 조회</title>
 
- 	<!-- jQuery CDN -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- jQuery CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
     /* 기본 스타일 설정 */
@@ -29,14 +42,14 @@
     .modal-content { background: #fff; padding: 24px; margin: 22% auto 0; width: 320px; border-radius: 10px; text-align: center; box-shadow: 0 6px 30px #2222; }
     #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
   </style>
-
 </head>
 <body>
-<h1>성적 조회 및 분석</h1>
+
+<h1>목표 성적 조회</h1>
 
 <!-- 로그인 정보 숨겨서 JS에서 참조 -->
-<%-- <input type="hidden" id="memberNo" value="<%= memberNo %>">
-<input type="hidden" id="studentGrade" value="<%= studentGrade %>"> --%>
+<input type="hidden" id="memberNo" value="<%= memberNo %>">
+<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 
 <!-- 시험 분류 체크박스 동적 생성 -->
 <div class="checkbox-group" id="exam-options">
@@ -60,9 +73,7 @@
 
 
 <!-- 별도 JS 파일 불러오기 -->
-<script src="../../js/analysis_score.js"></script>
-
-
+<script src="../../js/goal_score_view.js"></script>
 
 </body>
 </html>

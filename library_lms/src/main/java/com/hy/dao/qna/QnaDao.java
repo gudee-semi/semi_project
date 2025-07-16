@@ -49,6 +49,7 @@ public class QnaDao {
 		return qna;
 	}
 	
+
 	public int deleteQna(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.hy.mapper.qna.QnaMapper.deleteQna", qnaId);

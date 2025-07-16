@@ -1,12 +1,5 @@
 package com.hy.controller.score;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.hy.dto.Member;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,30 +7,30 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-@WebServlet("/goal_score/view")
-public class GoalScorePage extends HttpServlet {
+import com.hy.dto.Member;
+import com.hy.service.score.GoalScoreService;
+
+
+@WebServlet("/actual_score/view")
+public class ActualScoreWritePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private final GoalScoreService service = new GoalScoreService();   
+	
 
-    public GoalScorePage() {
+    public ActualScoreWritePage() {
         super();
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*
-		 * 시험 분류
-		 * examOptions → [3, 6, 9]
-		 * (학년에 따라 3학년이면 11도 포함하면 됨!)
-		 * 사회탐구, 과학탐구 리스트
-		 * socialSubjects
-		 * science1Subjects
-		 * (필요하면 과학탐구2, 제2외국어 리스트도 추가해서 setAttribute로 넘기면 됨)
-		 */
-		
-		
-		 // ✅ 1. 세션에서 로그인된 사용자 학년 가져오기
+    	 // ✅ 1. 세션에서 로그인된 사용자 학년 가져오기
         HttpSession session = request.getSession();
         Member student = (Member)session.getAttribute("loginMember");
         int studentGrade =student.getMemberGrade();
@@ -70,9 +63,8 @@ public class GoalScorePage extends HttpServlet {
         request.setAttribute("lang2Subjects", lang2Subjects);
 
         // ✅ 6. 포워딩
-        request.getRequestDispatcher("/views/score/goal_scorePage.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/score/actual_scorePage.jsp").forward(request, response);
     }
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

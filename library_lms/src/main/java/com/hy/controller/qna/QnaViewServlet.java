@@ -47,18 +47,21 @@ public class QnaViewServlet extends HttpServlet {
 		qna.setNowPage(nowPage);
 		
 		// 검색어 셋팅
+
 		String keywordIn = request.getParameter("keywordIn");
+
 		qna.setKeywordIn(keywordIn);
 		
 		String keyword = request.getParameter("keyword");
 		qna.setKeyword(keyword);
 		
 		// 전체 게시글 개수 조회
+
 		int totalData = service.selectQnaCount(qna);
-		
+
 		// 키워드 기준 2가지로 메소드 각각 만들기
 		qna.setTotalData(totalData);
-		
+
 		int totaldata = qna.getTotalData();
 		
 		// 게시글 목록 정보 조회

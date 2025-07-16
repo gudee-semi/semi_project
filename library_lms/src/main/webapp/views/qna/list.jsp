@@ -65,6 +65,7 @@
 	
 	<div class="searchBox">
 		<form method="get" action="<c:url value='/qna/view'/>">
+
 			<select name="keywordIn" id="keywordIn">
 				<option value="구분"${paging.keywordIn == "구분" ? "selected" : "" }>구분</option>
 				<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
@@ -75,6 +76,7 @@
 		</form>
 	</div>
 	
+
 	<!-- <script>
 		$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
 	</script> -->
@@ -132,6 +134,7 @@
 	<c:if test="${not empty qnaList }">
 		<div class="pageButton">
 			<c:if test="${paging.prev }">
+
 				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${keywordIn }'/>">
 					&laquo;
 				</a>
@@ -149,6 +152,7 @@
 		</div>
 	</c:if>
 	
+
 	<form action="/qna/write" method="get">
 		<button>작성</button>
 	</form>

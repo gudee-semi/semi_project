@@ -52,17 +52,7 @@
 <body>
 	<div class="container text-center">
 
-	    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="img-fluid use" alt="...">
-	
-	    <div class="col">홍길동</div>
-	
-		<div class="container text-center">
-			<div class="row align-items-start">
-			    <div class="col">입실</div>
-			    <div class="col">퇴실</div>
-			    <div class="col">외출</div>
-		    </div>
-		</div>
+
 
      	<div class="container text-center">
   			<div class="row align-items-start">
@@ -78,9 +68,10 @@
 		    <li class="nav-item dropdown">
 		    	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">성적 관리</a>
 		    	<ul class="dropdown-menu">
-			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표성적</a></li>
-			        <li><a class="dropdown-item" href="<c:url value='/write_score/view' />">성적입력</a></li>
-			        <li><a class="dropdown-item" href="<c:url value='/analysis_score/view' />">성적분석</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/goal_score/view' />">목표 성적 입력</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/goal_score_view/view' />">목표 성적 조회</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/actual_scorePage/view' />">성적 입력</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/analysis_scorePage/view' />">성적 조회 및 분석</a></li>
 		    	</ul>
 		    </li>
 		    
