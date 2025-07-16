@@ -26,11 +26,6 @@ public class TabletDao {
     // 조회 결과(태블릿 목록) 반환
     return list;
 	}
-	
-  // 사용 가능한 태블릿을 사용중(1)으로 변경하는 메서드
-  public void useAvailableTablet() {
-    // try-with-resources 구문으로 SqlSession을 생성 (종료시 자동 close)
-    try (SqlSession session = MyBatisUtil.getSqlSession()) { // 세션 생성
   
 	// 사용 가능한 태블릿 중 첫 번째 사용(실제 구현은 프로젝트 목적에 따라 다름)
   public void useTablet(int tabletId, int memberNo) {
@@ -74,19 +69,5 @@ public class TabletDao {
 	}
 	
 	
-
-        // MyBatis Mapper 인터페이스의 구현체를 동적으로 얻음
-        TabletMapper mapper = session.getMapper(TabletMapper.class);
-
-        // Mapper의 useAvailableTablet() 메서드 호출 → 
-        // 실제로는 XML의 <update id="useAvailableTablet"> 쿼리 실행
-        mapper.useAvailableTablet();
-
-        // DB에 변경사항을 저장(커밋). (UPDATE, INSERT, DELETE 등에는 필수)
-        session.commit();
-    }
-    // try-with-resources라 세션은 자동으로 닫힘
-
-	}	
 
 }

@@ -23,7 +23,6 @@ public class Qna extends Paging{
 	private int viewCount;
 	private int answerStatus;
 	
-	private int memberNo; // 맞는지..
 	private int memberNo;
 	private int memberName;
 	private String keyword;

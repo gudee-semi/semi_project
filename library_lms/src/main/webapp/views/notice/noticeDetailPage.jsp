@@ -6,18 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-</head>
-<body>
-	<p>제목 : ${ notice.title }</p>
-	<p>작성자 : 관리자</p>
-	<p>내용 : ${ notice.content } </p>
-	<p>작성일 : ${ notice.createAt } </p>
-	
-	<c:if test="${ not empty attach }">
-	    <h4>첨부파일</h4>
-	    <img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
-	    <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>
-	</c:if>
+
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>

@@ -15,7 +15,6 @@ public interface TabletMapper {
 	// 테이블 전체 조회
 	List<Tablet> selectAll();
 	
-	void useAvailableTablet();
 	// 특정 태블릿을 '사용중' 상태로 바꾸는 쿼리(UPDATE)를 호출	
 	void useTablet(@Param("tabletId") int tabletId, @Param("memberNo") int memberNo);
 

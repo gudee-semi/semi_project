@@ -28,7 +28,6 @@ public class QnaDao {
 	
 	public int updateViewCount(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Qna qna = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaOne", qnaNo);
 		int result = session.update("com.hy.mapper.qna.QnaMapper.updateViewCount", qnaId);
 		session.close();
 		return result;
@@ -50,7 +49,7 @@ public class QnaDao {
 		return qna;
 	}
 	
-	public Attach selectAttachByQnaNo(int qnaId) {
+
 	public int deleteQna(int qnaId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.hy.mapper.qna.QnaMapper.deleteQna", qnaId);

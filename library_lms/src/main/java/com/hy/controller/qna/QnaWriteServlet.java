@@ -41,13 +41,7 @@ public class QnaWriteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		System.out.println("여기도????");
 		
-		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-//		String memberId = 세션 키,값으로 멤버객체의 memberno 받아서 아이디 가져오기, 메소드;
-		int memberNo = 3; // 임시로 넣음
-		String title = request.getParameter("qnaTitle");
-		String content = request.getParameter("qnaContent");
-		String category = request.getParameter("qnaCategory");
-		System.out.println("여긴????");
+
 		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
 		
 		Member member = (Member)session.getAttribute("loginMember");

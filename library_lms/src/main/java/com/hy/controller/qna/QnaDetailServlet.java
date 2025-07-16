@@ -22,16 +22,6 @@ public class QnaDetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. no라는 이름의 게시글 pk값 전달받기
-		int qnaId = Integer.parseInt(request.getParameter("no"));
-		
-		// 2. Qna와 Attach 조회
-		Qna qna = qnaService.selectQnaOne(qnaId);
-		Attach attach = qnaService.selectAttachByQnaNo(qnaId);
-		System.out.println(attach);
-		
-		// 조회수 올리기
-//		qnaService.update
 		
 		
 		

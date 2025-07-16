@@ -31,30 +31,7 @@ public class NoticeService {
 		
 		try {
 			result = noticeDao.insertNotice(session, notice);
-			System.out.println(notice.getNoticeId());
-			
-			if (attach != null && result > 0) {
-				attach.setNoticeId(notice.getNoticeId());
-				result = noticeDao.insertAttach(session, attach);
-			}
-						
-			// commit or rollback
-			if (result > 0) session.commit();
-			else session.rollback();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.rollback();
-		}  finally {
-			session.close();
-		}
-		
-		return result;
-	}
 
-	public NoticeAttach selectAttachByNo(int noticeId) {
-		return noticeDao.selectAttachByNo(noticeId);
-	}
 			
 			if (attach != null && result > 0) {
 				attach.setNoticeId(notice.getNoticeId());

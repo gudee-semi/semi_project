@@ -7,12 +7,9 @@ import com.hy.dto.tablet.Tablet;
 import com.hy.dto.tablet.TabletLog;
 
 public class TabletService {	
+
 	
-	private TabletDao dao = new TabletDao();
-	
-	// 태블릿 조회 메소드
-	public List<Tablet> selectAll() {
-		return dao.selectAll();
+
 	private TabletDao tabletDao = new TabletDao();
 	
 	// 태블릿 조회
@@ -25,10 +22,7 @@ public class TabletService {
 		tabletDao.useTablet(tabletId, memberNo);
 	}
 	
-	// DAO 호출해서 가장 앞 태블릿 사용중으로 변경
-	public void useAvailableTablet() {
-		dao.useAvailableTablet();
-	}	
+
 	// 태블릿 반납
 	public void returnTablet(int tabletId, int memberNo) {
 		tabletDao.returnTablet(tabletId, memberNo);
