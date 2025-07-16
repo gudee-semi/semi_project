@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.qna.Qna;
 import com.hy.service.qna.QnaService;
 
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qna/update")
 public class QnaUpdateServlet extends HttpServlet {
@@ -37,16 +39,37 @@ public class QnaUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 인코딩처리(utf-8)
 		request.setCharacterEncoding("utf-8");
-		Enumeration<String> names = request.getParameterNames();
-		System.out.println("paramter name");
-		while (names.hasMoreElements()) {
-			System.out.println(names.nextElement());
-		}
-		System.out.println("=============================");
+		
+		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
+		
+		Member member = (Member)session.getAttribute("loginMember");
+		
+	    if (session != null) {
+	        if (member != null) {
+	        	System.out.println(member);
+	        } else {
+	        	System.out.println("로그인 정보가 없습니다.");
+	        	response.sendRedirect(request.getContextPath()+"/");
+	        	return;
+	        }
+	    } else {
+	    	System.out.println("세션이 존재하지 않습니다.");
+	    	response.sendRedirect(request.getContextPath()+"/");
+	    	return;
+	    }
+		
+//		Enumeration<String> names = request.getParameterNames();
+//		System.out.println("paramter name");
+//		while (names.hasMoreElements()) {
+//			System.out.println(names.nextElement());
+//		}
+//		System.out.println("=============================");
+	    
 		// 2. 정보 가져오기(번호,이름,나이)
 		System.out.println(request.getParameter("no"));
 		System.out.println(request.getParameter("qnaVisibility"));
 		
+		int memberNo = member.getMemberNo();
 		int no = Integer.parseInt(request.getParameter("no"));
 		String category = request.getParameter("qnaCategory");
 		String title = request.getParameter("qnaTitle");
@@ -62,6 +85,7 @@ public class QnaUpdateServlet extends HttpServlet {
 		
 		Qna qna = new Qna();
 		
+		qna.setMemberNo(memberNo);
 		qna.setQnaId(no);
 		qna.setCategory(category);
 		qna.setTitle(title);

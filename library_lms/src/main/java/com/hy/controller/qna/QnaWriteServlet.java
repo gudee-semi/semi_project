@@ -41,28 +41,22 @@ public class QnaWriteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
-		Member member = null;
+		
+		Member member = (Member)session.getAttribute("loginMember");
 		
 	    if (session != null) {
-	        member = (Member) session.getAttribute("loginMember");
 	        if (member != null) {
-	        	System.out.println(member.getMemberId());
+	        	System.out.println(member);
 	        } else {
 	        	System.out.println("로그인 정보가 없습니다.");
+	        	response.sendRedirect(request.getContextPath()+"/");
+	        	return;
 	        }
 	    } else {
 	    	System.out.println("세션이 존재하지 않습니다.");
+	    	response.sendRedirect(request.getContextPath()+"/");
+	    	return;
 	    }
-	    
-//	    if(session == null) {
-//			response.sendRedirect(request.getContextPath()+"/");
-//			return;
-//		} else {
-//			if(session.getAttribute("loginMember") == null) {
-//				response.sendRedirect(request.getContextPath()+"/");
-//				return;
-//			}
-//		}
 	    
 		int memberNo = member.getMemberNo();
 		

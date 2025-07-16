@@ -99,7 +99,7 @@
 				<c:if test="${q.visibility == 0 }">
 					<div class="title">🔒 ${q.title }</div>
 				</c:if>
-				<div class="writer">${q.memberId }</div>
+				<div class="writer">${q.memberName }</div>
 				<div class="regDate">${q.regDate }</div>
 				<div class="count">${q.viewCount }</div>
 			</div>
@@ -111,7 +111,7 @@
 					<div class="no">${q.qnaId }</div>
 					<div class="category">${q.category }</div>
 					<div class="title">${q.title }</div>
-					<div class="writer">${q.memberId }</div>
+					<div class="writer">${q.memberName }</div>
 					<div class="regDate">${q.regDate }</div>
 					<div class="count">${q.viewCount }</div>
 				</div>
@@ -121,7 +121,7 @@
 					<div class="no">${q.qnaId }</div>
 					<div class="category">${q.category }</div>
 					<div class="title">🔒비공개된 글입니다.</div>
-					<div class="writer">${q.memberId }</div>
+					<div class="writer">${q.memberName }</div>
 					<div class="regDate">${q.regDate }</div>
 					<div class="count">${q.viewCount }</div>
 				</div>
