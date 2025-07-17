@@ -208,7 +208,7 @@ document.getElementById('modal-close-btn').onclick = () => {
 document.getElementById('final-submit').addEventListener('click', () => {
   const content = document.getElementById('goal-text').value.trim();
   if (content.length < 50) {
-    document.getElementById('char-warning').style.display = 'block';
+    document.getElementById('char-warn ing').style.display = 'block';
     return;
   }
   document.getElementById('char-warning').style.display = 'none';
@@ -228,7 +228,7 @@ document.getElementById('final-submit').addEventListener('click', () => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(res => res.json())
+  }).then(res => res.json()) 
     .then(res => showModal(res.success ? '저장 성공!' : '저장 실패'));
 });
 
