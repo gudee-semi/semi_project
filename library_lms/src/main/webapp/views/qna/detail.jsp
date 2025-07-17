@@ -98,39 +98,14 @@
 				</tr>
 			</c:if>
 			
-		</table>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-					<c:if test ="${qna.memberId eq loginMember.memberId}">
-				<a href="/qna/update?no=${qna.qnaId }">수정</a>
+			<c:if test ="${qna.memberId eq loginMember.memberId}">
+				<c:if test ="${qna.answerStatus eq '0'}">
+					<a href="/qna/update?no=${qna.qnaId }">수정</a>
+				</c:if>
 				
-			<a href="/qna/delete?no=${qna.qnaId }">삭제</a>
+					<a href="/qna/delete?no=${qna.qnaId }">삭제</a>
 			</c:if>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			<form action="<c:url value='/qna/update'/>" method="get">
 				<button class="btn blue">수정</button>
 			</form>
