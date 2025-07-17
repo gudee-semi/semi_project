@@ -9,5 +9,7 @@ public class Tablet {
 	private int tabletAvailable;
 	private int status;
 	private Integer memberNo;
+	
+	private String memberName;
 
 }

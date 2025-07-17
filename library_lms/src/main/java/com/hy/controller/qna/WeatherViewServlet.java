@@ -21,7 +21,7 @@ public class WeatherViewServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String baseDate = "20250713";
+		String baseDate = "20250717";
         String baseTime = "0500";
         int nx = 60;
         int ny = 127;
@@ -30,7 +30,7 @@ public class WeatherViewServlet extends HttpServlet {
         System.out.println(jsonResult);
         // JSP로 데이터 전달
         request.setAttribute("weatherData", jsonResult);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/include/header.jsp");
         dispatcher.forward(request, response);
     }
 
