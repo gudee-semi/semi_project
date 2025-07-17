@@ -28,39 +28,40 @@ th {
 
 
 
+
 </head>
 <body>
 
 	<h2>QnA 상세</h2>
-    <table>
-        <tr>
-            <th>No</th>
-            <td>${qna.qnaId}</td>
-            <th>작성일</th>
-            <td>${qna.regDate}</td>
-        </tr>
-        <tr>
-            <th>카테고리</th>
-            <td>${qna.category}</td>
-            <th>작성자</th>
-            <td>${qna.memberName}</td>
-        </tr>
-        <tr>
-            <th>제목</th>
-            <td>${qna.title}</td>
-            <th>공개여부</th>
-<%--             <td>
-                <c:choose>
+	<table>
+		<tr>
+			<th>No</th>
+			<td>${qna.qnaId}</td>
+			<th>작성일</th>
+			<td>${qna.regDate}</td>
+		</tr>
+		<tr>
+			<th>카테고리</th>
+			<td>${qna.category}</td>
+			<th>작성자</th>
+			<td>${qna.memberName}</td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td>${qna.title}</td>
+			<th>공개여부</th>
+			<td>
+				<%--                 <c:choose>
                     <c:when test="${qna.isOpen eq 1}">공개</c:when>
                     <c:otherwise>비공개</c:otherwise>
-                </c:choose>
-            </td> --%>
-        </tr>
-        <tr>
-            <th>내용</th>
-            <td colspan="3">${qna.content}</td>
-        </tr>
-<%--         <tr>
+                </c:choose> --%>
+			</td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td colspan="3">${qna.content}</td>
+		</tr>
+		<%--         <tr>
             <th>첨부파일</th>
             <td colspan="3">
                 <c:if test="${not empty qna.fileName}">
@@ -70,7 +71,40 @@ th {
                 </c:if>
             </td>
         </tr> --%>
-    </table></body>
+	</table>
 
+	<!-- 댓글 리스트 영역 -->
+	<h3>댓글</h3>
+	<table border="1" width="100%">
+		<tr>
+			<th>작성자</th>
+			<th>내용</th>
+			<th>작성일</th>
+		</tr>
+		<c:forEach var="r" items="${replyList}">
+			<tr>
+				<td>${r.qnaReplyId}</td>
+				<td>${r.qnaId}</td>
+				<td>${r.content}</td>
+				<td>${r.regDate}</td>
 
+			</tr>
+		</c:forEach>
+		<c:if test="${empty replyList}">
+			<tr>
+				<td colspan="3">아직 댓글이 없습니다.</td>
+			</tr>
+		</c:if>
+	</table>
+
+	<!-- 댓글 작성 폼 -->
+	<h3>답글 남기기</h3>
+	<form action="/qna/reply/admin/insert" method="post">
+    <input type="hidden" name="qnaId" value="${qna.qnaId}" />
+    <textarea name="content" rows="3" cols="60" required placeholder="댓글을 입력하세요"></textarea>
+    <br>
+    <button type="submit">댓글 등록</button>
+	</form>
+
+</body>
 </html>

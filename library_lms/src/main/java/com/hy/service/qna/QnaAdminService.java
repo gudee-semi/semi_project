@@ -3,25 +3,26 @@ package com.hy.service.qna;
 import java.util.List;
 
 import com.hy.dao.qna.QnaAdminDao;
-import com.hy.dto.qna.QnaAdmin;
+import com.hy.dto.qna.QnaReply;
 
-public class QnaAdminService {
+public class QnaAdminService{
 	
 	private QnaAdminDao qnaAdminDao = new QnaAdminDao();
+	private QnaService qnaService = new QnaService();
 	
 	// 문의글 조회
-	public List<QnaAdmin> selectAll() {
+	public List<QnaReply> selectAll() {
 		return qnaAdminDao.selectAll();
 	}
 
-	// 답글(댓글) 한개 메서드
-	public QnaAdmin selectReplyOne(int qnaId) {
-		return qnaAdminDao.selectReplyOne(qnaId);
+	// 답글 가져오는 메소드
+	public List<QnaReply> selectReplyList(int qnaNo) {
+	    return qnaAdminDao.selectReplyList(qnaNo);
 	}
 
 	// 답글 작성 메소드
-	public void insertReply(int qnaId, String content) {
-		qnaAdminDao.insertReply(qnaId, content);
+	public void insertReply(QnaReply reply) {
+	    qnaAdminDao.insertReply(reply);
 	}
 
 }

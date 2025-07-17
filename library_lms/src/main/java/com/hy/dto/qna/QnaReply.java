@@ -7,7 +7,7 @@ import com.hy.common.vo.Paging;
 import lombok.Data;
 
 @Data
-public class QnaAdmin extends Paging {
+public class QnaReply extends Paging {
 	
 	private int qnaReplyId;
 	private int qnaId;

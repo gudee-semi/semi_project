@@ -19,45 +19,28 @@
 		<result property="memberNo" column="member_no" />
 	</resultMap>
 		
-	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaAdmin">
+	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaReply">
 		<id property="qnaReplyId" column="qna_reply_id" />
 		<result property="qnaId" column="qna_id" />
 		<result property="content" column="content" />
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
-
-	<association property="qna" javaType="com.hy.dto.qna.Qna"
-		resultMap="QnaMap" />
+		<association property="qna" javaType="com.hy.dto.qna.Qna" resultMap="QnaMap" />
 	</resultMap>
 	
-	  <select id="selectAll" resultMap="QnaAdminMap">
+	<select id="selectAll" resultMap="QnaAdminMap">
         SELECT * FROM qna
     </select>
 
-    <!-- 답글 1건 조회 -->
-    <select id="selectReplyOne" parameterType="int"
-            resultType="com.hy.dto.qna.QnaAdmin">
-        SELECT *
-        FROM qna_reply
-        WHERE qna_id = #{qnaId}
-        LIMIT 1           <!-- ★ 한 건만 반환 -->
-    </select>
-
-	<insert id="insertReply">
-		INSERT INTO qna_reply (qna_id, content, member_no,
-		reg_date)
-		VALUES (#{qnaId}, #{content}, #{adminId}, NOW())
-	</insert>
+<select id="selectReplyList" parameterType="int" resultMap="QnaAdminMap">
+    SELECT * FROM qna_reply WHERE qna_id = #{qnaId}
+</select>
 	
-
+<insert id="insertReply" parameterType="com.hy.dto.qna.QnaReply">
+    INSERT INTO qna_reply (qna_id, content, reg_date)
+    VALUES (#{qnaId}, #{content}, NOW())
+</insert>
 	
 	
-
-
-
-
-
-
-
-
+	
 </mapper>
