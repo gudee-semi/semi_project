@@ -16,9 +16,11 @@
 </head>
 <body>
 	<h1>질의응답 수정</h1>
+	
 	<form id="updateQnaFrm" action="/qna/update" method="post" onsubmit="return confirmUpdate();">
 	    <input type="hidden" name="no" value="${qna.qnaId }">
 	    
+	    <p>No ${qna.qnaId }</p>
 	    카테고리 
 	    <select name="qnaCategory" id="qnaCategory">
 		  <option value=0>--선택--</option>

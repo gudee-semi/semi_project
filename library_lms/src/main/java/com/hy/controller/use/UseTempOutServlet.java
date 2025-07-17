@@ -16,17 +16,17 @@ import com.hy.dto.use.Use;
 import com.hy.service.use.UseService;
 
 /**
- * Servlet implementation class UseCheckInServlet
+ * Servlet implementation class UseTempOutServlet
  */
-@WebServlet("/use/checkIn")
-public class UseCheckInServlet extends HttpServlet {
+@WebServlet("/use/tempOut")
+public class UseTempOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UseService service = new UseService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UseCheckInServlet() {
+    public UseTempOutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,8 +35,8 @@ public class UseCheckInServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class UseCheckInServlet extends HttpServlet {
 		
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 		int check = Integer.parseInt(request.getParameter("check"));
-		int checkLog = 1;
+		int checkLog = 2;
 		
 		int result = service.updateUseCheckIn(memberNo, check);
 		int resultLog = service.insertUseLog(memberNo, checkLog);
@@ -55,7 +55,7 @@ public class UseCheckInServlet extends HttpServlet {
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0 && resultLog > 0) {
-			obj.put("res_msg", "입실 처리 되었습니다.");
+			obj.put("res_msg", "외출 처리 되었습니다. 2시간 이내에 복귀해주세요.");
 			obj.put("res_code", "200");
 			HttpSession session = request.getSession(false);
 			if (session != null) {
@@ -63,14 +63,13 @@ public class UseCheckInServlet extends HttpServlet {
 				session.setAttribute("useStatus", param);
 			}
 		} else {
-			obj.put("res_msg", "입실 실패.");
+			obj.put("res_msg", "외출 실패.");
 			obj.put("res_code", "500");			
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print(obj);
-		
 	}
 
 }

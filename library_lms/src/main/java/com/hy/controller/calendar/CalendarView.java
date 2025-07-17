@@ -9,13 +9,16 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONObject;
 
 import com.hy.dto.Member;
 import com.hy.dto.calendar.Todo;
+import com.hy.dto.use.UseLog;
 import com.hy.service.calendar.CalendarService;
+import com.hy.service.use.UseService;
 
 /**
  * Servlet implementation class CalendarView
@@ -24,6 +27,7 @@ import com.hy.service.calendar.CalendarService;
 public class CalendarView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CalendarService service = new CalendarService();
+	private UseService useService = new UseService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,10 +60,13 @@ public class CalendarView extends HttpServlet {
 		
 		if (memberNo != 0) {
 			List<Todo> todoList = service.selectTodoByNo(memberNo);
-			for (Todo t : todoList) {
-			}
+			List<UseLog> atdLogs = useService.getLogByNo(memberNo);
+			
+			List<String> log = new ArrayList<String>();
+			for (UseLog l : atdLogs) log.add(l.getNowTime().toString());
 			
 			request.setAttribute("todoList", todoList);
+			request.setAttribute("useLog", log);
 			request.getRequestDispatcher("/views/calendar/calendarPage.jsp").forward(request, response);			
 		} else {
 			response.sendRedirect(request.getContextPath() + "/");
@@ -96,7 +103,6 @@ public class CalendarView extends HttpServlet {
 			if (!request.getParameter("todoDetail").equals("")) {
 				todoDetail = request.getParameter("todoDetail");			
 			}
-			
 			
 			int result = service.insertTodo(memberNo, todoTitle, todoDate, todoDetail);
 			
