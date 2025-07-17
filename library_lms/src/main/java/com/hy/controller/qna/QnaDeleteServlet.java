@@ -22,7 +22,6 @@ public class QnaDeleteServlet extends HttpServlet {
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
 		int result = qnaService.deleteQna(qnaId);
-		System.out.println(result + " asdasdsadsa");
 		
 		if(result > 0) {
 			response.sendRedirect("/qna/view");
