@@ -18,8 +18,8 @@ public class SeatUpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 회원번호 목록 가져오기
         Enumeration<String> paramNames = request.getParameterNames();
+        List<String> duplicateSeatWarnings = new ArrayList<>();
 
         try (SqlSession session = MyBatisUtil.getSqlSession(true)) {
             FixedSeatMapper mapper = session.getMapper(FixedSeatMapper.class);
@@ -32,11 +32,20 @@ public class SeatUpdateServlet extends HttpServlet {
                     String seatValue = request.getParameter(param);
 
                     if (seatValue == null || seatValue.isBlank()) {
-                        // 좌석 미지정 처리 (NULL로)
+                        // 좌석 해제
                         mapper.updateFixedSeat(memberNo, null);
                     } else {
                         int seatNo = Integer.parseInt(seatValue);
-                        mapper.updateFixedSeat(memberNo, seatNo);
+
+                        // ✅ 중복 좌석 검사
+                        boolean isUsed = mapper.isSeatNoUsedByOthers(seatNo, memberNo);
+
+                        if (!isUsed) {
+                            mapper.updateFixedSeat(memberNo, seatNo);
+                        } else {
+                            // 중복 발생한 좌석 정보 기록
+                            duplicateSeatWarnings.add("회원번호 " + memberNo + " → 좌석 " + seatNo + " (중복)");
+                        }
                     }
                 }
             }
@@ -44,6 +53,12 @@ public class SeatUpdateServlet extends HttpServlet {
             session.commit();
         }
 
-        response.sendRedirect("fixed-seat"); // 변경 후 목록으로 리다이렉트
+        // 중복 경고가 있으면 세션에 저장해서 redirect 후 보여줄 수도 있음
+        if (!duplicateSeatWarnings.isEmpty()) {
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("seatUpdateWarnings", duplicateSeatWarnings);
+        }
+
+        response.sendRedirect("fixed-seat"); // 목록으로 이동
     }
 }

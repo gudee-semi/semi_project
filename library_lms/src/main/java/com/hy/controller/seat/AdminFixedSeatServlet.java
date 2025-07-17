@@ -35,12 +35,12 @@ public class AdminFixedSeatServlet extends HttpServlet {
 			
 			for (FixedSeatMemberView m : list) {
 			    if (m == null) continue; // null 방어
-			    System.out.println(m.getMemberName());
+			    
 			}
 
 			 System.out.println("조회된 고정좌석 회원 수: " + (list != null ? list.size() : "null"));
 			 for (FixedSeatMemberView m : list) {
-				    System.out.println("이름: " + m.getMemberName() + ", 좌석번호: " + m.getSeatNo());
+				    
 				}
 			request.setAttribute("list", list);
 			request.getRequestDispatcher("/views/admin/fixed_seat_member_list.jsp").forward(request, response);

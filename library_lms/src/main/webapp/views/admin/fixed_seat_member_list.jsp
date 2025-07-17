@@ -42,16 +42,12 @@
 </head>
 
 <body>
-<script>
-<%
-List<FixedSeatMemberView> list = (List<FixedSeatMemberView>) request.getAttribute("list");
-out.println("리스트 null 여부: " + (list == null));
-out.println("리스트 사이즈: " + (list != null ? list.size() : 0));
-%>
-</script>
 <h2>고정좌석 이용 회원</h2>
 
-<form action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
+<!-- ✅ 여기에서 onsubmit으로 확인창 띄우기 -->
+<form action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post"
+      onsubmit="return confirm('정말 변경하시겠습니까?');">
+
     <table>
         <thead>
             <tr>
@@ -65,33 +61,32 @@ out.println("리스트 사이즈: " + (list != null ? list.size() : 0));
         </thead>
         <tbody>
         <%
-    list = (List<FixedSeatMemberView>) request.getAttribute("list");
-    int index = 1;
-    if (list != null) {
-        for (FixedSeatMemberView m : list) {
-            if (m != null) {
-%>
-<tr>
-    <td><%= index++ %></td>
-    <td><%= m.getMemberGrade() %>학년</td>
-    <td><%= m.getMemberSchool() %></td>
-    <td><%= m.getMemberName() %></td>
-    <td><%= m.getMemberPenalty() %></td>
-    <td>
-        <select name="seat_<%= m.getMemberNo() %>">
-            <option value="">미지정</option>
-            <% for (int i = 1; i <= 10; i++) { %>
-                <option value="<%= i %>" <%= (m.getSeatNo() != null && m.getSeatNo() == i) ? "selected" : "" %>><%= i %></option>
-            <% } %>
-        </select>
-    </td>
-</tr>
-<%
-            } // null check end
-        }
-    }
-%>
-
+            List<FixedSeatMemberView> list = (List<FixedSeatMemberView>) request.getAttribute("list");
+            int index = 1;
+            if (list != null) {
+                for (FixedSeatMemberView m : list) {
+                    if (m != null) {
+        %>
+        <tr>
+            <td><%= index++ %></td>
+            <td><%= m.getMemberGrade() %>학년</td>
+            <td><%= m.getMemberSchool() %></td>
+            <td><%= m.getMemberName() %></td>
+            <td><%= m.getMemberPenalty() %></td>
+            <td>
+                <select name="seat_<%= m.getMemberNo() %>">
+                    <option value="">미지정</option>
+                    <% for (int i = 1; i <= 10; i++) { %>
+                        <option value="<%= i %>" <%= (m.getSeatNo() != null && m.getSeatNo() == i) ? "selected" : "" %>><%= i %></option>
+                    <% } %>
+                </select>
+            </td>
+        </tr>
+        <%
+                    } // null check
+                }
+            }
+        %>
         </tbody>
     </table>
 
@@ -99,6 +94,23 @@ out.println("리스트 사이즈: " + (list != null ? list.size() : 0));
         <button type="submit" class="btn-change">변경하기</button>
     </div>
 </form>
+
+
+<%
+    List<String> seatUpdateWarnings = (List<String>) session.getAttribute("seatUpdateWarnings");
+    if (seatUpdateWarnings != null && !seatUpdateWarnings.isEmpty()) {
+        StringBuilder warningMessage = new StringBuilder("중복된 좌석이 있습니다:\\n");
+        for (String warning : seatUpdateWarnings) {
+            warningMessage.append(warning).append("\\n");
+        }
+%>
+<script>
+    alert("<%= warningMessage.toString() %>");
+</script>
+<%
+        session.removeAttribute("seatUpdateWarnings");
+    }
+%>
 
 </body>
 </html>
