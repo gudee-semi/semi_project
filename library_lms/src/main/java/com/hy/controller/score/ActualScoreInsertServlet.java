@@ -41,6 +41,7 @@ public class ActualScoreInsertServlet extends HttpServlet {
         
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=UTF-8");
@@ -49,11 +50,14 @@ public class ActualScoreInsertServlet extends HttpServlet {
         String reason = "";
         JsonObject resultJson = new JsonObject();
 
-        SqlSession session = SqlSessionTemplate.getSqlSession(false);
+        SqlSession session = SqlSessionTemplate.getSqlSession(false); // 수동 커밋 모드
 
         try {
+            // [1] 세션에서 로그인된 사용자 정보 가져오기
             HttpSession httpSession = request.getSession();
             Member student = (Member) httpSession.getAttribute("loginMember");
+
+            // 로그인 안 된 경우
             if (student == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resultJson.addProperty("success", false);
@@ -65,34 +69,52 @@ public class ActualScoreInsertServlet extends HttpServlet {
             int memberNo = student.getMemberNo();
             int grade = student.getMemberGrade();
 
-            // JSON 파싱
+            // [2] 클라이언트에서 전송된 JSON 데이터 파싱
             BufferedReader reader = request.getReader();
             String json = reader.lines().collect(Collectors.joining());
             ActualScoreRequest reqDto = new Gson().fromJson(json, ActualScoreRequest.class);
 
-            // 과목명 매핑
+            int examType = reqDto.getExamTypeId();
+            ActualScoreService service = new ActualScoreService();
+            int examTypeId = service.getExamTypeId(examType, grade);
+
+            // 3. 과목명 → subjectId 변환
             SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
             List<ActualScore> scoreList = new ArrayList<>();
+
             for (ActualScore dto : reqDto.getSubjectScores()) {
                 String subjectName = dto.getSubjectName() != null ? dto.getSubjectName().trim() : "";
                 Integer subjectId = subjectMapper.selectSubjectIdByName(subjectName);
+
                 if (subjectId == null) {
                     allSuccess = false;
-                    reason = "subject_not_found";
-                    break;
+                    resultJson.addProperty("success", false);
+                    resultJson.addProperty("reason", "invalid_subject");
+                    session.rollback();
+                    response.getWriter().write(resultJson.toString());
+                    return;
                 }
+
                 dto.setSubjectId(subjectId);
                 dto.setMemberNo(memberNo);
                 dto.setGrade(grade);
-                dto.setExamTypeId(reqDto.getExamTypeId());
+                dto.setExamTypeId(examTypeId);
                 scoreList.add(dto);
             }
 
-            // 실제 insert 서비스 호출 (여기서 service 변수 확인)
-            if (allSuccess) {
-                // 중복 검사 등은 service에서 처리
-                allSuccess = service.insertActualScores(scoreList); // ★★★ 이 부분 반드시 실제 서비스로!
+            // 4. 중복 여부 검사 (memberNo + examTypeId 조합)
+            int existingCount = service.countByMemberAndExamType(session, memberNo, examTypeId);
+
+            if (existingCount > 0) {
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "duplicate");
+                session.rollback();
+                response.getWriter().write(resultJson.toString());
+                return;
             }
+
+            // 5. insert 실행
+            allSuccess = service.insertActualScores(scoreList);
 
             if (allSuccess) {
                 session.commit();
@@ -100,8 +122,9 @@ public class ActualScoreInsertServlet extends HttpServlet {
             } else {
                 session.rollback();
                 resultJson.addProperty("success", false);
-                resultJson.addProperty("reason", reason.isEmpty() ? "insert_fail" : reason);
+                resultJson.addProperty("reason", "insert_failed");
             }
+
         } catch (Exception e) {
             if (session != null) session.rollback();
             e.printStackTrace();
@@ -114,4 +137,3 @@ public class ActualScoreInsertServlet extends HttpServlet {
         response.getWriter().write(resultJson.toString());
     }
 }
-
