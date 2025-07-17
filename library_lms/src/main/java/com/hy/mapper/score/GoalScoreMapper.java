@@ -8,17 +8,23 @@ import com.hy.dto.score.GoalScore;
 
 public interface GoalScoreMapper {
 
-	 // 개별 목표 점수 저장
+	// 개별 목표 점수 저장
     int insertGoalScore(GoalScore dto);
-    
-    // 시험별 저장 점수 조회 (param1 = memberNo, param2 = examTypeId)
-    List<GoalScore> selectGoalScoresByMemberAndExam(int memberNo, int examTypeId);
 
-    // 입력된 목표 성적이 있는 시험 목록 조회 (param1 = memberNo)
+    // memberNo + examTypeId 중복 여부 확인
+    int countGoalScoreByMemberAndExamType(Map<String, Integer> param);
+
+    // 시험별 저장 점수 조회 (memberNo + examTypeId)
+    List<GoalScore> selectGoalScoresByMemberAndExam(Map<String, Integer> param);
+
+    // 목표 성적이 존재하는 시험 ID 목록 조회 (memberNo)
     List<Integer> selectAvailableExamTypeIds(int memberNo);
 
-    // 기존 목표 성적 삭제 (param1 = memberNo, param2 = examTypeId)
+    // 기존 목표 성적 삭제 (memberNo + examTypeId)
     int deleteGoalScoresByMemberAndExam(Map<String, Integer> param);
+
+    // examTypeId 매핑 (examMonth + memberGrade → exam_type_id)
+    int getExamTypeId(Map<String, Integer> param);
     
     
 

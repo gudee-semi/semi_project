@@ -42,10 +42,8 @@ public class CalendarTodoDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		int plannerId = Integer.parseInt(request.getParameter("plannerId"));
-		System.out.println(plannerId);
 		
 		int result = service.deleteTodo(plannerId);
-		System.out.println(result);
 		
 		JSONObject obj = new JSONObject();
 		

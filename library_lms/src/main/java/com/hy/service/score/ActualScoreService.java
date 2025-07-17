@@ -1,7 +1,9 @@
 package com.hy.service.score;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -10,6 +12,8 @@ import com.hy.dao.score.ActualScoreDAO;
 import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.ExamType;
 import com.hy.dto.score.GoalScore;
+import com.hy.dto.score.ScoreCompare;
+import com.hy.mapper.score.ActualScoreMapper;
 
 public class ActualScoreService {
 	
@@ -39,9 +43,7 @@ public class ActualScoreService {
         }
         return examTypeId; // 매핑에 없으면 그대로 반환
     }
-	
-	
-
+    
     // 시험 분류 학년별 조회 메서드
     public List<ExamType> getExamTypesByGrade(int grade) {
         SqlSession session = null;
@@ -56,17 +58,39 @@ public class ActualScoreService {
         }
     }
     
-    
- // 실제 성적 insert (여러 과목)
+    // ActualScoreService.java
+    public int getExamTypeId(int examType, int grade) {
+        return mapExamTypeId(examType, grade);
+    }
+
+
+
+    // 목표 성적 insert (여러 과목)
     public boolean insertActualScores(List<ActualScore> dtos) {
         SqlSession session = null;
         boolean allSuccess = true;
 
         try {
-            session = SqlSessionTemplate.getSqlSession(false);
+            session = SqlSessionTemplate.getSqlSession(false); // 수동 커밋
+
+            if (dtos.isEmpty()) return false;
+
+            // [1] 공통 정보 추출 (memberNo, examTypeId는 모두 동일한 값이라고 가정)
+            int memberNo = dtos.get(0).getMemberNo();
+            int examTypeId = dtos.get(0).getExamTypeId();
+
+            // [2] 중복 검사
+            int count = dao.countByMemberAndExamType(session, memberNo, examTypeId);
+            if (count > 0) {
+                System.out.println("❌ 이미 입력된 목표 성적입니다.");
+                session.rollback();
+                return false;
+            }
+
+            // [3] insert 수행
             for (ActualScore dto : dtos) {
-                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
-                dto.setExamTypeId(mappedExamTypeId);
+//                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
+//                dto.setExamTypeId(mappedExamTypeId);
 
                 int result = dao.insertActualScore(session, dto);
                 if (result <= 0) {
@@ -91,13 +115,61 @@ public class ActualScoreService {
 
         return allSuccess;
     }
+    
+    
+ // ActualScoreService.java
+    public int countByMemberAndExamType(SqlSession session, int memberNo, int examTypeId) {
+        return session.selectOne("com.hy.mapper.score.ActualScoreMapper.countByMemberAndExamType", 
+                                 Map.of("memberNo", memberNo, "examTypeId", examTypeId));
+    }
+
+
+    // 목표 성적 조회
+    public List<ActualScore> selectActualScoresByMemberAndExam(int memberNo, int examTypeId) {
+        SqlSession session = null;
+        try {
+            session = SqlSessionTemplate.getSqlSession(true);
+            return dao.selectActualScoresByMemberAndExam
+            		(session, memberNo, examTypeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    // 목표 성적 입력된 시험 분류 ID 목록 조회
+    public List<Integer> selectAvailableExamTypeIds(int memberNo) {
+        SqlSession session = null;
+        try {
+            session = SqlSessionTemplate.getSqlSession(true);
+            return dao.selectAvailableExamTypeIds(session, memberNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    // 기존 점수 삭제
+    public int deleteActualScoresByMemberAndExam(int memberNo, int examTypeId) {
+    	Map<String, Integer> param = Map.of("memberNo", memberNo, "examTypeId", examTypeId);
+    	return dao.deleteActualScoresByMemberAndExam(param);
+    }
 
     
-    
-    
-    
-    
-    
-    
-    
+ // 목표 점수와 실제 점수를 비교하는 데이터 조회 메서드
+    public List<ScoreCompare> selectGoalAndActualScores(Map<String, Integer> param) {
+        SqlSession session = SqlSessionTemplate.getSqlSession(true); // autoCommit = true 또는 false도 가능
+        ActualScoreMapper mapper = session.getMapper(ActualScoreMapper.class);
+        List<ScoreCompare> result = mapper.selectGoalAndActualScores(param);
+        session.close();
+        return result;
+    }
+
+
+
+	 
 }
