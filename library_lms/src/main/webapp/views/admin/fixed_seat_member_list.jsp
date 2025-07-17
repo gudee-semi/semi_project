@@ -9,8 +9,8 @@
             font-family: "Noto Sans KR", sans-serif;
         }
         h2 {
+        	margin-top: 200px;
             text-align: center;
-            margin-top: 40px;
         }
         table {
             width: 90%;
@@ -18,16 +18,29 @@
             border-collapse: collapse;
         }
         th, td {
-            border: 1px solid #ccc;
-            padding: 12px;
+            border: none;
+            border-bottom: 1px solid #cccccc;
+            padding: 8px 12px;
             text-align: center;
         }
+        th{
+        	border-top: 2px solid #666666;
+	        border-bottom: 2px solid #666666;
+			background: #fafafa;
+        }
+        
+        tr:last-child td {
+			border-bottom: none;
+		}
+        
         select {
             padding: 5px;
         }
         .btn-container {
+        	margin-top: 200px;
+        	margin-left: 1200px;
+        	margin-bottom: 400px;
             text-align: center;
-            margin: 20px;
         }
         .btn-change {
             padding: 10px 20px;

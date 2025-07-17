@@ -42,5 +42,6 @@
     FROM member m
     JOIN fixed_seat f ON m.member_no = f.member_no
     WHERE m.active_status = 1
-</select>
+	</select>
+
 </mapper>
