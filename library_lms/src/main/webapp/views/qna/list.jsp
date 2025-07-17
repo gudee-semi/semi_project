@@ -155,11 +155,9 @@
 				</c:if>
 			</div>
 		</c:if>
-		
-	<form action="/qna/write" method="get">
-		<button>작성</button>
-	</form>
-
+		<form action="/qna/write" method="get">
+			<button>작성</button>
+		</form>
 	</div>
 </body>
 </html>

@@ -16,7 +16,7 @@ import com.hy.dto.Member;
 import com.hy.service.score.GoalScoreService;
 
 
-@WebServlet("/actual_score/view")
+@WebServlet("/actual_scorePage/view")
 public class ActualScoreWritePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final GoalScoreService service = new GoalScoreService();   

@@ -36,67 +36,95 @@ public class GoalScoreInsertServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=UTF-8");
 
-        boolean allSuccess = true;
         JsonObject resultJson = new JsonObject();
-
         SqlSession session = SqlSessionTemplate.getSqlSession(false);
+        boolean allSuccess = true;
 
         try {
-            // 1. 세션에서 로그인된 사용자 정보
+            // 1. 로그인 정보 확인
             HttpSession httpSession = request.getSession();
             Member student = (Member) httpSession.getAttribute("loginMember");
             if (student == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("{\"success\": false, \"reason\": \"unauthorized\"}");
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "unauthorized");
+                response.getWriter().write(resultJson.toString());
                 return;
             }
 
             int memberNo = student.getMemberNo();
             int grade = student.getMemberGrade();
 
-            // 2. JSON 요청 파싱
+            // 2. 요청 JSON 파싱
             BufferedReader reader = request.getReader();
             String json = reader.lines().collect(Collectors.joining());
             GoalScoreRequest reqDto = new Gson().fromJson(json, GoalScoreRequest.class);
 
-            // 3. 과목명 → subjectId 매핑
+            // ✅ 시험월(examType) → 실제 exam_type_id 매핑
+            int examType = reqDto.getExamTypeId(); // 실질적으로는 examType 값 (3, 6, 9 등)
+            GoalScoreService service = new GoalScoreService();
+            int examTypeId = service.getExamTypeId(examType, grade);
+
+            // 3. 과목명 → subjectId 변환
             SubjectMapper subjectMapper = session.getMapper(SubjectMapper.class);
             List<GoalScore> scoreList = new ArrayList<>();
+
             for (GoalScore dto : reqDto.getSubjectScores()) {
                 String subjectName = dto.getSubjectName() != null ? dto.getSubjectName().trim() : "";
                 Integer subjectId = subjectMapper.selectSubjectIdByName(subjectName);
+
                 if (subjectId == null) {
                     allSuccess = false;
-                    break;
+                    resultJson.addProperty("success", false);
+                    resultJson.addProperty("reason", "invalid_subject");
+                    session.rollback();
+                    response.getWriter().write(resultJson.toString());
+                    return;
                 }
+
                 dto.setSubjectId(subjectId);
                 dto.setMemberNo(memberNo);
                 dto.setGrade(grade);
-                dto.setExamTypeId(reqDto.getExamTypeId());
+                dto.setExamTypeId(examTypeId);
                 scoreList.add(dto);
             }
 
-            // 4. 실제 insert 서비스 호출(트랜잭션)
-            if (allSuccess) {
-                allSuccess = new GoalScoreService().insertGoalScores(scoreList);
+            // 4. 중복 여부 검사 (memberNo + examTypeId 조합)
+            int existingCount = service.countByMemberAndExamType(session, memberNo, examTypeId);
+
+            if (existingCount > 0) {
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "duplicate");
+                session.rollback();
+                response.getWriter().write(resultJson.toString());
+                return;
             }
+
+            // 5. insert 실행
+            allSuccess = service.insertGoalScores(scoreList);
 
             if (allSuccess) {
                 session.commit();
+                resultJson.addProperty("success", true);
             } else {
                 session.rollback();
+                resultJson.addProperty("success", false);
+                resultJson.addProperty("reason", "insert_failed");
             }
 
         } catch (Exception e) {
             if (session != null) session.rollback();
             e.printStackTrace();
-            allSuccess = false;
+            resultJson.addProperty("success", false);
+            resultJson.addProperty("reason", "server_error");
         } finally {
             if (session != null) session.close();
         }
 
-        response.getWriter().write("{\"success\": " + allSuccess + "}");
+        response.getWriter().write(resultJson.toString());
     }
+
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
