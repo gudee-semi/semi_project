@@ -8,8 +8,9 @@ import lombok.Data;
 public class TabletLog {
 	
 	private int tabletLogId;
-    private int memberNo;
     private int tabletStatus;
     private Date useTime;
+    
+    private Tablet tablet;
 
 }
