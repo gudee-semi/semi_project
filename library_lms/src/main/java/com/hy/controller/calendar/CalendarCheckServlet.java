@@ -44,10 +44,8 @@ public class CalendarCheckServlet extends HttpServlet {
 		
 		int plannerId = Integer.parseInt(request.getParameter("plannerId"));
 		int isCompleted = Integer.parseInt(request.getParameter("isCompleted"));
-		System.out.println(plannerId + " " + isCompleted);
 		
 		int result = service.updateCheck(plannerId, isCompleted);
-		System.out.println(result);
 		
 		JSONObject obj = new JSONObject();
 		

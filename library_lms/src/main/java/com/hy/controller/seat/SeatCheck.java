@@ -46,7 +46,6 @@ public class SeatCheck extends HttpServlet {
 		}
 		request.setAttribute("memberNo", memberNo);
 		
-		System.out.println(memberNo);
 		
 		// 2. DB 조회해서 전체 좌석목록 가져오기
 		// 1. dto 작성(완) -> 2. service 작성 -> 3. dao 작성 -> 4. mapper 인터페이스 작성 -> 5. mapper xml 작성

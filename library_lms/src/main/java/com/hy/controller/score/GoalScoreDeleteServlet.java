@@ -32,7 +32,6 @@ public class GoalScoreDeleteServlet extends HttpServlet {
         int examTypeId = 0;
         int result = 0;
         
-        System.out.println(memberNo);
         
         try {
             memberNo = Integer.parseInt(request.getParameter("memberNo"));
@@ -45,7 +44,6 @@ public class GoalScoreDeleteServlet extends HttpServlet {
             return;
         }
 
-        System.out.println(result);
         
         
         if (result > 0) {

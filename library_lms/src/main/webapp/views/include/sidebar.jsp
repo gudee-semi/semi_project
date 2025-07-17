@@ -6,7 +6,16 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>    
-
+<script>
+window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시든 아니든 무조건 호출된다.
+    if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
+        // 사파리 or 안드로이드에서 뒤로가기로 넘어온 경우 캐시를 이용해 화면을 보여주는데, 
+        // 이때 사파리의 경우 event.persisted 가 ture다. 
+        // 그외 브라우저(크롬 등)에서는 || 뒤에 있는 조건으로 뒤로가기인지 체크가 가능하다!
+        window.location.reload();
+    }
+};
+</script>
    <style>
 
 
@@ -82,7 +91,7 @@
 	                type: 'post',
 	                data: {
 	                    memberNo: memberNo,
-	                    check: check;
+	                    check: check
 	                },
 	                dataType: 'json',
 	                success: (data) => {
@@ -136,7 +145,12 @@
 	        </li>
 	        
      	    <li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/mypage/password/input'/>">마이페이지</a>
+	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">마이페이지</a>
+	        	<ul class="dropdown-menu">
+			        <li><a class="dropdown-item" href="<c:url value='/mypage/password/input' />">개인정보 수정</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/myqna/view' />">나의 문의 내역</a></li>
+			   
+		    	</ul>
 	        </li>
         </ul>
 	</div>

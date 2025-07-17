@@ -42,7 +42,6 @@ public class GoalScoreSelectServlet extends HttpServlet {
         int memberNo = loginMember.getMemberNo();
         String examTypeIdParam = request.getParameter("examTypeId");
         
-        System.out.println("memberNo = " + memberNo + ", examTypeId = " + examTypeIdParam);
 
         try {
             String json;
@@ -60,7 +59,6 @@ public class GoalScoreSelectServlet extends HttpServlet {
                 //json = gson.toJson(scoreList);
                 return;
             }
-            //System.out.println("JSON "+json);
             response.getWriter().write(json);
 
         } catch (Exception e) {

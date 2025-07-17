@@ -2,10 +2,13 @@ package com.hy.service.mypage;
 
 
 import java.io.File;
+import java.util.List;
 
 import com.hy.dao.mypage.MyPageDao;
 import com.hy.dto.Member;
 import com.hy.dto.login.ProfileAttach;
+import com.hy.dto.qna.Qna;
+import com.hy.dto.qna.QnaReply;
 
 public class MyPageService {
 		private MyPageDao dao = new MyPageDao();
@@ -60,6 +63,29 @@ public class MyPageService {
 		}
 		
 		return result;
+	}
+
+	public int selectMyQnaCount(Qna qna) {
+		int result;
+		result = dao.selectMyQnaCount(qna);
+		return result;
+	}
+
+	public List<Qna> selectMyQnaList(Qna qna) {
+		List<Qna> list = dao.selectMyQnaList(qna);
+		return list;
+	}
+
+	public List<QnaReply> selectMyQnaReplyList(int memberNo) {
+		List<QnaReply> list = dao.selectMyQnaReplyList(memberNo);
+		return list;
+	}
+
+	public int updateReplyCheck(int qnaId) {
+		int result;
+		result = dao.updateReplyCheck(qnaId);
+		return result;
+		
 	}
 	
 }

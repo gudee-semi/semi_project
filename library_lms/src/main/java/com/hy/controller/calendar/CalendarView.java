@@ -57,7 +57,6 @@ public class CalendarView extends HttpServlet {
 		if (memberNo != 0) {
 			List<Todo> todoList = service.selectTodoByNo(memberNo);
 			for (Todo t : todoList) {
-				System.out.println(t);
 			}
 			
 			request.setAttribute("todoList", todoList);
@@ -80,14 +79,12 @@ public class CalendarView extends HttpServlet {
 			response.sendRedirect(request.getContentType() + "/");
 			return;
 		} else {
-			System.out.println(session);
 			if (session.getAttribute("loginMember") == null) {
 				response.sendRedirect(request.getContextPath() + "/");
 				return;
 			} else {
 				Member member = (Member)session.getAttribute("loginMember");
 				memberNo = member.getMemberNo();
-				System.out.println(memberNo);
 			}
 		}
 		
@@ -100,13 +97,8 @@ public class CalendarView extends HttpServlet {
 				todoDetail = request.getParameter("todoDetail");			
 			}
 			
-			System.out.println(memberNo);
-			System.out.println(todoTitle);
-			System.out.println(todoDate);
-			System.out.println(todoDetail);
 			
 			int result = service.insertTodo(memberNo, todoTitle, todoDate, todoDetail);
-			System.out.println(result);
 			
 			JSONObject obj = new JSONObject();
 			

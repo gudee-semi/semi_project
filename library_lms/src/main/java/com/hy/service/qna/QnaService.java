@@ -51,7 +51,6 @@ public class QnaService {
 		try {
 			// 1. 게시글 등록
 			result = qnaDao.insertQna(session,qna);
-			System.out.println("qna"+result);
 			
 			// 2. 파일 정보 등록
 			if(attach != null && result > 0) {
@@ -59,7 +58,6 @@ public class QnaService {
 				attach.setPath("C:\\upload\\qna\\");
 				result = qnaDao.insertAttach(session,attach);
 			}
-			System.out.println("attach"+result);
 			
 			// 3. commit 또는 rollback 
 			if(result > 0) {
