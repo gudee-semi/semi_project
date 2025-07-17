@@ -24,18 +24,6 @@ public class QnaViewServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인이 안된 사람은 처음 메인페이지로 가게되어있음 현재 로그인페이지가 index가 아니어서
-		HttpSession session = request.getSession(false);
-		
-		if(session == null) {
-			response.sendRedirect(request.getContextPath()+"/");
-			return;
-		} else {
-			if(session.getAttribute("loginMember") == null) {
-				response.sendRedirect(request.getContextPath()+"/");
-				return;
-			}
-		}
-		
 		Qna qna = new Qna();
 		
 		// 현재 페이지 정보 셋팅

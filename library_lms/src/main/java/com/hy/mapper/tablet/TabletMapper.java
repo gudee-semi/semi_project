@@ -28,4 +28,6 @@ public interface TabletMapper {
 	List<TabletLog> selectAllTabletLog();
     
 	List<Tablet> selectAllTabletMemberName();
+	
+	int updatePenalty(int memberNo);
 }

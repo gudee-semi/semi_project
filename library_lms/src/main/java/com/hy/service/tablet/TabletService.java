@@ -41,5 +41,9 @@ public class TabletService {
     public List<Tablet> selectAllTabletMemberName() {
 		return tabletDao.selectAllTabletMemberName();
 	}	
+    
+    public int updatePenalty(int memberNo) {
+    	return tabletDao.updatePenalty(memberNo);
+    }
 	
 }

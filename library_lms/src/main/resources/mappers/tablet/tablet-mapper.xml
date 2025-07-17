@@ -49,19 +49,19 @@
 	    VALUES (#{memberNo}, #{tabletStatus})
 	</insert>
 	
-	<!-- 김혜원 -->
 	<!-- 태블릿 & 멤버 데이터 조회 (태블릿 관리자 사용현황 확인용) -->
-	<select id="selectAllTabletMemberName" resultType="com.hy.dto.tablet.Tablet">
+	<select id="selectAllTabletMemberName" resultMap="TabletResultMap">
 		SELECT t.tablet_id,
-			t.member_no,
+			m.member_no,
 			m.member_name,
 			t.tablet_available
 		FROM tablet t
 		JOIN member m ON t.member_no = m.member_no 
 	</select>
 	
-	<update id="updatePenalty" parameterType="int">
-		UPDATE FROM member
+	<!-- 패널티 추가 -->
+	<update id="updatePenalty" parameterType="_int">
+		UPDATE member
 		SET member_penalty = member_penalty + 1
 		<where>
 		member_no = #{memberNo}

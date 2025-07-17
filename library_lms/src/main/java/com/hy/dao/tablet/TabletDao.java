@@ -75,5 +75,11 @@ public class TabletDao {
 	 	return tabletList;
 	}
 	
+     public int updatePenalty(int memberNo) {
+    	 SqlSession session = SqlSessionTemplate.getSqlSession(true);
+    	 int result = session.update("com.hy.mapper.tablet.TabletMapper.updatePenalty", memberNo);
+    	 session.close();
+    	 return result;
+     }
 
 }
