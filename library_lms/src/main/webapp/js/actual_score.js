@@ -214,12 +214,18 @@ $(document).ready(function () {
 	    withCredentials: true  // 세션 유지
 	  },
 	  success: function (res) {
+	    // ✅ 먼저 중복 여부 확인
+	    if (res.status === 'duplicate') {
+	      return showModal('이미 목표 성적을 입력하였습니다.');
+	    }
+
+	    // ✅ 서버에서 실패 응답 (성공 여부가 false일 때)
 	    if (!res.success) {
-	      if (res.reason === 'duplicate') return showModal('이미 성적을 입력하였습니다.');
 	      return showModal('입력 실패');
 	    }
-	    showModal('입력 완료');
 
+	    // ✅ 성공 처리
+	    showModal('입력 완료');
 	    renderResultTable(subjectNames, scoreValues, gradeValues, percentageValues, rank);
 	    $('.score-input, .grade-input').hide();
 	    $('#final-submit').hide();
@@ -228,6 +234,7 @@ $(document).ready(function () {
 	    showModal('서버 오류로 저장에 실패했습니다.');
 	  }
 	});
+
 
 	  });
 	  
