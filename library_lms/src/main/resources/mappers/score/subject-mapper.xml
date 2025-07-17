@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hy.mapper.score.SubjectMapper">
+
+ <select id="selectSubjectIdByName" parameterType="string" resultType="int">
+  SELECT subject_id
+  FROM subject
+  WHERE TRIM(subject_name) = TRIM(#{subjectName})
+</select>
+
+<!-- 로그인된 회원의 goal_score 테이블에 저장된 과목 ID를 기반으로 과목명을 가져와 -->
+<select id="selectSubjectNamesByMemberAndExam" resultType="string" parameterType="map">
+  SELECT s.subject_name
+  FROM goal_score g
+  JOIN subject s ON g.subject_id = s.subject_id
+  WHERE g.member_no = #{memberNo}
+    AND g.exam_type_id = #{examTypeId}
+</select>
+
+
+</mapper>

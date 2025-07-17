@@ -39,7 +39,9 @@ public class QnaWriteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		System.out.println("여기도????");
 		
+
 		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
 		
 		Member member = (Member)session.getAttribute("loginMember");
@@ -71,13 +73,17 @@ public class QnaWriteServlet extends HttpServlet {
 		qna.setTitle(title);
 		qna.setContent(content);
 		qna.setVisibility(visibility);
+		System.out.println("여긴??");
 		
 		// 2. 파일 정보 추출
 		File uploadDir = AttachService.getUploadDirectory();
+//		System.out.println("파일업로드?");
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
+//		System.out.println("파일정보추출까지?");
 		
 		// 3. 게시글과 파일 정보 데이터베이스에 추가
 		int result = qnaService.createQnaWithAttach(qna,attach);
+//		System.out.println("게시글 파일추가 처리확인" + result);
 		
 		JSONObject obj = new JSONObject();
 		

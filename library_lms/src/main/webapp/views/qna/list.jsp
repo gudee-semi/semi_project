@@ -65,6 +65,7 @@
 	
 	<div class="searchBox">
 		<form method="get" action="<c:url value='/qna/view'/>">
+
 			<select name="keywordIn" id="keywordIn">
 				<option value="구분"${paging.keywordIn == "구분" ? "selected" : "" }>구분</option>
 				<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
@@ -149,6 +150,7 @@
 		</div>
 	</c:if>
 	
+
 	<form action="/qna/write" method="get">
 		<button>작성</button>
 	</form>

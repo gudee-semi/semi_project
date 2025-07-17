@@ -18,8 +18,9 @@
 		<c:if test="${t.tabletAvailable == 0}">
 			<c:set var="usable" value="${usable + 1}" />
 		</c:if>
-
+    
 	</c:forEach>
+
 
 	<%-- 1. 가장 앞에서 버튼이 출력됐는지 체크하는 플래그(초기값 false) --%>
 	<c:set var="btn" value="false" />
@@ -66,6 +67,7 @@
 		</c:if>
 	</c:forEach>
 
+
 	<%-- 4. 반복문 끝나고도 btnPrinted가 false면(즉, 모든 태블릿이 사용중) "사용불가" 버튼 한 번만 --%>
 	<c:if test="${not btn}">
 		<button type="button" disabled>사용불가</button>
@@ -83,8 +85,6 @@
     return confirm("태블릿을 반납하시겠습니까?");
 	}
 	</script>
-
-
 
 </body>		
 </html>

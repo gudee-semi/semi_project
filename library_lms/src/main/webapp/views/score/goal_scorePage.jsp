@@ -1,19 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.hy.dto.Member" %>
+
 <%
-  // [1] 로그인 대신 예시 세션 설정 (실서비스에서는 로그인에서 세팅)
-  session.setAttribute("memberNo", 2);
-  session.setAttribute("studentGrade", 3);
-  int studentGrade = (session.getAttribute("studentGrade") != null) ? (Integer) session.getAttribute("studentGrade") : 1;
-  Integer memberNo = (Integer) session.getAttribute("memberNo");
-  if (memberNo == null) memberNo = -1;
+  // 로그인한 사용자 정보 세션에서 가져오기
+  Member loginMember = (Member) session.getAttribute("loginMember");
+  int memberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+  int studentGrade = (loginMember != null) ? loginMember.getMemberGrade() : 1;
+
+  // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+  session.setAttribute("currentYear", currentYear);
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>목표 성적 설정</title>
+  
+  <%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
   <style>
     body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
     h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
@@ -50,49 +59,41 @@
   // [0] 서버-side 변수 JS로 전달
   const studentGrade = <%= studentGrade %>;
   const memberNo = <%= memberNo %>;
-  const currentYear = <%= currentYear %>;
+  const currentYear = <%= currentYear%>;
 
-  // [A] 시험 분류 체크박스 활성/비활성 (지나간 시험 비활성화 & 안내문구 추가) ---------
+  // [A] 시험 분류 체크박스 활성/비활성
   document.addEventListener('DOMContentLoaded', function() {
-    const now = new Date();
-    const nowMonth = now.getMonth() + 1; // JS 0~11, 실제는 1~12
     const examCheckboxes = document.querySelectorAll('.exam-type');
     let availableCount = 0;
 
     examCheckboxes.forEach(cb => {
       const examMonth = parseInt(cb.value, 10);
-      if (examMonth < nowMonth) {
-        cb.disabled = true;
-        cb.checked = false;
-      } else {
+
+      // 3월, 6월, 9월은 누구나 가능
+      if (examMonth === 3 || examMonth === 6 || examMonth === 9) {
         cb.disabled = false;
         availableCount++;
       }
-    });
 
-    // 3학년: 10~12월이면 11월만 선택 가능
-    if (studentGrade === 3 && nowMonth >= 10 && nowMonth <= 12) {
-      examCheckboxes.forEach(cb => {
-        if (cb.value !== '11') {
+      // 11월은 3학년만 가능
+      else if (examMonth === 11) {
+        if (studentGrade === 3) {
+          cb.disabled = false;
+          availableCount++;
+        } else {
           cb.disabled = true;
           cb.checked = false;
-        } else if (cb.value === '11') {
-          cb.disabled = false;
-          cb.checked = true;
         }
-      });
-      availableCount = 1;
-    } 
-    // 1,2학년: 10~12월이면 전부 불가
-    else if ((studentGrade === 1 || studentGrade === 2) && nowMonth >= 10 && nowMonth <= 12) {
-      examCheckboxes.forEach(cb => {
+      }
+
+      // 기타 (예외적 값) 처리
+      else {
         cb.disabled = true;
         cb.checked = false;
-      });
-      availableCount = 0;
-    }
+      }
+    });
 
-    // 선택 가능한 시험이 0개면 안내
+    // 선택 가능한 시험이 0개면 안내 메시지 추가
     if (availableCount === 0) {
       const guide = document.createElement('div');
       guide.textContent = "선택 가능한 시험이 없습니다.";
@@ -101,6 +102,7 @@
     }
   });
 </script>
+
 
 <h1>목표 성적 설정</h1>
 
@@ -205,7 +207,6 @@
   <tbody id="score-body"></tbody>
 </table>
 
-<!-- 세부목표 입력 영역 완전 삭제! -->
 
 <!-- 모달창 -->
 <div id="modal">
@@ -215,214 +216,8 @@
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // -----------------------------
-  // [1] 시험 분류 1개만 선택(radio처럼)
-  // -----------------------------
-  function toggleExtraSubjectsSection() {
-    const examChecked = document.querySelector('.exam-type:checked');
-    const selectedMonth = examChecked ? examChecked.value : null;
-    // 3학년 + (6/9/11)일 때만 추가 과목 표시
-    if (studentGrade === 3 && ['6','9','11'].includes(selectedMonth)) {
-      document.getElementById('science2-section').style.display = '';
-      document.getElementById('lang2-section').style.display = '';
-    } else {
-      document.getElementById('science2-section').style.display = 'none';
-      document.getElementById('lang2-section').style.display = 'none';
-      // 숨길 때 해당 체크 해제
-      document.querySelectorAll('.science2-subject, .lang2-subject').forEach(cb => cb.checked = false);
-    }
-  }
-  // radio처럼 체크
-  document.querySelectorAll('.exam-type').forEach(cb => {
-    cb.addEventListener('change', function() {
-      document.querySelectorAll('.exam-type').forEach(other => {
-        if (other !== cb) other.checked = false;
-      });
-   // ★ 초기화 동작 추가
-      document.querySelectorAll('.explore-subject, .lang2-subject').forEach(input => {
-        input.checked = false;
-      });
-      document.getElementById('exam-title').style.display = 'none';
-      document.getElementById('exam-title').textContent = '';
-      document.getElementById('selected-subjects').textContent = '';
-      document.getElementById('score-table').style.display = 'none';
-      document.getElementById('score-body').innerHTML = '';
-      document.getElementById('final-submit').style.display = 'none';
-      
-      toggleExtraSubjectsSection();
-    });
-  });
-  toggleExtraSubjectsSection(); // 최초 호출
-
-  // -----------------------------
-  // [2] 사회/과학탐구(1,2 합산) 최대 2개 + 제2외국어 1개만 선택(체크 자체 제한)
-  // -----------------------------
-  function setupCombinedLimit() {
-    // 탐구(사회/과학1/과학2) 모두 explore-subject 클래스
-    const exploreCheckboxes = document.querySelectorAll('.explore-subject');
-    function countChecked() { return Array.from(exploreCheckboxes).filter(cb => cb.checked).length; }
-    exploreCheckboxes.forEach(cb => {
-      cb.addEventListener('change', function(e) {
-        if (cb.checked && countChecked() > 2) {
-          // 초과시 바로 해제 + 알림
-          cb.checked = false;
-          showModal("탐구과목은 2개까지 선택 가능합니다.");
-        }
-      });
-    });
-    // 제2외국어(1개만) - lang2-subject 클래스
-    const lang2Checkboxes = document.querySelectorAll('.lang2-subject');
-    function countLang2() { return Array.from(lang2Checkboxes).filter(cb => cb.checked).length; }
-    lang2Checkboxes.forEach(cb => {
-      cb.addEventListener('change', function() {
-        if (cb.checked && countLang2() > 1) {
-          cb.checked = false;
-          showModal("제2외국어는 1개만 선택 가능합니다.");
-        }
-      });
-    });
-  }
-  setupCombinedLimit();
-
-  // -----------------------------
-  //[3] 선택완료 클릭 시 과목 선택 확인/테이블 출력
-  // -----------------------------
-  document.getElementById('confirm-subjects').addEventListener('click', () => {
-    const selectedMonth = document.querySelector('.exam-type:checked')?.value;
-    if (!selectedMonth) return showModal('시험 분류를 선택해주세요.');
-    const selected = ['국어','수학','영어','한국사'];
-    document.querySelectorAll('.explore-subject:checked, .lang2-subject:checked')
-      .forEach(cb => selected.push(cb.value));
-    if (selected.length < 5) return showModal('탐구/선택 과목을 1개 이상 선택해주세요.');
-
-    // 기존 점수 테이블 등 표시
-    const titleString = `${currentYear}년 ${selectedMonth}월 모의고사`;
-    document.getElementById('exam-title').textContent = titleString;
-    document.getElementById('exam-title').style.display = 'block';
-    document.getElementById('selected-subjects').textContent = selected.join(' | ');
-    document.getElementById('score-body').innerHTML = selected.map(sub => `
-      <tr>
-        <td>${sub}</td>
-        <td><input type="text" class="score-input" data-subject="${sub}" min="0" max="100" placeholder="입력"></td>
-        <td><input type="text" class="grade-input" data-subject="${sub}" min="1" max="9" placeholder="입력"></td>
-      </tr>`).join('');
-    document.getElementById('score-table').style.display = 'table';
-
-    // ★ 설정완료 버튼 표시!
-    document.getElementById('final-submit').style.display = 'inline-block';
-
-    setScoreInputValidation();
-  });
-
-  // -----------------------------
-  // [4] 점수/등급 입력값 유효성(포커스아웃)
-  // -----------------------------
-  function setScoreInputValidation() {
-    document.querySelectorAll('.score-input').forEach(input => {
-      input.addEventListener('blur', function() {
-        if (this.value && (this.value < 0 || this.value > 100))
-          showModal("원점수는 0~100 사이여야 합니다.");
-      });
-    });
-    document.querySelectorAll('.grade-input').forEach(input => {
-      input.addEventListener('blur', function() {
-        if (this.value && (this.value < 1 || this.value > 9))
-          showModal("등급은 1~9 사이여야 합니다.");
-      });
-    });
-  }
-
-  // -----------------------------
-  // [6~8] 설정완료 클릭 시 저장/읽기전용 변환/모달 (한 번만!)
-  // -----------------------------
-  function showModal(msg) {
-    document.getElementById('modal-message').textContent = msg;
-    document.getElementById('modal').style.display = 'block';
-  }
-  document.getElementById('modal-close-btn').onclick = () => {
-    document.getElementById('modal').style.display = 'none';
-  };
-
-  document.getElementById('final-submit').addEventListener('click', function () {
-	  let isValid = true;
-	  const examType = document.querySelector('.exam-type:checked')?.value;
-	  const data = [];
-
-	  const gradeInputs = document.querySelectorAll('.grade-input');
-
-	  document.querySelectorAll('.score-input').forEach((input, i) => {
-	    const score = parseInt(input.value, 10);
-	    const grade = parseInt(gradeInputs[i].value, 10);
-	    const sub = input.dataset.subject;
-
-	    if (isNaN(score) || score < 0 || score > 100) {
-	      isValid = false;
-	      showModal('원점수는 0~100 사이여야 합니다.');
-	      return; // 이건 콜백 함수 내부에서 forEach만 종료됨
-	    }
-
-	    if (isNaN(grade) || grade < 1 || grade > 9) {
-	      isValid = false;
-	      showModal('등급은 1~9 사이여야 합니다.');
-	      return;
-	    }
-
-	    data.push({
-	      examTypeId: parseInt(examType),
-	      subjectName: sub,
-	      targetScore: score,
-	      targetLevel: grade
-	    });
-	  });
-
-	  if (!isValid) return;
-
-    // 1. AJAX 저장
-    fetch('/goal_score/insert', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        memberNo,
-        examTypeId: parseInt(examType),
-        year: currentYear,
-        subjectScores: data
-      })
-    }).then(res => res.json())
-      .then(res => {
-        showModal(res.success ? '저장 성공!' : '저장 실패');
-        // 2. 입력값 읽기
-        const subjectNames = [];
-        const scoreValues = [];
-        const gradeValues = [];
-        document.querySelectorAll('#score-body tr').forEach(tr => {
-          subjectNames.push(tr.children[0].textContent);
-          scoreValues.push(tr.children[1].querySelector('input').value);
-          gradeValues.push(tr.children[2].querySelector('input').value);
-        });
-        // 3. 읽기전용 테이블로 변환
-        renderResultTable(subjectNames, scoreValues, gradeValues);
-        // 4. 입력폼 숨기기
-        document.querySelectorAll('.score-input, .grade-input').forEach(inp => inp.style.display = 'none');
-        document.getElementById('final-submit').style.display = 'none';
-      });
-  });
-
-  // [helper] 읽기전용 테이블 렌더 함수
-  function renderResultTable(subjects, scoreInputs, gradeInputs) {
-    let html = '';
-    for (let i = 0; i < subjects.length; i++) {
-      html += `<tr>
-        <td>${subjects[i]}</td>
-        <td>${scoreInputs[i]}</td>
-        <td>${gradeInputs[i]}</td>
-      </tr>`;
-    }
-    document.getElementById('score-body').innerHTML = html;
-  }
-}); // DOMContentLoaded
-</script>
+<!-- js 연동 -->
+<script src="../../js/goal_score.js"></script>
 
 <!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
 <div style="width:70%;margin:28px auto 0;text-align:center;">
