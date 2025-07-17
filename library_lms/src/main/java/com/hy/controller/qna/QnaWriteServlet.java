@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.service.qna.AttachService;
@@ -16,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -37,34 +39,51 @@ public class QnaWriteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		System.out.println("여기도????");
 		
-		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-//		String memberId = ;
-		int categoryCode = Integer.parseInt(request.getParameter("qnaCategory"));
-		String title = request.getParameter("qnaTitle");
+
+		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
+		
+		Member member = (Member)session.getAttribute("loginMember");
+		
+	    if (session != null) {
+	        if (member != null) {
+	        	System.out.println(member);
+	        } else {
+	        	System.out.println("로그인 정보가 없습니다.");
+	        	response.sendRedirect(request.getContextPath()+"/");
+	        	return;
+	        }
+	    } else {
+	    	System.out.println("세션이 존재하지 않습니다.");
+	    	response.sendRedirect(request.getContextPath()+"/");
+	    	return;
+	    }
+	    
+		int memberNo = member.getMemberNo();
+		
+	    String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
-		
-		String categoryName = "";
-		switch(categoryCode) {
-        case 0: categoryName = "기타"; break;
-        case 1: categoryName = "시설"; break;
-        case 2: categoryName = "좌석"; break;
-        case 3: categoryName = "환불"; break;
-        case 4: categoryName = "기타"; break;
-    }
+		String category = request.getParameter("qnaCategory");
+		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 		
 		Qna qna = new Qna();
-		qna.setCategory(categoryName);
+		qna.setMemberNo(memberNo);
+		qna.setCategory(category);
 		qna.setTitle(title);
 		qna.setContent(content);
 		qna.setVisibility(visibility);
+		System.out.println("여긴??");
 		
 		// 2. 파일 정보 추출
 		File uploadDir = AttachService.getUploadDirectory();
+//		System.out.println("파일업로드?");
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
+//		System.out.println("파일정보추출까지?");
 		
 		// 3. 게시글과 파일 정보 데이터베이스에 추가
 		int result = qnaService.createQnaWithAttach(qna,attach);
+//		System.out.println("게시글 파일추가 처리확인" + result);
 		
 		JSONObject obj = new JSONObject();
 		
