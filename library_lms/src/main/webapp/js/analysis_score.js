@@ -6,7 +6,7 @@ $(document).ready(function () {
 
   if (deleteResult === "success") {
     alert("삭제 완료");
-    window.location.href = "/goal_score_view/view";
+    window.location.href = "/analysis_scorePage/view";
     return;
   } else if (deleteResult === "fail") {
     alert(msg || "삭제하지 못했습니다");
@@ -98,7 +98,7 @@ $(document).ready(function () {
 			success: function (res) {
 				//서버에서 바로 redirect 해도 되지만, 여기서는 JS에서 안내 후 페이지 이동
 				alert("삭제 완료");
-				window.location.href = "/analysis_score/view";
+				window.location.href = "/analysis_scorePage/view";
 			},
 			error: function (xhr, status, error) {
 				let msg = "삭제하지 못했습니다.";

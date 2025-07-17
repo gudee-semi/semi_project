@@ -25,9 +25,26 @@
       #{memberNo}, #{examTypeId}, #{subjectId}, #{targetScore}, #{targetLevel}
     )
   </insert>
+  
+  <!--  -->
+<select id="countByMemberAndExamType" resultType="int">
+  SELECT COUNT(*) 
+  FROM goal_score 
+  WHERE member_no = #{memberNo} AND exam_type_id = #{examTypeId}
+</select>
+  
+  
+  <select id="countGoalScoreByMemberAndExamType" parameterType="map" resultType="int">
+	  SELECT COUNT(*)
+	  FROM goal_score
+	  WHERE member_no = #{memberNo}
+	    AND exam_type_id = #{examTypeId}
+	</select>
+  
 
   <!-- 시험 분류와 사용자 번호로 성적 조회 -->
   <select id="selectGoalScoresByMemberAndExam" resultMap="GoalScoreWithSubject" parameterType="map">
+    <!-- =====================  -->
     SELECT G.*, S.subject_name, E.exam_type
 FROM goal_score G 
 	 inner join 
@@ -38,6 +55,8 @@ FROM goal_score G
      on G.exam_type_id = E.exam_type_id
 WHERE G.member_no = #{memberNo} AND G.exam_type_id = #{examTypeId}
   </select>
+  
+  
   
    <!-- 시험 분류 학년별 조회 -->
   <select id="selectExamTypesByGrade" resultType="com.hy.dto.score.ExamType" parameterType="int">
@@ -58,7 +77,7 @@ WHERE G.member_no = #{memberNo} AND G.exam_type_id = #{examTypeId}
   </select>
 
   <!-- 기존 목표 성적 삭제 -->
-  <delete id="deleteActualScoresByMemberAndExam" parameterType="map">
+  <delete id="deleteGoalScoresByMemberAndExam" parameterType="map">
     DELETE FROM goal_score
     WHERE member_no = #{memberNo}
       AND exam_type_id = #{examTypeId}

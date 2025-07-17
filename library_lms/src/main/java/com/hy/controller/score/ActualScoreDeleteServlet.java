@@ -49,12 +49,13 @@ public class ActualScoreDeleteServlet extends HttpServlet {
         
         
         if (result > 0) {
-            // 삭제 성공: 성공 플래그 포함해서 페이지 이동
-            response.sendRedirect("/analysis_scorePage/view?delete=success");
+            // 삭제 성공
+            response.sendRedirect("/views/score/analysis_scorePage.jsp?delete=success");
         } else {
-            // 삭제 실패: 실패 플래그 포함해서 페이지 이동
+            // 삭제 실패
             String msg = URLEncoder.encode("삭제하지 못했습니다", "UTF-8");
-            response.sendRedirect("/analysis_scorePage/view?delete=fail&msg=" + msg);
+            response.sendRedirect("/views/score/analysis_scorePage.jsp?delete=fail&msg=" + msg);
         }
+
     }
 }

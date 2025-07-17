@@ -54,6 +54,13 @@ public class GoalScoreService {
             if (session != null) session.close();
         }
     }
+    
+ // GoalScoreService.java
+    public int getExamTypeId(int examType, int grade) {
+        return mapExamTypeId(examType, grade);
+    }
+
+
 
     // 목표 성적 insert (여러 과목)
     public boolean insertGoalScores(List<GoalScore> dtos) {
@@ -62,9 +69,25 @@ public class GoalScoreService {
 
         try {
             session = SqlSessionTemplate.getSqlSession(false); // 수동 커밋
+
+            if (dtos.isEmpty()) return false;
+
+            // [1] 공통 정보 추출 (memberNo, examTypeId는 모두 동일한 값이라고 가정)
+            int memberNo = dtos.get(0).getMemberNo();
+            int examTypeId = dtos.get(0).getExamTypeId();
+
+            // [2] 중복 검사
+            int count = dao.countByMemberAndExamType(session, memberNo, examTypeId);
+            if (count > 0) {
+                System.out.println("❌ 이미 입력된 목표 성적입니다.");
+                session.rollback();
+                return false;
+            }
+
+            // [3] insert 수행
             for (GoalScore dto : dtos) {
-                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
-                dto.setExamTypeId(mappedExamTypeId);
+//                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
+//                dto.setExamTypeId(mappedExamTypeId);
 
                 int result = dao.insertGoalScore(session, dto);
                 if (result <= 0) {
@@ -89,6 +112,16 @@ public class GoalScoreService {
 
         return allSuccess;
     }
+    
+    
+ // GoalScoreService.java
+    public int countByMemberAndExamType(SqlSession session, int memberNo, int examTypeId) {
+        return session.selectOne("com.hy.mapper.score.GoalScoreMapper.countByMemberAndExamType", 
+                                 Map.of("memberNo", memberNo, "examTypeId", examTypeId));
+    }
+
+
+
 
     // 목표 성적 조회
     public List<GoalScore> selectGoalScoresByMemberAndExam(int memberNo, int examTypeId) {

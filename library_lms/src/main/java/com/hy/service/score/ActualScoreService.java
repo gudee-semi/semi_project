@@ -11,14 +11,15 @@ import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.score.ActualScoreDAO;
 import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.ExamType;
+import com.hy.dto.score.GoalScore;
+import com.hy.mapper.score.ActualScoreMapper;
 
 public class ActualScoreService {
 	
 	private final ActualScoreDAO dao = new ActualScoreDAO();
 	
-	//시험월과 학년을 조합하여 실제 exam_type_id로 매핑
-	// (예: 3월 + 1학년 → ID 1, 6월 + 3학년 → ID 8, 11월 수능 + 3학년 → ID 10) 
-    public int mapExamTypeId(int examTypeId, int grade) {
+	// 시험 유형 매핑을 별도 메서드로 분리
+    private int mapExamTypeId(int examTypeId, int grade) {
         if (grade == 1) {
             switch (examTypeId) {
                 case 3: return 1;
@@ -39,12 +40,10 @@ public class ActualScoreService {
                 case 11: return 10;
             }
         }
-        return examTypeId; // 예외 처리: 매핑 실패 시 그대로 반환
+        return examTypeId; // 매핑에 없으면 그대로 반환
     }
-	
-	
-
-    // 학년에 따라 사용 가능한 시험 분류 목록 조회
+    
+    // 시험 분류 학년별 조회 메서드
     public List<ExamType> getExamTypesByGrade(int grade) {
         SqlSession session = null;
         try {
@@ -58,20 +57,39 @@ public class ActualScoreService {
         }
     }
     
-    
-    // 실제 성적 등록 (여러 과목에 대해 한 번에 입력)
-    // @return 모두 성공 시 true, 실패 시 false
+ // ActualScoreService.java
+    public int getExamTypeId(int examType, int grade) {
+        return mapExamTypeId(examType, grade);
+    }
+
+
+
+    // 목표 성적 insert (여러 과목)
     public boolean insertActualScores(List<ActualScore> dtos) {
         SqlSession session = null;
         boolean allSuccess = true;
 
         try {
-            session = SqlSessionTemplate.getSqlSession(false); // 수동 commit
+            session = SqlSessionTemplate.getSqlSession(false); // 수동 커밋
 
+            if (dtos.isEmpty()) return false;
+
+            // [1] 공통 정보 추출 (memberNo, examTypeId는 모두 동일한 값이라고 가정)
+            int memberNo = dtos.get(0).getMemberNo();
+            int examTypeId = dtos.get(0).getExamTypeId();
+
+            // [2] 중복 검사
+            int count = dao.countByMemberAndExamType(session, memberNo, examTypeId);
+            if (count > 0) {
+                System.out.println("❌ 이미 입력된 목표 성적입니다.");
+                session.rollback();
+                return false;
+            }
+
+            // [3] insert 수행
             for (ActualScore dto : dtos) {
-                // 시험 분류 ID를 학년 기준으로 매핑
-                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
-                dto.setExamTypeId(mappedExamTypeId);
+//                int mappedExamTypeId = mapExamTypeId(dto.getExamTypeId(), dto.getGrade());
+//                dto.setExamTypeId(mappedExamTypeId);
 
                 int result = dao.insertActualScore(session, dto);
                 if (result <= 0) {
@@ -97,13 +115,23 @@ public class ActualScoreService {
         return allSuccess;
     }
     
+    
+ // ActualScoreService.java
+    public int countByMemberAndExamType(SqlSession session, int memberNo, int examTypeId) {
+        return session.selectOne("com.hy.mapper.score.ActualScoreMapper.countByMemberAndExamType", 
+                                 Map.of("memberNo", memberNo, "examTypeId", examTypeId));
+    }
 
-    // 실제 성적 조회 (사용자 + 시험분류 기준)
+
+
+
+    // 목표 성적 조회
     public List<ActualScore> selectActualScoresByMemberAndExam(int memberNo, int examTypeId) {
         SqlSession session = null;
         try {
             session = SqlSessionTemplate.getSqlSession(true);
-            return dao.selectActualScoresByMemberAndExam(session, memberNo, examTypeId);
+            return dao.selectActualScoresByMemberAndExam
+            		(session, memberNo, examTypeId);
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
@@ -111,39 +139,30 @@ public class ActualScoreService {
             if (session != null) session.close();
         }
     }
-    
-    // 입력된 실제 성적이 있는 시험 목록 조회
-    public List<Integer> selectAvailableExamTypeIds(int memberNo) {
-    	SqlSession session = null;
-    	try {
-    		session = SqlSessionTemplate.getSqlSession(true);
-    		return dao.selectAvailableExamTypeIds(session, memberNo);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return Collections.emptyList();
-    	} finally {
-    		if (session != null) session.close();
-    	}
-    }
 
-    // 실제 성적 삭제 (회원 + 시험 기준)
-    public int deleteActualScoresByMemberAndExam(int memberNo, int examTypeId) {
+    // 목표 성적 입력된 시험 분류 ID 목록 조회
+    public List<Integer> selectAvailableExamTypeIds(int memberNo) {
         SqlSession session = null;
         try {
             session = SqlSessionTemplate.getSqlSession(true);
-            Map<String, Integer> param = new HashMap<>();
-            param.put("memberNo", memberNo);
-            param.put("examTypeId", examTypeId);
-            return dao.deleteActualScoresByMemberAndExam(session, param);
+            return dao.selectAvailableExamTypeIds(session, memberNo);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return Collections.emptyList();
         } finally {
             if (session != null) session.close();
         }
     }
 
+    // 기존 점수 삭제
+    public int deleteActualScoresByMemberAndExam(int memberNo, int examTypeId) {
+    	Map<String, Integer> param = Map.of("memberNo", memberNo, "examTypeId", examTypeId);
+    	return dao.deleteActualScoresByMemberAndExam(param);
+    }
 
+    
+
+
+
+	 
 }
-    
-    

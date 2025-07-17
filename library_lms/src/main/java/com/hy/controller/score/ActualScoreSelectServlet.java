@@ -28,7 +28,8 @@ public class ActualScoreSelectServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 response.setContentType("application/json; charset=UTF-8");
+		
+		response.setContentType("application/json; charset=UTF-8");
 	        Gson gson = new Gson();
 
 	        // 세션에서 로그인 정보 가져오기
@@ -45,6 +46,7 @@ public class ActualScoreSelectServlet extends HttpServlet {
 	        int studentGrade = loginMember.getMemberGrade();
 	        String examTypeIdParam = request.getParameter("examTypeId");
 	        
+	        
 
 	        try {
 	            if (examTypeIdParam == null || examTypeIdParam.isEmpty()) {
@@ -57,9 +59,7 @@ public class ActualScoreSelectServlet extends HttpServlet {
 	                int examTypeId = Integer.parseInt(examTypeIdParam);
 
 	                // ✅ 학년 기반으로 examTypeId 매핑
-	                int mappedExamTypeId = service.mapExamTypeId(examTypeId, studentGrade);
-
-	                List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, mappedExamTypeId);
+	                List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, examTypeId);
 
 	                // JSP로 포워딩하여 성적 테이블 렌더링
 	                request.setAttribute("scores", scoreList);

@@ -67,7 +67,7 @@ public class LoginPage extends HttpServlet {
 
 			HttpSession session = request.getSession(true);
 			session.setAttribute("loginMember", member);
-			session.setMaxInactiveInterval(60*2);
+			session.setMaxInactiveInterval(60*30);
 
 		}
 		

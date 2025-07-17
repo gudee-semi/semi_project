@@ -15,56 +15,74 @@
     <result property="actualPercentage" column="actual_percentage"/>
     <result property="actualRank" column="actual_rank"/>
     <result property="subjectName" column="subject_name"/>
-    <result property="examType" column="exam_type"/>
+    <result property="examTypeName" column="exam_type"/>
   </resultMap>
-
-	<!-- 실제 성적 삽입 (백분위, 석차 포함) -->
- <insert id="insertActualScore" parameterType="com.hy.dto.score.ActualScore">
+  
+  	<!-- 성적 삽입 -->
+  <insert id="insertActualScore" parameterType="com.hy.dto.score.ActualScore">
     INSERT INTO actual_score (
       member_no, exam_type_id, subject_id, actual_score, actual_level, actual_percentage, actual_rank
-    ) VALUES (
+    )
+    VALUES (
       #{memberNo}, #{examTypeId}, #{subjectId}, #{actualScore}, #{actualLevel}, #{actualPercentage}, #{actualRank}
     )
   </insert>
+
+	 <!--  -->
+<select id="countByMemberAndExamType" resultType="int">
+  SELECT COUNT(*) 
+  FROM actual_score 
+  WHERE member_no = #{memberNo} AND exam_type_id = #{examTypeId}
+</select>
   
-    <!-- 시험 분류와 사용자 번호로 성적 조회 -->
+  
+  <select id="countActualScoreByMemberAndExamType" parameterType="map" resultType="int">
+	  SELECT COUNT(*)
+	  FROM actual_score
+	  WHERE member_no = #{memberNo}
+	    AND exam_type_id = #{examTypeId}
+	</select>
+  
+
+  <!-- 시험 분류와 사용자 번호로 성적 조회 -->
   <select id="selectActualScoresByMemberAndExam" resultMap="ActualScoreWithSubject" parameterType="map">
-    SELECT A.*, S.subject_name, E.exam_type
-	FROM actual_score A 
-		 inner join 
-	     subject S
-		 on A.subject_id = S.subject_id 
-	     inner join
-	     exam_type E
-	     on A.exam_type_id = E.exam_type_id
-	WHERE A.member_no = #{memberNo} AND A.exam_type_id = #{examTypeId}
+    SELECT A.*, S.subject_name, E.exam_type 
+FROM actual_score A 
+	 inner join 
+     subject S
+	 on A.subject_id = S.subject_id 
+     inner join
+     exam_type E
+     on A.exam_type_id = E.exam_type_id
+WHERE A.member_no = #{memberNo} AND A.exam_type_id = #{examTypeId}
   </select>
   
-	<!-- 시험 분류 학년별 조회 -->
-	<select id="selectExamTypesByGrade" resultType="com.hy.dto.score.ExamType" parameterType="int">
-	  SELECT
+  
+  
+   <!-- 시험 분류 학년별 조회 -->
+  <select id="selectExamTypesByGrade" resultType="com.hy.dto.score.ExamType" parameterType="int">
+    SELECT
       exam_type_id AS examTypeId,
       member_grade AS memberGrade,
       exam_type AS examType
     FROM exam_type
     WHERE member_grade = #{memberGrade}
     ORDER BY exam_type
-	</select>
-8
-  
-  <!-- 해당 회원이 입력한 시험 목록만 조회 -->
+  </select>
+
+  <!-- 입력된 목표 성적이 있는 시험 목록 조회 -->
   <select id="selectAvailableExamTypeIds" resultType="int" parameterType="int">
     SELECT DISTINCT exam_type_id
     FROM actual_score
-    WHERE member_no = #{memberNo}
+    WHERE member_no = #{param1}
   </select>
 
-  <!-- 기존 실제 성적 삭제 (시험+회원 기준) -->
+  <!-- 기존 목표 성적 삭제 -->
   <delete id="deleteActualScoresByMemberAndExam" parameterType="map">
     DELETE FROM actual_score
     WHERE member_no = #{memberNo}
       AND exam_type_id = #{examTypeId}
-  </delete>
+</delete>
 
 
 
