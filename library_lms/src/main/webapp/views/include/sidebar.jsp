@@ -41,6 +41,11 @@
     body > div > div:nth-child(3) {
       width: 50% !important;
     }
+    
+    .disabled {
+    	pointer-events: none;
+    	opacity: 0.6;
+    }
 
 
   </style>
@@ -101,7 +106,9 @@
 		                	if (data.res_code == 200) {
 			                	$('#check-in-input').attr("disabled", true); 
 			                	$('#check-out-input').removeAttr("disabled");
-			                	$('#temp-input').removeAttr("disabled");		                		
+			                	$('#temp-input').removeAttr("disabled");
+			                	$('.seat').toggleClass("disabled");
+			                	$('.tablet').toggleClass("disabled");
 		                	}
 		                }
 					});					
@@ -128,7 +135,9 @@
 		                	if (data.res_code == 200) {
 			                	$('#check-in-input').removeAttr("disabled"); 
 			                	$('#check-out-input').attr("disabled", true);
-			                	$('#temp-input').attr("disabled", true);		                		
+			                	$('#temp-input').attr("disabled", true);
+			                	$('.seat').toggleClass("disabled");
+			                	$('.tablet').toggleClass("disabled");
 		                	}
 		                }
 					});					
@@ -215,13 +224,28 @@
 		    	</ul>
 		    </li>
 		    
-   	        <li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/seat/view' />">좌석</a>
-	        </li>            
-	        
-	        <li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/tablet/view' />">태블릿</a>
-	        </li>
+		    <c:if test="${ useStatus.status eq 0 }">
+	   	        <li class="nav-item">
+		        	<a class="dropdown-item disabled seat" href="<c:url value='/seat/view' />">좌석</a>
+		        </li>            		    
+		    </c:if>
+   		    <c:if test="${ (useStatus.status eq 1) or (useStatus.status eq 2) }">
+	   	        <li class="nav-item">
+		        	<a class="dropdown-item seat" href="<c:url value='/seat/view' />">좌석</a>
+		        </li>            		    
+		    </c:if>
+		    
+		    <c:if test="${ useStatus.status eq 0 }">
+		        <li class="nav-item">
+		        	<a class="dropdown-item disabled tablet" href="<c:url value='/tablet/view' />">태블릿</a>
+		        </li>		    
+		    </c:if>
+   		    <c:if test="${ (useStatus.status eq 1) or (useStatus.status eq 2) }">
+		        <li class="nav-item">
+		        	<a class="dropdown-item tablet" href="<c:url value='/tablet/view' />">태블릿</a>
+		        </li>		    
+		    </c:if>
+		    
 	        
 	        <li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/notice/list' />">공지사항</a>

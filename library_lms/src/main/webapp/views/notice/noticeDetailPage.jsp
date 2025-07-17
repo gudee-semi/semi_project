@@ -6,21 +6,95 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<style>
+	.content {
+		background-color: #fff;
+	}
+	.detail-table {
+		width: 70%;
+		border-collapse: collapse;
+		margin-bottom: 20px;
+		table-layout: fixed;
+	}
+
+	.detail-table th,
+	.detail-table td {
+		border: 1px solid #ddd;
+		padding: 10px 12px;
+		vertical-align: top;
+		word-wrap: break-word;
+	}
+	.detail-table th {
+	background-color: #f0f0f0;
+	width: 120px;
+	text-align: center;
+	
+	font-weight: normal;
+	}
+	/* 긴 내용 셀 */
+	.content-text {
+		height: 150px;
+		vertical-align: top;
+		background-color: #fafafa;
+	}
+
+	/* ===== 버튼 ===== */
+	.btn {
+		display: inline-block;
+		padding: 10px 20px;
+		margin: 0 8px;
+		border: none;
+		border-radius: 4px;
+		font-size: 15px;
+		cursor: pointer;
+		color: rgba(255, 255, 255, 1);
+	}
+
+	.btn.blue {
+		width: 70px;
+		background-color: rgba(32, 93, 172, 1);
+	}
+</style>
 </head>
 <body>
-	<p>제목 : ${ notice.title }</p>
-	<p>작성자 : 관리자</p>
-	<p>내용 : ${ notice.content } </p>
-	<p>작성일 : ${ notice.createAt } </p>
-	
-	<c:if test="${ not empty attach }">
-	    <h4>첨부파일</h4>
-	    <img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
-	    <a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>
-	</c:if>
+
+	<section class="content">
+		<h1>공지사항</h1>
+		
+		<table class="detail-table">
+			<tr>
+				<th>No</th>
+				<td>${ notice.noticeId }</td>
+				<th>작성일</th>
+				<td>${ notice.createAt }</td>
+			</tr>
+			<tr>
+				<th>카테고리</th>
+				<td>${ notice.category }</td>
+				<th>작성자</th>
+				<td>관리자</td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td colspan="3">${ notice.title }</td>
+			</tr>
+			<tr>
+				<th>내용</th>
+				<td colspan="3">${ notice.content }</td>
+			</tr>
+			<c:if test="${ not empty attach }">
+				<tr>
+					<th>첨부파일</th>
+					<td colspan="3">
+				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
+				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>						
+					</td>
+				</tr>
+			</c:if>
+		</table>
+	</section>
 	
 	<a href="/notice/list">목록</a>
 	
