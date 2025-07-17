@@ -57,16 +57,25 @@
 			<div class="row align-items-start">
 			    <div class="col">
 			    	<form id="check-in">
-			    		<input type="hidden" name="check" value="1" id="check">
-			    		<input type="submit" value="입실" id="check-in">
+			    		<c:if test="${ useStatus.status eq 0 }"><input type="submit" value="입실" id="check-in-input"></c:if>
+			    		<c:if test="${ useStatus.status eq 1 }"><input type="submit" value="입실" id="check-in-input" disabled="disabled"></c:if>
+			    		<c:if test="${ useStatus.status eq 2 }"><input type="submit" value="입실" id="check-in-input" disabled="disabled"></c:if>
 			    	</form>
 			    </div>
    			    <div class="col">
 			    	<form id="check-out">
-			    		<input type="submit" value="퇴실" id="check-out">
+			    		<c:if test="${ useStatus.status eq 0 }"><input type="submit" value="퇴실" id="check-out-input" disabled="disabled"></c:if>
+			    		<c:if test="${ useStatus.status eq 1 }"><input type="submit" value="퇴실" id="check-out-input"></c:if>
+			    		<c:if test="${ useStatus.status eq 2 }"><input type="submit" value="퇴실" id="check-out-input" disabled="disabled"></c:if>
 			    	</form>
-			    </div>
-			    <div class="col"><a href="/use/tempOut?memberNo=${ loginMember.memberNo }">외출</a></div>
+			    </div> 
+    			<div class="col">
+			    	<form id="temp">
+			    		<c:if test="${ useStatus.status eq 0 }"><input type="submit" value="외출" id="temp-input" disabled="disabled"></c:if>
+			    		<c:if test="${ useStatus.status eq 1 }"><input type="submit" value="외출" id="temp-input"></c:if>
+	    			    <c:if test="${ useStatus.status eq 2 }"><input type="submit" value="재입실" id="temp-input"></c:if>			    		
+			    	</form>	    			    
+			    </div>			    
 		    </div>			
 		</div>
 		<c:set var="memberNo" value="${ loginMember.memberNo }"/>
@@ -74,24 +83,115 @@
 		<script>
 			$('#check-in').on('submit', (e) => {
 				e.preventDefault();
-				const memberNo = ${ loginMember.memberNo };
-				const check = $('#check').val();
-				
-				$.ajax({
-					url: '/use/checkIn',
-	                type: 'post',
-	                data: {
-	                    memberNo: memberNo,
-	                    check: check;
-	                },
-	                dataType: 'json',
-	                success: (data) => {
-	                	window.alert(data.res_msg);
-	                }
-				})
+				const checker1 = confirm('입실하시겠습니까?');
+				if (checker1) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = 1;
+					
+					$.ajax({
+						url: '/use/checkIn',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                	if (data.res_code == 200) {
+			                	$('#check-in-input').attr("disabled", true); 
+			                	$('#check-out-input').removeAttr("disabled");
+			                	$('#temp-input').removeAttr("disabled");		                		
+		                	}
+		                }
+					});					
+				}
 			});
 			
+			$('#check-out').on('submit', (e) => {
+				e.preventDefault();
+				const checker2 = confirm('퇴실하시겠습니까?');
+				if (checker2) {
+					const memberNo = ${ loginMember.memberNo };
+					const check = 0;
+					
+					$.ajax({
+						url: '/use/checkOut',
+		                type: 'post',
+		                data: {
+		                    memberNo: memberNo,
+		                    check: check
+		                },
+		                dataType: 'json',
+		                success: (data) => {
+		                	window.alert(data.res_msg);
+		                	if (data.res_code == 200) {
+			                	$('#check-in-input').removeAttr("disabled"); 
+			                	$('#check-out-input').attr("disabled", true);
+			                	$('#temp-input').attr("disabled", true);		                		
+		                	}
+		                }
+					});					
+				}
+			});
 			
+			$('#temp').on('submit', (e) => {
+				e.preventDefault();
+				const tempValue = $('#temp-input').val();
+				if (tempValue === '외출') {
+					const memberNo = ${ loginMember.memberNo };
+					const check = 2;
+					const checker3 = confirm('외출하시겠습니까?');
+					
+					if (checker3) {
+						$.ajax({
+							url: '/use/tempOut',
+			                type: 'post',
+			                data: {
+			                    memberNo: memberNo,
+			                    check: check
+			                },
+			                dataType: 'json',
+			                success: (data) => {
+			                	window.alert(data.res_msg);
+			                	if (data.res_code == 200) {
+				                	$('#check-in-input').attr("disabled", true);
+				                	$('#check-out-input').attr("disabled", true);
+				                	$('#temp-input').removeAttr("disabled");	
+				                	$('#temp-input').val('재입실');	
+			                	}
+			                }
+						});																	
+					}
+					
+				} else {
+					const memberNo = ${ loginMember.memberNo };
+					const check = 1;
+					const checker3 = confirm('재입실하시겠습니까');
+					
+					if (checker3) {
+						$.ajax({
+							url: '/use/tempIn',
+			                type: 'post',
+			                data: {
+			                    memberNo: memberNo,
+			                    check: check
+			                },
+			                dataType: 'json',
+			                success: (data) => {
+			                	window.alert(data.res_msg);
+			                	if (data.res_code == 200) {
+				                	$('#check-in-input').attr("disabled", true);
+				                	$('#check-out-input').removeAttr("disabled");
+				                	$('#temp-input').removeAttr("disabled");	
+				                	$('#temp-input').val('외출');	
+			                	}
+			                }
+						});							
+					}
+					
+				}
+			});
 		</script>
 
      	<div class="container text-center">
