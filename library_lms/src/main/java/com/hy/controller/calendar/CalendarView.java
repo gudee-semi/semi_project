@@ -86,7 +86,6 @@ public class CalendarView extends HttpServlet {
 			response.sendRedirect(request.getContentType() + "/");
 			return;
 		} else {
-			System.out.println(session);
 			if (session.getAttribute("loginMember") == null) {
 				response.sendRedirect(request.getContextPath() + "/");
 				return;

@@ -55,7 +55,6 @@ public class QnaViewServlet extends HttpServlet {
 		// 게시글 목록 정보 조회
 		List<Qna> qnaList = service.selectQnaList(qna);
 	
-		System.out.println(qnaList);
 		
 		
 		request.setAttribute("paging", qna);

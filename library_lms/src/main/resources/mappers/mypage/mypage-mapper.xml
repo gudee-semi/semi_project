@@ -26,6 +26,19 @@
 		<result property="path" column ="path"/>
 	
 	</resultMap>
+	<resultMap id="qnaResultMap" type="com.hy.dto.qna.Qna">
+      <result property="qnaId" column="qna_id" />
+      <result property="memberId" column="member_id" />
+      <result property="memberName" column="member_name" />
+      <result property="category" column="category" />
+      <result property="title" column="title" />
+      <result property="content" column="content" />
+      <result property="regDate" column="reg_date" />
+      <result property="modDate" column="mod_date" />
+      <result property="visibility" column="visibility" />
+      <result property="viewCount" column="view_count" />
+      <result property="answerStatus" column="answer_status" />
+	</resultMap>
 	
 	<select id="selectProfileAttach" resultMap="memberProfile" parameterType="_int">
 		SELECT * FROM member_avatar
@@ -59,17 +72,51 @@
 			re_name= #{reName},
 			path = #{path}
 		WHERE member_no =#{memberNo}
-
+	</update>
+	<delete id ="deleteMember" parameterType="_int">
+		DELETE FROM member
+		WHERE member_no = #{memberNo}
+	</delete>
+	<delete id ="deleteMemberAvatar" parameterType="_int">
+		DELETE FROM member_avatar
+		WHERE member_no = #{memberNo}
+	</delete>
+	
+	<select id="selectMyQnaCount" resultType="_int" parameterType="com.hy.dto.qna.Qna">
+		SELECT COUNT(*) 
+		FROM qna 
+		WHERE member_no = #{memberNo}
+	</select>
+	<select id="selectMyQnaList" resultMap="qnaResultMap" parameterType="com.hy.dto.qna.Qna">
+		SELECT Q.qna_id 
+			,Q.category
+			,Q.title 
+			,Q.content 
+			,DATE_FORMAT(Q.reg_date, '%Y-%m-%d') AS reg_date
+			,DATE_FORMAT(Q.mod_date, '%Y-%m-%d') AS mod_date 
+			,Q.visibility
+			,Q.view_count
+			,Q.answer_status
+			,M.member_id
+			,M.member_name
+		FROM qna Q 
+		JOIN member M ON Q.member_no = M.member_no
+		WHERE M.member_no = #{memberNo}
+		ORDER BY Q.qna_id DESC
+		LIMIT #{limitPageNo},#{numPerPage}
+	</select>
+	<select id="selectMyQnaReplyList" parameterType="_int" resultType ="com.hy.dto.qna.QnaReply">
+		SELECT R.qna_id AS qnaId,
+			   R.reply_check AS replyCheck
+		FROM qna Q
+		JOIN qna_reply R ON Q.qna_id = R.qna_id
+		WHERE  Q.member_no = #{memberNo}
+	</select>
+	<update id ="updateReplyCheck" parameterType="_int">
+		UPDATE qna_reply
+		SET reply_check = 1
+		WHERE qna_id= #{qnaId}
 	</update>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 </mapper>
