@@ -9,6 +9,7 @@
     <id property="tabletId" column="tablet_id"/>
     <result property="tabletAvailable" column="tablet_available"/>
     <result property="memberNo" column="member_no"/>
+    <result property="memberName" column="member_name"/>
 </resultMap>
 
 	<!-- 태블릿 전체 데이터 조회 -->
@@ -43,9 +44,28 @@
     WHERE tablet_id = #{tabletId} AND member_no = #{memberNo}
 	</update>
   
-<insert id="insertTabletLog">
-    INSERT INTO tablet_log (member_no, tablet_status)
-    VALUES (#{memberNo}, #{tabletStatus})
-</insert>
-
+	<insert id="insertTabletLog">
+	    INSERT INTO tablet_log (member_no, tablet_status)
+	    VALUES (#{memberNo}, #{tabletStatus})
+	</insert>
+	
+	<!-- 태블릿 & 멤버 데이터 조회 (태블릿 관리자 사용현황 확인용) -->
+	<select id="selectAllTabletMemberName" resultMap="TabletResultMap">
+		SELECT t.tablet_id,
+			m.member_no,
+			m.member_name,
+			t.tablet_available
+		FROM tablet t
+		JOIN member m ON t.member_no = m.member_no 
+	</select>
+	
+	<!-- 패널티 추가 -->
+	<update id="updatePenalty" parameterType="_int">
+		UPDATE member
+		SET member_penalty = member_penalty + 1
+		<where>
+		member_no = #{memberNo}
+		</where>
+	</update>
+	
 </mapper>
