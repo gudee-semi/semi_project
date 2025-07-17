@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>학습 플래너</title>
- <!-- FullCalendar 라이브러리 -->
+<!-- FullCalendar 라이브러리 -->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 <!-- jquery -->
@@ -15,6 +15,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/calendar/calendar.css">
+<!-- 팝업 캘린더 라이브러리 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 </head>
 <body>
 	<h1>학습 플래너</h1>
@@ -47,14 +51,14 @@
 		    });
 	
 		    let startTime = todoDate + 'T00:00:00';
-		    let endTime = todoDate + 'T04:00:00';
+		    let endTime = todoDate + 'T03:00:00';
 	
 		    if (existingEvents.length > 0) {
 		        existingEvents.sort((a, b) => a.end - b.end);
 		        const lastEventEnd = existingEvents[existingEvents.length - 1].end;
 		        const nextStart = new Date(lastEventEnd);
 		        const nextEnd = new Date(nextStart);
-		        nextEnd.setHours(nextEnd.getHours() + 4);
+		        nextEnd.setHours(nextEnd.getHours() + 3);
 		        startTime = nextStart.toISOString();
 		        endTime = nextEnd.toISOString();
 		    }
@@ -86,6 +90,7 @@
 		        editable: false,
 		        selectable: true,
 		        allDaySlot: false,
+		        scrollTime: 0,
 		        eventTimeFormat: {
 		            month: 'short',
 		            day: 'numeric',
@@ -393,7 +398,9 @@
 			<button type="button" class="btn-burger"><span class="material-symbols-outlined">menu</span></button>	  	  	
 		</div>
 	</div>
-	    
+	
+	<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" />
+
     <div class="modal modal-1">
     	<div class="modal-content">
       		<div class="modal-header font-en">
@@ -493,93 +500,130 @@
   	</script>
   	
 	<script>
-		
 		$('#todo-input').on('submit', (e) => {
-			
-			e.preventDefault();
-			
-			const todoTitle = $('.todo-input-title').val();
-			const todoDate = $('.todo-input-date').val();
-			const todoDetail = $('.todo-input-detail').val();
-			
-			if (!todoTitle) {
-				window.alert('제목은 필수 항목입니다.');
-			} else if (!todoDate) {
-				window.alert('날짜는 필수 항목입니다.');
-			} else {
-				console.log(todoTitle);
-				console.log(todoDate);
-				console.log(todoDetail);
-				
-				
-				$.ajax({
-					
-					url: '/calendar/view',
-					type: 'post',
-					data: {
-						todoTitle: todoTitle,
-						todoDate: todoDate,
-						todoDetail: todoDetail
-					},
-					dataType: 'json',
-					success: (data) => {
-						console.log(data);
-						console.log(data.res_msg);
-						console.log(data.planner_id);
-						if (data.res_code == '200') {
-							
-							window.alert('할 일 목록 등록 성공');
-							
-							const existingEvents = calendar.getEvents().filter(event => {
-								  return event.startStr.startsWith(todoDate); // '2025-07-09' 같은 날짜로 필터
-								});
-							
-						    let startTime = todoDate + 'T00:00:00';
-						    let endTime = todoDate + 'T04:00:00';
-						    
-						    if (existingEvents.length > 0) {
-						    	  // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
-						    	  existingEvents.sort((a, b) => a.end - b.end);
-						    	  const lastEventEnd = existingEvents[existingEvents.length - 1].end;
-
-						    	  // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
-						    	  const nextStart = new Date(lastEventEnd);
-						    	  const nextEnd = new Date(nextStart);
-						    	  nextEnd.setHours(nextEnd.getHours() + 4);
-
-						    	  startTime = nextStart.toISOString();
-						    	  endTime = nextEnd.toISOString();
-						    	}
-						    
-						    
-					        calendar.addEvent({
-				          		title: todoTitle,
-				          		start: startTime,
-				          		end: endTime,
-					        	allDay: false,
-					        	extendedProps: {
-					          		description: todoDetail,
-					          		planner_id: data.planner_id,
-					          		is_completed: 0
-					        	}
-				      		});	
-							
-						} else {
-							window.alert('오류!');
-						}
-					},
-					error: () => {
-						
-					}					
-					
-				})
-				
-				
-			}
-			
+		    e.preventDefault();
+	
+		    const todoTitle = $('.todo-input-title').val();
+		    const todoDate = $('.todo-input-date').val();
+		    const todoDetail = $('.todo-input-detail').val();
+	
+		    if (!todoTitle) {
+		        window.alert('제목은 필수 항목입니다.');
+		    } else if (!todoDate) {
+		        window.alert('날짜는 필수 항목입니다.');
+		    } else {
+		        $.ajax({
+	
+		            url: '/calendar/view',
+		            type: 'post',
+		            data: {
+		                todoTitle: todoTitle,
+		                todoDate: todoDate,
+		                todoDetail: todoDetail
+		            },
+		            dataType: 'json',
+		            success: (data) => {
+		                console.log(data);
+		                console.log(data.res_msg);
+		                console.log(data.planner_id);
+		                if (data.res_code == '200') {
+		                	
+		                    window.alert('할 일 목록 등록 성공');
+		                    
+		                    $('.todo-input-title').val('');
+		                    $('.todo-input-date').val('');
+		                    $('.todo-input-detail').val('');
+	
+		                    const existingEvents = calendar.getEvents().filter(event => {
+		                        return event.startStr.startsWith(todoDate); // '2025-07-09' 같은 날짜로 필터
+		                    });
+	
+		                    let startTime = todoDate + 'T00:00:00';
+		                    let endTime = todoDate + 'T03:00:00';
+	
+		                    if (existingEvents.length > 0) {
+		                        // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
+		                        existingEvents.sort((a, b) => a.end - b.end);
+		                        const lastEventEnd = existingEvents[existingEvents.length - 1].end;
+	
+		                        // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
+		                        const nextStart = new Date(lastEventEnd);
+		                        const nextEnd = new Date(nextStart);
+		                        nextEnd.setHours(nextEnd.getHours() + 3);
+	
+		                        startTime = nextStart.toISOString();
+		                        endTime = nextEnd.toISOString();
+		                    }
+		                    calendar.addEvent({
+		                        title: todoTitle,
+		                        start: startTime,
+		                        end: endTime,
+		                        allDay: false,
+		                        extendedProps: {
+		                            description: todoDetail,
+		                            planner_id: data.planner_id,
+		                            is_completed: 0
+		                        }
+		                    });
+		                } else {
+		                    window.alert('오류!');
+		                }
+		            }
+		        });
+		    }
 		});
-		
 	</script>
 	 
+	<script>
+		const attendanceDates = [];
+	
+		<c:forEach var="atd" items="${useLog}">
+		    attendanceDates.push('${atd}');
+		</c:forEach>
+	
+		console.log(attendanceDates);
+	
+		const fp = flatpickr("#calendarPop", {
+		    clickOpens: true,
+		    allowInput: false,
+		    defaultDate: new Date(),
+		    locale: 'ko',
+		    onDayCreate: function (dObj, dStr, fp, dayElem) {
+		        const date = dayElem.dateObj.toLocaleDateString('sv-SE');
+		        if (attendanceDates.includes(date)) {
+		            dayElem.classList.add('attendance');
+		            dayElem.title = '출석 완료';
+		        }
+		    },
+		    onReady: updateCalendarTitle,       // 달력 처음 렌더링
+		    onMonthChange: updateCalendarTitle  // 월 이동 시
+		});
+	
+		// 버튼 누르면 달력 열기
+		document.querySelector('.btn-atd').addEventListener('click', () => {
+		    fp.open();
+		});
+	
+		function updateCalendarTitle(selectedDates, dateStr, instance) {
+		    const calendar = instance.calendarContainer;
+		    if (!calendar) return;
+	
+		    const monthIndex = instance.currentMonth;
+		    const yearIndex = instance.currentYear;
+		    const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+		    const label = yearIndex + '년 ' + monthNames[monthIndex] + ' 출석표';
+		    console.log(label);
+	
+		    // 중복 방지
+		    const existing = calendar.querySelector('.calendar-title');
+		    if (existing) existing.remove();
+	
+		    const title = document.createElement('div');
+		    title.className = 'calendar-title';
+		    title.innerText = label;
+		    calendar.insertBefore(title, calendar.firstChild);
+		}
+	</script>
+	
 </body>
 </html>

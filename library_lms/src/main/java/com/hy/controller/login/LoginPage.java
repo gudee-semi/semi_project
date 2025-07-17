@@ -5,7 +5,9 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 import com.hy.dto.Member;
+import com.hy.dto.use.Use;
 import com.hy.service.login.LoginService;
+import com.hy.service.use.UseService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -22,6 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class LoginPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService service = new LoginService();
+	private UseService useService = new UseService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -67,6 +70,10 @@ public class LoginPage extends HttpServlet {
 
 			HttpSession session = request.getSession(true);
 			session.setAttribute("loginMember", member);
+			
+			int memberNo = member.getMemberNo();
+			Use param = useService.getUseStatusByNo(memberNo);
+			session.setAttribute("useStatus", param);
 			session.setMaxInactiveInterval(60*2);
 
 		}
