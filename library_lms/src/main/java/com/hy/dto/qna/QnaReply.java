@@ -11,10 +11,11 @@ public class QnaReply extends Paging {
 	
 	private int qnaReplyId;
 	private int qnaId;
+	private int replyCheck;
 	private String content;
 	private LocalDateTime regDate;
 	private LocalDateTime modDate;
-	
+		
 	private Qna qna;
 
 }

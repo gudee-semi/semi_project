@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hy.mapper.qna.QnaAdminMapper">		
+<mapper namespace="com.hy.mapper.qna.QnaAdminMapper">
 
 	<resultMap id="QnaMap" type="com.hy.dto.qna.Qna">
 		<id property="qnaId" column="qna_id" />
@@ -18,7 +18,7 @@
 		<result property="answerStatus" column="answer_status" />
 		<result property="memberNo" column="member_no" />
 	</resultMap>
-		
+
 	<resultMap id="QnaAdminMap" type="com.hy.dto.qna.QnaReply">
 		<id property="qnaReplyId" column="qna_reply_id" />
 		<result property="qnaId" column="qna_id" />
@@ -27,20 +27,47 @@
 		<result property="modDate" column="mod_date" />
 		<association property="qna" javaType="com.hy.dto.qna.Qna" resultMap="QnaMap" />
 	</resultMap>
-	
-	<select id="selectAll" resultMap="QnaAdminMap">
-        SELECT * FROM qna
-    </select>
 
-<select id="selectReplyList" parameterType="int" resultMap="QnaAdminMap">
-    SELECT * FROM qna_reply WHERE qna_id = #{qnaId}
-</select>
-	
-<insert id="insertReply" parameterType="com.hy.dto.qna.QnaReply">
-    INSERT INTO qna_reply (qna_id, content, reg_date)
-    VALUES (#{qnaId}, #{content}, NOW())
-</insert>
-	
-	
-	
+	<!-- 게시글 목록 조회 -->
+	<select id="selectAll" resultMap="QnaAdminMap">
+		SELECT * FROM qna
+	</select>
+
+	<!-- 답글 목록 조회 -->
+	<select id="selectReplyList" parameterType="int"
+		resultMap="QnaAdminMap">
+		SELECT * FROM qna_reply WHERE qna_id = #{qnaId}
+	</select>
+
+	<!-- 답글 등록 -->
+	<insert id="insertReply" parameterType="com.hy.dto.qna.QnaReply">
+		INSERT INTO qna_reply
+		(qna_id, content, reg_date)
+		VALUES (#{qnaId}, #{content}, NOW())
+	</insert>
+
+	<!-- 답글 수정 -->
+	<update id="updateReply" parameterType="com.hy.dto.qna.QnaReply">
+		UPDATE qna_reply
+		SET
+		content = #{content}, mod_date = NOW(), reply_check = 0
+		WHERE
+		qna_reply_id = #{qnaReplyId}
+	</update>
+
+	<!-- 답글 단건 조회 -->
+	<select id="selectReplyOne" parameterType="int"
+		resultMap="QnaAdminMap">
+		SELECT * FROM qna_reply
+		WHERE qna_reply_id = #{value}
+	</select>
+
+	<!-- 답글 삭제 -->
+<delete id="deleteReply" parameterType="int">
+  DELETE FROM qna_reply
+  WHERE qna_reply_id = #{value}
+</delete>
+
+
+
 </mapper>

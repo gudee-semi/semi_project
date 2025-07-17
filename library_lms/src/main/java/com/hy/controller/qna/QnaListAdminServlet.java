@@ -18,16 +18,17 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/qna/list/admin")
 public class QnaListAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private QnaAdminService qnaAdminService = new QnaAdminService();
-	
-    public QnaListAdminServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	private QnaAdminService qnaAdminService = new QnaAdminService();
+
+	public QnaListAdminServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
 		// 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -43,20 +44,20 @@ public class QnaListAdminServlet extends HttpServlet {
 
 		int memberNo = loginMember.getMemberNo();
 
-    // 1. QnA 목록 데이터 조회 (Service 호출)
-    List<QnaReply> qnaAdminList = qnaAdminService.selectAll();
+		// 1. QnA 목록 데이터 조회 (Service 호출)
+		List<QnaReply> qnaAdminList = qnaAdminService.selectAll();
 
-    // 2. 조회한 리스트를 request 영역에 저장 (JSP에서 사용 가능)
-    request.setAttribute("qnaAdminList", qnaAdminList);
+		// 2. 조회한 리스트를 request 영역에 저장 (JSP에서 사용 가능)
+		request.setAttribute("qnaAdminList", qnaAdminList);
 
-    // 3. qnalistadmin.jsp로 포워딩 (화면 전환)
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/views/qna/qnaListAdmin.jsp");
-    dispatcher.forward(request, response);
-		
+		// 3. qnalistadmin.jsp로 포워딩 (화면 전환)
+		request.getRequestDispatcher("/views/qna/qnaListAdmin.jsp").forward(request, response);
+
 	}
 
-  // POST : 답글 등록
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	// POST : 답글 등록
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 
 	}

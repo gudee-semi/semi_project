@@ -1,9 +1,7 @@
 package com.hy.controller.qna;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
-import com.hy.dto.qna.QnaReply;
 import com.hy.service.qna.QnaAdminService;
 
 import jakarta.servlet.ServletException;
@@ -12,13 +10,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/qna/reply/admin/insert")
-public class QnaReplyInsertAdminServlet extends HttpServlet {
+@WebServlet("/qna/reply/admin/delete")
+public class QnaReplyDeleteAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private QnaAdminService qnaAdminService = new QnaAdminService();
 
-	public QnaReplyInsertAdminServlet() {
+	public QnaReplyDeleteAdminServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -33,27 +31,25 @@ public class QnaReplyInsertAdminServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// 파라미터 받기
-		String qnaIdStr = request.getParameter("qnaId");
-		
-		if (qnaIdStr == null || qnaIdStr.isEmpty()) {
-			// 파라미터 누락 시 목록으로 리다이렉트 또는 에러 처리
+		// 1. 삭제할 답글 ID 파라미터 받기
+		String replyIdStr = request.getParameter("qnaReplyId");
+		String qnaIdStr = request.getParameter("qnaId"); // 삭제 후 돌아갈 원글 번호
+
+		// 파라미터 체크 (비었을 때 안전처리)
+		if (replyIdStr == null || replyIdStr.isEmpty() || qnaIdStr == null
+				|| qnaIdStr.isEmpty()) {
 			response.sendRedirect(request.getContextPath() + "/qna/list/admin");
 			return;
 		}
-		int qnaNo = Integer.parseInt(qnaIdStr);
 
-		String content = request.getParameter("content");
+		int replyId = Integer.parseInt(replyIdStr);
+		int qnaId = Integer.parseInt(qnaIdStr);
 
-		// DTO 생성 및 값 세팅 (댓글 번호는 DB에서 자동 생성)
-		QnaReply reply = new QnaReply();
-		reply.setQnaId(qnaNo);
-		reply.setContent(content);
+		// 2. 서비스 계층에서 삭제
+		qnaAdminService.deleteReply(replyId);
 
-		// Service 호출하여 댓글 등록
-		qnaAdminService.insertReply(reply);
-
-		// 등록 후 상세페이지로 리다이렉트
-		response.sendRedirect(request.getContextPath()+ "/qna/detail/admin?qnaId=" + qnaNo);
+		// 3. 원글 상세페이지로 리다이렉트
+		response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaId);
 	}
+
 }

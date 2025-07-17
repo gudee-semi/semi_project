@@ -24,5 +24,20 @@ public class QnaAdminService{
 	public void insertReply(QnaReply reply) {
 	    qnaAdminDao.insertReply(reply);
 	}
+	
+	// 답글 수정 서비스
+    public int updateReply(QnaReply reply) {
+        return qnaAdminDao.updateReply(reply);
+    }
+
+    // 단일 답글 조회 서비스
+    public QnaReply selectReplyOne(int qnaReplyId) {
+        return qnaAdminDao.selectReplyOne(qnaReplyId);
+    }
+    
+    // 답글 삭제
+    public int deleteReply(int qnaReplyId) {
+        return qnaAdminDao.deleteReply(qnaReplyId);
+    }
 
 }

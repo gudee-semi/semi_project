@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/qna/detail/Admin")
+@WebServlet("/qna/detail/admin")
 public class QnaDetailAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -29,15 +29,15 @@ public class QnaDetailAdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
         // 파라미터 받기
-        String qnaId = request.getParameter("no");
-        if (qnaId == null || qnaId.isEmpty()) {
+        String qnaIdStr = request.getParameter("qnaId");
+        if (qnaIdStr == null || qnaIdStr.isEmpty()) {
             // 파라미터 없으면 에러 처리 or 목록으로 이동
-            response.sendRedirect("/qna/list/admin");
+            response.sendRedirect("/");
             return;
         }
         
         // 문의글 내용 조회
-        int qnaNo = Integer.parseInt(qnaId);
+        int qnaNo = Integer.parseInt(qnaIdStr);
         Qna qna = qnaService.selectQnaOne(qnaNo);
         
         // QnA 상세 데이터, 답글(댓글) 리스트 조회
