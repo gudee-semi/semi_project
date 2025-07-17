@@ -20,7 +20,6 @@ public class QnaDao {
 	
 	public int selectQnaCount(Qna param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		System.out.println(param.getKeyword());
 		int count = session.selectOne("com.hy.mapper.qna.QnaMapper.selectQnaCount", param);
 		session.close();
 		return count;
@@ -35,7 +34,6 @@ public class QnaDao {
 	
 	public int updateQna(Qna qna) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		System.out.println(qna.toString());
 		int result = session.update("com.hy.mapper.qna.QnaMapper.updateQna", qna);
 		
 		session.close();

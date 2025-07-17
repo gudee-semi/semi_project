@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
+import com.hy.service.mypage.MyPageService;
 import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class QnaDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private QnaService qnaService = new QnaService();
+	private MyPageService mypageservice =new MyPageService();
        
     public QnaDetailServlet() {
         super();
@@ -31,10 +33,13 @@ public class QnaDetailServlet extends HttpServlet {
 		// 2. Qna와 Attach 조회
 		Qna qna = qnaService.selectQnaOne(qnaId);
 		Attach attach = qnaService.selectAttachByQnaNo(qnaId);
-		System.out.println("attach : "+attach);
 		
 		// 조회수 올리기
 		qnaService.updateViewCount(qnaId);
+		
+		// qnaReply replyCheck 값 1로 올리기(문의한사람이 확인했다는 표시)
+		int result =mypageservice.updateReplyCheck(qnaId);
+		
 		
 		request.setAttribute("qna", qna);
 		request.setAttribute("attach", attach);

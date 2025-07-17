@@ -50,10 +50,8 @@ public class CalendarTodoUpdateServlet extends HttpServlet {
 		}
 		int plannerId = Integer.parseInt(request.getParameter("plannerId"));
 		
-		System.out.println(todoTitle + " " + todoDate + " " + todoDetail + " " + plannerId);
 		int result = service.updateTodo(todoTitle, todoDate, todoDetail, plannerId);
 		
-		System.out.println(result);
 		
 		JSONObject obj = new JSONObject();
 		
