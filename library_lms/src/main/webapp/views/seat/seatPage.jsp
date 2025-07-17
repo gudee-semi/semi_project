@@ -2,124 +2,178 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <style>
-.seatBox {
-	background-color: #EFEFEF;
-	margin-top: 110px;
-	margin-bottom: 140px;
-	margin-left: 460px;
-	margin-right: 200px;
-	width: 787px;
-	height: 752px;
+
+	.seatBox {
+		background-color: #EFEFEF;
+		margin-top: 110px;
+		margin-bottom: 140px;
+		margin-left: 460px;
+		margin-right: 200px;
+		width: 787px;
+		height: 752px;
+		
+	}
 	
-}
-
-.privateSeat {
-	background-color: #9EA0A1;
-	height: 27px;
-	width: 27px;
-	margin-bottom: 19.5px;
-	position: relative;
+	.privateSeat {
+		background-color: #9EA0A1;
+		height: 27px;
+		width: 27px;
+		margin-bottom: 19.5px;
+		position: relative;
+		
+	}
 	
-}
-
-.privateSeat::before {
-  content: "\00d7";
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 35px;
-  color: black;
-}
-
-
-.publicSeat {
-	background-color: #4582EC;
-	height: 27px;
-	width: 27px;
-	margin-bottom: 19.5px;
-	margin-right: 19.5px;
-	cursor: pointer;
-}
-
-.publicSeat:hover{
-
-	outline: 4px solid red;
+	.privateSeat::before {
+	  content: "\00d7";
+	  position: absolute;
+	  top: 40%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  font-size: 35px;
+	  color: black;
+	}
 	
-}
-
-.publicSeat.active{
-
-	outline: 4px solid red;
 	
-}
-
-.publicSeat.used{
-
-	background-color: #FF9500;
-
-}
-
-button {
-	background-color: #D9D9D9;
-	border-radius: 10px;
-	cursor: pointer;
-	opacity: 0.3;
-	margin-right: 70px;
-	width: 123px;
-	height: 47px;
-	font-weight: 600;
+	.publicSeat {
+		background-color: #4582EC;
+		height: 27px;
+		width: 27px;
+		margin-bottom: 19.5px;
+		margin-right: 19.5px;
+		cursor: pointer;
+	}
 	
-}
-
-button:disabled{
-	cursor: default;
-
-}
-
-
-.privateSeatBox {
-	height: 80px;
+	.publicSeat:hover{
 	
-	margin-left: 50px;
-	margin-right: 100px;
-	margin-top: 100px;
-	position: relative;
-}
-
-.publicSeatBox2 {
-	margin-top: 100px;
-	margin-right: 124.08px;
-	position: relative;
-}
-
-.publicSeatBox{
-	margin-top: 100px;
-	position: relative;
-}
-
-.buttonBox{
+		outline: 4px solid red;
+		
+	}
 	
-	margin-left: 120px;
-	margin-bottom: 70px;
-	margin-top: 250px;
-	position: relative;
-}
-.seatBox2{
+	.publicSeat.active{
+	
+		outline: 4px solid red;
+		
+	}
+	
+	.publicSeat.used{
+	
+		background-color: #FF9500;
+	
+	}
+	
+	button {
+		background-color: #D9D9D9;
+		border-radius: 10px;
+		cursor: pointer;
+		opacity: 0.3;
+		margin-right: 70px;
+		width: 123px;
+		height: 47px;
+		font-weight: 600;
+		
+	}
+	
+	button:disabled{
+		cursor: default;
+	
+	}
+	
+	
+	.privateSeatBox {
+		height: 80px;
+		
+		margin-left: 50px;
+		margin-right: 100px;
+		margin-top: 100px;
+		position: relative;
+	}
+	
+	.publicSeatBox2 {
+		margin-top: 100px;
+		margin-right: 124.08px;
+		position: relative;
+	}
+	
+	.publicSeatBox{
+		margin-top: 100px;
+		position: relative;
+	}
+	
+	.buttonBox{
+		
+		margin-left: 120px;
+		margin-bottom: 70px;
+		margin-top: 250px;
+		position: relative;
+	}
+	.seatBox2{
+	
+	
+		background-color: #EFEFEF;
+		display: flex;
+		margin-left: 70px;
+	
+	}
+	body, header{
+		margin: 0;
+		padding: 0;
+		height: 100px;
+	}
+	
+	header{
+	
+	background-color: #B6D0E2;
+	
+	
+	}
+	.headerImg{
+		width: 109px;
+		height: 81px;
+		margin: 0 auto;
+		cursor: pointer;
+	}
+	
+	footer{
+	
+		background-color: #333333;
+		height: 150px;
+		color: white;
+	}
 
 
-	background-color: #EFEFEF;
-	display: flex;
-	margin-left: 70px;
-
-}
-
-
+	.footerImg{
+		width: 124px;
+		height: 96px;
+		margin-right: 40px;
+		margin-top: 10px;
+	}
+	
+	.footerBox{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.information{
+	margin-right: 80px;
+	
+	}
 </style>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<header>
+	<div class="headerBox">
+		<div class="headerImg">
+			<img src="/images/logo.png" style="width: 100%; height: 100%; object-fit: cover; margin-top: 8.5px;"
+			onclick="location.href='/'">
+			
+		</div>
+	</div>
+</header>
 
 <body>
 	
@@ -130,7 +184,7 @@ button:disabled{
 
 
 
-	<div class="seatBox">
+	<div class="seatBox" style="margin: 110px auto 140px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -243,7 +297,30 @@ button:disabled{
 		</div>
 		
 		</div>
+	<footer>
 	
+		<div class="footerBox">
+			<div class="footerImg">
+				<img alt="대체 텍스트" src="/images/logo_invert.png" style="width: 100%; height: 100%; object-fit: cover;">
+			</div>
+			<div class="informationBox" style="margin-top:30px;">
+			<div style="display: flex;">
+				<div class="information">
+					서울특별시 금천구 가산디지털2로 95 KM타워 3층 305호
+					<br>
+					OFFICE  HOUR : 9:00 - 18:00
+				</div>
+				<div class="information2">
+					MAIN OFFICE : 02-818-7950
+					<br>
+					STUDENT  HOUR : 7:50 - 24:00
+				</div>
+			</div>	
+				<p style="text-align:center; margin-bottom:5px;">© 2023-2025 Example Corp. All rights reserved.</p>
+			</div>
+			
+		</div>
+	</footer>
 	
 	<script>
 	
