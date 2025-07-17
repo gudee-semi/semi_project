@@ -68,14 +68,30 @@
 <!-- 선택된 과목 목록 표시 영역 -->
 <div id="selected-subjects"></div>
 
-
+<!-- 삭제 버튼ㄴ-->
 <button id="delete-submit" class="btn">삭제하기</button>
-
 
 <!-- 별도 JS 파일 불러오기 -->
 <script src="../../js/analysis_score.js"></script>
 
+<!-- Chart.js CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- 성적 테이블을 삽입할 위치 -->
+<div id="score-table-wrapper"></div>
+
+<!-- 차트 캔버스 -->
+<div id="chart-area" style="display: flex; justify-content: space-between; margin-top: 30px;">
+  <!-- 막대 차트 -->
+  <div style="width: 48%;">
+    <canvas id="scoreComparisonChart" style="width: 100%; height: 300px;"></canvas>
+  </div>
+
+  <!-- 레이더 차트 -->
+  <div style="width: 48%;">
+    <canvas id="scoreRadarChart" style="width: 100%; height: 300px;"></canvas>
+  </div>
+</div>
 
 </body>
 </html>

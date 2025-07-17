@@ -12,6 +12,7 @@ import com.hy.dao.score.ActualScoreDAO;
 import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.ExamType;
 import com.hy.dto.score.GoalScore;
+import com.hy.dto.score.ScoreCompare;
 import com.hy.mapper.score.ActualScoreMapper;
 
 public class ActualScoreService {
@@ -57,7 +58,7 @@ public class ActualScoreService {
         }
     }
     
- // ActualScoreService.java
+    // ActualScoreService.java
     public int getExamTypeId(int examType, int grade) {
         return mapExamTypeId(examType, grade);
     }
@@ -123,8 +124,6 @@ public class ActualScoreService {
     }
 
 
-
-
     // 목표 성적 조회
     public List<ActualScore> selectActualScoresByMemberAndExam(int memberNo, int examTypeId) {
         SqlSession session = null;
@@ -161,6 +160,14 @@ public class ActualScoreService {
     }
 
     
+ // 목표 점수와 실제 점수를 비교하는 데이터 조회 메서드
+    public List<ScoreCompare> selectGoalAndActualScores(Map<String, Integer> param) {
+        SqlSession session = SqlSessionTemplate.getSqlSession(true); // autoCommit = true 또는 false도 가능
+        ActualScoreMapper mapper = session.getMapper(ActualScoreMapper.class);
+        List<ScoreCompare> result = mapper.selectGoalAndActualScores(param);
+        session.close();
+        return result;
+    }
 
 
 

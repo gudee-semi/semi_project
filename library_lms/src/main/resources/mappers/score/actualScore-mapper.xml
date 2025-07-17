@@ -84,6 +84,25 @@ WHERE A.member_no = #{memberNo} AND A.exam_type_id = #{examTypeId}
       AND exam_type_id = #{examTypeId}
 </delete>
 
+	<!-- 과목명과 목표성적의 원점수, 성적의 원점수 select -->
+	<select id="selectGoalAndActualScores" resultType="com.hy.dto.score.ScoreCompare">
+		SELECT 
+		  S.subject_name AS subjectName,                     -- 과목명
+		  IFNULL(G.target_score, 0) AS goalScore,            -- 목표 점수 (없으면 0)
+		  IFNULL(A.actual_score, 0) AS actualScore           -- 실제 점수 (없으면 0)
+		FROM subject S
+		LEFT JOIN goal_score G 
+		  ON S.subject_id = G.subject_id 
+		  AND G.member_no = #{memberNo}
+		  AND G.exam_type_id = #{examTypeId}
+		LEFT JOIN actual_score A 
+		  ON S.subject_id = A.subject_id 
+		  AND A.member_no = #{memberNo}
+		  AND A.exam_type_id = #{examTypeId}
+		WHERE 
+		  (G.goal_score_id IS NOT NULL OR A.actual_score_id IS NOT NULL)
+	</select>
+
 
 
 </mapper>

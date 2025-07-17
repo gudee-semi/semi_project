@@ -8,12 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.hy.dto.Member;
 import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.GoalScore;
+import com.hy.dto.score.ScoreCompare;
 import com.hy.service.score.ActualScoreService;
 
 @WebServlet("/analysis_score/select")
@@ -46,7 +50,8 @@ public class ActualScoreSelectServlet extends HttpServlet {
 	        int studentGrade = loginMember.getMemberGrade();
 	        String examTypeIdParam = request.getParameter("examTypeId");
 	        
-	        
+	        // 차트 전용 요청인지 확인
+	        boolean isChartRequest = "true".equals(request.getParameter("chartOnly"));
 
 	        try {
 	            if (examTypeIdParam == null || examTypeIdParam.isEmpty()) {
@@ -58,13 +63,40 @@ public class ActualScoreSelectServlet extends HttpServlet {
 	                // [2] 특정 시험 성적 조회
 	                int examTypeId = Integer.parseInt(examTypeIdParam);
 
-	                // ✅ 학년 기반으로 examTypeId 매핑
-	                List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, examTypeId);
+	                if (isChartRequest) {
+						// [2-A] 차트용 데이터 JSON 반환
+						Map<String, Integer> param = new HashMap<>();
+						param.put("memberNo", memberNo);
+						param.put("examTypeId", examTypeId);
 
-	                // JSP로 포워딩하여 성적 테이블 렌더링
-	                request.setAttribute("scores", scoreList);
-	                request.getRequestDispatcher("/views/score/actual_score_table.jsp").forward(request, response);
-	            }
+						List<ScoreCompare> compareList = service.selectGoalAndActualScores(param);
+
+						List<String> subjectNames = new ArrayList<>();
+						List<Integer> goalScores = new ArrayList<>();
+						List<Integer> actualScores = new ArrayList<>();
+
+						for (ScoreCompare row : compareList) {
+							subjectNames.add(row.getSubjectName());
+							goalScores.add(row.getGoalScore());
+							actualScores.add(row.getActualScore());
+						}
+
+						Map<String, Object> result = new HashMap<>();
+						result.put("subjectNames", subjectNames);
+						result.put("goalScores", goalScores);
+						result.put("actualScores", actualScores);
+						result.put("examTitle", studentGrade + "학년 " + examTypeId + "월 모의고사");
+
+						String json = gson.toJson(result);
+						response.getWriter().write(json);
+
+					} else {
+						// [2-B] 기존 기능: 실제 성적 테이블을 JSP로 포워딩
+						List<ActualScore> scoreList = service.selectActualScoresByMemberAndExam(memberNo, examTypeId);
+						request.setAttribute("scores", scoreList);
+						request.getRequestDispatcher("/views/score/actual_score_table.jsp").forward(request, response);
+					}
+				}
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

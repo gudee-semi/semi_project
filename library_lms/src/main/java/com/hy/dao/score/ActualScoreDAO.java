@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dto.score.ActualScore;
 import com.hy.dto.score.ExamType;
+import com.hy.dto.score.ScoreCompare;
 import com.hy.mapper.score.ActualScoreMapper;
 
 public class ActualScoreDAO {
@@ -48,6 +49,11 @@ public class ActualScoreDAO {
 	    public int deleteActualScoresByMemberAndExam(Map<String, Integer> param) {
 	        SqlSession session = SqlSessionTemplate.getSqlSession(true);
 	        return session.delete("com.hy.mapper.score.ActualScoreMapper.deleteActualScoresByMemberAndExam", param);
+	    }
+	    
+	    public List<ScoreCompare> selectGoalAndActualScores(SqlSession session, int memberNo, int examTypeId) {
+	        Map<String, Integer> param = Map.of("memberNo", memberNo, "examTypeId", examTypeId);
+	        return session.getMapper(ActualScoreMapper.class).selectGoalAndActualScores(param);
 	    }
 	    
 	 

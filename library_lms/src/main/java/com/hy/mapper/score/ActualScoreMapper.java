@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hy.dto.score.ActualScore;
+import com.hy.dto.score.ScoreCompare;
 
 public interface ActualScoreMapper {
 	
@@ -14,6 +15,7 @@ public interface ActualScoreMapper {
     int countActualScoreByMemberAndExamType(Map<String, Integer> param);
 
     // 시험별 저장 점수 조회 (memberNo + examTypeId)
+    // 실제 점수 조회
     List<ActualScore> selectActualScoresByMemberAndExam(Map<String, Integer> param);
 
     // 실제 성적이 존재하는 시험 ID 목록 조회 (memberNo)
@@ -24,6 +26,9 @@ public interface ActualScoreMapper {
 
     // examTypeId 매핑 (examMonth + memberGrade → exam_type_id)
     int getExamTypeId(Map<String, Integer> param);
+    
+    // 성적 분석을 위한 차트에서 점수 비교
+    List<ScoreCompare> selectGoalAndActualScores(Map<String, Integer> param);
 
 
 }
