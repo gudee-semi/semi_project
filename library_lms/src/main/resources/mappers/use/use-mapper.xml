@@ -22,4 +22,9 @@
 		FROM use_status
 		WHERE member_no = #{memberNo}
 	</select>
+	
+	<insert id="insertUseLog" parameterType="com.hy.dto.use.UseLog">
+		INSERT INTO use_log (member_no, status)
+		VALUES (#{memberNo}, #{status})
+	</insert>
 </mapper>

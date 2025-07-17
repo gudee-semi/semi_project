@@ -47,13 +47,14 @@ public class UseTempOutServlet extends HttpServlet {
 		
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 		int check = Integer.parseInt(request.getParameter("check"));
-		System.out.println(check);
+		int checkLog = 2;
 		
 		int result = service.updateUseCheckIn(memberNo, check);
+		int resultLog = service.insertUseLog(memberNo, checkLog);
 		
 		JSONObject obj = new JSONObject();
 		
-		if (result > 0) {
+		if (result > 0 && resultLog > 0) {
 			obj.put("res_msg", "외출 처리 되었습니다. 2시간 이내에 복귀해주세요.");
 			obj.put("res_code", "200");
 			HttpSession session = request.getSession(false);

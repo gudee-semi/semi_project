@@ -47,12 +47,14 @@ public class UseCheckInServlet extends HttpServlet {
 		
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 		int check = Integer.parseInt(request.getParameter("check"));
+		int checkLog = 1;
 		
 		int result = service.updateUseCheckIn(memberNo, check);
+		int resultLog = service.insertUseLog(memberNo, checkLog);
 		
 		JSONObject obj = new JSONObject();
 		
-		if (result > 0) {
+		if (result > 0 && resultLog > 0) {
 			obj.put("res_msg", "입실 처리 되었습니다.");
 			obj.put("res_code", "200");
 			HttpSession session = request.getSession(false);

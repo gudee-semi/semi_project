@@ -2,6 +2,7 @@ package com.hy.service.use;
 
 import com.hy.dao.use.UseDao;
 import com.hy.dto.use.Use;
+import com.hy.dto.use.UseLog;
 
 public class UseService {
 
@@ -16,6 +17,13 @@ public class UseService {
 
 	public Use getUseStatusByNo(int memberNo) {
 		return dao.getUseStatusByNo(memberNo);
+	}
+
+	public int insertUseLog(int memberNo, int checkLog) {
+		UseLog param = new UseLog();
+		param.setMemberNo(memberNo);
+		param.setStatus(checkLog);
+		return dao.insertUseLog(param);
 	}
 
 }
