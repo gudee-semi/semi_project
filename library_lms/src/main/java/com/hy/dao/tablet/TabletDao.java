@@ -68,6 +68,17 @@ public class TabletDao {
 	    }
 	}
 	
-	
+     public List<Tablet> selectAllTabletMemberName() {
+	 	SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	 	List<Tablet> tabletList = session.selectList("com.hy.mapper.tablet.TabletMapper.selectAllTabletMemberName");
+	 	session.close();
+	 	return tabletList;
+	}
 
+     public int updatePenalty(int memberNo) {
+    	 SqlSession session = SqlSessionTemplate.getSqlSession(true);
+    	 int result = session.update("com.hy.mapper.tablet.TabletMapper.updatePenalty", memberNo);
+    	 session.close();
+    	 return result;
+     }
 }

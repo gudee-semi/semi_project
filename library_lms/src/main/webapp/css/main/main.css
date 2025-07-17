@@ -1,17 +1,17 @@
 @charset "UTF-8";
 
 .header {
-	position : relative !important;
+	position: relative !important;
 }
 
 .nav-item {
-	padding : 5px;
+	padding: 5px;
 }
 
 .dropdown-item {
-	padding : 5px;
+	padding: 5px;
 }
 
 body > div.container.text-center > img {
-	padding : 20px;
+	padding: 60px;
 }

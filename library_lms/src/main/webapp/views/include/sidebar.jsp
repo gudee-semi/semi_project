@@ -4,6 +4,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>    
+<script>
+window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시든 아니든 무조건 호출된다.
+    if (event.persisted || (window.performance && window.performance.navigation.type == 2)){
+        // 사파리 or 안드로이드에서 뒤로가기로 넘어온 경우 캐시를 이용해 화면을 보여주는데, 
+        // 이때 사파리의 경우 event.persisted 가 ture다. 
+        // 그외 브라우저(크롬 등)에서는 || 뒤에 있는 조건으로 뒤로가기인지 체크가 가능하다!
+        window.location.reload();
+    }
+};
+</script>
    <style>
     body {
       font-weight: bolder;
@@ -30,10 +40,13 @@
     body > div > div:nth-child(3) {
       width: 50% !important;
     }
+    
     .disabled {
     	pointer-events: none;
     	opacity: 0.6;
     }
+
+
   </style>
 </head>
 <body>
@@ -206,30 +219,30 @@
 			        <li><a class="dropdown-item" href="<c:url value='/analysis_scorePage/view' />">성적 조회 및 분석</a></li>
 		    	</ul>
 		    </li>
-		   
+		    
 		    <c:if test="${ useStatus.status eq 0 }">
 	   	        <li class="nav-item">
 		        	<a class="dropdown-item disabled seat" href="<c:url value='/seat/view' />">좌석</a>
-		        </li>            		   
+		        </li>            		    
 		    </c:if>
    		    <c:if test="${ (useStatus.status eq 1) or (useStatus.status eq 2) }">
 	   	        <li class="nav-item">
 		        	<a class="dropdown-item seat" href="<c:url value='/seat/view' />">좌석</a>
-		        </li>            		   
+		        </li>            		    
 		    </c:if>
-		   
+		    
 		    <c:if test="${ useStatus.status eq 0 }">
 		        <li class="nav-item">
 		        	<a class="dropdown-item disabled tablet" href="<c:url value='/tablet/view' />">태블릿</a>
-		        </li>		   
+		        </li>		    
 		    </c:if>
    		    <c:if test="${ (useStatus.status eq 1) or (useStatus.status eq 2) }">
 		        <li class="nav-item">
 		        	<a class="dropdown-item tablet" href="<c:url value='/tablet/view' />">태블릿</a>
-		        </li>		   
+		        </li>		    
 		    </c:if>
-		   
-	       
+		    
+	        
 	        <li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/notice/list' />">공지사항</a>
 	        </li>
@@ -239,7 +252,7 @@
 	        </li>
 	       
 	       	<li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/qna/view/admin' />">질의응답 관리자페이지</a>
+	        	<a class="dropdown-item" href="<c:url value='/qna/list/admin' />">질의응답 관리자페이지</a>
 	        </li>
 	       	
 	       	<li class="nav-item">
@@ -248,7 +261,12 @@
 	       	
 	       	
      	    <li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/mypage/password/input'/>">마이페이지</a>
+	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">마이페이지</a>
+	        	<ul class="dropdown-menu">
+			        <li><a class="dropdown-item" href="<c:url value='/mypage/password/input' />">개인정보 수정</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/myqna/view' />">나의 문의 내역</a></li>
+			   
+		    	</ul>
 	        </li>
         </ul>
 	</div>

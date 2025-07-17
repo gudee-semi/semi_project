@@ -42,7 +42,6 @@ public class GoalScoreSelectServlet extends HttpServlet {
         int memberNo = loginMember.getMemberNo();
         String examTypeIdParam = request.getParameter("examTypeId");
         
-        System.out.println("memberNo = " + memberNo + ", examTypeId = " + examTypeIdParam);
 
         try {
             String json;
@@ -55,12 +54,14 @@ public class GoalScoreSelectServlet extends HttpServlet {
                 // 목표성적 상세조회
                 int examTypeId = Integer.parseInt(examTypeIdParam);
                 List<GoalScore> scoreList = service.selectGoalScoresByMemberAndExam(memberNo, examTypeId);
+                System.out.println(scoreList.get(0).getExamType());
+                System.out.println(scoreList.get(1).getExamType());
+                System.out.println(scoreList.get(2).getExamType());
                 request.setAttribute("scores",scoreList);
                 request.getRequestDispatcher("/views/score/goal_score_table.jsp").forward(request, response);
                 //json = gson.toJson(scoreList);
                 return;
             }
-            //System.out.println("JSON "+json);
             response.getWriter().write(json);
 
         } catch (Exception e) {
