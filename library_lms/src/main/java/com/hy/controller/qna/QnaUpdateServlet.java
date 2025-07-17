@@ -29,7 +29,6 @@ public class QnaUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 화면단에서 전달받은 정보 가져오기
 		int qnaId = Integer.parseInt(request.getParameter("no"));
-		System.out.println("qnaId : "+ qnaId);
 		
 		Qna qna = qnaService.selectQnaOne(qnaId);
 		request.setAttribute("qna", qna);
@@ -46,38 +45,24 @@ public class QnaUpdateServlet extends HttpServlet {
 		
 	    if (session != null) {
 	        if (member != null) {
-	        	System.out.println(member);
 	        } else {
-	        	System.out.println("로그인 정보가 없습니다.");
 	        	response.sendRedirect(request.getContextPath()+"/");
 	        	return;
 	        }
 	    } else {
-	    	System.out.println("세션이 존재하지 않습니다.");
 	    	response.sendRedirect(request.getContextPath()+"/");
 	    	return;
 	    }
 		
-//		Enumeration<String> names = request.getParameterNames();
-//		System.out.println("paramter name");
-//		while (names.hasMoreElements()) {
-//			System.out.println(names.nextElement());
-//		}
-//		System.out.println("=============================");
 	    
 		// 2. 정보 가져오기(번호,이름,나이)
-		System.out.println(request.getParameter("no"));
-		System.out.println(request.getParameter("qnaVisibility"));
 		
 		int memberNo = member.getMemberNo();
 		int no = Integer.parseInt(request.getParameter("no"));
 		String category = request.getParameter("qnaCategory");
 		String title = request.getParameter("qnaTitle");
-		System.out.println(request.getParameter("qnaTitle"));
 		String content = request.getParameter("qnaContent");
-		System.out.println(request.getParameter("qnaContent"));
 		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-		System.out.println(request.getParameter("qnaVisibility"));
 		
 		// 3. service한테 부탁해서 updateQna
 		// 부탁할 때는 번호,이름,나이 주면서 부탁하고, 
@@ -95,7 +80,6 @@ public class QnaUpdateServlet extends HttpServlet {
 		int result = qnaService.updateQna(qna);
 		
 		JSONObject obj = new JSONObject();
-		System.out.println("result =============="+ result);
 		
 		
 		request.setAttribute("msg", "수정이 완료되었습니다.");

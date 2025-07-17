@@ -62,7 +62,6 @@ public class GoalScoreSelectServlet extends HttpServlet {
                 //json = gson.toJson(scoreList);
                 return;
             }
-            //System.out.println("JSON "+json);
             response.getWriter().write(json);
 
         } catch (Exception e) {

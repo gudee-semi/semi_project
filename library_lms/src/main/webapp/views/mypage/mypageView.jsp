@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
@@ -78,9 +79,10 @@
 	<input type="submit" value="수정하기"/>
 	
 </form>
-<form action="/delete/member">
+<form id="deleteMember" action="/delete/member" method="get">
 	<input type="submit" value="계정삭제">
 </form>
+<a href="<c:url value='/main/view'/>">나가기</a>
 	<script>
 		const memberNo = ${sessionScope.loginMember.memberNo};
 		const memberAccountAddress = '${sessionScope.loginMember.memberAddress}';
@@ -316,7 +318,7 @@
 					success : function(data){
 						if(data.res_code==500){
 							alert(data.res_msg);
-							location.href ="<%=request.getContextPath()%>/main/view";
+							location.href ="<%=request.getContextPath()%>/mypage/view";
 						}else{
 							 alert(data.res_msg);
 							 location.href ="<%=request.getContextPath()%>/main/view";
@@ -333,7 +335,18 @@
 	
 	</script>
 
-
+	<script>
+		$("#deleteMember").on("submit",function(e){
+			e.preventDefault();
+			 if (confirm("정말 계정을 삭제하시겠습니까?")) {
+			      this.submit(); 
+			      
+			    } else {
+			      alert("계정 삭제가 취소되었습니다.");
+			    }
+		})
+	
+	</script>
 
 
 
