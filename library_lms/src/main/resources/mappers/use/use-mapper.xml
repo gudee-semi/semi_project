@@ -27,4 +27,11 @@
 		INSERT INTO use_log (member_no, status)
 		VALUES (#{memberNo}, #{status})
 	</insert>
+	
+	<select id="getLogByNo" parameterType="_int" resultType="com.hy.dto.use.UseLog">
+		SELECT use_log_id AS useLogId ,member_no AS memberNo ,status AS status ,now_time AS nowTime
+		FROM use_log
+		WHERE member_no = #{memberNo} AND status = 0
+		ORDER BY now_time
+	</select>
 </mapper>
