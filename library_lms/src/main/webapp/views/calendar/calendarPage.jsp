@@ -51,14 +51,14 @@
 		    });
 	
 		    let startTime = todoDate + 'T00:00:00';
-		    let endTime = todoDate + 'T04:00:00';
+		    let endTime = todoDate + 'T03:00:00';
 	
 		    if (existingEvents.length > 0) {
 		        existingEvents.sort((a, b) => a.end - b.end);
 		        const lastEventEnd = existingEvents[existingEvents.length - 1].end;
 		        const nextStart = new Date(lastEventEnd);
 		        const nextEnd = new Date(nextStart);
-		        nextEnd.setHours(nextEnd.getHours() + 4);
+		        nextEnd.setHours(nextEnd.getHours() + 3);
 		        startTime = nextStart.toISOString();
 		        endTime = nextEnd.toISOString();
 		    }
@@ -90,6 +90,7 @@
 		        editable: false,
 		        selectable: true,
 		        allDaySlot: false,
+		        scrollTime: 0,
 		        eventTimeFormat: {
 		            month: 'short',
 		            day: 'numeric',
@@ -538,7 +539,7 @@
 		                    });
 	
 		                    let startTime = todoDate + 'T00:00:00';
-		                    let endTime = todoDate + 'T04:00:00';
+		                    let endTime = todoDate + 'T03:00:00';
 	
 		                    if (existingEvents.length > 0) {
 		                        // 끝나는 시간 기준으로 정렬 (latest 끝 시간 찾기)
@@ -548,7 +549,7 @@
 		                        // 3. 다음 이벤트의 시작 시간 = 마지막 끝나는 시간
 		                        const nextStart = new Date(lastEventEnd);
 		                        const nextEnd = new Date(nextStart);
-		                        nextEnd.setHours(nextEnd.getHours() + 4);
+		                        nextEnd.setHours(nextEnd.getHours() + 3);
 	
 		                        startTime = nextStart.toISOString();
 		                        endTime = nextEnd.toISOString();
