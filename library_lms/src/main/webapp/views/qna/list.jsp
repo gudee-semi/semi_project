@@ -61,8 +61,7 @@
 </head>
 <body>
 	<div class="container">
-	
-	
+
 		<h1>질의응답 목록</h1>
 		
 		<a href="/tablet/admin">태블릿 관리자 페이지</a>
@@ -160,8 +159,11 @@
 		<form action="/qna/write" method="get">
 			<button>작성</button>
 		</form>
-	
-	
+
+	<form action="/qna/write" method="get">
+		<button>작성</button>
+	</form>
+
 	</div>
 </body>
 </html>
