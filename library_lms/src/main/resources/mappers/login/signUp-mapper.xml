@@ -25,7 +25,7 @@
 		<result  property="userRrn"  column = "user_rrn"/>
 		<result  property="userSeat"  column = "user_seat"/>
 	</resultMap>
-<insert id="insertMember" parameterType="com.hy.dto.Member" useGeneratedKeys="true" keyProperty="memberNo">
+<insert id="insertMember" parameterType="com.hy.dto.Member" useGeneratedKeys="true" keyProperty="memberNo" >
 	INSERT INTO member(
 					user_no	
 					, member_id 
