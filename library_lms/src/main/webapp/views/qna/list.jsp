@@ -37,6 +37,7 @@
 
 </head>
 <body>
+	<%@ include file="/views/include/header.jsp" %>
 	<div class="container">
 
 		<h1>질의응답 목록</h1>
@@ -148,5 +149,6 @@
 			<button>작성</button>
 		</form>
 	</div>
+	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

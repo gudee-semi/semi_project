@@ -7,76 +7,128 @@
 <meta charset="UTF-8">
 <title>질의응답 수정</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
 <style>
 	.show {
 		display: none;
 	}
-</style>
-
+	.container {
+		width : 80vw;
+		margin : 0 auto;	
+	}
+	.content {
+		background-color: #fff;
+	}
+	textarea {
+      resize: none;
+    }
+    .input.flexible {
+    width: 100%;
+	}
+	.detail-table {
+		width: 70%;
+		border-collapse: collapse;
+		margin-bottom: 20px;
+		table-layout: fixed;
+	}
+	.detail-table th,
+	.detail-table td {
+		border: 1px solid #ddd;
+		padding: 10px 12px;
+		vertical-align: top;
+		word-wrap: break-word;
+	}
+	.detail-table th {
+	background-color: #F5F5F5;
+	width: 120px;
+	text-align: center;
+	font-weight: normal;
+	vertical-align: middle;
+	}
+	</style>
 </head>
 <body>
-	<!-- 수정해보기 -->
+<!-- include 넣기 -->
+	<%@ include file="/views/include/header.jsp" %>
+	<div class="container">
 	<h1>질의응답 수정</h1>
 		<form id="updateQnaFrm">
+		<table class="detail-table">
 			<input type="hidden" name="no" value="${ qna.qnaId }">
-			<p>No ${qna.qnaId }</p>
+			<tr>
+			<th style="width: 10%">No</th>
+			<td style="width: 40%">${qna.qnaId }</td>
 	    
-	    	<p>작성자 ${qna.memberId }</p>
+			<th style="width: 10%">작성자</th>
+			<td style="width: 40%">${qna.memberName }</td>
 	    	
-			<div class="menu-name">카테고리</div>
-				<select name="qnaCategory" id="qnaCategory">
-				  <option value=0>--선택--</option>
-				  <option value='시설'>시설</option>
-				  <option value='좌석'>좌석</option>
-				  <option value='환불'>환불</option>
-				  <option value='기타'>기타</option>
-				</select>
+	    	</tr>
+			<th style="width: 10%">카테고리</th>
+				<td style="width: 40%">
+					<select name="qnaCategory" id="qnaCategory">
+					  <option value=0>--선택--</option>
+					  <option value='시설'>시설</option>
+					  <option value='좌석'>좌석</option>
+					  <option value='환불'>환불</option>
+					  <option value='기타'>기타</option>
+					</select>
+				</td>
 			
-			<div class="menu-name">공개여부</div>
-				<select name="qnaVisibility" id="qnaVisibility">
-				  <option value=1>공개</option>
-				  <option value=0>비공개</option>
-				</select>
+				<th style="width: 10%">공개여부</th>
+				<td style="width: 40%">
+					<select name="qnaVisibility" id="qnaVisibility">
+					  <option value=1>공개</option>
+					  <option value=0>비공개</option>
+					</select>
+				</td>
+			</tr>
 			
 			<script>
 				$("#qnaCategory").val("${qna.category}").attr("selected","selected");	
 				$("#qnaVisibility").val("${qna.visibility}").attr("selected","selected");	
 			</script>
 			
-		    <div >제목</div>	
-		    <div><textarea name="qnaTitle" rows="1" cols="80" required>${ qna.title }</textarea></div>
+			<tr>
+			    <th>제목</th>	
+			    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="80" required>${ qna.title }</textarea></td>
+		    </tr>
 	    	
-	    	<div name="qnaContent" id="qnaContent">내용</div>
-	    	<div><textarea name="qnaContent" rows="15" cols="80" required>${ qna.content }</textarea></div>
+			<tr>
+		    	<th name="qnaContent" id="qnaContent">내용</th>
+		    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="80" required>${ qna.content }</textarea></td>
+		    </tr>
 	    
-	    	<br>
-			<div>파일 첨부</div>
-		    <br>
+			<tr>
+				<th>파일 첨부</th>
+			    <td colspan="3">
+			    <c:if test="${ not empty attach }">
+			    	<div class="file-now" >
+					    <a href="<c:url value='/fileDownload?id=${ qna.qnaId }' />">${ attach.oriName }</a>
+					    <button class="file-change">X</button><br>
+			    	</div>
+			    	<div class="file-reupload show">
+			    		<div><input type="file" name="qnaFile"></div>
+			    	</div>
+				</c:if>
+				<c:if test="${ empty attach }">
+					<input type="hidden" name="check" value="2" class="check">
+			    	<div class="file-reupload">
+			    		<div><input type="file" name="qnaFile"></div>
+			    	</div>
+				</c:if>
+				</td>
+		    </tr>
 		    
-		    <c:if test="${ not empty attach }">
-		    	<div class="file-now">
-				    첨부파일 <a href="<c:url value='/fileDownload?id=${ qna.qnaId }' />">${ attach.oriName }</a>
-				    <button class="file-change">X</button><br>
-		    	</div>
-		    	<div class="file-reupload show">
-		    		<div><input type="file" name="qnaFile"></div>
-		    	</div>
-			</c:if>
-			<c:if test="${ empty attach }">
-				<input type="hidden" name="check" value="2" class="check">
-		    	<div class="file-reupload">
-		    		<div><input type="file" name="qnaFile"></div>
-		    	</div>
-			</c:if>
+		</table>
+		
 			<input type="hidden" name="check" value="0" class="check">
 			<input type="hidden" name="id" value="${ qna.qnaId }">
 		    <input type="submit" value="수정완료">
 		</form>
 		
 		<form action="/qna/view" method="get">
-			<button>목록</button>
+			<button class="btn">목록</button>
 		</form>
+		</div>
 		
 		<script>
 			$('.file-change').on('click', (e) => {
