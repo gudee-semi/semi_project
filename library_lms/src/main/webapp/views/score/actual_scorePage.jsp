@@ -55,7 +55,7 @@
 </head>
 
 <body>
-
+<%@ include file="/views/include/header.jsp" %>
 
 
 <script>
@@ -229,6 +229,9 @@
 <div style="width:70%;margin:28px auto 0;text-align:center;">
   <button id="final-submit" class="btn" style="display:none;">입력완료</button>
 </div>
+
+<!-- fotter 삽입 -->
+<%@ include file="/views/include/footer.jsp" %>
 
 </body>
 </html>

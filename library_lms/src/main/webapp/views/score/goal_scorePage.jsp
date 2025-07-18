@@ -27,39 +27,153 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <style>
-    body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
-    h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
-    h2, h3 { text-align: left; font-size: 18px; font-weight: bold; margin: 24px 0 8px 10%; }
-    .section { margin-bottom: 24px; }
-    .checkbox-group {
-      display: flex; flex-wrap: wrap; gap: 15px 30px; margin: 0 10%;
-      align-items: center;
-    }
-    label { font-size: 16px; }
-    .btn {
-      display: block; margin: 35px auto 0; padding: 10px 24px;
-      border: 1.5px solid #3b82f6; background: white;
-      color: #3b82f6; border-radius: 6px; font-weight: 500;
-      font-size: 16px; cursor: pointer; transition: .2s;
-    }
-    .btn:hover { background: #3b82f6; color: white; }
-    table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
-    th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
-    #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
-    #selected-subjects { text-align: center; margin-bottom: 20px; font-size: 16px;}
-    #score-table {  margin: 30px auto 0 auto;  width: 70%;  min-width: 520px;  border-collapse: collapse;  font-size: 17px; background: #fff; }
-	#score-table th, #score-table td {  border: 1px solid #bbb;  padding: 20px 0;  text-align: center; }
-	.input-center {  width: 110px;  height: 34px;  font-size: 17px;  text-align: center;  border: 1.5px solid #bbb;  border-radius: 6px;  margin: 0 auto;  display: block;  background: #fafcff;  transition: border 0.18s; }
-	.input-center:focus {  outline: none;  border: 1.5px solid #3b82f6; }
-    #modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.32); z-index: 999; }
-    .modal-content { background: #fff; padding: 24px; margin: 22% auto 0;  width: 320px; border-radius: 10px; text-align: center;  box-shadow: 0 6px 30px #2222;  }
-    #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
+	body {
+	  font-family: 'Pretendard', sans-serif;
+	  margin: 40px;
+	  background-color: #fff;
+	  color: #333;
+	}
+	
+	h1 {
+	  font-size: 30px;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-bottom: 40px;
+	}
+	
+	.section {
+	  width: 860px;
+	  margin: 0 auto 28px;
+	}
+	
+	.subject-row {
+	  display: flex;
+	  align-items: flex-start;
+	  margin-bottom: 20px;
+	  padding-bottom: 10px;
+	  border-bottom: 1px solid #ccc;
+	}
+	
+	.subject-row .subject-title {
+	  width: 120px;
+	  font-size: 16px;
+	  font-weight: 600;
+	  margin-top: 4px;
+	  flex-shrink: 0;
+	}
+	
+	.checkbox-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 30px 20px;
+	  font-size: 16px;
+	}
+	
+	input[type="checkbox"] {
+	  width: 16px;
+	  height: 16px;
+	  vertical-align: middle;
+	  margin-right: 4px;
+	}
+	
+	.btn {
+	  display: block;
+	  margin: 40px auto;
+	  padding: 10px 22px;
+	  border: none;
+	  background-color: #205DAC;
+	  color: #fff;
+	  border-radius: 6px;
+	  font-size: 15px;
+	  cursor: pointer;
+	  transition: 0.2s;
+	}
+	
+	.btn:hover {
+	  background-color: #3E7AC8;
+	}
+
+	#exam-title {
+	  margin-top: 60px;
+	  font-size: 24px;
+	  font-weight: 600;
+	  text-align: center;
+	}
+	
+	#selected-subjects {
+	  text-align: center;
+	  font-size: 18px;
+	  margin-bottom: 16px;
+	}
+	
+	#score-table {
+	  margin: 0 auto;
+	  border-collapse: collapse;
+	  font-size: 18px;
+	  width: 720px;
+	  background-color: #fff;
+	}
+	
+	#score-table th,
+	#score-table td {
+	  border: 1px solid #d1d5db;
+	  padding: 12px;
+	  text-align: center;
+	}
+	
+	.input-center {
+	  width: 90px;
+	  height: 32px;
+	  border: 1px solid #bbb;
+	  border-radius: 6px;
+	  text-align: center;
+	  background-color: #f9fafb;
+	  transition: border 0.2s;
+	}
+	
+	.input-center:focus {
+	  outline: none;
+	  border-color: #2563eb;
+	}
+	
+	#final-submit {
+	  margin-top: 28px;
+	}
+	
+	#modal {
+	  display: none;
+	  position: fixed;
+	  top: 0; left: 0;
+	  width: 100vw; height: 100vh;
+	  background: rgba(0,0,0,0.4);
+	  z-index: 999;
+	}
+	
+	.modal-content {
+	  background: #fff;
+	  padding: 20px;
+	  margin: 18% auto;
+	  width: 320px;
+	  border-radius: 10px;
+	  text-align: center;
+	  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+	}
+	
+	#modal-close-btn {
+	  margin-top: 16px;
+	  padding: 6px 20px;
+	  border: none;
+	  background: #2563eb;
+	  color: #fff;
+	  border-radius: 6px;
+	}
+
   </style>
 </head>
 <body>
 
 
-
+<%@ include file="/views/include/header.jsp" %>
 <script>
   // [0] 서버-side 변수 JS로 전달
   const studentGrade = <%= studentGrade %>;
@@ -111,8 +225,9 @@
 <!-- D-Day 카드 표시 -->
 <jsp:include page="/views/include/d-day.jsp" />
 
-
-<h1>목표 성적 설정</h1>
+<div class="score-container">
+  <h1>목표 성적 설정</h1>
+  </div>
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section">
@@ -203,12 +318,13 @@
   </div>
 </div>
 
-<button id="confirm-subjects" class="btn" style="margin-bottom:24px;">선택완료</button>
+<button id="confirm-subjects" class="btn">선택완료</button>
 
 <!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title" style="display:block;"></h2>
+<h2 id="exam-title"></h2>
 <div id="selected-subjects"></div>
-<table id="score-table" style="display:none;">
+
+<table id="score-table">
   <thead>
     <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
   </thead>
@@ -228,9 +344,10 @@
 <script src="../../js/goal_score.js"></script>
 
 <!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
-<div style="width:70%;margin:28px auto 0;text-align:center;">
-  <button id="final-submit" class="btn" style="display:none;">설정완료</button>
+<div style="text-align:center;">
+  <button id="final-submit" class="btn">설정완료</button>
 </div>
 
+<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

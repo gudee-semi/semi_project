@@ -55,6 +55,8 @@
 
 
 <body>
+
+<%@ include file="/views/include/header.jsp" %>
 <!-- 로그인 정보 숨겨서 JS에서 참조 -->
 <input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 <input type="hidden" id="memberNo" value="<%= memberNo %>">
@@ -106,6 +108,9 @@
     <canvas id="scoreRadarChart" style="width: 100%; height: 300px;"></canvas>
   </div>
 </div>
+
+<!-- fotter 삽입 -->
+<%@ include file="/views/include/footer.jsp" %>
 
 </body>
 </html>

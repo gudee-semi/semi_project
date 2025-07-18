@@ -58,7 +58,7 @@
 <body>
 
 
-
+<%@ include file="/views/include/header.jsp" %>
 <!-- D-Day 카드 표시 -->
 <jsp:include page="/views/include/d-day.jsp" />
 
@@ -92,5 +92,7 @@
 <!-- 별도 JS 파일 불러오기 -->
 <script src="../../js/goal_score_view.js"></script>
 
+<!-- fotter 삽입 -->
+<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
