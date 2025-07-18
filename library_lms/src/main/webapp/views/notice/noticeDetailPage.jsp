@@ -57,84 +57,125 @@
 		width: 70px;
 		background-color: rgba(32, 93, 172, 1);
 	}
+	
+	.sidebar {
+		width: 250px;
+		height: 100vh;
+		background-color: #3b82f6;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+  		column-gap: 150px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	.btn {
+    	border: none;
+    	background-color: #205DAC;
+   	    color: #fff;
+    	border-radius: 6px;
+    	cursor: pointer;
+    	height: 40px;
+    	transition: .2s;
+    	margin: 0;
+	}
+	
+	.btn:hover {
+		background-color: #3E7AC8;
+	}
 </style>
 </head>
 <body>
-
-	<section class="content">
-		<h1>공지사항</h1>
-		
-		<table class="detail-table">
-			<tr>
-				<th>No</th>
-				<td>${ notice.noticeId }</td>
-				<th>작성일</th>
-				<td>${ notice.createAt }</td>
-			</tr>
-			<tr>
-				<th>카테고리</th>
-				<td>${ notice.category }</td>
-				<th>작성자</th>
-				<td>관리자</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td colspan="3">${ notice.title }</td>
-			</tr>
-			<tr>
-				<th>내용</th>
-				<td colspan="3">${ notice.content }</td>
-			</tr>
-			<c:if test="${ not empty attach }">
-				<tr>
-					<th>첨부파일</th>
-					<td colspan="3">
-				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' /> " style="object-fit: cover; width: 100%; height: 100%"><br>
-				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>						
-					</td>
-				</tr>
-			</c:if>
-		</table>
-	</section>
+	<jsp:include page="/views/include/header.jsp" />
 	
-	<a href="/notice/list">목록</a>
-	
-	<c:if test="${ memberNo eq 1 }">
-		<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
-		
-		<form id="noticeDeleteFrm">
-			<input type="submit" value="삭제">
-		</form>
-	</c:if>	
-	<c:set var="noticeId" value="${ notice.noticeId }"/>
-	
-	<script>
-		$("#noticeDeleteFrm").on('submit', (e) => {
-			e.preventDefault();
-			
-			const check = confirm('정말로 게시물을 삭제하시겠습니까?');
-			
-			if (check) {
-				const noticeId = ${noticeId}
+	<div class="flex-container">
+		<div class="sidebar">사이드바</div>
+		<div class="container">
+			<section class="content">
+				<h1>공지사항</h1>
 				
-				$.ajax({
-					 url: '/notice/delete',
-	                 type: 'post',
-	                 data: {
-	                     noticeId: noticeId
-	                 },
-	                 dataType: 'json',
-	                 success: (data) => {
-	                	window.alert(data.res_msg);
-	 					if (data.res_code == 200) {
-	 						location.href = "<%= request.getContextPath() %>/notice/list";
-	 					} else {						
-	 						location.href = "<%= request.getContextPath() %>/notice/list";
-	 					}
-	                 }
+				<table class="detail-table">
+					<tr>
+						<th>No</th>
+						<td>${ notice.noticeId }</td>
+						<th>작성일</th>
+						<td>${ notice.createAt }</td>
+					</tr>
+					<tr>
+						<th>카테고리</th>
+						<td>${ notice.category }</td>
+						<th>작성자</th>
+						<td>관리자</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td colspan="3">${ notice.title }</td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">${ notice.content }</td>
+					</tr>
+					<c:if test="${ not empty attach }">
+						<tr>
+							<th>첨부파일</th>
+							<td colspan="3">
+						    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' /> " style="object-fit: cover; width: 100%; height: 100%"><br>
+						    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>						
+							</td>
+						</tr>
+					</c:if>
+				</table>
+			</section>
+			
+			<form action="/notice/list" method="get">
+				<button class="btn">목록</button>
+			</form>
+			
+			<c:if test="${ memberNo eq 1 }">
+				<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
+				
+				<form id="noticeDeleteFrm">
+					<input type="submit" value="삭제">
+				</form>
+			</c:if>	
+			<c:set var="noticeId" value="${ notice.noticeId }"/>
+			
+			<script>
+				$("#noticeDeleteFrm").on('submit', (e) => {
+					e.preventDefault();
+					
+					const check = confirm('정말로 게시물을 삭제하시겠습니까?');
+					
+					if (check) {
+						const noticeId = ${noticeId}
+						
+						$.ajax({
+							 url: '/notice/delete',
+			                 type: 'post',
+			                 data: {
+			                     noticeId: noticeId
+			                 },
+			                 dataType: 'json',
+			                 success: (data) => {
+			                	window.alert(data.res_msg);
+			 					if (data.res_code == 200) {
+			 						location.href = "<%= request.getContextPath() %>/notice/list";
+			 					} else {						
+			 						location.href = "<%= request.getContextPath() %>/notice/list";
+			 					}
+			                 }
+						});
+					}
 				});
-			}
-		});
-	</script>
+			</script>
+		</div>	
+	</div>
+	
+	<jsp:include page="/views/include/footer.jsp" />
 </body>
 </html>

@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/views/include/header.jsp" />
 <meta charset="UTF-8">
 <title>공지사항</title>
 <!-- jquery -->
@@ -100,6 +99,7 @@
     	cursor: pointer;
     	height: 40px;
     	transition: .2s;
+    	font-size: 16px;
 	}
 	
 	.btn:hover {
@@ -124,6 +124,8 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/views/include/header.jsp" />
+	
 	<div class="flex-container">
 		<div class="sidebar">사이드바</div>
 		<div class="container">
