@@ -48,14 +48,17 @@ public class QnaUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 인코딩처리(utf-8)
 		request.setCharacterEncoding("utf-8");
-		
+
 		// 2. 정보 가져오기(번호,이름,나이)
 		int qnaId = Integer.parseInt(request.getParameter("no"));
+
 		String category = request.getParameter("qnaCategory");
 		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 		String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
+
 		int check =  Integer.parseInt(request.getParameter("check"));
+
 		
 		Qna qna = new Qna();
 		qna.setQnaId(qnaId);
@@ -89,6 +92,7 @@ public class QnaUpdateServlet extends HttpServlet {
 		}
 		
 		JSONObject obj = new JSONObject();
+
 		
 		if (result > 0) {
 			obj.put("res_msg", "공지사항이 성공적으로 수정되었습니다.");

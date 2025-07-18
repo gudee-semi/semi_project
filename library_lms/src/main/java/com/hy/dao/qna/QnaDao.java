@@ -42,6 +42,7 @@ public class QnaDao {
 	
 	public int deleteAttach(SqlSession session, Qna qna) {
 		return session.delete("com.hy.mapper.qna.QnaMapper.deleteAttach", qna);
+
 	}
 	
 	public Qna selectQnaOne(int qnaId) {
