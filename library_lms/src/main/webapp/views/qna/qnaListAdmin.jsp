@@ -34,6 +34,20 @@ tr:last-child td {
 	border-bottom: none;
 }
 
+button {
+  display: block;
+  border: none;
+  background-color: #205DAC;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.button:hover {
+  background-color: #3E7AC8;
+}
+
 </style>
 
 	<h2>QnA 관리자 리스트</h2>

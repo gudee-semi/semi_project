@@ -18,7 +18,7 @@
 }
 
 .inputtype-text {
-	width: 85%;
+	width: 70%;
 }
 
 h3 {
@@ -44,6 +44,20 @@ th {
 tr:last-child td {
 	border-bottom: none;
 }
+
+button {
+  border: none;
+  background-color: #205DAC;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.button:hover {
+  background-color: #3E7AC8;
+}
+
 </style>
 
 	<h3>QnA 상세</h3>
