@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
 <style>
 
 	.seatBox {
@@ -114,66 +114,14 @@
 		background-color: #EFEFEF;
 		display: flex;
 		margin-left: 70px;
+			
 	
-	}
-	body, header{
-		margin: 0;
-		padding: 0;
-		height: 100px;
-	}
-	
-	header{
-	
-	background-color: #B6D0E2;
-	
-	
-	}
-	.headerImg{
-		width: 109px;
-		height: 81px;
-		margin: 0 auto;
-		cursor: pointer;
-	}
-	
-	footer{
-	
-		background-color: #333333;
-		height: 150px;
-		color: white;
-	}
-
-
-	.footerImg{
-		width: 124px;
-		height: 96px;
-		margin-right: 40px;
-		margin-top: 10px;
-	}
-	
-	.footerBox{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	.information{
-	margin-right: 80px;
-	
-	}
 </style>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-<header>
-	<div class="headerBox">
-		<div class="headerImg">
-			<img src="/images/logo.png" style="width: 100%; height: 100%; object-fit: cover; margin-top: 8.5px;"
-			onclick="location.href='/'">
-			
-		</div>
-	</div>
-</header>
+<%@ include file="/views/include/header.jsp" %>
 
 <body>
 	
@@ -297,31 +245,9 @@
 		</div>
 		
 		</div>
-	<footer>
 	
-		<div class="footerBox">
-			<div class="footerImg">
-				<img alt="대체 텍스트" src="/images/logo_invert.png" style="width: 100%; height: 100%; object-fit: cover;">
-			</div>
-			<div class="informationBox" style="margin-top:30px;">
-			<div style="display: flex;">
-				<div class="information">
-					서울특별시 금천구 가산디지털2로 95 KM타워 3층 305호
-					<br>
-					OFFICE  HOUR : 9:00 - 18:00
-				</div>
-				<div class="information2">
-					MAIN OFFICE : 02-818-7950
-					<br>
-					STUDENT  HOUR : 7:50 - 24:00
-				</div>
-			</div>	
-				<p style="text-align:center; margin-bottom:5px;">© 2023-2025 Example Corp. All rights reserved.</p>
-			</div>
-			
-		</div>
-	</footer>
 	
+	<%@ include file="/views/include/footer.jsp" %>
 	<script>
 	
 	// 서버에서 전달한 currentUsedSeatNo 값 읽기 (null 체크 포함)

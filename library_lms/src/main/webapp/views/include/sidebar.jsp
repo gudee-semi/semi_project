@@ -270,5 +270,4 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	        </li>
         </ul>
 	</div>
-	
 </body>
