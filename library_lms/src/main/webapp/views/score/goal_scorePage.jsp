@@ -35,7 +35,7 @@
 	}
 	
 	h1 {
-	  font-size: 30px;
+	  font-size: 34px;
 	  font-weight: bold;
 	  text-align: center;
 	  margin-bottom: 40px;
@@ -62,12 +62,15 @@
 	  flex-shrink: 0;
 	}
 	
+
 	.checkbox-group {
-	  display: flex;
-	  flex-wrap: wrap;
-	  gap: 30px 20px;
-	  font-size: 16px;
-	}
+	    display: flex;
+	    flex-wrap: wrap;
+	    gap: 32px 40px;
+	    font-size: 18px;
+	    align-content: space-around;
+	    align-items: center;
+    }
 	
 	input[type="checkbox"] {
 	  width: 16px;
@@ -94,8 +97,8 @@
 	}
 
 	#exam-title {
-	  margin-top: 60px;
-	  font-size: 24px;
+	  margin-top: 80px;
+	  font-size: 28px;
 	  font-weight: 600;
 	  text-align: center;
 	}
@@ -103,13 +106,13 @@
 	#selected-subjects {
 	  text-align: center;
 	  font-size: 18px;
-	  margin-bottom: 16px;
+	  margin-bottom: 40px;
 	}
 	
 	#score-table {
 	  margin: 0 auto;
 	  border-collapse: collapse;
-	  font-size: 18px;
+	  font-size: 20px;
 	  width: 720px;
 	  background-color: #fff;
 	}
@@ -117,15 +120,15 @@
 	#score-table th,
 	#score-table td {
 	  border: 1px solid #d1d5db;
-	  padding: 12px;
+	  padding: 18px;
 	  text-align: center;
 	}
 	
 	.input-center {
-	  width: 90px;
-	  height: 32px;
+	  width: 100px;
+	  height: 34px;
 	  border: 1px solid #bbb;
-	  border-radius: 6px;
+	  border-radius: 10px;
 	  text-align: center;
 	  background-color: #f9fafb;
 	  transition: border 0.2s;
@@ -231,8 +234,8 @@
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section">
-  <h2>시험 분류</h2>
   <div class="checkbox-group" id="exam-options">
+  <h3>시험 분류</h3>
     <c:forEach var="month" items="${examOptions}">
       <c:choose>
         <c:when test="${month == autoExamMonth}">
@@ -256,8 +259,8 @@
 
 <!-- 필수 과목 (항상 체크/비활성) -->
 <div class="section">
-  <h3>필수 과목</h3>
   <div class="checkbox-group">
+  <h3>필수 과목</h3>
     <label><input type="checkbox" checked disabled> 국어</label>
     <label><input type="checkbox" checked disabled> 수학</label>
     <label><input type="checkbox" checked disabled> 영어</label>
@@ -268,8 +271,8 @@
 <!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
 <!-- 사회탐구 -->
 <div class="section">
-  <h3>사회탐구</h3>
   <div class="checkbox-group" id="social-subjects-group">
+  <h3>사회탐구</h3>
     <c:forEach var="subject" items="${socialSubjects}">
       <label>
         <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
@@ -281,8 +284,8 @@
 
 <!-- 과학탐구1 -->
 <div class="section">
-  <h3>과학탐구1</h3>
   <div class="checkbox-group" id="science1-subjects-group">
+  <h3>과학탐구1</h3>
     <c:forEach var="subject" items="${science1Subjects}">
       <label>
         <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
@@ -294,8 +297,8 @@
 
 <!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="science2-section">
-  <h3>과학탐구2</h3>
   <div class="checkbox-group">
+  <h3>과학탐구2</h3>
     <c:forEach var="subject" items="${science2Subjects}">
       <label>
         <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
@@ -307,8 +310,8 @@
 
 <!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="lang2-section">
-  <h3>제2외국어</h3>
   <div class="checkbox-group">
+  <h3>제2외국어</h3>
     <c:forEach var="subject" items="${lang2Subjects}">
       <label>
         <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
@@ -323,6 +326,8 @@
 <!-- 선택 과목/점수 입력 영역 -->
 <h2 id="exam-title"></h2>
 <div id="selected-subjects"></div>
+
+
 
 <table id="score-table">
   <thead>
@@ -348,6 +353,7 @@
   <button id="final-submit" class="btn">설정완료</button>
 </div>
 
+<!-- fotter 삽입 -->
 <%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
