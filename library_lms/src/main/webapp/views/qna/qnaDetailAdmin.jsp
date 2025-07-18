@@ -17,6 +17,10 @@
 	text-align: center;
 }
 
+.inputtype-text {
+	width: 85%;
+}
+
 h3 {
 	text-align: center;
 }
@@ -129,10 +133,11 @@ tr:last-child td {
 	<c:forEach var="reply" items="${replyList}">
 		<!-- 댓글 내용 -->
 		<div class="center">
+			<b>수정 목록 : </b>
 			<form action="${pageContext.request.contextPath}/qna/reply/admin/update" method="post" style="display: inline;">
 				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
-				<input type="hidden" name="qnaId" value="${reply.qnaId}" /> <b>수정
-					목록 : </b> <input type="text" name="content" value="${reply.content}" />
+				<input type="hidden" name="qnaId" value="${reply.qnaId}" />
+				<input type="text"  class="inputtype-text" name="content" value="${reply.content}" />
 				<button type="submit">수정</button>
 			</form>
 		</div>

@@ -39,5 +39,10 @@ public class QnaAdminService{
     public int deleteReply(int qnaReplyId) {
         return qnaAdminDao.deleteReply(qnaReplyId);
     }
+    
+    // 조회수
+    public void incrementViewCount(int qnaNo) {
+        qnaAdminDao.incrementViewCount(qnaNo);
+    }
 
 }
