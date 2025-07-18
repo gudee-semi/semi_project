@@ -30,4 +30,18 @@
 	<select id="selectSeatByMember" parameterType="int" resultMap="seatResultMap">
 		SELECT * FROM seat WHERE member_no = #{memberNo}
 	</select>
+	
+	<select id="selectAllFixedSeatMembers" resultType="com.hy.dto.seat.FixedSeatMemberView">
+    SELECT 
+        m.member_no,
+        m.member_name,
+        m.member_grade,
+        m.member_school,
+        m.member_penalty,
+        m.member_seat AS seat_no
+    FROM member m
+    JOIN fixed_seat f ON m.member_no = f.member_no
+    WHERE m.active_status = 1
+	</select>
+
 </mapper>
