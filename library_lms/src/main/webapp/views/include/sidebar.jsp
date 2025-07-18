@@ -269,7 +269,7 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	        </li>
 	        
 	        <li class="nav-item">
-	        	<a class="dropdown-item" href="<c:url value='/WeatherServlet' />">날씨</a>
+	        	<a class="dropdown-item" href="<c:url value='/weatherservlet' />">날씨</a>
 	        </li>
 	        
      	    <li class="nav-item">

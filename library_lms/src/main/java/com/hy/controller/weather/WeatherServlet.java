@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/WeatherServlet")
+@WebServlet("/weatherservlet")
 public class WeatherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,18 +26,18 @@ public class WeatherServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// 1. 도시명과 API 키 지정
-		String city = "Seoul"; // 또는 request.getParameter("city") 등으로 받기
+	// 1. 도시명과 API 키 지정
+	String city = "Seoul"; // 또는 request.getParameter("city") 등으로 받기
 		
     // 2. OpenWeatherMap API 키 입력
     String apiKey = "a5734c7567afe401a5c7d6ee351aacec"; // 본인 API 키 입력
     
-		 // 2. 날씨 API URL 조립 (필요한 옵션 파라미터 추가)
-		 // - q=도시명 : 도시명 (영문/한글 모두 가능)
-		 // - appid=API키 : 본인 API키
-		 // - units=metric : 섭씨(Celsius)로 온도 단위 변환
-		 // - lang=kr : 한국어 설명 받기
-		 String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric" + "&lang=kr";
+	// 2. 날씨 API URL 조립 (필요한 옵션 파라미터 추가)
+	// - q=도시명 : 도시명 (영문/한글 모두 가능)
+	// - appid=API키 : 본인 API키
+	// - units=metric : 섭씨(Celsius)로 온도 단위 변환
+	// - lang=kr : 한국어 설명 받기
+	String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric" + "&lang=kr";
 
     // 4. URL 객체 생성
     URL url = new URL(apiUrl);

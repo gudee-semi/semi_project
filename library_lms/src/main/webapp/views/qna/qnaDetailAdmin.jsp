@@ -18,7 +18,7 @@
 }
 
 .inputtype-text {
-	width: 60%;
+	width: 85%;
 }
 
 h3 {
