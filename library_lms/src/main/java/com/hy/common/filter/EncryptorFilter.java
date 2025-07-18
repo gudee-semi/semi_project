@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Servlet Filter implementation class EncryptorFilter
  */
-@WebFilter("/member")
+@WebFilter("/*")
 public class EncryptorFilter extends HttpFilter implements Filter {
        
     /**

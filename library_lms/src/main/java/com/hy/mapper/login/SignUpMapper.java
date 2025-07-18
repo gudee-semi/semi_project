@@ -10,5 +10,6 @@ public interface SignUpMapper {
 	User searchUser(User param);
 	int insertMember(Member param);
 	int insertMemberAvatar(ProfileAttach param);
-	
+	User checkUserRrn(String userRrn);
+	int insertUser(User param);
 }

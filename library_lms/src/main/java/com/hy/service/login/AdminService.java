@@ -15,4 +15,9 @@ public class AdminService {
 		
 		return dao.userSearch(user);
 	}
+
+	public int insertUser(User param) {
+		return dao.insertUser(param);
+		
+	}
 }

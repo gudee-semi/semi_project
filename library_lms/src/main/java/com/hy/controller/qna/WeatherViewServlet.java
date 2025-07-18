@@ -27,7 +27,6 @@ public class WeatherViewServlet extends HttpServlet {
         int ny = 127;
 
         String jsonResult = weatherApiService.getWeatherData(baseDate, baseTime, nx, ny);
-        System.out.println(jsonResult);
         // JSP로 데이터 전달
         request.setAttribute("weatherData", jsonResult);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/include/header.jsp");

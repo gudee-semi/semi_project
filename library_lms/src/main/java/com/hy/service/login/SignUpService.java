@@ -6,6 +6,7 @@ import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.login.SignUpDao;
 import com.hy.dto.Member;
 import com.hy.dto.login.ProfileAttach;
+import com.hy.dto.login.User;
 
 public class SignUpService {
 	
@@ -18,18 +19,21 @@ public class SignUpService {
 
 	}
 	
-	//주민번호 중복검사
+	//계정 등록 주민번호 중복검사
 	public Member checkRrn(String memberRrn) {
 			Member member =dao.checkRrn(memberRrn);
 			return member;
 	}
-	//
+	//유저 등록 주민번호 검사
+	public User checkUserRrn(String userRrn) {
+		User user = dao.checkUserRrn(userRrn);
+		return user;
+	}
 
 	public int insertMember(Member member, ProfileAttach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result= 0;
 		try {
-			// 1. 게시글 등록
 			result = dao.insertMember(session,member);
 			
 			// 2. 파일 정보 등록
@@ -54,5 +58,6 @@ public class SignUpService {
 		return result;
 	
 	}
+
 	
 }

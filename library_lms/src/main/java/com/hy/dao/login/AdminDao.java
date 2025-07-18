@@ -14,5 +14,14 @@ public class AdminDao {
 		return user;
 	}
 
+	public int insertUser(User param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result =session.insert("com.hy.mapper.login.SignUpMapper.insertUser", param);
+		session.close();
+		return result;
+		
+	
+	}
+
 	
 }

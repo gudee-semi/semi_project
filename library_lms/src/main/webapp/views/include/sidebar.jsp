@@ -4,7 +4,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>    
 <script>
 window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시든 아니든 무조건 호출된다.
@@ -267,12 +266,21 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	       	<li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/qna/list/admin' />">질의응답 관리자페이지</a>
 	        </li>
+	 
 	        
      	    <li class="nav-item">
 	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">마이페이지</a>
 	        	<ul class="dropdown-menu">
 			        <li><a class="dropdown-item" href="<c:url value='/mypage/password/input' />">개인정보 수정</a></li>
 			        <li><a class="dropdown-item" href="<c:url value='/myqna/view' />">나의 문의 내역</a></li>
+			   
+		    	</ul>
+	        </li>
+	        <li class="nav-item">
+	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">관리자 회원</a>
+	        	<ul class="dropdown-menu">
+			        <li><a class="dropdown-item" href="<c:url value=' /user/signup' />">회원 등록</a></li>
+			    
 			   
 		    	</ul>
 	        </li>

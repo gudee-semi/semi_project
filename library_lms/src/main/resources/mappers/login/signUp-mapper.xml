@@ -48,6 +48,15 @@
 	
 
 </insert>
+<insert id ="insertUser" parameterType="com.hy.dto.login.User">
+	INSERT INTO user(
+	user_name, user_rrn,user_seat
+	)
+	VALUES(#{userName},#{userRrn },#{userSeat})
+	
+
+</insert>
+
 <select id ="checkId" resultMap="memberAccount" parameterType="string">
 	SELECT * 
 	FROM member
@@ -62,6 +71,15 @@
 		member_rrn=#{memberRrn}
 	</where>	
 </select>
+<select id ="checkUserRrn" resultMap="userInfo" parameterType="string">
+	SELECT * 
+	FROM user
+	<where>
+		user_rrn=#{userRrn}
+	</where>	
+</select>
+
+
 <select id = "searchUser" resultMap = "userInfo" parameterType ="com.hy.dto.login.User">
 	SELECT *
 	FROM user
