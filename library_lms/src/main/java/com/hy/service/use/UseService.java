@@ -3,6 +3,7 @@ package com.hy.service.use;
 import java.util.List;
 
 import com.hy.dao.use.UseDao;
+import com.hy.dto.Member;
 import com.hy.dto.use.Use;
 import com.hy.dto.use.UseLog;
 
@@ -30,6 +31,10 @@ public class UseService {
 
 	public List<UseLog> getLogByNo(int memberNo) {
 		return dao.getLogByNo(memberNo);
+	}
+
+	public int insertUse(int param) {
+		return dao.insertUse(param);
 	}
 
 }
