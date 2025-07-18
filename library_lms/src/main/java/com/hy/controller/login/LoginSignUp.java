@@ -91,7 +91,6 @@ public class LoginSignUp extends HttpServlet {
 				    ProfileAttach attach = ProfileAttachService.handleUploadFile(request, uploadDir);
 				    
 				    int result = service.insertMember(member,attach);
-				    System.out.println(member.getMemberNo());
 				    int resultAtd = useService.insertUse(member.getMemberNo());
 				    
 				    obj.put("res_code","200");
