@@ -67,12 +67,10 @@
 		background-color: #D9D9D9;
 		border-radius: 10px;
 		cursor: pointer;
-		opacity: 0.3;
 		margin-right: 70px;
 		width: 123px;
 		height: 47px;
 		font-weight: 600;
-		
 	}
 	
 	button:disabled{
@@ -102,7 +100,6 @@
 	}
 	
 	.buttonBox{
-		
 		margin-left: 120px;
 		margin-bottom: 70px;
 		margin-top: 250px;
@@ -115,7 +112,19 @@
 		display: flex;
 		margin-left: 70px;
 			
+	}
+	.sidebar{
+		height: 100vh;
+		width: 250px;
+		background-color: red;
+		z-index: 99;
+		
+	}
 	
+	.totalBox{
+		display:flex;
+	
+	}
 </style>
 
 <!-- jquery -->
@@ -129,10 +138,15 @@
 		List<Seat> list = (List<Seat>)request.getAttribute("list");
 	%>
 
+  <div class="totalBox">
+	<div class="sidebar">
+
+	
+	
+	</div>
 
 
-
-	<div class="seatBox" style="margin: 110px auto 140px;">
+	<div class="seatBox" style="margin: 11px 400px 14px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -245,8 +259,10 @@
 		</div>
 		
 		</div>
+		
 	
 	
+	</div>
 	<%@ include file="/views/include/footer.jsp" %>
 	<script>
 	
