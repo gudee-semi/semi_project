@@ -10,6 +10,23 @@
 </head>
 <body>
 
+<style>
+button {
+  display: block;
+  border: none;
+  background-color: #205DAC;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.button:hover {
+  background-color: #3E7AC8;
+}
+
+</style>
+
 	<!-- 사용가능 대수 계산 -->
 	<c:set var="usable" value="0" />
 
