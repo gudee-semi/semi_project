@@ -42,6 +42,9 @@ public class QnaDetailAdminServlet extends HttpServlet {
 
 		// QnA 상세 데이터 조회 (Service/DAO 호출)
 		Qna qna = qnaService.selectQnaOne(qnaNo);
+		
+		// 조회수 증가
+	    qnaAdminService.incrementViewCount(qnaNo);
 
 		// 해당 QnA에 대한 답글(댓글) 리스트 조회
 		List<QnaReply> replyList = qnaAdminService.selectReplyList(qnaNo);
