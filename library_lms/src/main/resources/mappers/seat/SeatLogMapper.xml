@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<insert id="insertLog" parameterType="com.hy.dto.seat.SeatLog">
+    INSERT INTO seat_log (member_no, seat_no, now_time, state)
+	VALUES (#{memberNo}, #{seatNo}, #{nowTime}, #{state})
+
+</insert>

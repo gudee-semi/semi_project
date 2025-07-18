@@ -16,7 +16,6 @@
 		margin-bottom: 20px;
 		table-layout: fixed;
 	}
-
 	.detail-table th,
 	.detail-table td {
 		border: 1px solid #ddd;
@@ -25,7 +24,7 @@
 		word-wrap: break-word;
 	}
 	.detail-table th {
-	background-color: #f0f0f0;
+	background-color: #F0F0F0;
 	width: 120px;
 	text-align: center;
 	
@@ -35,9 +34,8 @@
 	.content-text {
 		height: 150px;
 		vertical-align: top;
-		background-color: #fafafa;
+		background-color: #FAFAFA;
 	}
-
 	/* ===== 버튼 ===== */
 	.btn {
 		display: inline-block;
@@ -49,7 +47,6 @@
 		cursor: pointer;
 		color: rgba(255, 255, 255, 1);
 	}
-
 	.btn.blue {
 		width: 70px;
 		background-color: rgba(32, 93, 172, 1);
@@ -59,8 +56,6 @@
 		display: flex;
 	}
 	</style>
-
-
 </head>
 <body>
 	<section class="content">

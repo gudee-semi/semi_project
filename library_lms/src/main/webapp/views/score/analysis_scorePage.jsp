@@ -1,13 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
-
 <%
   // 로그인한 사용자 정보 세션에서 가져오기
   Member loginMember = (Member) session.getAttribute("loginMember");
   int memberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
   int studentGrade = (loginMember != null) ? loginMember.getMemberGrade() : 1;
+  
+  // studentGrade를 request로 d-day.jsp에 넘기기
+  request.setAttribute("studentGrade", studentGrade);
 
   // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
@@ -44,12 +45,25 @@
   </style>
 
 </head>
+
+<script>
+  // [0] 서버-side 변수 JS로 전달
+  const studentGrade = <%= studentGrade %>;
+  const memberNo = <%= memberNo %>;
+  const currentYear = <%= currentYear%>;
+</script>
+
+
 <body>
+<!-- 로그인 정보 숨겨서 JS에서 참조 -->
+<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
+<input type="hidden" id="memberNo" value="<%= memberNo %>">
+
+<!-- D-Day 카드 표시 -->
+<jsp:include page="/views/include/d-day.jsp" />
+
 <h1>성적 조회 및 분석</h1>
 
-<!-- 로그인 정보 숨겨서 JS에서 참조 -->
-<input type="hidden" id="memberNo" value="<%= memberNo %>">
-<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 
 <!-- 시험 분류 체크박스 동적 생성 -->
 <div class="checkbox-group" id="exam-options">
