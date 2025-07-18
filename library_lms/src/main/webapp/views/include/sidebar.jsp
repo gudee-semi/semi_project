@@ -265,7 +265,13 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	       	<li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/admin/fixed-seat' />">고정좌석 관리자페이지</a>
 	        </li>
-	       	
+	        
+	        
+   	       	<li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/admin/abort' />">강제 퇴실 조치</a>
+	        </li>
+	        
+
 	       	
      	    <li class="nav-item">
 	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">마이페이지</a>

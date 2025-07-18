@@ -64,8 +64,6 @@
 				    </c:forEach>
 				];
 			
-				console.log(todoList);
-			
 				function addSmartEvent(todo) {
 				    const todoDate = todo.start.split('T')[0]; // '2025-07-10'
 			
@@ -172,8 +170,6 @@
 				                    },
 				                    dataType: 'json',
 				                    success: (data) => {
-				                        console.log(data);
-				                        console.log(data.res_msg);
 				                        // (1) is_completed UI 반영
 				                        if (isCompleted === 1) {
 				                            el.style.border = '3px solid blue';
@@ -309,7 +305,6 @@
 				                            },
 				                            dataType: 'json',
 				                            success: (data) => {
-				                                console.log(data.res_msg);
 				                                if (data.res_code == '200') {
 				        		                	Swal.fire({
 														title: "할 일 목록이 수정되었습니다.",
@@ -355,8 +350,7 @@
 				                            }
 				                        })
 				                    }
-				                })
-				                console.log('수정:', plannerId);
+				                });
 				                popup.remove();
 				            });
 			
@@ -379,8 +373,6 @@
 					                    },
 					                    dataType: 'json',
 					                    success: (data) => {
-					                        console.log('삭제:', plannerId);
-					                        console.log(data.res_msg);
 					                        if (data.res_code == '200') {
 					                            window.alert('할 일 목록이 삭제되었습니다.');
 					                            event.remove();
@@ -632,7 +624,6 @@
 				    attendanceDates.push('${atd}');
 				</c:forEach>
 			
-				console.log(attendanceDates);
 			
 				const fp = flatpickr("#calendarPop", {
 				    clickOpens: true,
@@ -663,7 +654,6 @@
 				    const yearIndex = instance.currentYear;
 				    const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
 				    const label = yearIndex + '년 ' + monthNames[monthIndex] + ' 출석표';
-				    console.log(label);
 			
 				    // 중복 방지
 				    const existing = calendar.querySelector('.calendar-title');
