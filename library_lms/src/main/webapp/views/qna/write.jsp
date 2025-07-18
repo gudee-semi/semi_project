@@ -42,11 +42,11 @@
 			    <div class="menu-name">제목</div>	
 			    <div><textarea name="qnaTitle" rows="1" cols="80" required></textarea></div>
 		    
-			    <div class="menu-name">파일첨부</div>
-			    <div><input type="file" name="qnaFile" ></div>
-		    
 		    	<div class="menu-name">내용</div>
 		    	<div><textarea name="qnaContent" rows="15" cols="80" required></textarea></div>
+		    
+			    <div class="menu-name">파일첨부</div>
+			    <div><input type="file" name="qnaFile" ></div>
 		    
 		    <br>
 		    <input type="submit" value="등록">

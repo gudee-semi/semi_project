@@ -1,22 +1,28 @@
 package com.hy.controller.qna;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Map;
+import java.io.PrintWriter;
 
 import org.json.simple.JSONObject;
 
-import com.hy.dto.Member;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
+import com.hy.service.qna.AttachService;
 import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 20
+)
 @WebServlet("/qna/update")
 public class QnaUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -31,7 +37,11 @@ public class QnaUpdateServlet extends HttpServlet {
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
 		Qna qna = qnaService.selectQnaOne(qnaId);
+		Attach attach = qnaService.selectAttachByQnaNo(qnaId);
+		
 		request.setAttribute("qna", qna);
+		request.setAttribute("attach", attach);
+		
 		request.getRequestDispatcher("/views/qna/update.jsp").forward(request, response);
 	}
 
@@ -39,73 +49,58 @@ public class QnaUpdateServlet extends HttpServlet {
 		// 1. 인코딩처리(utf-8)
 		request.setCharacterEncoding("utf-8");
 		
-		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
-		
-		Member member = (Member)session.getAttribute("loginMember");
-		
-	    if (session != null) {
-	        if (member != null) {
-	        } else {
-	        	response.sendRedirect(request.getContextPath()+"/");
-	        	return;
-	        }
-	    } else {
-	    	response.sendRedirect(request.getContextPath()+"/");
-	    	return;
-	    }
-		
-	    
 		// 2. 정보 가져오기(번호,이름,나이)
-		
-		int memberNo = member.getMemberNo();
-		int no = Integer.parseInt(request.getParameter("no"));
+		int qnaId = Integer.parseInt(request.getParameter("no"));
 		String category = request.getParameter("qnaCategory");
+		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
 		String title = request.getParameter("qnaTitle");
 		String content = request.getParameter("qnaContent");
-		int visibility = Integer.parseInt(request.getParameter("qnaVisibility"));
-		
-		// 3. service한테 부탁해서 updateQna
-		// 부탁할 때는 번호,이름,나이 주면서 부탁하고, 
-		// 결과는 int 형태로 반환 (delete, insert, update)
+		int check =  Integer.parseInt(request.getParameter("check"));
 		
 		Qna qna = new Qna();
-		
-		qna.setMemberNo(memberNo);
-		qna.setQnaId(no);
+		qna.setQnaId(qnaId);
 		qna.setCategory(category);
+		qna.setVisibility(visibility);
 		qna.setTitle(title);
 		qna.setContent(content);
-		qna.setVisibility(visibility);
 		
-		int result = qnaService.updateQna(qna);
+		File uploadDir = AttachService.getUploadDirectory();
+		Attach attach = AttachService.handleUploadFile(request, uploadDir);
+		
+		int result = 0;
+		
+		if (attach != null) {
+			attach.setQnaId(qnaId);
+			if (check == 2) {
+				// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
+				result = qnaService.updateQnaNewAttach(qna, attach);
+			} else {
+				// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
+				result = qnaService.updateQnaWithAttach(qna, attach);				
+			}
+		} else {
+			if (check == 1) {
+				// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
+				result = qnaService.updateQnaDeleteAttach(qna);
+			} else if (check == 0 || check == 2) {
+				// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
+				result = qnaService.updateQnaSameAttach(qna);
+			}
+		}
 		
 		JSONObject obj = new JSONObject();
 		
-		
-		request.setAttribute("msg", "수정이 완료되었습니다.");
-		request.setAttribute("path", "/qna/detail?no="+no);
-		
-		if(result<1) {
-			request.setAttribute("msg", "수정 중 오류가 발생했습니다.");
-			request.setAttribute("path", "/qna/update?no="+no);
+		if (result > 0) {
+			obj.put("res_msg", "공지사항이 성공적으로 수정되었습니다.");
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_msg", "공지사항 수정이 실패했습니다.");
+			obj.put("res_code", "500");			
 		}
 		
-		request.getRequestDispatcher("/views/qna/result.jsp").forward(request, response);
-		
-		// 4. 만약에 결과가 0보다 크면 : 목록 화면 전환 다시 요청 sendRedirect()
-		// 0보다 크지 않다면 : 수정 화면 재요청 -> 반드시 쿼리 스트링 사용!!
-//		if(result > 0) {
-//			obj.put("res_code", "200");
-//			obj.put("res_msg", "게시글 등록이 성공적으로 진행되었습니다.");
-//			response.sendRedirect("/qna/detail");
-//		} else {
-//			obj.put("res_code", "500");
-//			obj.put("res_msg", "게시글 등록중 오류가 발생했습니다.");
-//			response.sendRedirect("/qna/update");
-//		}
-//		
-//		response.setContentType("application/json; charset=utf-8");
-//		response.getWriter().print(obj);
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 		
 	}
 

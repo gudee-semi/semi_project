@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
+import com.hy.dto.notice.Notice;
+import com.hy.dto.notice.NoticeAttach;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
-
-import lombok.extern.slf4j.Slf4j;
 
 public class QnaDao {
 	public List<Qna> selectQnaList(Qna param){
@@ -32,12 +32,16 @@ public class QnaDao {
 		return result;
 	}
 	
-	public int updateQna(Qna qna) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.update("com.hy.mapper.qna.QnaMapper.updateQna", qna);
-		
-		session.close();
-		return result;
+	public int updateQna(SqlSession session, Qna qna) {
+		return session.update("com.hy.mapper.qna.QnaMapper.updateQna", qna);
+	}
+	
+	public int updateAttach(SqlSession session, Attach attach) {
+		return session.update("com.hy.mapper.notice.QnaMapper.updateAttach", attach);
+	}
+	
+	public int deleteAttach(SqlSession session, Qna qna) {
+		return session.delete("com.hy.mapper.qna.QnaMapper.deleteAttach", qna);
 	}
 	
 	public Qna selectQnaOne(int qnaId) {

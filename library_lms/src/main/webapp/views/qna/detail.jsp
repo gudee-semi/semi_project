@@ -106,7 +106,7 @@
 					<a href="/qna/delete?no=${qna.qnaId }">삭제</a>
 			</c:if>
 
-			<form action="<c:url value='/qna/update'/>" method="get">
+			<%-- <form action="<c:url value='/qna/update'/>" method="get">
 				<button class="btn blue">수정</button>
 			</form>
 			
@@ -114,7 +114,7 @@
 				<input type="hidden" name="qnaId" value="${qna.qnaId}"/>
 				<button class="btn blue">삭제</button>
 			</form>
-			
+			 --%>
 			<form action="<c:url value='/qna/view'/>" method="get">
 				<button class="btn blue">목록</button>
 			</form>

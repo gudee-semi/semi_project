@@ -79,8 +79,8 @@
 				<c:forEach var="q" items="${qnaList }">
 					<c:if test ="${q.memberId eq loginMember.memberId}">
 						<tr onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-							<td class="no">${q.qnaId }</td>
-							<td class="category">${q.category }</td>
+							<td>${q.qnaId }</td>
+							<td>${q.category }</td>
 							
 							<c:if test="${q.visibility == 1 }">
 								<td style="text-align: left">${q.title}</td>
@@ -90,33 +90,33 @@
 								<td style="text-align: left">🔒 ${q.title }</td>
 							</c:if>
 							
-							<td class="writer">${q.memberName }</td>
-							<td class="regDate">${q.regDate }</td>
-							<td class="count">${q.viewCount }</td>
+							<td>${q.memberName }</td>
+							<td>${q.regDate }</td>
+							<td>${q.viewCount }</td>
 						</tr>
 					</c:if>
 					
 					<c:if test ="${q.memberId ne loginMember.memberId}">
 					
 						<c:if test = "${q.visibility == 1}">
-							<tr class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-								<td class="no">${q.qnaId }</td>
-								<td class="category">${q.category }</td>
+							<tr onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+								<td>${q.qnaId }</td>
+								<td>${q.category }</td>
 								<td style="text-align: left">${q.title }</td>
-								<td class="writer">${q.memberName }</td>
-								<td class="regDate">${q.regDate }</td>
-								<td class="count">${q.viewCount }</td>
+								<td>${q.memberName }</td>
+								<td>${q.regDate }</td>
+								<td>${q.viewCount }</td>
 							</tr>
 						</c:if>
 						
 						<c:if test = "${q.visibility == 0}">
-							<tr class="row">
-								<td class="no">${q.qnaId }</td>
-								<td class="category">${q.category }</td>
+							<tr>
+								<td>${q.qnaId }</td>
+								<td>${q.category }</td>
 								<td style="text-align: left">🔒비공개된 글입니다.</td>
-								<td class="writer">${q.memberName }</td>
-								<td class="regDate">${q.regDate }</td>
-								<td class="count">${q.viewCount }</td>
+								<td>${q.memberName }</td>
+								<td>${q.regDate }</td>
+								<td>${q.viewCount }</td>
 							</tr>
 						</c:if>
 					</c:if>
