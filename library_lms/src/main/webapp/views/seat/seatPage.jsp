@@ -2,124 +2,126 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
 <style>
-.seatBox {
-	background-color: #EFEFEF;
-	margin-top: 110px;
-	margin-bottom: 140px;
-	margin-left: 460px;
-	margin-right: 200px;
-	width: 787px;
-	height: 752px;
+
+	.seatBox {
+		background-color: #EFEFEF;
+		margin-top: 110px;
+		margin-bottom: 140px;
+		margin-left: 460px;
+		margin-right: 200px;
+		width: 787px;
+		height: 752px;
+		
+	}
 	
-}
-
-.privateSeat {
-	background-color: #9EA0A1;
-	height: 27px;
-	width: 27px;
-	margin-bottom: 19.5px;
-	position: relative;
+	.privateSeat {
+		background-color: #9EA0A1;
+		height: 27px;
+		width: 27px;
+		margin-bottom: 19.5px;
+		position: relative;
+		
+	}
 	
-}
-
-.privateSeat::before {
-  content: "\00d7";
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 35px;
-  color: black;
-}
-
-
-.publicSeat {
-	background-color: #4582EC;
-	height: 27px;
-	width: 27px;
-	margin-bottom: 19.5px;
-	margin-right: 19.5px;
-	cursor: pointer;
-}
-
-.publicSeat:hover{
-
-	outline: 4px solid red;
+	.privateSeat::before {
+	  content: "\00d7";
+	  position: absolute;
+	  top: 40%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  font-size: 35px;
+	  color: black;
+	}
 	
-}
-
-.publicSeat.active{
-
-	outline: 4px solid red;
 	
-}
-
-.publicSeat.used{
-
-	background-color: #FF9500;
-
-}
-
-button {
-	background-color: #D9D9D9;
-	border-radius: 10px;
-	cursor: pointer;
-	opacity: 0.3;
-	margin-right: 70px;
-	width: 123px;
-	height: 47px;
-	font-weight: 600;
+	.publicSeat {
+		background-color: #4582EC;
+		height: 27px;
+		width: 27px;
+		margin-bottom: 19.5px;
+		margin-right: 19.5px;
+		cursor: pointer;
+	}
 	
-}
-
-button:disabled{
-	cursor: default;
-
-}
-
-
-.privateSeatBox {
-	height: 80px;
+	.publicSeat:hover{
 	
-	margin-left: 50px;
-	margin-right: 100px;
-	margin-top: 100px;
-	position: relative;
-}
-
-.publicSeatBox2 {
-	margin-top: 100px;
-	margin-right: 124.08px;
-	position: relative;
-}
-
-.publicSeatBox{
-	margin-top: 100px;
-	position: relative;
-}
-
-.buttonBox{
+		outline: 4px solid red;
+		
+	}
 	
-	margin-left: 120px;
-	margin-bottom: 70px;
-	margin-top: 250px;
-	position: relative;
-}
-.seatBox2{
-
-
-	background-color: #EFEFEF;
-	display: flex;
-	margin-left: 70px;
-
-}
-
-
+	.publicSeat.active{
+	
+		outline: 4px solid red;
+		
+	}
+	
+	.publicSeat.used{
+	
+		background-color: #FF9500;
+	
+	}
+	
+	button {
+		background-color: #D9D9D9;
+		border-radius: 10px;
+		cursor: pointer;
+		opacity: 0.3;
+		margin-right: 70px;
+		width: 123px;
+		height: 47px;
+		font-weight: 600;
+		
+	}
+	
+	button:disabled{
+		cursor: default;
+	
+	}
+	
+	
+	.privateSeatBox {
+		height: 80px;
+		
+		margin-left: 50px;
+		margin-right: 100px;
+		margin-top: 100px;
+		position: relative;
+	}
+	
+	.publicSeatBox2 {
+		margin-top: 100px;
+		margin-right: 124.08px;
+		position: relative;
+	}
+	
+	.publicSeatBox{
+		margin-top: 100px;
+		position: relative;
+	}
+	
+	.buttonBox{
+		
+		margin-left: 120px;
+		margin-bottom: 70px;
+		margin-top: 250px;
+		position: relative;
+	}
+	.seatBox2{
+	
+	
+		background-color: #EFEFEF;
+		display: flex;
+		margin-left: 70px;
+			
+	
 </style>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<%@ include file="/views/include/header.jsp" %>
 
 <body>
 	
@@ -130,7 +132,7 @@ button:disabled{
 
 
 
-	<div class="seatBox">
+	<div class="seatBox" style="margin: 110px auto 140px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -245,6 +247,7 @@ button:disabled{
 		</div>
 	
 	
+	<%@ include file="/views/include/footer.jsp" %>
 	<script>
 	
 	// 서버에서 전달한 currentUsedSeatNo 값 읽기 (null 체크 포함)

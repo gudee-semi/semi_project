@@ -12,6 +12,6 @@
 <body>
 	<%@ include file="/views/include/header.jsp" %>
 	<%@ include file="/views/include/sidebar.jsp" %>
-	
+	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

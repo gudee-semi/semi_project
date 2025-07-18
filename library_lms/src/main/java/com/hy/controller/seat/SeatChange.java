@@ -9,17 +9,19 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 import org.json.simple.JSONObject;
 
 import com.hy.dto.Member;
+import com.hy.dto.seat.SeatLog;
 import com.hy.service.seat.SeatService;
 
 
 @WebServlet("/seat/change")
 public class SeatChange extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private SeatService service = new SeatService();   
    
     public SeatChange() {
         super();
@@ -76,6 +78,21 @@ public class SeatChange extends HttpServlet {
 	    try (PrintWriter out = response.getWriter()) {
 	        out.print(obj.toJSONString());
 	}
+	 // 1. 이전 좌석 퇴실 로그
+	    SeatLog oldLog = new SeatLog();
+	    oldLog.setMemberNo(memberNo);
+	    oldLog.setSeatNo(oldSeatNo);
+	    oldLog.setNowTime(LocalDateTime.now());
+	    oldLog.setState(0);  // 퇴실
+	    service.insertSeatLog(oldLog);
+
+	    // 2. 새 좌석 입실 로그
+	    SeatLog newLog = new SeatLog();
+	    newLog.setMemberNo(memberNo);
+	    newLog.setSeatNo(newSeatNo);
+	    newLog.setNowTime(LocalDateTime.now());
+	    newLog.setState(1);  // 입실
+	    service.insertSeatLog(newLog);
 
 	}
 }

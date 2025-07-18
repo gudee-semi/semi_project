@@ -11,6 +11,7 @@ import com.hy.dto.login.User;
 import com.hy.service.login.AdminService;
 import com.hy.service.login.ProfileAttachService;
 import com.hy.service.login.SignUpService;
+import com.hy.service.use.UseService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -36,6 +37,7 @@ public class LoginSignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SignUpService service = new SignUpService();
 	private AdminService adService = new AdminService();
+	private UseService useService = new UseService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -89,6 +91,8 @@ public class LoginSignUp extends HttpServlet {
 				    ProfileAttach attach = ProfileAttachService.handleUploadFile(request, uploadDir);
 				    
 				    int result = service.insertMember(member,attach);
+				    int resultAtd = useService.insertUse(member.getMemberNo());
+				    
 				    obj.put("res_code","200");
 			    	obj.put("res_msg", "회원가입 성공!");
 		    } 
