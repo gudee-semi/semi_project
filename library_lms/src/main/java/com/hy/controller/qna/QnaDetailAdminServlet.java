@@ -28,27 +28,34 @@ public class QnaDetailAdminServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-        // 파라미터 받기
-        String qnaIdStr = request.getParameter("qnaId");
-        if (qnaIdStr == null || qnaIdStr.isEmpty()) {
-            // 파라미터 없으면 에러 처리 or 목록으로 이동
-            response.sendRedirect("/");
-            return;
-        }
-        
-        // 문의글 내용 조회
-        int qnaNo = Integer.parseInt(qnaIdStr);
-        Qna qna = qnaService.selectQnaOne(qnaNo);
-        
-        // QnA 상세 데이터, 답글(댓글) 리스트 조회
-        List<QnaReply> replyList = qnaAdminService.selectReplyList(qnaNo);
+		// QnA ID 파라미터 받기
+		String qnaId = request.getParameter("qnaId");
 
-        // JSP에서 사용할 데이터 저장
-        request.setAttribute("qna", qna);
-        request.setAttribute("replyList", replyList);
+		// 파라미터가 없거나 빈 값이면 메인 페이지로 이동 (에러 처리)
+		if (qnaId == null || qnaId.isEmpty()) {
+		    response.sendRedirect("/");
+		    return;
+		}
 
-        // 관리자용 상세 JSP로 포워드
-        request.getRequestDispatcher("/views/qna/qnaDetailAdmin.jsp").forward(request, response);
+		// 파라미터 값을 int로 변환
+		int qnaNo = Integer.parseInt(qnaId);
+
+		// QnA 상세 데이터 조회 (Service/DAO 호출)
+		Qna qna = qnaService.selectQnaOne(qnaNo);
+		
+		// 조회수 증가
+	    qnaAdminService.incrementViewCount(qnaNo);
+
+		// 해당 QnA에 대한 답글(댓글) 리스트 조회
+		List<QnaReply> replyList = qnaAdminService.selectReplyList(qnaNo);
+
+		// JSP에서 사용할 데이터 저장 (request 영역)
+		request.setAttribute("qna", qna);
+		request.setAttribute("replyList", replyList);
+
+		// 관리자용 QnA 상세 JSP로 포워드
+		request.getRequestDispatcher("/views/qna/qnaDetailAdmin.jsp").forward(request, response);
+                
 	
 	}
 
