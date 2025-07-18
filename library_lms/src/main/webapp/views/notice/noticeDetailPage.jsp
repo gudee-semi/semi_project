@@ -89,7 +89,7 @@
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="3">
-				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
+				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' /> " style="object-fit: cover; width: 100%; height: 100%"><br>
 				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>						
 					</td>
 				</tr>
