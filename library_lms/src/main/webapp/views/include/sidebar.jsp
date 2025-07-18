@@ -254,6 +254,13 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	       	<li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/qna/list/admin' />">질의응답 관리자페이지</a>
 	        </li>
+
+	        
+	        <li class="nav-item">
+	        	<a class="dropdown-item" href="<c:url value='/weatherservlet' />">날씨</a>
+	        </li>
+	        
+
 	       	
 	       	<li class="nav-item">
 	        	<a class="dropdown-item" href="<c:url value='/admin/fixed-seat' />">고정좌석 관리자페이지</a>

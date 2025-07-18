@@ -1,7 +1,6 @@
 package com.hy.controller.qna;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import com.hy.dto.qna.QnaReply;
 import com.hy.service.qna.QnaAdminService;
@@ -33,27 +32,29 @@ public class QnaReplyInsertAdminServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// 파라미터 받기
-		String qnaIdStr = request.getParameter("qnaId");
-		
-		if (qnaIdStr == null || qnaIdStr.isEmpty()) {
-			// 파라미터 누락 시 목록으로 리다이렉트 또는 에러 처리
-			response.sendRedirect(request.getContextPath() + "/qna/list/admin");
-			return;
-		}
-		int qnaNo = Integer.parseInt(qnaIdStr);
+		// 1. 파라미터 받기
+	    String qnaId = request.getParameter("qnaId");
+	    String content = request.getParameter("content");
 
-		String content = request.getParameter("content");
+	    // 2. 파라미터가 없거나 빈 값이면 메인 페이지로 이동
+	    if (qnaId == null || qnaId.isEmpty() || content == null || content.isEmpty()) {
+	        response.sendRedirect("/");
+	        return;
+	    }
 
-		// DTO 생성 및 값 세팅 (댓글 번호는 DB에서 자동 생성)
-		QnaReply reply = new QnaReply();
-		reply.setQnaId(qnaNo);
-		reply.setContent(content);
+	    // 3. qnaId를 int로 변환
+	    int qnaNo = Integer.parseInt(qnaId);
 
-		// Service 호출하여 댓글 등록
-		qnaAdminService.insertReply(reply);
+	    // 4. DTO 생성 및 값 세팅
+	    QnaReply reply = new QnaReply();
+	    reply.setQnaId(qnaNo);      // 댓글이 달리는 QnA 번호!
+	    reply.setContent(content);  // 댓글 내용
 
-		// 등록 후 상세페이지로 리다이렉트
-		response.sendRedirect(request.getContextPath()+ "/qna/detail/admin?qnaId=" + qnaNo);
+	    // 5. Service 호출하여 댓글 등록 (댓글 번호는 DB에서 자동 생성)
+	    qnaAdminService.insertReply(reply);
+
+	    // 6. 등록 후 상세페이지로 리다이렉트
+	    response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaNo);
+	    
 	}
 }

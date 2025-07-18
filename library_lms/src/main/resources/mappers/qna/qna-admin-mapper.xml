@@ -25,7 +25,8 @@
 		<result property="content" column="content" />
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
-		<association property="qna" javaType="com.hy.dto.qna.Qna" resultMap="QnaMap" />
+		<association property="qna" javaType="com.hy.dto.qna.Qna"
+			resultMap="QnaMap" />
 	</resultMap>
 
 	<!-- 게시글 목록 조회 -->
@@ -63,10 +64,17 @@
 	</select>
 
 	<!-- 답글 삭제 -->
-<delete id="deleteReply" parameterType="int">
-  DELETE FROM qna_reply
-  WHERE qna_reply_id = #{value}
-</delete>
+	<delete id="deleteReply" parameterType="int">
+		DELETE FROM qna_reply
+		WHERE qna_reply_id = #{value}
+	</delete>
+
+	<!-- 조회수 -->
+	<update id="incrementViewCount" parameterType="int">
+		UPDATE qna SET
+		view_count = view_count + 1
+		WHERE qna_id = #{qnaId}
+	</update>
 
 
 

@@ -29,21 +29,6 @@ public class QnaListAdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// 세션에서 Member 객체 꺼내기 (안전하게 null 체크)
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect(request.getContextPath() + "/login/view");
-			return;
-		}
-
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		if (loginMember == null) {
-			response.sendRedirect(request.getContextPath() + "/login/view");
-			return;
-		}
-
-		int memberNo = loginMember.getMemberNo();
-
 		// 1. QnA 목록 데이터 조회 (Service 호출)
 		List<QnaReply> qnaAdminList = qnaAdminService.selectAll();
 
