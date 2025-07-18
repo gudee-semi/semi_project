@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="/views/include/header.jsp" />
 <meta charset="UTF-8">
 <title>공지사항</title>
 <!-- jquery -->
@@ -102,5 +103,8 @@
 	<c:if test="${ memberNo eq 1 }">
 		<button onclick="location.href='<c:url value="/notice/write" />'">공지사항 작성</button>
 	</c:if>
+	
+	
+	<jsp:include page="/views/include/footer.jsp" />
 </body>
 </html>

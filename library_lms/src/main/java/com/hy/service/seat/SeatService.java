@@ -5,8 +5,11 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
+import com.hy.controller.tablet.MyBatisUtil;
 import com.hy.dao.seat.SeatDao;
 import com.hy.dto.seat.Seat;
+import com.hy.dto.seat.SeatLog;
+import com.hy.mapper.seat.SeatLogMapper;
 
 public class SeatService {
 	
@@ -69,5 +72,14 @@ public class SeatService {
 		return dao.selectSeatByMember(memberNo);
 	}
 	
+	public int insertSeatLog(SeatLog log) {
+	    try (SqlSession session = MyBatisUtil.getSession()) {
+	        SeatLogMapper mapper = session.getMapper(SeatLogMapper.class);
+	        int result = mapper.insertLog(log);
+	        session.commit();
+	        return result;
+	    }
+	}
+
 	
 }
