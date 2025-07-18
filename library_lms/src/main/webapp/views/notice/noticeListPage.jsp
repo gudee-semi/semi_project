@@ -8,9 +8,11 @@
 <title>공지사항</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
 	table {
 		border-collapse: collapse;
+		margin-top: 20px;
 	}
 	
 	th, td {
@@ -29,9 +31,71 @@
 		border-bottom: none;
 	}
 	
+	tr.row {
+		cursor: pointer;
+	}
+	
 	td.title {
 		text-align: left;
 	}
+	
+	.searchBox {
+		text-align: right;
+	}
+	
+	.search-submit {
+	    background-color: #205DAC;
+	    color: white;
+	    border-color: transparent;
+	    border-radius: 3px;
+	    cursor: pointer;
+	    width: 50px;
+	}
+	
+	.paging-pages {
+	    text-align: center;
+    	margin-top: 100px;
+	}
+	
+	.paging-pages a {
+		display: inline-block;
+		width: 32px; /* 숫자 간격에 맞춰 적당히 조정해도 됨 */
+		text-align: center;
+		margin-left: 5px;
+		margin-right: 5px;
+		text-decoration: none;
+		color: black;
+	}
+	
+	.material-symbols-outlined {
+		display: inline-block;
+    	vertical-align: top;
+	}
+	
+    .disabled {
+    	pointer-events: none;
+    	opacity: 0.2;
+    }
+    
+    .paging-pages a.current-page {
+    	color: #205DAC;
+    	text-decoration: underline;
+    }
+    
+    .admin-write {
+    	text-align: right;
+    }
+    
+    .admin-write button {
+   	    background-color: #205DAC;
+	    color: white;
+	    border-color: transparent;
+	    border-radius: 3px;
+	    cursor: pointer;
+	    width: 100px;
+	    height: 30px;
+	    margin-right: 20px;
+    }
 </style>
 </head>
 <body>
@@ -46,7 +110,7 @@
 				<option value="시설공지">시설공지</option>
 			</select>
 			<input type="text" name="keyword" placeholder="검색 기준 선택" value="${ paging.keyword }">
-			<input type="submit" value="검색">
+			<input type="submit" value="검색" class="search-submit">
 		</form>
 	</div>
 	
@@ -80,27 +144,52 @@
 	</table>
 		
 	<c:if test="${ not empty noticeList }">
-		<div>
-			<c:if test="${ paging.prev }">
-				<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
-					&laquo;
-				</a>
-			</c:if>
+		<div class="paging-pages">
+			<c:choose>
+				<c:when test="${ paging.prev }">
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
+						<span class="material-symbols-outlined">chevron_left</span>
+					</a>
+				</c:when>
+				<c:otherwise>
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disabled">
+						<span class="material-symbols-outlined">chevron_left</span>
+					</a>
+				</c:otherwise>
+			</c:choose>
 			<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-				<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
-					${ i }
-				</a>	
+				<c:choose>
+					<c:when test="${ i eq paging.nowPage }">
+						<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="current-page">
+							${ i }
+						</a>
+					</c:when>
+					<c:otherwise>
+						<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" >
+							${ i }
+						</a>
+					</c:otherwise>
+				</c:choose>	
 			</c:forEach>
-			<c:if test="${ paging.next }">
-				<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
-					&raquo;
-				</a>
-			</c:if>
+			<c:choose>
+				<c:when test="${ paging.next }">
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</a>
+				</c:when>
+				<c:otherwise>
+					<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disabled">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</c:if>
 		
-	<c:if test="${ memberNo eq 1 }">
-		<button onclick="location.href='<c:url value="/notice/write" />'">공지사항 작성</button>
-	</c:if>
+	<div class="admin-write">
+		<c:if test="${ memberNo eq 1 }">
+			<button onclick="location.href='<c:url value="/notice/write" />'">공지사항 작성</button>
+		</c:if>	
+	</div>	
 </body>
 </html>

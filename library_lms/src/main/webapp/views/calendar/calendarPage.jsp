@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 	<h1>학습 플래너</h1>
@@ -234,8 +236,6 @@
 		            // 3. 페이지에 붙이기
 		            $('body').append(popup);
 		            
-
-		            
 		            // 팝업 외부를 클릭 시 닫기
 		            setTimeout(() => {
 			            $(document).on('click', (e) => {
@@ -265,9 +265,19 @@
 		                    const todoDetail = $('.todo-update-detail').val();
 	
 		                    if (!todoTitle) {
-		                        window.alert('제목은 필수 항목입니다.');
+		        				Swal.fire({
+		        					title: "제목은 필수 항목입니다.",
+		        					icon: "error",
+		        					confirmButtonText: '확인',
+		        					confirmButtonColor: '#205DAC'
+		        				});
 		                    } else if (!todoDate) {
-		                        window.alert('날짜는 필수 항목입니다.');
+		        				Swal.fire({
+		        					title: "날짜는 필수 항목입니다.",
+		        					icon: "error",
+		        					confirmButtonText: '확인',
+		        					confirmButtonColor: '#205DAC'
+		        				});
 		                    } else {
 		                        $.ajax({
 		                            url: '/calendar/update',
@@ -282,7 +292,12 @@
 		                            success: (data) => {
 		                                console.log(data.res_msg);
 		                                if (data.res_code == '200') {
-		                                    window.alert('할 일 목록이 수정되었습니다.');
+		        		                	Swal.fire({
+												title: "할 일 목록이 수정되었습니다.",
+												icon: "success",
+												confirmButtonText: '확인'
+		      	                			});
+		        		                	
 		                                    event.remove();
 	
 		                                    // 새로 만든 todo 객체로 스마트하게 다시 추가
@@ -367,7 +382,11 @@
 	                                    // 재정렬해서 다시 추가
 	                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 			                        } else {
-			                            window.alert('오류!');
+					                	Swal.fire({
+					                		  title: "할 일 목록 수정이 실패했습니다.",
+					                		  icon: "error",
+					                		  confirmButtonText: '확인'
+				                		});
 			                        }
 			                    }
 			                });
@@ -508,12 +527,21 @@
 		    const todoDetail = $('.todo-input-detail').val();
 	
 		    if (!todoTitle) {
-		        window.alert('제목은 필수 항목입니다.');
+				Swal.fire({
+					title: "제목은 필수 항목입니다.",
+					icon: "error",
+					confirmButtonText: '확인',
+					confirmButtonColor: '#205DAC'
+				});
 		    } else if (!todoDate) {
-		        window.alert('날짜는 필수 항목입니다.');
+				Swal.fire({
+					title: "날짜는 필수 항목입니다.",
+					icon: "error",
+					confirmButtonText: '확인',
+					confirmButtonColor: '#205DAC'
+				});
 		    } else {
 		        $.ajax({
-	
 		            url: '/calendar/view',
 		            type: 'post',
 		            data: {
@@ -526,9 +554,12 @@
 		                console.log(data);
 		                console.log(data.res_msg);
 		                console.log(data.planner_id);
-		                if (data.res_code == '200') {
-		                	
-		                    window.alert('할 일 목록 등록 성공');
+		                if (data.res_code == '200') {	                	
+		                	Swal.fire({
+		                		  title: "할 일 목록이 등록되었습니다.",
+		                		  icon: "success",
+		                		  confirmButtonText: '확인'
+	                		});
 		                    
 		                    $('.todo-input-title').val('');
 		                    $('.todo-input-date').val('');
@@ -566,7 +597,11 @@
 		                        }
 		                    });
 		                } else {
-		                    window.alert('오류!');
+		                	Swal.fire({
+		                		  title: "할 일 목록이 등록이 실패했습니다.",
+		                		  icon: "error",
+		                		  confirmButtonText: '확인'
+	                		});
 		                }
 		            }
 		        });
