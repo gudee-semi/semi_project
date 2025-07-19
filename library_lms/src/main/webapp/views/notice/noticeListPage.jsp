@@ -43,13 +43,23 @@
 		text-align: right;
 	}
 	
+	.form {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: right;
+	}
+	
 	.search-submit {
 	    background-color: #205DAC;
 	    color: white;
 	    border-color: transparent;
-	    border-radius: 3px;
 	    cursor: pointer;
 	    width: 50px;
+	}
+	
+	.search-submit:hover {
+		background-color: #3E7AC8;
 	}
 	
 	.paging-pages {
@@ -72,7 +82,7 @@
     	vertical-align: top;
 	}
 	
-    .disabled {
+    .disableddd {
     	pointer-events: none;
     	opacity: 0.2;
     }
@@ -100,13 +110,15 @@
     	height: 40px;
     	transition: .2s;
     	font-size: 16px;
+    	padding-right: 30px;
+    	padding-left: 30px;
 	}
 	
 	.btn:hover {
 		background-color: #3E7AC8;
 	}
 	
-	.sidebar {
+	.sidebars {
 		width: 250px;
 		height: 100vh;
 		background-color: #3b82f6;
@@ -121,26 +133,41 @@
 	.container {
 		width: 70%;
 	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
 </style>
 </head>
 <body>
 	<jsp:include page="/views/include/header.jsp" />
 	
 	<div class="flex-container">
-		<div class="sidebar">사이드바</div>
+		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
 		<div class="container">
 			<h1>공지사항</h1>
 				
 			<div class="searchBox">
-				<form method="get" action="<c:url value='/notice/list' />">
-					<select name="category" id="category_crate">
-						<option value="">전체</option>
-						<option value="일반공지">일반공지</option>
-						<option value="중요공지">중요공지</option>
-						<option value="시설공지">시설공지</option>
-					</select>
-					<input type="text" name="keyword" placeholder="검색 기준 선택" value="${ paging.keyword }">
-					<input type="submit" value="검색" class="search-submit">
+				<form method="get" action="<c:url value='/notice/list' />" class="form">
+					<div>
+						<select name="category" id="category_crate">
+							<option value="">전체</option>
+							<option value="일반공지">일반공지</option>
+							<option value="중요공지">중요공지</option>
+							<option value="시설공지">시설공지</option>
+						</select>
+					</div>
+					<div>
+						<input type="text" name="keyword" placeholder="검색 기준 선택" value="${ paging.keyword }" class="search-keyword">					
+					</div>
+					<div>
+						<input type="submit" value="검색" class="search-submit">					
+					</div>
 				</form>
 			</div>
 			
@@ -175,7 +202,7 @@
 			
 			<div class="admin-write">
 				<c:if test="${ memberNo eq 1 }">
-					<button onclick="location.href='<c:url value="/notice/write" />'" class="btn">공지사항 작성</button>
+					<button onclick="location.href='<c:url value="/notice/write" />'" class="btn">작성</button>
 				</c:if>	
 			</div>	
 				
@@ -188,7 +215,7 @@
 							</a>
 						</c:when>
 						<c:otherwise>
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disabled">
+							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disableddd">
 								<span class="material-symbols-outlined">chevron_left</span>
 							</a>
 						</c:otherwise>
@@ -214,7 +241,7 @@
 							</a>
 						</c:when>
 						<c:otherwise>
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disabled">
+							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disableddd">
 								<span class="material-symbols-outlined">chevron_right</span>
 							</a>
 						</c:otherwise>

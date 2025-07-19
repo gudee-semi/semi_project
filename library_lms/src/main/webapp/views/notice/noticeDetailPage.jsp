@@ -1,18 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-
-<!-- jquery -->
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> 
 <style>
-	.content {
-		background-color: #fff;
-	}
+	
 	.detail-table {
 		width: 70%;
 		border-collapse: collapse;
@@ -28,13 +24,12 @@
 		word-wrap: break-word;
 	}
 	.detail-table th {
-	background-color: #f0f0f0;
-	width: 120px;
-	text-align: center;
-	
-	font-weight: normal;
+		background-color: #f0f0f0;
+		width: 120px;
+		text-align: center;	
+		font-weight: normal;
 	}
-	/* 긴 내용 셀 */
+
 	.content-text {
 		height: 150px;
 		vertical-align: top;
@@ -58,10 +53,9 @@
 		background-color: rgba(32, 93, 172, 1);
 	}
 	
-	.sidebar {
+	.sidebars {
 		width: 250px;
 		height: 100vh;
-		background-color: #3b82f6;
 	}
 	
 	.flex-container {
@@ -88,18 +82,32 @@
 	.btn:hover {
 		background-color: #3E7AC8;
 	}
+	
+	.conditional {
+		display: flex;
+		column-gap: 10px;
+	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
 </style>
 </head>
 <body>
 	<jsp:include page="/views/include/header.jsp" />
 	
 	<div class="flex-container">
-		<div class="sidebar">사이드바</div>
+		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
 		<div class="container">
 			<section class="content">
 				<h1>공지사항</h1>
 				
-				<table class="detail-table">
+				<table class="detail-table" style="width: 90%">
 					<tr>
 						<th>No</th>
 						<td>${ notice.noticeId }</td>
@@ -132,17 +140,24 @@
 				</table>
 			</section>
 			
-			<form action="/notice/list" method="get">
-				<button class="btn">목록</button>
-			</form>
-			
-			<c:if test="${ memberNo eq 1 }">
-				<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
-				
-				<form id="noticeDeleteFrm">
-					<input type="submit" value="삭제">
+			<div class="conditional">
+				<form action="/notice/list" method="get">
+					<button class="btn">목록</button>
 				</form>
-			</c:if>	
+				
+				<c:if test="${ memberNo eq 1 }">
+					<div>
+						<form action="/notice/update" method="get">
+						    <input type="hidden" name="id" value="${ notice.noticeId }">
+						    <button type="submit" class="btn">수정</button>
+						</form>
+					</div>
+					
+					<form id="noticeDeleteFrm">
+						<input type="submit" value="삭제" class="btn">
+					</form>
+				</c:if>					
+			</div>
 			<c:set var="noticeId" value="${ notice.noticeId }"/>
 			
 			<script>
