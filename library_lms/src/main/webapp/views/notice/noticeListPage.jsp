@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="/views/include/header.jsp" />
 <meta charset="UTF-8">
 <title>공지사항</title>
 <!-- jquery -->
@@ -27,6 +28,10 @@
 	
 	tr:last-child td {
 		border-bottom: none;
+	}
+	
+	td.title {
+		text-align: left;
 	}
 </style>
 </head>
@@ -53,12 +58,12 @@
 	<table style="border-collapse: collapse; width: 100%">
 		<thead>
 			<tr>
-				<th>No</th>
-				<th>분류</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>조회수</th>			
-				<th>작성일</th>			
+				<th style="width: 5%">No</th>
+				<th style="width: 20%">분류</th>
+				<th style="width: 40%">제목</th>
+				<th style="width: 10%">작성자</th>
+				<th style="width: 15%">작성일</th>			
+				<th style="width: 10%">조회수</th>			
 			</tr>
 		</thead>
 		<tbody>
@@ -68,8 +73,8 @@
 					<td class="category">${ notice.category }</td>
 					<td class="title">${ notice.title }</td>
 					<td class="writer">관리자</td>
-					<td class="count">${ notice.viewCount }</td>
 					<td class="regDate">${ notice.createAt }</td>
+					<td class="count">${ notice.viewCount }</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -98,5 +103,8 @@
 	<c:if test="${ memberNo eq 1 }">
 		<button onclick="location.href='<c:url value="/notice/write" />'">공지사항 작성</button>
 	</c:if>
+	
+	
+	<jsp:include page="/views/include/footer.jsp" />
 </body>
 </html>

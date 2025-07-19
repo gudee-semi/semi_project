@@ -27,5 +27,13 @@ public class MyBatisUtil {
   public static SqlSession getSqlSession(boolean autoCommit) {
       return factory.openSession(autoCommit);
   }
+  
+  public static SqlSession getSession() {
+      return factory.openSession();  // autoCommit=false
+  }
+
+  public static SqlSession getSession(boolean autoCommit) {
+      return factory.openSession(autoCommit);
+  }
 
 }

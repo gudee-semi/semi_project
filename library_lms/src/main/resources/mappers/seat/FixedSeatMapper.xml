@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hy.mapper.seat.FixedSeatMapper">
+
+	<resultMap id="fixedSeatMemberMap" type="com.hy.dto.seat.FixedSeatMemberView">
+		<result property="memberNo" column="member_no"/>
+	    <result property="memberName" column="member_name"/>
+	    <result property="memberGrade" column="member_grade"/>
+	    <result property="memberSchool" column="member_school"/>
+	    <result property="memberPenalty" column="member_penalty"/>
+	    <result property="seatNo" column="seat_no"/>
+	</resultMap>
+
+    <select id="selectAllFixedSeatMembers" resultMap="fixedSeatMemberMap">
+		SELECT 
+		    m.member_no,
+		    m.member_name,
+		    m.member_grade,
+		    m.member_school,
+		    m.member_penalty,
+		    f.seat_no
+		FROM member m
+		JOIN fixed_seat f ON m.member_no = f.member_no
+		WHERE m.member_seat = 1
+
+    </select>
+
+	<update id="updateFixedSeat">
+	    UPDATE fixed_seat
+	    SET seat_no = #{seatNo}
+	    WHERE member_no = #{memberNo}
+	</update>
+	
+	 <!-- ✅ 추가: 중복 좌석 번호 확인 -->
+    <select id="isSeatNoUsedByOthers" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM fixed_seat
+        WHERE seat_no = #{seatNo}
+          AND member_no != #{memberNo}
+    </select>
+	
+</mapper>
