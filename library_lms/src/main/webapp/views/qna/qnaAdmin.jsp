@@ -9,6 +9,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
+<style>
+button {
+  display: block;
+  border: none;
+  background-color: #205DAC;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.button:hover {
+  background-color: #3E7AC8;
+}
+
+</style>
 	
 	<table style="border-collapse: collapse; width: 100%">
 		<thead>

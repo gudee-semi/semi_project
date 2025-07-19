@@ -22,7 +22,7 @@
       <result property="qnaId" column="qna_id" />
       <result property="oriName" column="ori_name" />
       <result property="reName" column="re_name" />
-      <result property="path" column="re_name" />
+      <result property="path" column="path" />
 	</resultMap>
 	
 	<select id="selectQnaList" resultMap="qnaResultMap" parameterType="com.hy.dto.qna.Qna">
@@ -116,11 +116,19 @@
 	
 	<update id="updateQna" parameterType="com.hy.dto.qna.Qna">
 		UPDATE qna
-		SET category = #{category},
-			visibility = #{visibility},
-			title = #{title},
-			content = #{content}
+		SET category = #{category}
+			, visibility = #{visibility}
+			, title = #{title}
+			, content = #{content}
 		WHERE qna_id = #{qnaId}			
+	</update>
+	
+	<update id="updateAttach" parameterType="com.hy.dto.qna.Attach">
+		UPDATE notice_attach
+		SET ori_name = #{oriName} 
+			,re_name = #{reName} 
+			,path = #{path}
+		WHERE qna_id = #{qnaId}
 	</update>
 	
 	<delete id="deleteQna" parameterType="_int">
@@ -128,6 +136,11 @@
 		<where>
 		qna_id = #{qnaId}
 		</where>
+	</delete>
+	
+	<delete id="deleteAttach" parameterType="com.hy.dto.qna.Qna">
+		DELETE FROM qna_attach 
+		WHERE qna_id = #{qnaId}
 	</delete>
 	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">

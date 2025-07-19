@@ -32,24 +32,23 @@ public class QnaReplyDeleteAdminServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// 1. 삭제할 답글 ID 파라미터 받기
-		String replyIdStr = request.getParameter("qnaReplyId");
-		String qnaIdStr = request.getParameter("qnaId"); // 삭제 후 돌아갈 원글 번호
+		String replyId = request.getParameter("qnaReplyId");
+		String qnaId = request.getParameter("qnaId");
 
 		// 파라미터 체크 (비었을 때 안전처리)
-		if (replyIdStr == null || replyIdStr.isEmpty() || qnaIdStr == null
-				|| qnaIdStr.isEmpty()) {
-			response.sendRedirect(request.getContextPath() + "/qna/list/admin");
+		if (replyId == null || replyId.isEmpty() || qnaId == null || qnaId.isEmpty()) {
+			response.sendRedirect(request.getContextPath() + "/");
 			return;
 		}
 
-		int replyId = Integer.parseInt(replyIdStr);
-		int qnaId = Integer.parseInt(qnaIdStr);
+		int replyNo = Integer.parseInt(replyId);
+		int qnaNo = Integer.parseInt(qnaId);
 
 		// 2. 서비스 계층에서 삭제
-		qnaAdminService.deleteReply(replyId);
+		qnaAdminService.deleteReply(replyNo);
 
 		// 3. 원글 상세페이지로 리다이렉트
-		response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaId);
+		response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaNo);
 	}
 
 }
