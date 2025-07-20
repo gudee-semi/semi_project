@@ -38,7 +38,7 @@
 	  font-size: 34px;
 	  font-weight: bold;
 	  text-align: center;
-	  margin-bottom: 40px;
+	  margin: 80px auto 50px auto;
 	}
 	
 	.section {
@@ -81,12 +81,12 @@
 	
 	.btn {
 	  display: block;
-	  margin: 40px auto;
+	  margin: 60px auto;
 	  padding: 10px 22px;
 	  border: none;
 	  background-color: #205DAC;
 	  color: #fff;
-	  border-radius: 6px;
+	  border-radius: 10px;
 	  font-size: 15px;
 	  cursor: pointer;
 	  transition: 0.2s;
@@ -109,27 +109,33 @@
 	  margin-bottom: 40px;
 	}
 	
+	
 	#score-table {
-	  margin: 0 auto;
-	  border-collapse: collapse;
+	  margin: 60px auto;
+	  border-collapse: separate;  
+	  border-spacing: 0;           
 	  font-size: 20px;
 	  width: 720px;
 	  background-color: #fff;
+	  border: 1px solid #d1d5db; 
+	  border-radius: 10px;    
+	  overflow: hidden;
 	}
 	
 	#score-table th,
 	#score-table td {
-	  border: 1px solid #d1d5db;
+	  border: 1px solid #d1d5db; 
 	  padding: 18px;
 	  text-align: center;
 	}
-	
+
 	.input-center {
 	  width: 100px;
 	  height: 34px;
 	  border: 1px solid #bbb;
 	  border-radius: 10px;
 	  text-align: center;
+	  font-size: 16px;
 	  background-color: #f9fafb;
 	  transition: border 0.2s;
 	}
@@ -230,7 +236,7 @@
 
 <div class="score-container">
   <h1>목표 성적 설정</h1>
-  </div>
+</div>
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section">
@@ -328,7 +334,6 @@
 <div id="selected-subjects"></div>
 
 
-
 <table id="score-table">
   <thead>
     <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
@@ -354,7 +359,7 @@
   <button id="final-submit" class="btn">설정완료</button>
 </div>
 
-<!-- fotter 삽입 -->
+<!-- footer 삽입 -->
 <%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

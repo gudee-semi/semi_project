@@ -26,24 +26,149 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
-    /* 기본 스타일 설정 */
-    body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
-    h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
+    body {
+	  font-family: 'Pretendard', sans-serif;
+	  margin: 40px;
+	  background-color: #fff;
+	  color: #333;
+	}
+	
+	h1 {
+	  font-size: 34px;
+	  font-weight: bold;
+	  text-align: center;
+	  margin: 80px auto 50px auto;
+	}
+	
+	.section {
+	  width: 860px;
+	  margin: 0 auto 28px;
+	}
+        
     .checkbox-group {
-      display: flex; flex-wrap: wrap; gap: 15px 30px; margin: 0 10%;
-      align-items: center;
+	    display: flex;
+	    justify-content: center;
+	    flex-wrap: wrap;
+	    gap: 32px 40px;
+	    font-size: 18px;
+	    align-content: space-around;
+	    align-items: center;
     }
-    label { font-size: 16px; }
-    .exam-type { margin: 0 10px; }
-    table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
-    th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
-    #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
-    #selected-subjects { text-align: center; margin-bottom: 20px; font-size: 16px;}
-    #score-table { margin: 30px auto 0 auto; width: 70%; min-width: 520px; border-collapse: collapse; font-size: 17px; background: #fff; }
-    #score-table th, #score-table td { border: 1px solid #bbb; padding: 20px 0; text-align: center; }
-    #modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.32); z-index: 999; }
-    .modal-content { background: #fff; padding: 24px; margin: 22% auto 0; width: 320px; border-radius: 10px; text-align: center; box-shadow: 0 6px 30px #2222; }
-    #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
+    
+    input[type="checkbox"] {
+	  width: 16px;
+	  height: 16px;
+	  vertical-align: middle;
+	  margin-right: 4px;
+	}
+	    
+    label { 
+    font-size: 16px;
+     }
+     
+    .exam-type { 
+    margin: 0 10px;
+     }
+     
+    table { 
+     margin: 60px auto;
+	  border-collapse: separate;  
+	  border-spacing: 0;           
+	  font-size: 20px;
+	  width: 720px;
+	  background-color: #fff;
+	  border: 1px solid #d1d5db; 
+	  border-radius: 10px;    
+	  overflow: hidden;
+    }
+     
+    th, td { 
+      border: 1px solid #d1d5db; 
+      padding: 10px 18px; 
+      text-align: center;
+    }
+    
+   #exam-title {
+	  margin-top: 80px;
+	  font-size: 28px;
+	  font-weight: 600;
+	  text-align: center;
+	}
+	
+	#selected-subjects {
+	  text-align: center;
+	  font-size: 18px;
+	  margin-bottom: 40px;
+	}
+    
+    #score-table {
+     margin: 60px auto;
+	  border-collapse: separate;  
+	  border-spacing: 0;           
+	  font-size: 20px;
+	  width: 720px;
+	  background-color: #fff;
+	  border: 1px solid #d1d5db; 
+	  border-radius: 10px;    
+	  overflow: hidden;
+     }
+     
+    #score-table th,
+	#score-table td {
+	  border: 1px solid #d1d5db; 
+	  padding: 18px;
+	  text-align: center;
+	}
+	
+	.btn {
+	  display: block;
+	  margin: 0 auto;
+	  padding: 10px 22px;
+	  border: none;
+	  background-color: #D8E5F4;
+	  color: #808080;
+	  border-radius: 10px;
+	  font-size: 15px;
+	  cursor: pointer;
+	  transition: 0.2s;
+	}
+	
+	.btn:hover {
+	  background-color: #CCD7E3;
+	}
+	
+	#delete-submit {
+	  display: none;
+	}
+	
+    
+   #modal {
+	  display: none;
+	  position: fixed;
+	  top: 0; left: 0;
+	  width: 100vw; height: 100vh;
+	  background: rgba(0,0,0,0.4);
+	  z-index: 999;
+	}
+	
+	.modal-content {
+	  background: #fff;
+	  padding: 20px;
+	  margin: 18% auto;
+	  width: 320px;
+	  border-radius: 10px;
+	  text-align: center;
+	  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+	}
+	
+	#modal-close-btn {
+	  margin-top: 16px;
+	  padding: 6px 20px;
+	  border: none;
+	  background: #2563eb;
+	  color: #fff;
+	  border-radius: 6px;
+	}
   </style>
 </head>
 
@@ -69,24 +194,28 @@
 <input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 
 <!-- 시험 분류 체크박스 동적 생성 -->
-<div class="checkbox-group" id="exam-options">
-  <span style="font-weight: 500;">시험 분류</span>
- <c:forEach var="exam" items="${examTypeList}">
-  <label>
-    <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />
-    ${exam.examType}월
-  </label>
- </c:forEach>
+<div class="section">
+	<div class="checkbox-group" id="exam-options">
+	   <h3>시험 분류</h3>
+	 <c:forEach var="exam" items="${examTypeList}">
+	  <label>
+	    <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />
+	    ${exam.examType}월
+	  </label>
+	 </c:forEach>
+	</div>
 </div>
-
 <!-- 선택된 시험 제목 표시 영역 -->
 <div id="exam-title"></div>
 
 <!-- 선택된 과목 목록 표시 영역 -->
 <div id="selected-subjects"></div>
 
+<!-- 삭제하기 버튼 -->
+<div style="text-align: center;">
+  <button id="delete-submit" class="btn">삭제하기</button>
+</div>
 
-<button id="delete-submit" class="btn">삭제하기</button>
 
 
 <!-- 별도 JS 파일 불러오기 -->

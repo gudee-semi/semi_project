@@ -7,7 +7,6 @@ $(document).ready(function () {
     const examMonth = parseInt($(this).val(), 10);
 
     if (examMonth === 11) {
-      // 11월(수능)은 3학년만 선택 가능
       if (studentGrade === 3) {
         $(this).prop('disabled', false).prop('checked', false);
         availableCount++;
@@ -15,7 +14,6 @@ $(document).ready(function () {
         $(this).prop('disabled', true).prop('checked', false);
       }
     } else {
-      // 3, 6, 9월은 전 학년 허용
       $(this).prop('disabled', false).prop('checked', false);
       availableCount++;
     }
@@ -32,9 +30,8 @@ $(document).ready(function () {
 
   // [C] 시험 선택: 하나만 선택 + 과목 토글
   examCheckboxes.change(function () {
-    examCheckboxes.not(this).prop('checked', false); // 하나만 선택되도록
+    examCheckboxes.not(this).prop('checked', false);
 
-    // 초기화
     $('#exam-title').hide().text('');
     $('#selected-subjects').text('');
     $('#score-table').hide();
@@ -42,7 +39,6 @@ $(document).ready(function () {
     $('#final-submit').hide();
     $('.explore-subject, .lang2-subject').prop('checked', false);
 
-    // 과목 토글 조건
     const val = $(this).val();
     if (studentGrade === 3 && ['6', '9', '11'].includes(val)) {
       $('#science2-section, #lang2-section').show();
@@ -95,17 +91,19 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  // [G] 입력값 유효성 검사
+  // [G] 입력값 유효성 검사 (테두리 없음)
   $(document).on('blur', '.score-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
+    const val = $(this).val().trim();
+    const v = parseInt(val);
+    if (val !== '' && (isNaN(v) || v < 0 || v > 100)) {
       showModal("원점수는 0~100 사이여야 합니다.");
     }
   });
 
   $(document).on('blur', '.grade-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 1 || v > 9)) {
+    const val = $(this).val().trim();
+    const v = parseInt(val);
+    if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
       showModal("등급은 1~9 사이여야 합니다.");
     }
   });
@@ -128,23 +126,25 @@ $(document).ready(function () {
       const scoreRaw = scoreInput.val().trim();
       const gradeRaw = gradeInput.val().trim();
 
-      scoreInput.css('border', '');
-      gradeInput.css('border', '');
-
       if (scoreRaw === '' || gradeRaw === '') {
-        if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
-        if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
         emptyFound = true;
         return false;
       }
 
-      if ((isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100)) return showModal('원점수는 0~100 사이여야 합니다.');
-      if ((isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9)) return showModal('등급은 1~9 사이여야 합니다.');
+      const scoreVal = parseInt(scoreRaw);
+      const gradeVal = parseInt(gradeRaw);
+
+      if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
+        return showModal('원점수는 0~100 사이여야 합니다.');
+      }
+      if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
+        return showModal('등급은 1~9 사이여야 합니다.');
+      }
 
       data.push({
         subjectName: sub,
-        targetScore: parseInt(scoreRaw),
-        targetLevel: parseInt(gradeRaw)
+        targetScore: scoreVal,
+        targetLevel: gradeVal
       });
 
       subjectNames.push(sub);
@@ -160,30 +160,29 @@ $(document).ready(function () {
       subjectScores: data
     };
 
-	$.ajax({
-	  url: '/goal_score/insert',
-	  method: 'POST',
-	  contentType: 'application/json',
-	  data: JSON.stringify(requestPayload),
-	  xhrFields: {
-	    withCredentials: true    // ✅ 세션 쿠키 포함 필수!
-	  },
-	  success: function (res) {
-	    if (!res.success) {
-	      if (res.reason === 'duplicate') return showModal('이미 목표 성적을 입력하였습니다.');
-	      return showModal('입력실패');
-	    }
-	    showModal('입력완료');
-	    renderResultTable(subjectNames, scoreValues, gradeValues);
-	    $('.score-input, .grade-input').hide();
-	    $('#final-submit').hide();
-	  },
-	  error: function () {
-	    showModal('서버 오류로 저장에 실패했습니다.');
-	  }
-	});
-	});
-  // [I] 결과 테이블 렌더링 함수
+    $.ajax({
+      url: '/goal_score/insert',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(requestPayload),
+      xhrFields: { withCredentials: true },
+      success: function (res) {
+        if (!res.success) {
+          if (res.reason === 'duplicate') return showModal('이미 목표 성적을 입력하였습니다.');
+          return showModal('입력실패');
+        }
+        showModal('입력완료');
+        renderResultTable(subjectNames, scoreValues, gradeValues);
+        $('.score-input, .grade-input').hide();
+        $('#final-submit').hide();
+      },
+      error: function () {
+        showModal('서버 오류로 저장에 실패했습니다.');
+      }
+    });
+  });
+
+  // [I] 결과 테이블 렌더링
   function renderResultTable(subs, scores, grades) {
     let html = '';
     for (let i = 0; i < subs.length; i++) {
@@ -192,7 +191,7 @@ $(document).ready(function () {
     $('#score-body').html(html);
   }
 
-  // [J] 모달 출력 함수
+  // [J] 모달창
   function showModal(msg) {
     $('#modal-message').text(msg);
     $('#modal').show();
