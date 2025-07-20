@@ -7,6 +7,8 @@
 <title></title>
 </head>
 <body>
+
+	<%@ include file="/views/include/header.jsp" %>
 	<%@ include file="/views/include/sidebar.jsp" %>
 	<form id="signUp">
 		

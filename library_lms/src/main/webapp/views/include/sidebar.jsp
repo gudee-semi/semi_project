@@ -201,7 +201,7 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 		</script>
      	<div class="container text-center">
   			<div class="row align-items-start">
-    			<div class="col">로그아웃</div>
+    			<a class="col" href="<c:url value='/logout' />">로그아웃</a>
   			</div>
 		</div>
 		
@@ -279,7 +279,9 @@ window.onpageshow = function(event){   // onpageshow는 page 호출되면 캐시
 	        <li class="nav-item">
 	        	<a class="nav-item dropdown-toggle" href="#" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-auto-close="false">관리자 회원</a>
 	        	<ul class="dropdown-menu">
-			        <li><a class="dropdown-item" href="<c:url value=' /user/signup' />">회원 등록</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/user/signup' />">회원 등록</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/user/delete' />">회원 삭제</a></li>
+			        <li><a class="dropdown-item" href="<c:url value='/admin/member/delete' />">회원 계정 삭제</a></li>
 			    
 			   
 		    	</ul>

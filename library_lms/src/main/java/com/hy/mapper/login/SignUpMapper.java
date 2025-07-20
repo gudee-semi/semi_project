@@ -1,5 +1,7 @@
 package com.hy.mapper.login;
 
+import java.util.List;
+
 import com.hy.dto.Member;
 import com.hy.dto.login.ProfileAttach;
 import com.hy.dto.login.User;
@@ -13,4 +15,11 @@ public interface SignUpMapper {
 	int insertMemberAvatar(ProfileAttach param);
 	User checkUserRrn(String userRrn);
 	int insertUser(User param);
+	List<User>userList(User param);
+	int selectUserCount(User param);
+	int deleteUser(int userNo);
+	int selectMember(int userNo);
+	int selectMemberCount(Member member);
+	List<Member> memberList(Member member);
+	
 }
