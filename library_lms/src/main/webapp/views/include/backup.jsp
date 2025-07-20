@@ -4,16 +4,38 @@
 <style>
   .sidebar {
     width: 250px;
-    background-color: #2c3e50;
-    color: white;
+    background-color: #ffffff;
+    color: #000;
     padding: 20px;
-    height: 100vh;
+    height: 100%;
+    font-family: sans-serif;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+
+  .sidebar .profile {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .sidebar .profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5px;
   }
 
   .sidebar h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-size: 18px;
+  }
+
+  .divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 15px 0;
   }
 
   .nav-item {
@@ -21,17 +43,17 @@
   }
 
   .nav-item > a {
-    color: white;
+    color: #000;
     text-decoration: none;
     display: block;
     padding: 10px;
-    background-color: #34495e;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
   }
 
   .nav-item > a:hover {
-    background-color: #1abc9c;
+    background-color: #f0f0f0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
   }
 
   .dropdown {
@@ -41,7 +63,7 @@
   .dropdown-content {
     display: none;
     margin-top: 5px;
-    padding-left: 15px;
+    padding-left: 10px;
   }
 
   .dropdown:hover .dropdown-content {
@@ -49,16 +71,18 @@
   }
 
   .dropdown-content a {
-    background-color: #3e5369;
+    background-color: #fff;
+    color: #000;
     padding: 8px;
     display: block;
-    margin: 4px 0;
+    margin: 3px 0;
     border-radius: 4px;
     font-size: 13px;
+    transition: background-color 0.2s ease-in-out;
   }
 
   .dropdown-content a:hover {
-    background-color: #16a085;
+    background-color: #f0f0f0;
   }
 
   .disabled {
@@ -68,7 +92,58 @@
 </style>
 
 <div class="sidebar">
-  <h2>${loginMember.memberName}</h2>
+  <div class="profile">
+    <img src="/images/test.jpg" alt="프로필 이미지">
+    <h2>${loginMember.memberName}</h2>
+  </div>
+  
+  <div class="check-buttons" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+	  <form id="check-in">
+	    <c:if test="${ useStatus.status eq 0 }">
+	      <input type="submit" value="입실" id="check-in-input">
+	    </c:if>
+	    <c:if test="${ useStatus.status eq 1 || useStatus.status eq 2 }">
+	      <input type="submit" value="입실" id="check-in-input" disabled>
+	    </c:if>
+	  </form>
+	
+	  <form id="check-out">
+	    <c:if test="${ useStatus.status eq 1 }">
+	      <input type="submit" value="퇴실" id="check-out-input">
+	    </c:if>
+	    <c:if test="${ useStatus.status eq 0 || useStatus.status eq 2 }">
+	      <input type="submit" value="퇴실" id="check-out-input" disabled>
+	    </c:if>
+	  </form>
+	
+	  <form id="temp">
+	    <c:if test="${ useStatus.status eq 1 }">
+	      <input type="submit" value="외출" id="temp-input">
+	    </c:if>
+	    <c:if test="${ useStatus.status eq 2 }">
+	      <input type="submit" value="재입실" id="temp-input">
+	    </c:if>
+	    <c:if test="${ useStatus.status eq 0 }">
+	      <input type="submit" value="외출" id="temp-input" disabled>
+	    </c:if>
+	  </form>
+  </div>
+  
+	<div class="logout-text" style="text-align: center; margin-top: 12px;">
+	  <a href="/member/logout" style="
+	    font-size: 13px;
+	    color: #555;
+	    text-decoration: none;
+	    transition: color 0.2s, text-decoration 0.2s;
+	  "
+	  onmouseover="this.style.textDecoration='underline'; this.style.color='#000';"
+	  onmouseout="this.style.textDecoration='none'; this.style.color='#555';"
+	  >
+	    로그아웃
+	  </a>
+	</div>
+
+  <div class="divider"></div>
 
   <div class="nav-item"><a href="<c:url value='/calendar/view' />">학습플래너</a></div>
 
@@ -105,3 +180,124 @@
     </div>
   </div>
 </div>
+
+
+<c:set var="memberNo" value="${ loginMember.memberNo }"/>
+		
+<script>
+$('#check-in').on('submit', (e) => {
+	e.preventDefault();
+	const checker1 = confirm('입실하시겠습니까?');
+	if (checker1) {
+		const memberNo = ${ loginMember.memberNo };
+		const check = 1;
+		
+		$.ajax({
+			url: '/use/checkIn',
+               type: 'post',
+               data: {
+                   memberNo: memberNo,
+                   check: check
+               },
+               dataType: 'json',
+               success: (data) => {
+               	window.alert(data.res_msg);
+               	if (data.res_code == 200) {
+                	$('#check-in-input').attr("disabled", true); 
+                	$('#check-out-input').removeAttr("disabled");
+                	$('#temp-input').removeAttr("disabled");
+                	$('.seat').toggleClass("disabled");
+                	$('.tablet').toggleClass("disabled");
+               	}
+               }
+		});					
+	}
+});
+
+$('#check-out').on('submit', (e) => {
+	e.preventDefault();
+	const checker2 = confirm('퇴실하시겠습니까?');
+	if (checker2) {
+		const memberNo = ${ loginMember.memberNo };
+		const check = 0;
+		
+		$.ajax({
+			url: '/use/checkOut',
+               type: 'post',
+               data: {
+                   memberNo: memberNo,
+                   check: check
+               },
+               dataType: 'json',
+               success: (data) => {
+               	window.alert(data.res_msg);
+               	if (data.res_code == 200) {
+                	$('#check-in-input').removeAttr("disabled");
+                	$('#check-out-input').attr("disabled", true);
+                	$('#temp-input').attr("disabled", true);
+                	$('.seat').toggleClass("disabled");
+                	$('.tablet').toggleClass("disabled");
+               	}
+               }
+		});					
+	}
+});
+
+$('#temp').on('submit', (e) => {
+	e.preventDefault();
+	const tempValue = $('#temp-input').val();
+	if (tempValue === '외출') {
+		const memberNo = ${ loginMember.memberNo };
+		const check = 2;
+		const checker3 = confirm('외출하시겠습니까?');
+		
+		if (checker3) {
+			$.ajax({
+				url: '/use/tempOut',
+                type: 'post',
+                data: {
+                    memberNo: memberNo,
+                    check: check
+                },
+                dataType: 'json',
+                success: (data) => {
+                	window.alert(data.res_msg);
+                	if (data.res_code == 200) {
+	                	$('#check-in-input').attr("disabled", true);
+	                	$('#check-out-input').attr("disabled", true);
+	                	$('#temp-input').removeAttr("disabled");	
+	                	$('#temp-input').val('재입실');	
+                	}
+                }
+			});																	
+		}
+		
+	} else {
+		const memberNo = ${ loginMember.memberNo };
+		const check = 1;
+		const checker3 = confirm('재입실하시겠습니까');
+		
+		if (checker3) {
+			$.ajax({
+				url: '/use/tempIn',
+                type: 'post',
+                data: {
+                    memberNo: memberNo,
+                    check: check
+                },
+                dataType: 'json',
+                success: (data) => {
+                	window.alert(data.res_msg);
+                	if (data.res_code == 200) {
+	                	$('#check-in-input').attr("disabled", true);
+	                	$('#check-out-input').removeAttr("disabled");
+	                	$('#temp-input').removeAttr("disabled");	
+	                	$('#temp-input').val('외출');	
+                	}
+                }
+			});							
+		}
+		
+	}
+});
+</script>

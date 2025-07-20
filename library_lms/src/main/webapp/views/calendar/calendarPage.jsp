@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<jsp:include page="/views/include/header.jsp" />       
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>     
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,10 +22,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-	.sidebar {
+	.sidebars {
 		width: 250px;
-		height: 100vh;
-		background-color: #3b82f6;
+		height: 1000px;
 	}
 	
 	.flex-container {
@@ -38,11 +36,29 @@
 	.container {
 		width: 70%;
 	}
+	
+	.calendar-icon {
+		font-size: 30px;
+	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 </head>
 <body>
+	<jsp:include page="/views/include/header.jsp" />
 	<div class="flex-container">
-		<div class="sidebar">사이드바</div>
+		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
 		<div class="container">
 			<h1>학습 플래너</h1>
 			<div id='calendar'></div>
@@ -418,16 +434,33 @@
 			</script>
 			  
 			<div class="container-burger">
-				<div>
-					<button type="button" class="btn-atd"><span class="material-symbols-outlined">event_available</span></button>	
-				</div>
-				<div>
-					<button type="button" class="btn-add"><span class="material-symbols-outlined">assignment_add</span></button>
-				</div>
-				<div>
-					<button type="button" class="btn-burger"><span class="material-symbols-outlined">menu</span></button>	  	  	
-				</div>
+			  <div class="floating-buttons">
+			    <div>
+			      <button type="button" class="btn-atd">
+			        <span class="material-symbols-outlined calendar-icon">event_available</span>
+			      </button>
+			    </div>
+			    <div>
+			      <button type="button" class="btn-add">
+			        <span class="material-symbols-outlined calendar-icon">assignment_add</span>
+			      </button>
+			    </div>
+			  </div>
+			  <div>
+			    <button type="button" class="btn-burger">
+			      <span class="material-symbols-outlined calendar-icon">menu</span>
+			    </button>
+			  </div>
 			</div>
+			
+			<script>
+			  const burgerBtn = document.querySelector('.btn-burger');
+			  const container = document.querySelector('.container-burger');
+			
+			  burgerBtn.addEventListener('click', () => {
+			    container.classList.toggle('active');
+			  });
+			</script>
 			
 			<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" />
 		

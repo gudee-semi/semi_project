@@ -6,6 +6,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import org.json.simple.JSONObject;
+
+import com.hy.dto.use.Use;
+import com.hy.service.use.UseService;
 
 /**
  * Servlet implementation class AdminAbortServlet
@@ -13,7 +20,7 @@ import java.io.IOException;
 @WebServlet("/admin/abort")
 public class AdminAbortServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private UseService service = new UseService();   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -26,8 +33,8 @@ public class AdminAbortServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// DB 조회 (현재 입실 중인 친구들) 를 리스트로 담아서 가져가주세요!!!
-		
+		List<Use> list = service.getUseStatus();
+		request.setAttribute("list", list);
 		request.getRequestDispatcher("/views/admin/adminAbortPage.jsp").forward(request, response);
 	}
 
@@ -35,8 +42,33 @@ public class AdminAbortServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		
+		String[] memberNoArr = request.getParameterValues("list[]");
+		int result = 1;
+		for (String s : memberNoArr) {
+			int memberNo = Integer.parseInt(s);
+			if (result > 0) {
+				result = service.abortMember(memberNo);
+				if (result > 0) {
+					result = service.insertUseLog(memberNo, 0);
+				}
+			}
+		}
+		
+		JSONObject obj = new JSONObject();
+		
+		if (result > 0) {
+			obj.put("res_msg", "강제 퇴실 조치가 완료되었습니다.");
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_msg", "강제 퇴실 조치가 실패했습니다.");
+			obj.put("res_code", "500");			
+		}
+		
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 	}
 
 }

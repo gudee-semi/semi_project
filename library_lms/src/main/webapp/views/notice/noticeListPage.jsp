@@ -96,10 +96,6 @@
     	margin-top: 80px;
     	text-align: right;
     }
-    
-   	footer{
-		margin-top: 100px !important;
-	}
 	
 	.btn {
     	border: none;
@@ -120,8 +116,7 @@
 	
 	.sidebars {
 		width: 250px;
-		height: 100vh;
-		background-color: #3b82f6;
+		height: 1000px;
 	}
 	
 	.flex-container {
@@ -141,6 +136,10 @@
 	
 	h1 {
 		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
 	}
 </style>
 </head>

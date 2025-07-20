@@ -18,4 +18,8 @@ public interface UseMapper {
 	
 	int insertUse(int param);
 	
+	List<Use> getUseStatus();
+	
+	int abortMember(int memberNo);
+	
 }

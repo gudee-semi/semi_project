@@ -46,4 +46,18 @@ public class UseDao {
 		return result;
 	}
 
+	public List<Use> getUseStatus() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Use> result = session.selectList("com.hy.mapper.use.UseMapper.getUseStatus");
+		session.close();
+		return result;
+	}
+
+	public int abortMember(int memberNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.hy.mapper.use.UseMapper.abortMember", memberNo);
+		session.close();
+		return result;
+	}
+
 }
