@@ -37,7 +37,7 @@ public class QnaDao {
 	}
 	
 	public int updateAttach(SqlSession session, Attach attach) {
-		return session.update("com.hy.mapper.notice.QnaMapper.updateAttach", attach);
+		return session.update("com.hy.mapper.qna.QnaMapper.updateAttach", attach);
 	}
 	
 	public int deleteAttach(SqlSession session, Qna qna) {
