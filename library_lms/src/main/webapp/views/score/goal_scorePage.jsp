@@ -333,7 +333,6 @@
 <h2 id="exam-title"></h2>
 <div id="selected-subjects"></div>
 
-
 <table id="score-table">
   <thead>
     <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
