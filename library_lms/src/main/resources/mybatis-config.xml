@@ -25,6 +25,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	  <mapper resource="/mappers/mypage/mypage-mapper.xml"/>
 	  <mapper resource="/mappers/seat/seat-mapper.xml"/>
 	 	<mapper resource="/mappers/qna/qna-admin-mapper.xml"/>
+	 	<mapper resource="mappers/seat/FixedSeatMapper.xml"/>
+	 	<mapper class="com.hy.mapper.seat.SeatLogMapper"/>
 	    <mapper resource="/mappers/score/goalScore-mapper.xml"/>
 	    <mapper resource="/mappers/score/actualScore-mapper.xml"/>
 	    <mapper resource="/mappers/score/subject-mapper.xml"/>

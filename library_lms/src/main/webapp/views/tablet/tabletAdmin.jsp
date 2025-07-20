@@ -46,12 +46,12 @@ tr:last-child td {
 			    <tbody>
 					<tr>
 			        <c:forEach var="t" items="${tabletList }">
-						<td>${t.tabletId}</td>
+						<td style="width: 20%">${t.tabletId}</td>
 						<c:if test="${t.tabletAvailable eq '1' }">
 							<c:forEach var="tm" items="${tabletListm }">
 								<c:if test="${t.memberNo eq tm.memberNo }">
-									<td>${tm.memberName}</td>
-									<td><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
+									<td style="width: 40%">${tm.memberName}</td>
+									<td style="width: 40%"><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
 									</tr>
 								</c:if>
 							</c:forEach>

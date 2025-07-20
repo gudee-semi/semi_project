@@ -58,4 +58,17 @@ public class QnaAdminDao {
         session.close();
         return result;
     }
+    
+    public int updatePenalty(int memberNo) {
+   	 SqlSession session = SqlSessionTemplate.getSqlSession(true);
+   	 int result = session.update("com.hy.mapper.tablet.TabletMapper.updatePenalty", memberNo);
+   	 session.close();
+   	 return result;
+    }
+    
+    public void incrementViewCount(int qnaNo) {
+        SqlSession session = MyBatisUtil.getSqlSession(true);
+        session.update("com.hy.mapper.qna.QnaAdminMapper.incrementViewCount", qnaNo);
+        session.close();
+    }
 }

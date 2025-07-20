@@ -34,4 +34,9 @@
 		WHERE member_no = #{memberNo} AND status = 0
 		ORDER BY now_time
 	</select>
+	
+	<insert id="insertUse" parameterType="_int">
+		INSERT INTO use_status (member_no)
+		VALUES (#{param}) 
+	</insert>
 </mapper>

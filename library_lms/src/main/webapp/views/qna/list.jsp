@@ -12,61 +12,39 @@
     	width: 80vw;
     	padding: 10px;
     }
-    .searchBox {
-    	
-    }
-    .listhead {
-    	background-color: lightblue;
-    }
-    .row {
-    	background-color: ;
-     	width: 900px;
-    	padding: 10px;
-    }
-    .no {
-    	text-align: center;
-    	width: 40px;
-    	display: inline-block;
-    }
-    .category {
-    	text-align: center;
-    	width: 110px;
-    	display: inline-block;
-    }
-    .title {
-    	text-align: center;
-    	width: 400px;
-    	display: inline-block;
-    }
-    .writer {
-    	text-align: center;
-    	width: 120px;
-    	display: inline-block;
-    }
-    .count {
-    	text-align: center;
-    	width: 70px;
-    	display: inline-block;
-    }
-    .regDate {
-    	text-align: center;
-    	width: 130px;
-    	display: inline-block;
-    }
-    .pageButton a {
-    	text-decoration: none;
-    }
+    table {
+	border-collapse: collapse;
+	}
+	th, td {
+		border: none;
+		border-bottom: 1px solid #CCCCCC;
+		padding: 8px 12px;
+		text-align: center;
+	}
+	th {
+		border-bottom: 2px solid #666666;
+		background: #FAFAFA;
+	}
+	tr:last-child td {
+		border-bottom: none;
+	}
+	.center {
+	width: 50vw;
+	margin: 0 auto;
+	text-align: center;
+	}
 </style>
 
 </head>
 <body>
+	<%@ include file="/views/include/header.jsp" %>
 	<div class="container">
 
 		<h1>질의응답 목록</h1>
 		
 		<a href="/tablet/admin">태블릿 관리자 페이지</a>
 		
-		<div class="searchBox">
+		<div>
 			<form method="get" action="<c:url value='/qna/view'/>">
 	
 				<select name="keywordIn" id="keywordIn">
@@ -86,55 +64,67 @@
 			$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
 		</script> -->
 		
-		<div class="row listhead">
-			<div class="no">No</div>
-			<div class="category">분류</div>
-			<div class="title">제목</div>
-			<div class="writer">작성자</div>
-			<div class="regDate">작성일</div>
-			<div class="count">조회수</div>
-		</div>
-		
-		<c:forEach var="q" items="${qnaList }">
-			<c:if test ="${q.memberId eq loginMember.memberId}">
-				<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-					<div class="no">${q.qnaId }</div>
-					<div class="category">${q.category }</div>
-					<c:if test="${q.visibility == 1 }">
-						<div class="title">${q.title}</div>
-					</c:if>
-					<c:if test="${q.visibility == 0 }">
-						<div class="title">🔒 ${q.title }</div>
-					</c:if>
-					<div class="writer">${q.memberName }</div>
-					<div class="regDate">${q.regDate }</div>
-					<div class="count">${q.viewCount }</div>
-				</div>
-			</c:if>
+		<table class="center" style="border-collapse: collapse; width: 100%">
+			<thead>
+				<tr>
+					<th style="width: 5%">No</th>
+					<th style="width: 20%">분류</th>
+					<th style="width: 40%">제목</th>
+					<th style="width: 10%">작성자</th>
+					<th style="width: 15%">작성일</th>
+					<th style="width: 10%">조회수</th>			
+				</tr>
+			</thead>
 			
-			<c:if test ="${q.memberId ne loginMember.memberId}">
-				<c:if test = "${q.visibility == 1}">
-					<div  class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-						<div class="no">${q.qnaId }</div>
-						<div class="category">${q.category }</div>
-						<div class="title">${q.title }</div>
-						<div class="writer">${q.memberName }</div>
-						<div class="regDate">${q.regDate }</div>
-						<div class="count">${q.viewCount }</div>
-					</div>
-				</c:if>
-				<c:if test = "${q.visibility == 0}">
-					<div  class="row">
-						<div class="no">${q.qnaId }</div>
-						<div class="category">${q.category }</div>
-						<div class="title">🔒비공개된 글입니다.</div>
-						<div class="writer">${q.memberName }</div>
-						<div class="regDate">${q.regDate }</div>
-						<div class="count">${q.viewCount }</div>
-					</div>
-				</c:if>
-			</c:if>
-		</c:forEach>
+			<tbody>
+				<c:forEach var="q" items="${qnaList }">
+					<c:if test ="${q.memberId eq loginMember.memberId}">
+						<tr onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+							<td>${q.qnaId }</td>
+							<td>${q.category }</td>
+							
+							<c:if test="${q.visibility == 1 }">
+								<td style="text-align: left">${q.title}</td>
+							</c:if>
+							
+							<c:if test="${q.visibility == 0 }">
+								<td style="text-align: left">🔒 ${q.title }</td>
+							</c:if>
+							
+							<td>${q.memberName }</td>
+							<td>${q.regDate }</td>
+							<td>${q.viewCount }</td>
+						</tr>
+					</c:if>
+					
+					<c:if test ="${q.memberId ne loginMember.memberId}">
+					
+						<c:if test = "${q.visibility == 1}">
+							<tr onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+								<td>${q.qnaId }</td>
+								<td>${q.category }</td>
+								<td style="text-align: left">${q.title }</td>
+								<td>${q.memberName }</td>
+								<td>${q.regDate }</td>
+								<td>${q.viewCount }</td>
+							</tr>
+						</c:if>
+						
+						<c:if test = "${q.visibility == 0}">
+							<tr>
+								<td>${q.qnaId }</td>
+								<td>${q.category }</td>
+								<td style="text-align: left">🔒비공개된 글입니다.</td>
+								<td>${q.memberName }</td>
+								<td>${q.regDate }</td>
+								<td>${q.viewCount }</td>
+							</tr>
+						</c:if>
+					</c:if>
+				</c:forEach>
+				
+			</tbody>
+		</table>
 			
 		<c:if test="${not empty qnaList }">
 			<div class="pageButton">
@@ -159,5 +149,6 @@
 			<button>작성</button>
 		</form>
 	</div>
+	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

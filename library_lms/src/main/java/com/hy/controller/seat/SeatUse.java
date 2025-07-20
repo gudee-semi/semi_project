@@ -9,10 +9,12 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 import org.json.simple.JSONObject;
 
 import com.hy.dto.Member;
+import com.hy.dto.seat.SeatLog;
 import com.hy.service.seat.SeatService;
 
 /**
@@ -74,6 +76,16 @@ public class SeatUse extends HttpServlet {
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print(obj);
+		
+		// 좌석 사용 처리 로직 끝에 추가
+		SeatLog log = new SeatLog();
+		log.setMemberNo(memberNo);  // 세션에서 받아온 로그인 유저
+		log.setSeatNo(Integer.parseInt(request.getParameter("seatNo")));
+		log.setNowTime(LocalDateTime.now()); // java.time 사용
+		log.setState(1);  // 입실
+
+		service.insertSeatLog(log);  // MyBatis 매퍼로 INSERT
+
 	}
 
 }
