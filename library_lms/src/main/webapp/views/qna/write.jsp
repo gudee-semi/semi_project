@@ -18,13 +18,13 @@
 		margin-left: 20px;
     }
 	select {
-  height: 36px;
-  padding: 5px 10px;
-  font-size: 14px;
-  line-height: 1.4;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
+		height: 36px;
+		padding: 5px 10px;
+		font-size: 14px;
+		line-height: 1.4;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		background-color: white;
 	}
 	.category {
 		width: 75px;
@@ -38,6 +38,23 @@
     }
     .input.flexible {
     	width: 100%;
+	}
+	input[type="text"],
+	select,
+	textarea {
+		border: 1px solid #ccc; /* 연한 회색 */
+		border-radius: 4px;
+		padding: 8px;
+		font-size: 14px;
+		box-sizing: border-box;
+		outline: none; /* 포커스시 기본 파란 외곽선 제거 */
+		transition: border-color 0.3s;
+	}
+	input[type="text"]:focus,
+	select:focus,
+	textarea:focus {
+		border: 2px solid #205DAC;  /* 진한 파란색 */
+		box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
 	}
 	.detail-table {
 		width: 100%;
@@ -72,35 +89,6 @@
     	transition: .2s;
     	font-size: 16px;
 	}
-	/* 공통 버튼 스타일 */
-	.btn-common {
-		padding: 8px 16px;
-		background-color: #205dac;
-		border: none;
-		color: #fff;
-		font-size: 16px;
-		border-radius: 6px;
-		cursor: pointer;
-		display: inline-block;
-	}
-	input[type="text"],
-	select,
-	textarea {
-		border: 1px solid #ccc; /* 연한 회색 */
-		border-radius: 4px;
-		padding: 8px;
-		font-size: 14px;
-		box-sizing: border-box;
-		outline: none; /* 포커스시 기본 파란 외곽선 제거 */
-		transition: border-color 0.3s;
-	}
-	input[type="text"]:focus,
-	select:focus,
-	textarea:focus {
-		border: 2px solid #205DAC;  /* 진한 파란색 */
-		box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
-	}
-	
 </style>
 </head>
 <body>
