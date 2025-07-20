@@ -29,7 +29,11 @@ public class SignUpService {
 		User user = dao.checkUserRrn(userRrn);
 		return user;
 	}
-
+	//전화번호 중복 검사
+	public Member checkPhone(String memberPhone) {
+		Member member = dao.checkPhone(memberPhone);
+		return member;
+	}
 	public int insertMember(Member member, ProfileAttach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result= 0;
@@ -58,6 +62,8 @@ public class SignUpService {
 		return result;
 	
 	}
+
+
 
 	
 }

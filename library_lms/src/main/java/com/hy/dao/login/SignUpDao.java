@@ -40,4 +40,11 @@ public class SignUpDao {
 
 	}
 
+	public Member checkPhone(String memberPhone) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Member member = session.selectOne("com.hy.mapper.login.SignUpMapper.checkPhone",memberPhone);
+		session.close();
+		return member;
+	}
+
 }

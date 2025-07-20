@@ -2,6 +2,7 @@ package com.hy.controller.qna;
 
 import java.io.IOException;
 
+import com.hy.dto.Member;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.service.mypage.MyPageService;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qna/detail")
 public class QnaDetailServlet extends HttpServlet {
@@ -38,7 +40,14 @@ public class QnaDetailServlet extends HttpServlet {
 		qnaService.updateViewCount(qnaId);
 		
 		// qnaReply replyCheck 값 1로 올리기(문의한사람이 확인했다는 표시)
+		HttpSession session =request.getSession();
+		Member member =(Member)session.getAttribute("loginMember");
+		int memberNo=member.getMemberNo();
+		if(memberNo==qna.getMemberNo()) {
 		int result =mypageservice.updateReplyCheck(qnaId);
+		}
+		
+		
 		
 		
 		request.setAttribute("qna", qna);

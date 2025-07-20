@@ -7,6 +7,7 @@ import com.hy.dto.login.User;
 public interface SignUpMapper {
 	Member checkId(String memberId);
 	Member checkRrn(String memberRrn);
+	Member checkPhone(String memberPhone);
 	User searchUser(User param);
 	int insertMember(Member param);
 	int insertMemberAvatar(ProfileAttach param);

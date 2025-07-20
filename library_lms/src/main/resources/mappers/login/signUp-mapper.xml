@@ -71,6 +71,14 @@
 		member_rrn=#{memberRrn}
 	</where>	
 </select>
+<select id ="checkPhone" resultMap="memberAccount" parameterType="string">
+	SELECT * 
+	FROM member
+	<where>
+		member_phone=#{memberPhone}
+	</where>	
+</select>
+
 <select id ="checkUserRrn" resultMap="userInfo" parameterType="string">
 	SELECT * 
 	FROM user
