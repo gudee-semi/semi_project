@@ -1,9 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, com.hy.dto.seat.FixedSeatMemberView" %>
 
 <html>
 <head>
-	<%@ include file="/views/include/header.jsp" %>
     <title>고정좌석 이용 회원</title>
     <style>
         body {
@@ -62,6 +62,7 @@
 </head>
 
 <body>
+<%@ include file="/views/include/header.jsp" %>
 <h2>고정좌석 이용 회원</h2>
 
 <!-- ✅ 확인창 띄우는 form -->

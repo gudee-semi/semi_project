@@ -45,4 +45,11 @@ public class SeatDao {
 	    session.close();
 	    return seat;
 	}
+
+	public int insertFix(int memberNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.hy.mapper.use.FixedSeatMapper.insertFix", memberNo);
+		session.close();
+		return result;
+	}
 }

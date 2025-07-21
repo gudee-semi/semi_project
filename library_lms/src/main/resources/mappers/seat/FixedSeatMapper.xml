@@ -42,4 +42,11 @@
           AND member_no != #{memberNo}
     </select>
 	
+	<insert id="insertFix" parameterType="int">
+		INSERT INTO fixed_seat(member_no)
+		VALUES (#{memberNo})
+	
+	</insert>
+	
+	
 </mapper>
