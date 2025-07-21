@@ -1,10 +1,13 @@
 package com.hy.controller.qna;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
+import com.hy.dto.qna.QnaReply;
 import com.hy.service.mypage.MyPageService;
+import com.hy.service.qna.QnaAdminService;
 import com.hy.service.qna.QnaService;
 
 import jakarta.servlet.ServletException;
@@ -17,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class QnaDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private QnaService qnaService = new QnaService();
+	private QnaAdminService qnaAdminService = new QnaAdminService();
 	private MyPageService mypageservice =new MyPageService();
        
     public QnaDetailServlet() {
@@ -24,15 +28,16 @@ public class QnaDetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		
 		// 1. no라는 이름의 게시글 pk값 전달받기
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
 		// 2. Qna와 Attach 조회
 		Qna qna = qnaService.selectQnaOne(qnaId);
 		Attach attach = qnaService.selectAttachByQnaNo(qnaId);
+		QnaReply reply = new QnaReply();
+		
+		List<QnaReply> replyList = qnaAdminService.selectReplyList(qnaId);
+		System.out.println(replyList);
 		
 		// 조회수 올리기
 		qnaService.updateViewCount(qnaId);
@@ -40,9 +45,9 @@ public class QnaDetailServlet extends HttpServlet {
 		// qnaReply replyCheck 값 1로 올리기(문의한사람이 확인했다는 표시)
 		int result =mypageservice.updateReplyCheck(qnaId);
 		
-		
 		request.setAttribute("qna", qna);
 		request.setAttribute("attach", attach);
+		request.setAttribute("replyList", replyList);
 		request.getRequestDispatcher("/views/qna/detail.jsp").forward(request, response);
 	}
 

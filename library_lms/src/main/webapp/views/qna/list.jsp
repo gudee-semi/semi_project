@@ -12,19 +12,18 @@
 
 <style>
 	.container {
-    	width: 70%;
-    	margin : 0 auto;
-    }
-    h1 {
+		width: 70%;
+		margin : 0 auto;
+	}
+	h1 {
 		margin-left: 20px;
     }
-    .search-row {
-    	padding-left: 15px;
+	.search-row {
+		padding-left: 15px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
-
 	.total-count {
 		font-size: 16px;
 		margin-left: 5px;
@@ -33,7 +32,7 @@
 		display: flex;
 		gap: 5px; /* 검색창 요소들 사이 간격 */
 	}
-    .searchBox {
+	.searchBox {
 		text-align: right;
 		margin-bottom: 10px;
 	}
@@ -42,7 +41,7 @@
 		align-items: center;
 		gap: 0; /* 완전히 붙이기 */
 	}
-    table {
+	table {
     	width: 100%;
 		table-layout: fixed; /* 셀 너비 고정 */
 		border-collapse: collapse;
@@ -66,9 +65,9 @@
 		text-overflow: ellipsis; /* ... 처리 */
 	}
 	.center {
-	width: 50vw;
-	margin: 0 auto;
-	text-align: center;
+		width: 50vw;
+		margin: 0 auto;
+		text-align: center;
 	}
 	td.title {
 		text-align: left;
@@ -130,29 +129,29 @@
 		display: inline-block;
     	vertical-align: top;
 	}
-    .disabled {
-    	pointer-events: none;
-    	opacity: 0.2;
-    }
+	.disabled {
+		pointer-events: none;
+		opacity: 0.2;
+	}
     
-    .paging-pages a.current-page {
-    	color: #205DAC;
-    	text-decoration: underline;
-    }
-    footer{
+	.paging-pages a.current-page {
+		color: #205DAC;
+		text-decoration: underline;
+	}
+	footer{
 		margin-top: 100px !important;
 	}
 	.btn, input[type="submit"] {
-    	border: none;
-    	background-color: #205DAC;
-   	    color: #fff;
-    	border-radius: 6px;
-    	cursor: pointer;
-    	height: 40px;
-    	width: 90px;
-    	margin-right: 10px;
-    	transition: .2s;
-    	font-size: 16px;
+		border: none;
+		background-color: #205DAC;
+		color: #fff;
+		border-radius: 6px;
+		cursor: pointer;
+		height: 40px;
+		width: 90px;
+		margin-right: 10px;
+		transition: .2s;
+		font-size: 16px;
 	}
 </style>
 
@@ -164,7 +163,8 @@
 		<h1>질의응답</h1>
 		<div class="search-row">
 			<span class="total-count">총 ${totaldata} 건</span>
-			<!-- <a href="/tablet/admin">태블릿 관리자 페이지</a> -->
+			
+			<a href="/tablet/admin">태블릿 관리자 페이지</a>
 			<div class="searchBox">
 				<form method="get" action="<c:url value='/qna/view'/>">
 		
@@ -250,23 +250,24 @@
 			
 		<c:if test="${not empty qnaList }">
 			<div class="table-bottom">
-			<form action="/qna/write" method="get">
-				<button class="btn">작성</button>
-			</form>
-			
-			<div class="paging-pages">
-				<c:choose>
-					<c:when test="${ paging.prev }">
-						<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
-							<span class="material-symbols-outlined">chevron_left</span>
-						</a>
-					</c:when>
-					<c:otherwise>
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
+				<form action="/qna/write" method="get">
+					<button class="btn">작성</button>
+				</form>
+				
+				<div class="paging-pages">
+					<c:choose>
+						<c:when test="${ paging.prev }">
+							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
 								<span class="material-symbols-outlined">chevron_left</span>
 							</a>
-					</c:otherwise>
-				</c:choose>	
+						</c:when>
+						<c:otherwise>
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
+									<span class="material-symbols-outlined">chevron_left</span>
+								</a>
+						</c:otherwise>
+					</c:choose>	
+					
 					<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
 						<c:choose>
 							<c:when test="${ i eq paging.nowPage }">
@@ -281,19 +282,20 @@
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
+					
 					<c:choose>
 						<c:when test="${ paging.next }">
 							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
-								&raquo;
+								<span class="material-symbols-outlined">chevron_right</span>
 							</a>
 						</c:when>
 						<c:otherwise>
 							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
-								&raquo;
+								<span class="material-symbols-outlined">chevron_right</span>
 							</a>
 						</c:otherwise>
 					</c:choose>
-			</div>
+				</div>
 			</div>
 		</c:if>
 	</div>

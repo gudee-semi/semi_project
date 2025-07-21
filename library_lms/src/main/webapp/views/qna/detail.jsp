@@ -6,14 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>질의응답 상세 페이지</title>
+
 <style>
-/* 항상 가장 먼저 */
-html, body {
-	margin: 0;
-	padding: 0;
-	font-family: 'Arial', sans-serif; /* 선택사항 */
-	box-sizing: border-box;
-}
+	/* 항상 가장 먼저 */
+	html, body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Arial', sans-serif; /* 선택사항 */
+		box-sizing: border-box;
+	}
 	.container {
 		width : 70%;
 		margin : 0 auto;	
@@ -62,10 +63,10 @@ html, body {
 		color: rgba(255, 255, 255, 1);
 	}
 	td img {
-	  max-width: 100%;
-	  height: auto;
-	  display: block;
-	  margin-top: 10px;
+		max-width: 100%;
+		height: auto;
+		display: block;
+		margin-top: 10px;
 	}
 	.btn-wrapper {
 		display: flex;
@@ -108,10 +109,12 @@ html, body {
 		align-items: center;
 		gap: 0;
 	}
-	</style>
+</style>
+
 </head>
 <body>
 	<%@include file="/views/include/header.jsp"%>
+	
 	<div class="container">
 		<h1>질의응답</h1>
 		<table class="detail-table">
@@ -122,60 +125,80 @@ html, body {
 				<td style="width: 35%">${qna.regDate }</td>
 			</tr>
 			<tr>
-					<th>카테고리</th>
-					<td>${qna.category }</td>
-					<th>작성자</th>
-					<td>${qna.memberName }</td>
-				</tr>
+				<th>카테고리</th>
+				<td>${qna.category }</td>
+				<th>작성자</th>
+				<td>${qna.memberName }</td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td>${qna.title }</td>
+				<th>공개여부</th>
+				<td>${qna.visibility == 0 ? '비공개' : '공개' }</td>
+			</tr>
+			<tr>
+				<th class="content">내용</th>
+				<td class="content-cell" colspan="3">${qna.content }</td>
+			</tr>
+			
+			<c:if test="${not empty attach }">
 				<tr>
-					<th>제목</th>
-					<td>${qna.title }</td>
-					<th>공개여부</th>
-					<td>${qna.visibility == 0 ? '비공개' : '공개' }</td>
+					<th>첨부파일</th>
+					<td colspan="3">
+				    	<a href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
+						<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
+					</td>
 				</tr>
-				<tr>
-					<th class="content">내용</th>
-					<td class="content-cell" colspan="3">${qna.content }</td>
-				</tr>
-				<c:if test="${not empty attach }">
+			</c:if>
+		</table>
+		
+		<c:if test="${not empty replyList }">
+			<c:forEach var="r" items="${replyList }">
+				<table class="detail-table">
 					<tr>
-						<th>첨부파일</th>
-						<td colspan="3">
-					    	<a href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName} </a><br>
-							<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
-						</td>
+						<th style="width: 15%">작성자</th>
+						<td style="width: 35%">관리자</td>
+						<th style="width: 15%">작성일</th>
+						<td style="width: 35%">${r.modDate }</td>
 					</tr>
-				</c:if>
-			</table>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">${r.content }</td>
+					</tr>
+				</table>
+			</c:forEach>
+		</c:if>
+			
 			<div class="right-btn">
-			<form action="<c:url value='/qna/view'/>" method="get">
-				<button class="btn-common">목록</button>
-			</form>
+				<form action="<c:url value='/qna/view'/>" method="get">
+					<button class="btn-common">목록</button>
+				</form>
 			</div>
 			
 			<div class="center-btns">
-			<c:if test ="${qna.memberId eq loginMember.memberId}">
-				<c:if test ="${qna.answerStatus eq '0'}">
-					<form action="<c:url value='/qna/update'/>" method="get">
-						<input type="hidden" name="no" value="${qna.qnaId}"/>
-						<button class="btn-common">수정</button>
-					</form>
+				<c:if test ="${qna.memberId eq loginMember.memberId}">
+					<c:if test ="${qna.answerStatus eq '0'}">
+						<form action="<c:url value='/qna/update'/>" method="get">
+							<input type="hidden" name="no" value="${qna.qnaId}"/>
+							<button class="btn-common">수정</button>
+						</form>
+					</c:if>
+						<form action="<c:url value='/qna/delete'/>" method="get" onsubmit="return confirmDelete();">
+							<input type="hidden" name="no" value="${qna.qnaId}"/>
+							<button class="btn-common">삭제</button>
+						</form>		
 				</c:if>
-					<form action="<c:url value='/qna/delete'/>" method="get" onsubmit="return confirmDelete();">
-						<input type="hidden" name="no" value="${qna.qnaId}"/>
-						<button class="btn-common">삭제</button>
-					</form>		
-			</c:if>
 			</div>
 		</div>
 		
 	<script>
-	// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
-	function confirmDelete() {
-		// confirm 창을 띄우고 결과를 반환
-		return confirm("삭제하시겠습니까?");
-	}
+		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
+		function confirmDelete() {
+			// confirm 창을 띄우고 결과를 반환
+			return confirm("삭제하시겠습니까?");
+		}
 	</script>
+	
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
