@@ -74,7 +74,7 @@ public class LoginPage extends HttpServlet {
 			int memberNo = member.getMemberNo();
 			Use param = useService.getUseStatusByNo(memberNo);
 			session.setAttribute("useStatus", param);
-			session.setMaxInactiveInterval(60*2);
+			session.setMaxInactiveInterval(60*30);
 
 		}
 		

@@ -42,6 +42,7 @@ public class MemberRepeatCheck extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String memberId = request.getParameter("memberId");
 		String memberRrn = request.getParameter("member_rrn");
+		String memberPhone =request.getParameter("member_phone");
 		
 		JSONObject obj = new JSONObject();
 		
@@ -65,6 +66,15 @@ public class MemberRepeatCheck extends HttpServlet {
 				 obj.put("rrnCheck", "ok");
 			 }else {
 				 obj.put("rrnCheck","no");
+			 }
+		}
+		//전화 번호 중복 체그
+		if(memberPhone != null && !memberPhone.isEmpty()) {
+			Member  member = service.checkPhone(memberPhone);
+			 if(member == null) {
+				 obj.put("phoneCheck", "ok");
+			 }else {
+				 obj.put("phoneCheck","no");
 			 }
 		}
 		 
