@@ -17,7 +17,7 @@ public class EncryptorWrapper extends HttpServletRequestWrapper{
 	public String getParameter(String name) {
 		String result = super.getParameter(name);
 		
-		if(result!=null) {
+		if(result!=null && !result.equals("")) {
 		//비밀번호 암호화
 		if(name.equals("member_pw".toLowerCase())){
 			return getSHA512(result);
