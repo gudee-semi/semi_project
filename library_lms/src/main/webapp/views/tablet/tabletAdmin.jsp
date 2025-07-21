@@ -80,7 +80,6 @@
 	}
 	
 	h1 {
-		text-align: center;
 		margin-top: 50px;
 		width: 100%;
 	}

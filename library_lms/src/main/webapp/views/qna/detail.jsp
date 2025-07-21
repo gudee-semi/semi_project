@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -180,17 +181,18 @@
 				</c:if>
 			</table>
 			
+			<hr style="border: none; border-top: 1.5px dashed #ddd;">
 			<c:if test="${not empty replyList }">
 				<c:forEach var="r" items="${replyList }">
-					<table class="detail-table">
+					<table class="detail-table" style="margin-top: 20px">
 						<tr>
+							<th style="width: 15%">작성일</th>
+							<td style="width: 35%">${fn:replace(r.modDate, 'T', ' ')}</td>
 							<th style="width: 15%">작성자</th>
 							<td style="width: 35%">관리자</td>
-							<th style="width: 15%">작성일</th>
-							<td style="width: 35%">${r.modDate }</td>
 						</tr>
 						<tr>
-							<th>내용</th>
+							<th style="height: 120px">답변내용</th>
 							<td colspan="3">${r.content }</td>
 						</tr>
 					</table>
