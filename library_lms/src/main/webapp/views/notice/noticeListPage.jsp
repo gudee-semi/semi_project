@@ -139,7 +139,7 @@
 	footer{
 		margin-top: 100px !important;
 	}
-	.btn, input[type="submit"] {
+	.btn {
 		border: none;
 		background-color: #205DAC;
 		color: #fff;

@@ -63,6 +63,9 @@
 		cursor: pointer;
 		color: rgba(255, 255, 255, 1);
 	}
+	.btn-common:hover {
+		background-color: #3E7AC8;
+	}
 	td img {
 		max-width: 100%;
 		height: auto;

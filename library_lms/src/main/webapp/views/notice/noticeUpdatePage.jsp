@@ -29,7 +29,7 @@
 		background-color: white;
 	}
 	.category {
-		width: 75px;
+		width: 100px;
 	}
 	text {
 		font-size: 15px;
