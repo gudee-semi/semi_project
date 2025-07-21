@@ -63,6 +63,14 @@
 		WHERE qna_id = #{qnaId}
 	</update>
 
+	<!-- answer_status 0으로 변경 -->
+	<update id="updateAnswerStatus" parameterType="int">
+		UPDATE qna
+		SET
+		answer_status = 1
+		WHERE qna_id = #{qnaId}
+	</update>
+
 	<!-- 답글 단건 조회 -->
 	<select id="selectReplyOne" parameterType="int"
 		resultMap="QnaAdminMap">
@@ -75,6 +83,13 @@
 		DELETE FROM qna_reply
 		WHERE qna_reply_id = #{value}
 	</delete>
+
+	<!-- 답글 삭제시 answer_status 1로 변경 -->
+	<update id="updateAnswerStatusZero" parameterType="int">
+		UPDATE qna
+		SET answer_status = 0
+		WHERE qna_id = #{qnaId}
+	</update>
 
 	<!-- 조회수 -->
 	<update id="incrementViewCount" parameterType="int">
