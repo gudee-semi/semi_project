@@ -32,11 +32,12 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
-  		column-gap: 40px;
+  		/* column-gap: 40px; */
 	}
 	
 	.container {
-		width: 70%;
+		/* width: 70%; */
+		margin: 0 200px;
 	}
 	
 	.calendar-icon {
@@ -70,12 +71,40 @@
 	  margin: 80px auto 50px auto;
 	}
 	
-	.section {
-	  width: 860px;
-	  margin: 0 auto 28px;
+	.section-row {
+	  display: flex;
+	  align-items: flex-start;
+	  margin-bottom: 45px;
+	  gap: 30px;
 	}
 	
-	.subject-row {
+	.section-label {
+	  width: 120px;
+	  font-weight: 600;
+	  font-size: 18px;
+	  padding-top: 5px;
+	  border-right: 1px solid #ccc;
+	  flex-shrink: 0;
+	}
+	
+	.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px 50px;   /* 세로 간격 12px, 가로 간격 32px */
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+.checkbox-group label {
+  display: inline-flex;
+  align-items: center;
+  width: 120px;      /* ✅ 열 너비 고정 */
+  white-space: nowrap;
+}
+
+
+	
+/* 	.subject-row {
 	  display: flex;
 	  align-items: flex-start;
 	  margin-bottom: 20px;
@@ -89,24 +118,15 @@
 	  font-weight: 600;
 	  margin-top: 4px;
 	  flex-shrink: 0;
-	}
-	
-
-	.checkbox-group {
-	    display: flex;
-	    flex-wrap: wrap;
-	    gap: 32px 40px;
-	    font-size: 18px;
-	    align-content: space-around;
-	    align-items: center;
-    }
+	} */
 	
 	input[type="checkbox"] {
+	  margin-right: 6px;
 	  width: 16px;
 	  height: 16px;
 	  vertical-align: middle;
-	  margin-right: 4px;
 	}
+
 	
 	.btn {
 	  display: block;
@@ -225,9 +245,9 @@
 </div>
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
-<div class="section">
+<div class="section-row">
+  <div class="section-label">시험 분류</div>
   <div class="checkbox-group" id="exam-options">
-  <h3>시험 분류</h3>
     <c:forEach var="month" items="${examOptions}">
       <c:choose>
         <c:when test="${month == autoExamMonth}">
@@ -250,9 +270,9 @@
 </div>
 
 <!-- 필수 과목 (항상 체크/비활성) -->
-<div class="section">
+<div class="section-row">
+	<div class="section-label">필수 과목</div>
   <div class="checkbox-group">
-	<h3>필수 과목</h3>
       <label><input type="checkbox" checked disabled> 국어</label>
       <label><input type="checkbox" checked disabled> 수학</label>
       <label><input type="checkbox" checked disabled> 영어</label>
@@ -262,9 +282,9 @@
 
 <!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
 <!-- 사회탐구 -->
-<div class="section">
+<div class="section-row">
+	<div class="section-label">사회탐구</div>
   <div class="checkbox-group" id="social-subjects-group">
-    <h3>사회탐구</h3>
       <c:forEach var="subject" items="${socialSubjects}">
         <label>
           <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
@@ -275,9 +295,9 @@
 </div>
 
 <!-- 과학탐구1 -->
-<div class="section">
+<div class="section-row">
+  <div class="section-label">과학탐구1</div>
   <div class="checkbox-group" id="science1-subjects-group">
-    <h3>과학탐구1</h3>
       <c:forEach var="subject" items="${science1Subjects}">
         <label>
           <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
@@ -288,9 +308,9 @@
 </div>
 
 <!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="science2-section">
+<div class="section-row" id="science2-section">
+  <div class="section-label">과학탐구2</div>
   <div class="checkbox-group">
-    <h3>과학탐구2</h3>
       <c:forEach var="subject" items="${science2Subjects}">
         <label>
           <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
@@ -301,9 +321,9 @@
 </div>
 
 <!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="lang2-section">
+<div class="section-row" id="lang2-section">
+  <div class="section-label">제2외국어</div>
   <div class="checkbox-group">
-    <h3>제2외국어</h3>
       <c:forEach var="subject" items="${lang2Subjects}">
         <label>
           <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
