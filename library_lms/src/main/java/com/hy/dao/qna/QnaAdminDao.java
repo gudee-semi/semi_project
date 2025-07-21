@@ -26,26 +26,27 @@ public class QnaAdminDao {
 	    return list;
 	}	
 
-	// 답글 추가 + answer_status 1 변경 트랜잭션
+	// 답글 추가 + answerStatus 1 업데이트 같이 하기
 	public void insertReplyAndUpdateStatus(QnaReply reply) {
-	   
-		// 1. SqlSession 생성 (autoCommit = false: 직접 커밋)
-	    SqlSession session = SqlSessionTemplate.getSqlSession(false);
-
+	    // 1. SqlSession 생성 (autoCommit = false: 직접 커밋)
+	    SqlSession session = SqlSessionTemplate.getSqlSession(false); // 트랜잭션 관리 직접
+	    try {
 	        // 2. 답글 등록
 	        session.insert("com.hy.mapper.qna.QnaAdminMapper.insertReply", reply);
 	        
 	        // 3. answerStatus = 1로 업데이트
-	        session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatus", reply.getQnaId());
+	        session.update("com.hy.mapper.qna.QnaMapper.updateAnswerStatus", reply.getQnaId());
 	        
-	        // 커밋
+	        // 4. 커밋
 	        session.commit();
-
-	        // 세션 닫기
+	    } catch (Exception e) {
+	        // 5. 예외시 롤백
+	        session.rollback();
+	        throw e;
+	    } finally {
+	        // 6. 세션 닫기
 	        session.close();
-	    
-
-	}
+	    }
 	
 	// 답글 수정
     public int updateReply(QnaReply reply) {
@@ -63,23 +64,25 @@ public class QnaAdminDao {
         return reply;
     }
     
- // 답글 삭제 + answer_status 0 변경 트랜잭션
+    // 답글 삭제 + answer_status 0 업데이트 같이 하기
     public void deleteReplyAndUpdateStatus(int qnaReplyId, int qnaId) {
-        
-		// 1. SqlSession 생성 (autoCommit = false: 직접 커밋)
-    	SqlSession session = SqlSessionTemplate.getSqlSession(false);
+        SqlSession session = SqlSessionTemplate.getSqlSession(false); // autoCommit=false
 
+        try {
             // 1. 답글 삭제
             session.delete("com.hy.mapper.qna.QnaAdminMapper.deleteReply", qnaReplyId);
 
             // 2. answer_status를 0으로 변경
-            session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusZero", qnaId);
+            session.update("com.hy.mapper.qna.QnaMapper.updateAnswerStatusZero", qnaId);
 
             // 3. 커밋
             session.commit();
-
-	        // 세션 닫기
+        } catch (Exception e) {
+            session.rollback();
+            throw e;
+        } finally {
             session.close();
+        }
     }
 
     
