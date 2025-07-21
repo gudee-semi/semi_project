@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
 <%
   // 로그인한 사용자 정보 세션에서 가져오기
@@ -25,6 +24,38 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <style>
+  	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+  		column-gap: 40px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	.calendar-icon {
+		font-size: 30px;
+	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
+  
 	body {
 	  font-family: 'Pretendard', sans-serif;
 	  margin: 40px;
@@ -181,55 +212,12 @@
 
 
 <%@ include file="/views/include/header.jsp" %>
-<script>
-  // [0] 서버-side 변수 JS로 전달
-  const studentGrade = <%= studentGrade %>;
-  const memberNo = <%= memberNo %>;
-  const currentYear = <%= currentYear%>;
 
-  // [A] 시험 분류 체크박스 활성/비활성
-  document.addEventListener('DOMContentLoaded', function() {
-    const examCheckboxes = document.querySelectorAll('.exam-type');
-    let availableCount = 0;
 
-    examCheckboxes.forEach(cb => {
-      const examMonth = parseInt(cb.value, 10);
-
-      // 3월, 6월, 9월은 누구나 가능
-      if (examMonth === 3 || examMonth === 6 || examMonth === 9) {
-        cb.disabled = false;
-        availableCount++;
-      }
-
-      // 11월은 3학년만 가능
-      else if (examMonth === 11) {
-        if (studentGrade === 3) {
-          cb.disabled = false;
-          availableCount++;
-        } else {
-          cb.disabled = true;
-          cb.checked = false;
-        }
-      }
-
-      // 기타 (예외적 값) 처리
-      else {
-        cb.disabled = true;
-        cb.checked = false;
-      }
-    });
-
-    // 선택 가능한 시험이 0개면 안내 메시지 추가
-    if (availableCount === 0) {
-      const guide = document.createElement('div');
-      guide.textContent = "선택 가능한 시험이 없습니다.";
-      guide.style = "color:#dc2626; margin:10px 0 0 10%; font-size:16px; font-weight:500;";
-      document.getElementById('exam-options').appendChild(guide);
-    }
-  });
-</script>
-
-<!-- D-Day 카드 표시 -->
+<div class="flex-container">
+<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+<div class="container">
+	<!-- D-Day 카드 표시 -->
 <jsp:include page="/views/include/d-day.jsp" />
 
 <div class="score-container">
@@ -361,6 +349,58 @@
 <div style="text-align:center;">
   <button id="final-submit" class="btn">입력완료</button>
 </div>
+</div>
+</div>
+
+<script>
+  // [0] 서버-side 변수 JS로 전달
+  const studentGrade = <%= studentGrade %>;
+  const memberNo = <%= memberNo %>;
+  const currentYear = <%= currentYear%>;
+
+  // [A] 시험 분류 체크박스 활성/비활성
+  document.addEventListener('DOMContentLoaded', function() {
+    const examCheckboxes = document.querySelectorAll('.exam-type');
+    let availableCount = 0;
+
+    examCheckboxes.forEach(cb => {
+      const examMonth = parseInt(cb.value, 10);
+
+      // 3월, 6월, 9월은 누구나 가능
+      if (examMonth === 3 || examMonth === 6 || examMonth === 9) {
+        cb.disabled = false;
+        availableCount++;
+      }
+
+      // 11월은 3학년만 가능
+      else if (examMonth === 11) {
+        if (studentGrade === 3) {
+          cb.disabled = false;
+          availableCount++;
+        } else {
+          cb.disabled = true;
+          cb.checked = false;
+        }
+      }
+
+      // 기타 (예외적 값) 처리
+      else {
+        cb.disabled = true;
+        cb.checked = false;
+      }
+    });
+
+    // 선택 가능한 시험이 0개면 안내 메시지 추가
+    if (availableCount === 0) {
+      const guide = document.createElement('div');
+      guide.textContent = "선택 가능한 시험이 없습니다.";
+      guide.style = "color:#dc2626; margin:10px 0 0 10%; font-size:16px; font-weight:500;";
+      document.getElementById('exam-options').appendChild(guide);
+    }
+  });
+</script>
+
+
 
 <!-- footer 삽입 -->
 <%@ include file="/views/include/footer.jsp" %>

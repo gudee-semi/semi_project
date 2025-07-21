@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
 
 <%
@@ -26,7 +25,42 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
+    .sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+  		column-gap: 40px;
+  		margin-bottom: 40px;
+	}
+	
+	.container {
+		width: 70%;
+		margin-bottom: 60px;
+	}
+	
+	.calendar-icon {
+		font-size: 30px;
+	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
+  
     body {
+    
 	  font-family: 'Pretendard', sans-serif;
 	  margin: 40px;
 	  background-color: #fff;
@@ -176,43 +210,49 @@
 
 <%@ include file="/views/include/header.jsp" %>
 
-<!-- 로그인 정보 숨겨서 JS에서 참조 -->
-<input type="hidden" id="memberNo" value="<%= memberNo %>">
-<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 
-<!-- D-Day 카드 표시 -->
-<jsp:include page="/views/include/d-day.jsp" />
-
-<h1>목표 성적 조회</h1>
-
-<!-- 시험 분류 체크박스 동적 생성 -->
-<div class="section">
-  <div class="checkbox-group" id="exam-options">
-    <h3>시험 분류</h3>
-      <c:forEach var="exam" items="${examTypeList}">
-        <label>
-          <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />${exam.examType}월
-        </label>
-    </c:forEach>
-  </div>
+<div class="flex-container">
+<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+<div class="container">
+	<!-- 로그인 정보 숨겨서 JS에서 참조 -->
+	<input type="hidden" id="memberNo" value="<%= memberNo %>">
+	<input type="hidden" id="studentGrade" value="<%= studentGrade %>">
+	
+	<!-- D-Day 카드 표시 -->
+	<jsp:include page="/views/include/d-day.jsp" />
+	
+	<h1>목표 성적 조회</h1>
+	
+	<!-- 시험 분류 체크박스 동적 생성 -->
+	<div class="section">
+	  <div class="checkbox-group" id="exam-options">
+	    <h3>시험 분류</h3>
+	      <c:forEach var="exam" items="${examTypeList}">
+	        <label>
+	          <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />${exam.examType}월
+	        </label>
+	    </c:forEach>
+	  </div>
+	</div>
+	
+	
+	<!-- 선택 과목/점수 입력 영역 -->
+	<h2 id="exam-title"></h2>
+	
+	<!-- 선택된 과목 목록 표시 영역 -->
+	<div id="selected-subjects"></div>
+	
+	<!-- 삭제하기 버튼 -->
+	<div style="text-align: center;">
+	  <button id="delete-submit" class="btn">삭제하기</button>
+	</div>
+	
+	<!-- 별도 JS 파일 불러오기 -->
+	<script src="../../js/goal_score_view.js"></script>
+	</div>
 </div>
 
-
-<!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title"></h2>
-
-<!-- 선택된 과목 목록 표시 영역 -->
-<div id="selected-subjects"></div>
-
-<!-- 삭제하기 버튼 -->
-<div style="text-align: center;">
-  <button id="delete-submit" class="btn">삭제하기</button>
-</div>
-
-<!-- 별도 JS 파일 불러오기 -->
-<script src="../../js/goal_score_view.js"></script>
-
-<!-- fotter 삽입 -->
+<!-- footer 삽입 -->
 <%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

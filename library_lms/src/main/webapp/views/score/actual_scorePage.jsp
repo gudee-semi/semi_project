@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
 <%
   // 로그인한 사용자 정보 세션에서 가져오기
@@ -13,7 +12,6 @@
   // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
   session.setAttribute("currentYear", currentYear);
-  
 %>
 
 <!DOCTYPE html>
@@ -25,6 +23,38 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
+    .sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+  		column-gap: 40px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	.calendar-icon {
+		font-size: 30px;
+	}
+	
+	/*  하...   */
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
+  
    body {
 	  font-family: 'Pretendard', sans-serif;
 	  margin: 40px;
@@ -174,7 +204,144 @@
 </head>
 
 <body>
+
 <%@ include file="/views/include/header.jsp" %>
+
+<div class="flex-container">
+  <div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+	<div class="container">
+		<!-- D-Day 카드 표시 -->
+		<jsp:include page="/views/include/d-day.jsp" />
+		
+		<div class="score-container">
+		  <h1>성적 입력</h1>
+		</div>
+		
+		<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
+		<div class="section">
+		  <div class="checkbox-group" id="exam-options">
+		  <h3>시험 분류</h3>
+		    <c:forEach var="month" items="${examOptions}">
+		      <c:choose>
+		        <c:when test="${month == autoExamMonth}">
+		          <label>
+		            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
+		            <c:out value="${month}"/>월
+		            <c:if test="${month == 11}">(수능)</c:if>
+		          </label>
+		        </c:when>
+		        <c:otherwise>
+		          <label>
+		            <input type="checkbox" class="exam-type" name="exam" value="${month}">
+		            <c:out value="${month}"/>월
+		            <c:if test="${month == 11}">(수능)</c:if>
+		          </label>
+		        </c:otherwise>
+		      </c:choose>
+		    </c:forEach>
+		  </div>
+		</div>
+		
+		<!-- 필수 과목 (항상 체크/비활성) -->
+		<div class="section">
+		  <div class="checkbox-group">
+		  <h3>필수 과목</h3>
+		    <label><input type="checkbox" checked disabled> 국어</label>
+		    <label><input type="checkbox" checked disabled> 수학</label>
+		    <label><input type="checkbox" checked disabled> 영어</label>
+		    <label><input type="checkbox" checked disabled> 한국사</label>
+		  </div>
+		</div>
+		
+		<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
+		<!-- 사회탐구 -->
+		<div class="section">
+		  <div class="checkbox-group" id="social-subjects-group">
+		  <h3>사회탐구</h3>
+		    <c:forEach var="subject" items="${socialSubjects}">
+		      <label>
+		        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+		        <c:out value="${subject}"/>
+		      </label>
+		    </c:forEach>
+		  </div>
+		</div>
+		
+		<!-- 과학탐구1 -->
+		<div class="section">
+		  <div class="checkbox-group" id="science1-subjects-group">
+		  <h3>과학탐구1</h3>
+		    <c:forEach var="subject" items="${science1Subjects}">
+		      <label>
+		        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+		        <c:out value="${subject}"/>
+		      </label>
+		    </c:forEach>
+		  </div>
+		</div>
+		
+		<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
+		<div class="section" id="science2-section">
+		  <div class="checkbox-group">
+		  <h3>과학탐구2</h3>
+		    <c:forEach var="subject" items="${science2Subjects}">
+		      <label>
+		        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+		        <c:out value="${subject}"/>
+		      </label>
+		    </c:forEach>
+		  </div>
+		</div>
+		
+		<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
+		<div class="section" id="lang2-section">
+		  <div class="checkbox-group">
+		  <h3>제2외국어</h3>
+		    <c:forEach var="subject" items="${lang2Subjects}">
+		      <label>
+		        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+		        <c:out value="${subject}"/>
+		      </label>
+		    </c:forEach>
+		  </div>
+		</div>
+		
+		<button id="confirm-subjects" class="btn">선택완료</button>
+		
+		<!-- 선택 과목/점수 입력 영역 -->
+		<h2 id="exam-title"></h2>
+		<div id="selected-subjects"></div>
+		
+		<table id="score-table">
+		  <thead>
+		    <tr>
+			    <th>과목</th>
+			    <th>원점수</th>
+			    <th>등급</th>
+			    <th>백분위</th>
+			    <th>학교 석차</th>
+		    </tr>
+		  </thead>
+		  <tbody id="score-body"></tbody>
+		</table>
+		
+		<!-- 모달 -->
+		<div id="modal">
+		  <div class="modal-content">
+		    <p id="modal-message"></p>
+		    <button id="modal-close-btn">확인</button>
+		  </div>
+		</div>
+		
+		<!-- JS 연동 -->
+		<script src="../../js/actual_score.js"></script>
+		
+		<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
+		<div style="text-align:center;">
+		  <button id="final-submit" class="btn">입력완료</button>
+		</div>
+	</div>
+</div>
 
 
 <script>
@@ -225,138 +392,6 @@
   });
 </script>
 
-<!-- D-Day 카드 표시 -->
-<jsp:include page="/views/include/d-day.jsp" />
-
-<div class="score-container">
-  <h1>성적 입력</h1>
-</div>
-
-<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
-<div class="section">
-  <div class="checkbox-group" id="exam-options">
-  <h3>시험 분류</h3>
-    <c:forEach var="month" items="${examOptions}">
-      <c:choose>
-        <c:when test="${month == autoExamMonth}">
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:when>
-        <c:otherwise>
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}">
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 필수 과목 (항상 체크/비활성) -->
-<div class="section">
-  <div class="checkbox-group">
-  <h3>필수 과목</h3>
-    <label><input type="checkbox" checked disabled> 국어</label>
-    <label><input type="checkbox" checked disabled> 수학</label>
-    <label><input type="checkbox" checked disabled> 영어</label>
-    <label><input type="checkbox" checked disabled> 한국사</label>
-  </div>
-</div>
-
-<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
-<!-- 사회탐구 -->
-<div class="section">
-  <div class="checkbox-group" id="social-subjects-group">
-  <h3>사회탐구</h3>
-    <c:forEach var="subject" items="${socialSubjects}">
-      <label>
-        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구1 -->
-<div class="section">
-  <div class="checkbox-group" id="science1-subjects-group">
-  <h3>과학탐구1</h3>
-    <c:forEach var="subject" items="${science1Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="science2-section">
-  <div class="checkbox-group">
-  <h3>과학탐구2</h3>
-    <c:forEach var="subject" items="${science2Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="lang2-section">
-  <div class="checkbox-group">
-  <h3>제2외국어</h3>
-    <c:forEach var="subject" items="${lang2Subjects}">
-      <label>
-        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<button id="confirm-subjects" class="btn">선택완료</button>
-
-<!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title"></h2>
-<div id="selected-subjects"></div>
-
-<table id="score-table">
-  <thead>
-    <tr>
-	    <th>과목</th>
-	    <th>원점수</th>
-	    <th>등급</th>
-	    <th>백분위</th>
-	    <th>학교 석차</th>
-    </tr>
-  </thead>
-  <tbody id="score-body"></tbody>
-</table>
-
-
-
-<!-- 모달 -->
-<div id="modal">
-  <div class="modal-content">
-    <p id="modal-message"></p>
-    <button id="modal-close-btn">확인</button>
-  </div>
-</div>
-
-<!-- JS 연동 -->
-<script src="../../js/actual_score.js"></script>
-
-<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
-<div style="text-align:center;">
-  <button id="final-submit" class="btn">입력완료</button>
-</div>
 
 <!-- footer 삽입 -->
 <%@ include file="/views/include/footer.jsp" %>

@@ -1,7 +1,14 @@
 $(document).ready(function () {
   const examCheckboxes = $('input[name="exam"]');
   let availableCount = 0;
+  let invalidInput = null; // [전역] 유효하지 않은 입력 기억용
 
+  // [전역] 제한 과목 배열 정의
+    const socialSubjects = ["경제", "사회문화", "법과정치", "윤리와 사상", "세계지리", "한국지리", "세계사", "동아시아사", "생활과 윤리"];
+    const science1Subjects = ["물리1", "화학1", "생명과학1", "지구과학1"];
+    const science2Subjects = ["물리학2", "화학2", "생명과학2", "지구과학2"];
+    const lang2Subjects = ["독일어", "프랑스어", "스페인어", "중국어", "일본어", "러시아어", "아랍어", "베트남어", "한문"];
+  
   // [A] 시험 체크박스 활성화 조건
   examCheckboxes.each(function () {
     const examMonth = parseInt($(this).val(), 10);
@@ -91,21 +98,36 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  let invalidInput = null; // [전역] 유효하지 않은 입력칸 기억
   
   // [G] 원점수 유효성 검사
   $(document).on('blur', '.score-input', function () {
-    const val = $(this).val().trim();
-    const v = parseInt(val);
-    if (val !== '' && (isNaN(v) || v < 0 || v > 100)) {
-      $(this).css('border', '2px solid #dc2626');
-      invalidInput = this; // [추가] 유효하지 않은 요소 기억
-      return showModal("원점수는 0~100 사이여야 합니다.");
-    } else {
-      $(this).css('border', ''); // [정상] 테두리 제거
-    }
-  });
+     const input = $(this);
+     const sub = input.data('subject');
+     const val = input.val().trim();
+     const v = parseInt(val);
 
+     const isRestricted =
+       sub === "한국사" ||
+       socialSubjects.includes(sub) ||
+       science1Subjects.includes(sub) ||
+       science2Subjects.includes(sub) ||
+       lang2Subjects.includes(sub);
+
+     const min = 0;
+     const max = isRestricted ? 50 : 100;
+
+     if (val !== '' && (isNaN(v) || v < min || v > max)) {
+       input.css('border', '2px solid #dc2626');
+       invalidInput = this;
+       const msg = isRestricted
+         ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
+         : "원점수는 0~100 사이여야 합니다.";
+       return showModal(msg);
+     } else {
+       input.css('border', '');
+     }
+   });
+   
   // [G] 등급 유효성 검사
   $(document).on('blur', '.grade-input', function () {
     const val = $(this).val().trim();
@@ -118,6 +140,7 @@ $(document).ready(function () {
       $(this).css('border', '');
     }
   });
+  
   
   // [H] 입력하지 않은 항목에 빨간 테두리 표시
   $('.score-input').each(function (i) {
@@ -186,10 +209,10 @@ $(document).ready(function () {
 	  const gradeVal = parseInt(gradeRaw);
 
 	  if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
-	    return showModal('원점수는 0~100 사이여야 합니다.');
+	    return showModal('원점수는 0 이상 100 이하의 숫자로 입력하세요.');
 	  }
 	  if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
-	    return showModal('등급은 1~9 사이여야 합니다.');
+	    return showModal('등급은 1 이상 9 이하의 숫자로 입력하세요.');
 	  }
 
       data.push({

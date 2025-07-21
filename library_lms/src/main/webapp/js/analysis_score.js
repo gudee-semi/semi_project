@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	// [1] 삭제 결과에 따라 모달(알림) 노출 (URL 파라미터 검사)
+  // [1] 삭제 결과에 따라 모달(알림) 노출 (URL 파라미터 검사)
   const params = new URLSearchParams(window.location.search);
   const deleteResult = params.get("delete");
   const msg = params.get("msg") ? decodeURIComponent(params.get("msg")) : "";
