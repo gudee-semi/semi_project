@@ -21,6 +21,7 @@
 <head>
   <meta charset="UTF-8">
   <title>성적 입력</title>
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
@@ -38,11 +39,25 @@
 	  margin: 80px auto 50px auto;
 	}
 	
-    h2, h3 { text-align: left; font-size: 18px; font-weight: bold; margin: 24px 0 8px 10%; }
-    
     .section {
 	  width: 860px;
 	  margin: 0 auto 28px;
+	}
+	
+	.subject-row {
+	  display: flex;
+	  align-items: flex-start;
+	  margin-bottom: 20px;
+	  padding-bottom: 10px;
+	  border-bottom: 1px solid #ccc;
+	}
+	
+	.subject-row .subject-title {
+	  width: 120px;
+	  font-size: 16px;
+	  font-weight: 600;
+	  margin-top: 4px;
+	  flex-shrink: 0;
 	}
 	
     .checkbox-group {
@@ -54,8 +69,13 @@
 	    align-items: center;
     }
     
-    label { font-size: 16px; }
-    
+    input[type="checkbox"] {
+	  width: 16px;
+	  height: 16px;
+	  vertical-align: middle;
+	  margin-right: 4px;
+	}
+	
     .btn {
 	  display: block;
 	  margin: 60px auto;
@@ -73,17 +93,26 @@
 	  background-color: #3E7AC8;
 	}
 	
-    table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
-    th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
-    #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
-    #selected-subjects { text-align: center; margin-bottom: 20px; font-size: 16px;}
+    
+    #exam-title {
+	  margin-top: 80px;
+	  font-size: 28px;
+	  font-weight: 600;
+	  text-align: center;
+	}
+	
+	#selected-subjects {
+	  text-align: center;
+	  font-size: 18px;
+	  margin-bottom: 40px;
+	}
     
     #score-table {
 	  margin: 60px auto;
 	  border-collapse: separate;  
 	  border-spacing: 0;           
 	  font-size: 20px;
-	  width: 720px;
+	  width: 1030px;
 	  background-color: #fff;
 	  border: 1px solid #d1d5db; 
 	  border-radius: 10px;    
@@ -95,10 +124,11 @@
 	  border: 1px solid #d1d5db; 
 	  padding: 18px;
 	  text-align: center;
+	  height: 50px;
 	}
 	
 	.input-center {
-	  width: 100px;
+	  width: 150px;
 	  height: 34px;
 	  border: 1px solid #bbb;
 	  border-radius: 10px;
@@ -198,12 +228,14 @@
 <!-- D-Day 카드 표시 -->
 <jsp:include page="/views/include/d-day.jsp" />
 
-<h1>성적 입력</h1>
+<div class="score-container">
+  <h1>성적 입력</h1>
+</div>
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section">
-  <h2>시험 분류</h2>
   <div class="checkbox-group" id="exam-options">
+  <h3>시험 분류</h3>
     <c:forEach var="month" items="${examOptions}">
       <c:choose>
         <c:when test="${month == autoExamMonth}">
@@ -227,8 +259,8 @@
 
 <!-- 필수 과목 (항상 체크/비활성) -->
 <div class="section">
-  <h3>필수 과목</h3>
   <div class="checkbox-group">
+  <h3>필수 과목</h3>
     <label><input type="checkbox" checked disabled> 국어</label>
     <label><input type="checkbox" checked disabled> 수학</label>
     <label><input type="checkbox" checked disabled> 영어</label>
@@ -239,8 +271,8 @@
 <!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
 <!-- 사회탐구 -->
 <div class="section">
-  <h3>사회탐구</h3>
   <div class="checkbox-group" id="social-subjects-group">
+  <h3>사회탐구</h3>
     <c:forEach var="subject" items="${socialSubjects}">
       <label>
         <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
@@ -252,8 +284,8 @@
 
 <!-- 과학탐구1 -->
 <div class="section">
-  <h3>과학탐구1</h3>
   <div class="checkbox-group" id="science1-subjects-group">
+  <h3>과학탐구1</h3>
     <c:forEach var="subject" items="${science1Subjects}">
       <label>
         <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
@@ -265,8 +297,8 @@
 
 <!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="science2-section">
-  <h3>과학탐구2</h3>
   <div class="checkbox-group">
+  <h3>과학탐구2</h3>
     <c:forEach var="subject" items="${science2Subjects}">
       <label>
         <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
@@ -278,8 +310,8 @@
 
 <!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="lang2-section">
-  <h3>제2외국어</h3>
   <div class="checkbox-group">
+  <h3>제2외국어</h3>
     <c:forEach var="subject" items="${lang2Subjects}">
       <label>
         <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
@@ -292,12 +324,18 @@
 <button id="confirm-subjects" class="btn">선택완료</button>
 
 <!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title" style="display:block;"></h2>
+<h2 id="exam-title"></h2>
 <div id="selected-subjects"></div>
 
 <table id="score-table">
   <thead>
-    <tr><th>과목</th><th>원점수</th><th>등급</th><th>백분위</th><th>학교 석차</th></tr>
+    <tr>
+	    <th>과목</th>
+	    <th>원점수</th>
+	    <th>등급</th>
+	    <th>백분위</th>
+	    <th>학교 석차</th>
+    </tr>
   </thead>
   <tbody id="score-body"></tbody>
 </table>
@@ -307,7 +345,7 @@
 <!-- 모달 -->
 <div id="modal">
   <div class="modal-content">
-    <p id="modal-message">메시지</p>
+    <p id="modal-message"></p>
     <button id="modal-close-btn">확인</button>
   </div>
 </div>

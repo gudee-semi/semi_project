@@ -83,56 +83,129 @@ $(document).ready(function () {
     $('#exam-title').text(`${currentYear}년 ${examMonth}월 모의고사`).show();
     $('#selected-subjects').text(selected.join(' | '));
 
-    $('#score-body').html(selected.map(sub => `
-      <tr>
-        <td>${sub}</td>
-        <td><input type="text" class="score-input input-center" data-subject="${sub}" placeholder="입력"></td>
-        <td><input type="text" class="grade-input input-center" data-subject="${sub}" placeholder="입력"></td>
-		<td><input type="text" class="percent-input input-center" data-subject="${sub}" placeholder="입력"></td>
-		    <td>${
-		      ['국어', '수학'].includes(sub) ?
-		        `<input type="text" class="rank-input input-center" data-subject="${sub}" placeholder="본인등수/전교 인원수">` :
-		        '-'
-		    }</td>
-		  </tr>
-    `).join(''));
+    $('#score-body').html(selected.map(sub => {
+      // 과목별 백분율 입력 가능 여부 설정
+      const percentInput = ['영어', '한국사'].includes(sub) || $('.lang2-subject:checked').map((_, el) => el.value).get().includes(sub)
+        ? '-' // 영어, 한국사, 제2외국어는 백분율 입력 불가
+        : `<input type="text" class="percent-input input-center" data-subject="${sub}" placeholder="입력">`;
+
+      // 과목별 석차 입력 가능 여부 설정
+      const rankInput = ['국어', '수학'].includes(sub)
+        ? `<input type="text" class="rank-input input-center" data-subject="${sub}" placeholder="본인등수/전교 인원수">`
+        : '-';
+
+      return `
+        <tr>
+          <td>${sub}</td>
+          <td><input type="text" class="score-input input-center" data-subject="${sub}" placeholder="입력"></td>
+          <td><input type="text" class="grade-input input-center" data-subject="${sub}" placeholder="입력"></td>
+          <td>${percentInput}</td>
+          <td>${rankInput}</td>
+        </tr>
+      `;
+    }).join(''));
 
     $('#score-table').show();
     $('#final-submit').show();
   });
 
+
   // [G] 입력값 유효성 검사
+  
+  let invalidInput = null; // 유효하지 않은 입력 기억용
+  
   // 원점수 입력란
   $(document).on('blur', '.score-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
-      showModal("원점수는 0~100 사이여야 합니다.");
+    const input = $(this);
+    const v = parseInt(input.val());
+
+    if (input.val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
+      input.css('border', '2px solid red');
+      invalidInput = this; // 잘못된 값 기억
+      return showModal("원점수는 0~100 사이여야 합니다.");
+    } else {
+      input.css('border', ''); // 올바르면 제거
     }
   });
 
+
   // 등급 입력란
   $(document).on('blur', '.grade-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 1 || v > 9)) {
-      showModal("등급은 1~9 사이여야 합니다.");
+    const input = $(this);
+    const v = parseInt(input.val());
+
+    if (input.val() !== '' && (isNaN(v) || v < 1 || v > 9)) {
+      input.css('border', '2px solid red');
+      invalidInput = this;
+      return showModal("등급은 1 이상 9 이하의 숫자로 입력하세요.");
+    } else {
+      input.css('border', '');
     }
   });
+
   
   // 백분위 입력란
   $(document).on('blur', '.percent-input', function () {
-    const v = parseFloat($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
-      showModal("백분위는 0~100 사이여야 합니다.");
+    const input = $(this);
+    const v = parseFloat(input.val());
+
+    if (input.val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
+      input.css('border', '2px solid red');
+      invalidInput = this;
+      return showModal("백분위는 0 이상 100 이하의 숫자로 입력하세요.");
+    } else {
+      input.css('border', '');
     }
   });
+
   
   // 학교석차 입력란 유효성 검사
-   $(document).on('blur', '.rank-input', function () {
-     const v = $(this).val().trim();
-     if (v && !/^\d+\/\d+$/.test(v)) {
-       showModal("석차는 (본인등수/전체인원수) 형식으로 입력하세요.");
-     }
-   });
+  $(document).on('blur', '.rank-input', function () {
+    const input = $(this);
+    const v = input.val().trim();
+
+    // 초기화: 테두리 제거
+    input.css('border', '');
+
+    if (v === '') return; // 빈 값 허용
+
+    const rankPattern = /^(\d+)\/(\d+)$/;
+    const match = v.match(rankPattern);
+
+	if (!match) {
+	    input.css('border', '2px solid red');
+	    invalidInput = this; // ✅ 유효하지 않은 입력 저장
+	    showModal("석차는 (본인등수/전체인원수) 형식으로 입력하세요.");
+	    return;
+	  }
+    const myRank = parseInt(match[1], 10);
+    const total = parseInt(match[2], 10);
+
+	 if (myRank < 1) {
+	    input.css('border', '2px solid red');
+	    invalidInput = this;
+	    showModal("석차는 (본인등수/전체인원수) 형식으로 입력하세요.");
+	    return;
+	  }
+
+	  if (total < 1) {
+	    input.css('border', '2px solid red');
+	    invalidInput = this;
+	    showModal("전체 인원수는 1 이상이어야 합니다.");
+	    return;
+	  }
+
+	  if (myRank > total) {
+	    input.css('border', '2px solid red');
+	    invalidInput = this;
+	    showModal("본인 등수는 전체 인원수보다 작거나 같아야 합니다.");
+	    return;
+	  }
+
+	  // 유효하면 테두리 제거
+	  input.css('border', '');
+	});
+
 
   // [H] 설정완료 → DB 전송
  	$('#final-submit').click(function () {
@@ -162,9 +235,9 @@ $(document).ready(function () {
         return false;
       }
 
-      if (isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100) return showModal('원점수는 0~100 사이여야 합니다.');
-      if (isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9) return showModal('등급은 1~9 사이여야 합니다.');
-      if (percentRaw !== '' && (isNaN(percentRaw) || percentRaw < 0 || percentRaw > 100)) return showModal('백분위는 0~100 사이여야 합니다.');
+      if (isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100) return showModal('원점수는 0 이상 100 이하의 숫자로 입력하세요.');
+      if (isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9) return showModal('등급은 1 이상 9 이하의 숫자로 입력하세요.');
+      if (percentRaw !== '' && (isNaN(percentRaw) || percentRaw < 0 || percentRaw > 100)) return showModal('백분위는 0 이상 100 이하의 숫자로 입력하세요.');
 
 	  data.push({
 	     subjectName: sub,
@@ -262,5 +335,13 @@ $(document).ready(function () {
 	      $('#modal').show();
 	    }
 
-	    $('#modal-close-btn').click(() => $('#modal').hide());
+		$('#modal-close-btn').click(() => {
+		  $('#modal').hide();
+
+		  // 잘못된 입력이 있으면 값 비우고 테두리 유지
+		  if (invalidInput) {
+		    $(invalidInput).val('').css('border', '2px solid red');
+		    invalidInput = null;
+		  }
+		});
 	  });

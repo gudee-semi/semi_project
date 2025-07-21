@@ -91,22 +91,65 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  // [G] 입력값 유효성 검사 (테두리 없음)
+  let invalidInput = null; // [전역] 유효하지 않은 입력칸 기억
+  
+  // [G] 원점수 유효성 검사
   $(document).on('blur', '.score-input', function () {
     const val = $(this).val().trim();
     const v = parseInt(val);
     if (val !== '' && (isNaN(v) || v < 0 || v > 100)) {
-      showModal("원점수는 0~100 사이여야 합니다.");
+      $(this).css('border', '2px solid #dc2626');
+      invalidInput = this; // [추가] 유효하지 않은 요소 기억
+      return showModal("원점수는 0~100 사이여야 합니다.");
+    } else {
+      $(this).css('border', ''); // [정상] 테두리 제거
     }
   });
 
+  // [G] 등급 유효성 검사
   $(document).on('blur', '.grade-input', function () {
     const val = $(this).val().trim();
     const v = parseInt(val);
     if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
-      showModal("등급은 1~9 사이여야 합니다.");
+      $(this).css('border', '2px solid #dc2626');
+      invalidInput = this;
+      return showModal("등급은 1~9 사이여야 합니다.");
+    } else {
+      $(this).css('border', '');
     }
   });
+  
+  // [H] 입력하지 않은 항목에 빨간 테두리 표시
+  $('.score-input').each(function (i) {
+    const scoreInput = $(this);
+    const gradeInput = $('.grade-input').eq(i);
+    const scoreRaw = scoreInput.val().trim();
+    const gradeRaw = gradeInput.val().trim();
+
+    scoreInput.css('border', ''); // 초기화
+    gradeInput.css('border', '');
+
+    if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
+    if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
+
+    if (scoreRaw === '' || gradeRaw === '') {
+      emptyFound = true;
+      return false;
+    }
+  });
+  
+  
+  // [J] 모달 닫기 + 유효하지 않은 값 삭제
+  $('#modal-close-btn').click(() => {
+    $('#modal').hide();
+
+    // 잘못된 입력 삭제
+    if (invalidInput) {
+      $(invalidInput).val('').css('border', '2px solid #dc2626');
+      invalidInput = null;
+    }
+  });
+  
 
   // [H] 설정완료 → DB 전송
   $('#final-submit').click(function () {
@@ -119,27 +162,35 @@ $(document).ready(function () {
     const gradeValues = [];
     let emptyFound = false;
 
-    $('.score-input').each(function (i) {
-      const scoreInput = $(this);
-      const gradeInput = $('.grade-input').eq(i);
-      const sub = scoreInput.data('subject');
-      const scoreRaw = scoreInput.val().trim();
-      const gradeRaw = gradeInput.val().trim();
+	$('.score-input').each(function (i) {
+	  const scoreInput = $(this);
+	  const gradeInput = $('.grade-input').eq(i);
+	  const sub = scoreInput.data('subject');
+	  const scoreRaw = scoreInput.val().trim();
+	  const gradeRaw = gradeInput.val().trim();
+	
+	  // 초기화
+	  scoreInput.css('border', ''); // 초기화
+	  gradeInput.css('border', '');
 
-      if (scoreRaw === '' || gradeRaw === '') {
-        emptyFound = true;
-        return false;
-      }
+	  // 입력 누락 시 빨간 테두리 표시
+	  if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
+	  if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
 
-      const scoreVal = parseInt(scoreRaw);
-      const gradeVal = parseInt(gradeRaw);
+	  if (scoreRaw === '' || gradeRaw === '') {
+	    emptyFound = true;
+	    return false; // 중단
+	  }
 
-      if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
-        return showModal('원점수는 0~100 사이여야 합니다.');
-      }
-      if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
-        return showModal('등급은 1~9 사이여야 합니다.');
-      }
+	  const scoreVal = parseInt(scoreRaw);
+	  const gradeVal = parseInt(gradeRaw);
+
+	  if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
+	    return showModal('원점수는 0~100 사이여야 합니다.');
+	  }
+	  if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
+	    return showModal('등급은 1~9 사이여야 합니다.');
+	  }
 
       data.push({
         subjectName: sub,

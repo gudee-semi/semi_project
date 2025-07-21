@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
-
 <%
   // 로그인한 사용자 정보 세션에서 가져오기
   Member loginMember = (Member) session.getAttribute("loginMember");
@@ -23,7 +22,6 @@
   <meta charset="UTF-8">
   <title>목표 성적 설정</title>
   
-  <%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <style>
@@ -266,11 +264,11 @@
 <!-- 필수 과목 (항상 체크/비활성) -->
 <div class="section">
   <div class="checkbox-group">
-  <h3>필수 과목</h3>
-    <label><input type="checkbox" checked disabled> 국어</label>
-    <label><input type="checkbox" checked disabled> 수학</label>
-    <label><input type="checkbox" checked disabled> 영어</label>
-    <label><input type="checkbox" checked disabled> 한국사</label>
+	<h3>필수 과목</h3>
+      <label><input type="checkbox" checked disabled> 국어</label>
+      <label><input type="checkbox" checked disabled> 수학</label>
+      <label><input type="checkbox" checked disabled> 영어</label>
+      <label><input type="checkbox" checked disabled> 한국사</label>
   </div>
 </div>
 
@@ -278,52 +276,52 @@
 <!-- 사회탐구 -->
 <div class="section">
   <div class="checkbox-group" id="social-subjects-group">
-  <h3>사회탐구</h3>
-    <c:forEach var="subject" items="${socialSubjects}">
-      <label>
-        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
+    <h3>사회탐구</h3>
+      <c:forEach var="subject" items="${socialSubjects}">
+        <label>
+          <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
   </div>
 </div>
 
 <!-- 과학탐구1 -->
 <div class="section">
   <div class="checkbox-group" id="science1-subjects-group">
-  <h3>과학탐구1</h3>
-    <c:forEach var="subject" items="${science1Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
+    <h3>과학탐구1</h3>
+      <c:forEach var="subject" items="${science1Subjects}">
+        <label>
+          <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
   </div>
 </div>
 
 <!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="science2-section">
   <div class="checkbox-group">
-  <h3>과학탐구2</h3>
-    <c:forEach var="subject" items="${science2Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
+    <h3>과학탐구2</h3>
+      <c:forEach var="subject" items="${science2Subjects}">
+        <label>
+          <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
   </div>
 </div>
 
 <!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
 <div class="section" id="lang2-section">
   <div class="checkbox-group">
-  <h3>제2외국어</h3>
-    <c:forEach var="subject" items="${lang2Subjects}">
-      <label>
-        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
+    <h3>제2외국어</h3>
+      <c:forEach var="subject" items="${lang2Subjects}">
+        <label>
+          <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
   </div>
 </div>
 
@@ -331,11 +329,17 @@
 
 <!-- 선택 과목/점수 입력 영역 -->
 <h2 id="exam-title"></h2>
+
+<!-- 선택된 과목 목록 표시 영역 -->
 <div id="selected-subjects"></div>
 
 <table id="score-table">
   <thead>
-    <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
+    <tr>
+	    <th>과목</th>
+	    <th>원점수</th>
+	    <th>등급</th>
+    </tr>
   </thead>
   <tbody id="score-body"></tbody>
 </table>
@@ -355,7 +359,7 @@
 
 <!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
 <div style="text-align:center;">
-  <button id="final-submit" class="btn">설정완료</button>
+  <button id="final-submit" class="btn">입력완료</button>
 </div>
 
 <!-- footer 삽입 -->

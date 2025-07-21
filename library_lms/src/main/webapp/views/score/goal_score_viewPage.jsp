@@ -61,17 +61,13 @@
 	  vertical-align: middle;
 	  margin-right: 4px;
 	}
-	    
-    label { 
-    font-size: 16px;
-     }
      
     .exam-type { 
     margin: 0 10px;
      }
      
     table { 
-     margin: 60px auto;
+      margin: 60px auto;
 	  border-collapse: separate;  
 	  border-spacing: 0;           
 	  font-size: 20px;
@@ -85,12 +81,14 @@
     th, td { 
       border: 1px solid #d1d5db; 
       padding: 10px 18px; 
+      height: 58px;
+      font-weight: 500;
       text-align: center;
     }
     
    #exam-title {
 	  margin-top: 80px;
-	  font-size: 28px;
+	  font-size: 23px;
 	  font-weight: 600;
 	  text-align: center;
 	}
@@ -113,12 +111,6 @@
 	  overflow: hidden;
      }
      
-    #score-table th,
-	#score-table td {
-	  border: 1px solid #d1d5db; 
-	  padding: 18px;
-	  text-align: center;
-	}
 	
 	.btn {
 	  display: block;
@@ -141,7 +133,6 @@
 	  display: none;
 	}
 	
-    
    #modal {
 	  display: none;
 	  position: fixed;
@@ -184,29 +175,31 @@
 
 
 <%@ include file="/views/include/header.jsp" %>
-<!-- D-Day 카드 표시 -->
-<jsp:include page="/views/include/d-day.jsp" />
-
-<h1>목표 성적 조회</h1>
 
 <!-- 로그인 정보 숨겨서 JS에서 참조 -->
 <input type="hidden" id="memberNo" value="<%= memberNo %>">
 <input type="hidden" id="studentGrade" value="<%= studentGrade %>">
 
+<!-- D-Day 카드 표시 -->
+<jsp:include page="/views/include/d-day.jsp" />
+
+<h1>목표 성적 조회</h1>
+
 <!-- 시험 분류 체크박스 동적 생성 -->
 <div class="section">
-	<div class="checkbox-group" id="exam-options">
-	   <h3>시험 분류</h3>
-	 <c:forEach var="exam" items="${examTypeList}">
-	  <label>
-	    <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />
-	    ${exam.examType}월
-	  </label>
-	 </c:forEach>
-	</div>
+  <div class="checkbox-group" id="exam-options">
+    <h3>시험 분류</h3>
+      <c:forEach var="exam" items="${examTypeList}">
+        <label>
+          <input type="checkbox" name="exam" class="exam-type" value="${exam.examTypeId}" />${exam.examType}월
+        </label>
+    </c:forEach>
+  </div>
 </div>
-<!-- 선택된 시험 제목 표시 영역 -->
-<div id="exam-title"></div>
+
+
+<!-- 선택 과목/점수 입력 영역 -->
+<h2 id="exam-title"></h2>
 
 <!-- 선택된 과목 목록 표시 영역 -->
 <div id="selected-subjects"></div>
@@ -215,8 +208,6 @@
 <div style="text-align: center;">
   <button id="delete-submit" class="btn">삭제하기</button>
 </div>
-
-
 
 <!-- 별도 JS 파일 불러오기 -->
 <script src="../../js/goal_score_view.js"></script>

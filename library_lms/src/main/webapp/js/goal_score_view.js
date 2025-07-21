@@ -92,7 +92,6 @@ $(document).ready(function () {
       return;
     }
 
-	
     $.ajax({
       url: '/goal_score/delete',
       type: 'post',
