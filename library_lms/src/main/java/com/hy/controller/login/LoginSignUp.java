@@ -92,6 +92,7 @@ public class LoginSignUp extends HttpServlet {
 				    
 				    int result = service.insertMember(member,attach);
 				    int resultAtd = useService.insertUse(member.getMemberNo());
+
 				    
 				    obj.put("res_code","200");
 			    	obj.put("res_msg", "회원가입 성공!");

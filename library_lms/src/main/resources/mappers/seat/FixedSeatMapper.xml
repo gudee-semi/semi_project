@@ -23,7 +23,7 @@
 		    m.member_penalty,
 		    f.seat_no
 		FROM member m
-		JOIN fixed_seat f ON m.member_no = f.member_no
+		LEFT JOIN fixed_seat f ON m.member_no = f.member_no
 		WHERE m.member_seat = 1
 
     </select>

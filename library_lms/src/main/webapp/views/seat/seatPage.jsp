@@ -113,7 +113,7 @@
 		margin-left: 70px;
 			
 	}
-	.sidebar{
+	.sidebars{
 		height: 100vh;
 		width: 250px;
 		background-color: red;
@@ -139,7 +139,7 @@
 	%>
 
   <div class="totalBox">
-	<div class="sidebar">
+	<div class="sidebars">
 
 	
 	
