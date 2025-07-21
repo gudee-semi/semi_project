@@ -28,11 +28,25 @@ public class QnaAdminDao {
 	    return list;
 	}
 
-	// 답글 추가
-	public void insertReply(QnaReply reply) {
-	    SqlSession session = SqlSessionTemplate.getSqlSession(true);
-	    session.insert("com.hy.mapper.qna.QnaAdminMapper.insertReply", reply);
-	    session.close();
+	// 답글 추가 + answerStatus 업데이트 같이 하기
+	public void insertReplyAndUpdateStatus(QnaReply reply) {
+	   
+		// 1. SqlSession 생성 (autoCommit = false: 직접 커밋)
+	    SqlSession session = SqlSessionTemplate.getSqlSession(false);
+
+	        // 2. 답글 등록
+	        session.insert("com.hy.mapper.qna.QnaAdminMapper.insertReply", reply);
+	        
+	        // 3. answerStatus = 1로 업데이트
+	        session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatus", reply.getQnaId());
+	        
+	        // 커밋
+	        session.commit();
+
+	        // 세션 닫기
+	        session.close();
+	    
+
 	}
 	
 	// 답글 수정

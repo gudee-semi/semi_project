@@ -27,8 +27,8 @@
 		<div class="headerImg">
 			<img src="/images/logo.png" style="width: 100%; height: 100%; object-fit: cover; margin-top: 8.5px;"
 			onclick="location.href='/'">
-			
 		</div>
+
 	</div>
 </header>
 

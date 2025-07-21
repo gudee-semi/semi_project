@@ -19,11 +19,16 @@ public class QnaAdminService{
 	public List<QnaReply> selectReplyList(int qnaNo) {
 	    return qnaAdminDao.selectReplyList(qnaNo);
 	}
+	
+	// 답글 추가
+    public void insertReply(QnaReply reply) {
+        qnaAdminDao.insertReplyAndUpdateStatus(reply);
+    }
 
-	// 답글 작성 메소드
-	public void insertReply(QnaReply reply) {
-	    qnaAdminDao.insertReply(reply);
-	}
+//	// 답글 작성 메소드
+//	public void insertReply(QnaReply reply) {
+//	    qnaAdminDao.insertReply(reply);
+//	}
 	
 	// 답글 수정 서비스
     public int updateReply(QnaReply reply) {
