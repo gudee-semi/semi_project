@@ -11,4 +11,8 @@ public class Use {
 	private int useStatusId;
 	private int memberNo;
 	private int status;
+	
+	// custom
+	private String memberName;
+	private String statusDisplay;
 }

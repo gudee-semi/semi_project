@@ -23,6 +23,12 @@
 		WHERE member_no = #{memberNo}
 	</select>
 	
+	<select id="getUseStatus" resultType="com.hy.dto.use.Use">
+		SELECT use_status_id AS useStatusId ,u.member_no AS memberNo ,status AS status, member_name AS memberName
+		FROM use_status u JOIN member m on u.member_no = m.member_no
+		WHERE status = 1 OR status = 2
+	</select>
+	
 	<insert id="insertUseLog" parameterType="com.hy.dto.use.UseLog">
 		INSERT INTO use_log (member_no, status)
 		VALUES (#{memberNo}, #{status})
@@ -39,4 +45,9 @@
 		INSERT INTO use_status (member_no)
 		VALUES (#{param}) 
 	</insert>
+	
+	<update id="abortMember" parameterType="_int">
+		UPDATE use_status SET status = 0
+		WHERE member_no = #{memberNo}
+	</update>
 </mapper>
