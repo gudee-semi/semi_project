@@ -109,66 +109,94 @@
 		align-items: center;
 		gap: 0;
 	}
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+ 		column-gap: 0;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 
 </head>
 <body>
 	<%@include file="/views/include/header.jsp"%>
-	
-	<div class="container">
-		<h1>질의응답</h1>
-		<table class="detail-table">
-			<tr>
-				<th style="width: 15%">No</th>
-				<td style="width: 35%">${qna.qnaId }</td>
-				<th style="width: 15%">작성일</th>
-				<td style="width: 35%">${qna.regDate }</td>
-			</tr>
-			<tr>
-				<th>카테고리</th>
-				<td>${qna.category }</td>
-				<th>작성자</th>
-				<td>${qna.memberName }</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td>${qna.title }</td>
-				<th>공개여부</th>
-				<td>${qna.visibility == 0 ? '비공개' : '공개' }</td>
-			</tr>
-			<tr>
-				<th class="content">내용</th>
-				<td class="content-cell" colspan="3">${qna.content }</td>
-			</tr>
-			
-			<c:if test="${not empty attach }">
+	<div class="flex-container">
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
+		<div class="container">
+			<h1>질의응답</h1>
+			<table class="detail-table">
 				<tr>
-					<th>첨부파일</th>
-					<td colspan="3">
-				    	<a href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
-						<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
-					</td>
+					<th style="width: 15%">No</th>
+					<td style="width: 35%">${qna.qnaId }</td>
+					<th style="width: 15%">작성일</th>
+					<td style="width: 35%">${qna.regDate }</td>
 				</tr>
-			</c:if>
-		</table>
-		
-		<c:if test="${not empty replyList }">
-			<c:forEach var="r" items="${replyList }">
-				<table class="detail-table">
+				<tr>
+					<th>카테고리</th>
+					<td>${qna.category }</td>
+					<th>작성자</th>
+					<td>${qna.memberName }</td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td>${qna.title }</td>
+					<th>공개여부</th>
+					<td>${qna.visibility == 0 ? '비공개' : '공개' }</td>
+				</tr>
+				<tr>
+					<th class="content">내용</th>
+					<td class="content-cell" colspan="3">${qna.content }</td>
+				</tr>
+				
+				<c:if test="${not empty attach }">
 					<tr>
-						<th style="width: 15%">작성자</th>
-						<td style="width: 35%">관리자</td>
-						<th style="width: 15%">작성일</th>
-						<td style="width: 35%">${r.modDate }</td>
+						<th>첨부파일</th>
+						<td colspan="3">
+					    	<a href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
+							<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
+						</td>
 					</tr>
-					<tr>
-						<th>내용</th>
-						<td colspan="3">${r.content }</td>
-					</tr>
-				</table>
-			</c:forEach>
-		</c:if>
+				</c:if>
+			</table>
 			
+			<c:if test="${not empty replyList }">
+				<c:forEach var="r" items="${replyList }">
+					<table class="detail-table">
+						<tr>
+							<th style="width: 15%">작성자</th>
+							<td style="width: 35%">관리자</td>
+							<th style="width: 15%">작성일</th>
+							<td style="width: 35%">${r.modDate }</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">${r.content }</td>
+						</tr>
+					</table>
+				</c:forEach>
+			</c:if>
+				
 			<div class="right-btn">
 				<form action="<c:url value='/qna/view'/>" method="get">
 					<button class="btn-common">목록</button>
@@ -190,6 +218,7 @@
 				</c:if>
 			</div>
 		</div>
+	</div>
 		
 	<script>
 		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수

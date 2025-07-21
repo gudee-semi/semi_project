@@ -39,7 +39,6 @@ public class QnaDetailServlet extends HttpServlet {
 		QnaReply reply = new QnaReply();
 		
 		List<QnaReply> replyList = qnaAdminService.selectReplyList(qnaId);
-		System.out.println(replyList);
 		
 		// 조회수 올리기
 		qnaService.updateViewCount(qnaId);
