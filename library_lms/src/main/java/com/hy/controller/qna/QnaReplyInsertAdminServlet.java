@@ -51,7 +51,7 @@ public class QnaReplyInsertAdminServlet extends HttpServlet {
 	    reply.setContent(content);  // 댓글 내용
 
 	    // 5. Service 호출하여 댓글 등록 (댓글 번호는 DB에서 자동 생성)
-	    qnaAdminService.insertReply(reply);
+	    qnaAdminService.insertReplyAndUpdateStatus(reply);
 
 	    // 6. 등록 후 상세페이지로 리다이렉트
 	    response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaNo);
