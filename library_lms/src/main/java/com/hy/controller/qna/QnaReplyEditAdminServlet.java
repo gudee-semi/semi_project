@@ -25,19 +25,20 @@ public class QnaReplyEditAdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// replyId 파라미터 받기
-        String replyIdStr = request.getParameter("qnaReplyId");
-        if(replyIdStr == null || replyIdStr.isEmpty()) {
+        String replyId = request.getParameter("qnaReplyId");
+        
+        if(replyId == null || replyId.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/qna/list/admin");
             return;
         }
-        int replyId = Integer.parseInt(replyIdStr);
+        int replyNo = Integer.parseInt(replyId);
 
         // 해당 댓글 조회
-        QnaReply reply = qnaAdminService.selectReplyOne(replyId);
+        QnaReply reply = qnaAdminService.selectReplyOne(replyNo);
 
         // (중요!) reply가 null 또는 값이 없는 경우도 체크!
         if(reply == null) {
-            response.sendRedirect(request.getContextPath() + "/qna/list/admin");
+            response.sendRedirect(request.getContextPath() + "/");
             return;
         }
         

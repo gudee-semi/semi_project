@@ -8,6 +8,9 @@
   int memberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
   int studentGrade = (loginMember != null) ? loginMember.getMemberGrade() : 1;
 
+  // studentGrade를 request로 d-day.jsp에 넘기기
+  request.setAttribute("studentGrade", studentGrade);	
+  
   // 현재 년도 계산 후 세션에 저장 (필요 시 js에서 연도 표기용으로 사용 가능)
   int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
   session.setAttribute("currentYear", currentYear);
@@ -54,6 +57,8 @@
   </style>
 </head>
 <body>
+
+
 
 <script>
   // [0] 서버-side 변수 JS로 전달
@@ -102,6 +107,9 @@
     }
   });
 </script>
+
+<!-- D-Day 카드 표시 -->
+<jsp:include page="/views/include/d-day.jsp" />
 
 
 <h1>목표 성적 설정</h1>

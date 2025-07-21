@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.dao.qna.QnaDao;
+import com.hy.dto.notice.Notice;
+import com.hy.dto.notice.NoticeAttach;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 
@@ -22,10 +24,6 @@ public class QnaService {
 	
 	public int updateViewCount(int qnaId) {
 		return qnaDao.updateViewCount(qnaId);
-	}
-	
-	public int updateQna(Qna qna) {
-		return qnaDao.updateQna(qna);
 	}
 	
 	public Qna selectQnaOne(int qnaNo) {
@@ -73,5 +71,101 @@ public class QnaService {
 		}
 		return result;
 		
+	}
+	public int updateQnaWithAttach(Qna qna, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = qnaDao.updateQna(session, qna);
+			
+			if (attach != null && result > 0) {
+				result = qnaDao.updateAttach(session, attach);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
+	public int updateQnaDeleteAttach(Qna qna) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = qnaDao.updateQna(session, qna);
+			
+			if (result > 0) {
+				result = qnaDao.deleteAttach(session, qna);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	public int updateQnaSameAttach(Qna qna) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			result = qnaDao.updateQna(session, qna);
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	public int updateQnaNewAttach(Qna qna, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		
+		int result = 0;
+		
+		try {
+			result = qnaDao.updateQna(session, qna);
+			
+			if (attach != null && result > 0) {
+				result = qnaDao.insertAttach(session, attach);
+			}
+						
+			// commit or rollback
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}  finally {
+			session.close();
+		}
+		
+		return result;
 	}
 }

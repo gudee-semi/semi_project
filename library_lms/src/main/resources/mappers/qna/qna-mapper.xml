@@ -7,6 +7,7 @@
       <result property="qnaId" column="qna_id" />
       <result property="memberId" column="member_id" />
       <result property="memberName" column="member_name" />
+      <result property="memberNo" column = "member_no"/>
       <result property="category" column="category" />
       <result property="title" column="title" />
       <result property="content" column="content" />
@@ -22,7 +23,7 @@
       <result property="qnaId" column="qna_id" />
       <result property="oriName" column="ori_name" />
       <result property="reName" column="re_name" />
-      <result property="path" column="re_name" />
+      <result property="path" column="path" />
 	</resultMap>
 	
 	<select id="selectQnaList" resultMap="qnaResultMap" parameterType="com.hy.dto.qna.Qna">
@@ -99,6 +100,7 @@
 			,Q.answer_status
 			,M.member_id
 			,M.member_name
+			,M.member_no
 		FROM qna Q
 		JOIN member M On Q.member_no = M.member_no
 		<where>
@@ -116,11 +118,19 @@
 	
 	<update id="updateQna" parameterType="com.hy.dto.qna.Qna">
 		UPDATE qna
-		SET category = #{category},
-			visibility = #{visibility},
-			title = #{title},
-			content = #{content}
+		SET category = #{category}
+			, visibility = #{visibility}
+			, title = #{title}
+			, content = #{content}
 		WHERE qna_id = #{qnaId}			
+	</update>
+	
+	<update id="updateAttach" parameterType="com.hy.dto.qna.Attach">
+		UPDATE qna_attach
+		SET ori_name = #{oriName} 
+			,re_name = #{reName} 
+			,path = #{path}
+		WHERE qna_id = #{qnaId}
 	</update>
 	
 	<delete id="deleteQna" parameterType="_int">
@@ -128,6 +138,11 @@
 		<where>
 		qna_id = #{qnaId}
 		</where>
+	</delete>
+	
+	<delete id="deleteAttach" parameterType="com.hy.dto.qna.Qna">
+		DELETE FROM qna_attach 
+		WHERE qna_id = #{qnaId}
 	</delete>
 	
 	<select id="selectAttachByQnaNo" resultMap="attachResultMap" parameterType="_int">

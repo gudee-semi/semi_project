@@ -8,8 +8,14 @@
 <title>태블릿 사용현황</title>
 
 <style>
+.container {
+		width : 80vw;
+		margin : 0 auto;	
+	}
 table {
 	border-collapse: collapse;
+	width: 100%;
+	max-width: 1000px;
 }
 th, td {
 	border: none;
@@ -18,7 +24,7 @@ th, td {
 	text-align: center;
 }
 th {
-	border-bottom: 2px solid #666666;
+	border-bottom: 1px solid #666666;
 	background: #FAFAFA;
 }
 tr:last-child td {
@@ -28,13 +34,11 @@ tr:last-child td {
 
 </head>
 <body>
-	<div>
+<%@ include file="/views/include/header.jsp" %>
+	<div class="container">
 		<h1>태블릿 사용현황</h1>
-		
 		<form action="/tablet/admin" method="post">
-		
 			<table style="border-collapse: collapse; width: 100%">
-			
 				<thead>
 					<tr>
 						<th>태블릿 No</th>
@@ -46,12 +50,12 @@ tr:last-child td {
 			    <tbody>
 					<tr>
 			        <c:forEach var="t" items="${tabletList }">
-						<td>${t.tabletId}</td>
+						<td style="width: 20%">${t.tabletId}</td>
 						<c:if test="${t.tabletAvailable eq '1' }">
 							<c:forEach var="tm" items="${tabletListm }">
 								<c:if test="${t.memberNo eq tm.memberNo }">
-									<td>${tm.memberName}</td>
-									<td><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
+									<td style="width: 40%">${tm.memberName}</td>
+									<td style="width: 40%"><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
 									</tr>
 								</c:if>
 							</c:forEach>
@@ -64,12 +68,9 @@ tr:last-child td {
 					</c:forEach>
 			    </tbody>
 			</table>
-			
 			<input type="submit" value="반납하기">
-			
 		</form>
-		
 	</div>
-	
+	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

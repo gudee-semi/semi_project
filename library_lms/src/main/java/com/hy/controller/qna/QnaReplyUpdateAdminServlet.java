@@ -34,12 +34,11 @@ public class QnaReplyUpdateAdminServlet extends HttpServlet {
         String replyIdStr = request.getParameter("qnaReplyId");
         String qnaIdStr = request.getParameter("qnaId");
         
-        if (replyIdStr == null || replyIdStr.isEmpty() ||
-                qnaIdStr == null || qnaIdStr.isEmpty()) {
-                // 값이 비었으면 에러/리다이렉트
-                response.sendRedirect(request.getContextPath() + "/qna/list/admin");
-                return;
-            }
+		// 파라미터가 없거나 빈 값이면 메인 페이지로 이동 (에러 처리)
+        if (replyIdStr == null || replyIdStr.isEmpty() || qnaIdStr == null || qnaIdStr.isEmpty()) {
+	        response.sendRedirect(request.getContextPath() + "/");
+	        return;
+        }
 
         // 1. 파라미터 받기
         int replyId = Integer.parseInt(request.getParameter("qnaReplyId"));
