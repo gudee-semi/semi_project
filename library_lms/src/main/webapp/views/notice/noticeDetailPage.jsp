@@ -10,37 +10,49 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
-	.content {
-		background-color: #fff;
+	/* 항상 가장 먼저 */
+	html, body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Arial', sans-serif; /* 선택사항 */
+		box-sizing: border-box;
 	}
+	.container {
+		width : 70%;
+		margin : 0 auto;	
+	}
+	h1 {
+		margin-left: 20px;
+    }
 	.detail-table {
-		width: 70%;
+		width: 100%;
 		border-collapse: collapse;
 		margin-bottom: 20px;
-		table-layout: fixed;
+		border: 1px solid #F5F5F5;
 	}
-
 	.detail-table th,
 	.detail-table td {
 		border: 1px solid #ddd;
 		padding: 10px 12px;
-		vertical-align: top;
-		word-wrap: break-word;
+		vertical-align: middle;
+		white-space: nowrap; /* 줄바꿈 방지 */
+		overflow: hidden;    /* 넘치는 텍스트 숨김 */
+		text-overflow: ellipsis; /* ... 처리 */
 	}
 	.detail-table th {
-	background-color: #f0f0f0;
-	width: 120px;
-	text-align: center;
-	
-	font-weight: normal;
+		background-color: #F5F5F5;
+		width: 120px;
+		text-align: center;
+		font-weight: normal;
+		vertical-align: middle;
 	}
-	/* 긴 내용 셀 */
-	.content-text {
-		height: 150px;
-		vertical-align: top;
-		background-color: #fafafa;
+	.content {
+		height: 250px;
 	}
-
+	.content-cell {
+		vertical-align: top !important;
+		white-space: normal !important; /* 줄바꿈 허용 */
+	}
 	/* ===== 버튼 ===== */
 	.btn {
 		display: inline-block;
@@ -52,24 +64,67 @@
 		cursor: pointer;
 		color: rgba(255, 255, 255, 1);
 	}
+	td img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+		margin-top: 10px;
+	}
+	.btn-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		margin-top: 30px;
+	}
 
-	.btn.blue {
-		width: 70px;
-		background-color: rgba(32, 93, 172, 1);
+	/* 가운데 버튼 그룹 */
+	.center-btns {
+		display: flex;
+		justify-content: center;
+		margin-top: 15px;
+	}
+
+	/* 오른쪽 버튼 */
+	.right-btn {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 20px;
+	}
+
+	/* 공통 버튼 스타일 */
+	.btn-common {
+		border: none;
+    	background-color: #205DAC;
+   	    color: #fff;
+    	border-radius: 6px;
+    	cursor: pointer;
+    	height: 40px;
+    	width: 90px;
+    	margin-right: 10px;
+    	transition: .2s;
+    	font-size: 16px;
+	}
+	.center-btns,
+	.right-btn {
+		display: flex;
+		align-items: center;
+		gap: 0;
 	}
 </style>
 </head>
 <body>
-
-	<section class="content">
+	<%@include file="/views/include/header.jsp"%>
+	
+	<div class="container">
 		<h1>공지사항</h1>
 		
 		<table class="detail-table">
 			<tr>
-				<th>No</th>
-				<td>${ notice.noticeId }</td>
-				<th>작성일</th>
-				<td>${ notice.createAt }</td>
+				<th style="width: 15%">No</th>
+				<td style="width: 35%">${ notice.noticeId }</td>
+				<th style="width: 15%">작성일</th>
+				<td style="width: 35%">${ notice.createAt }</td>
 			</tr>
 			<tr>
 				<th>카테고리</th>
@@ -82,31 +137,42 @@
 				<td colspan="3">${ notice.title }</td>
 			</tr>
 			<tr>
-				<th>내용</th>
-				<td colspan="3">${ notice.content }</td>
+				<th class="content">내용</th>
+				<td class="content-cell" colspan="3">${ notice.content }</td>
 			</tr>
+			
 			<c:if test="${ not empty attach }">
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="3">
-				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }' />"><br>
-				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName } 다운로드</a>						
+				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a><br>						
+				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }'/>"><br>
 					</td>
 				</tr>
 			</c:if>
 		</table>
-	</section>
+			
+			<div class="right-btn">
+				<form action="<c:url value='/notice/list'/>" method="get">
+					<button class="btn-common">목록</button>
+				</form>
+			</div>
 	
-	<a href="/notice/list">목록</a>
-	
-	<c:if test="${ memberNo eq 1 }">
-		<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
 		
-		<form id="noticeDeleteFrm">
-			<input type="submit" value="삭제">
-		</form>
-	</c:if>	
-	<c:set var="noticeId" value="${ notice.noticeId }"/>
+	</div>
+	
+	<div class="center-btns">
+		<c:if test="${ memberNo eq 1 }">
+			<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
+			
+			
+			<form id="noticeDeleteFrm">
+				<input type="hidden">
+				<button class="btn-common">삭제</button>
+			</form>
+		</c:if>	
+		<c:set var="noticeId" value="${ notice.noticeId }"/>
+	</div>
 	
 	<script>
 		$("#noticeDeleteFrm").on('submit', (e) => {

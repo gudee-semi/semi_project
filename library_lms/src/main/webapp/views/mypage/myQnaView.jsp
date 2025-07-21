@@ -108,17 +108,17 @@
 	<c:if test="${not empty qnaList }">
 		<div class="pageButton">
 			<c:if test="${paging.prev }">
-				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}'/>">
+				<a href="<c:url value='/myqna/view?nowPage=${paging.pageBarStart-1}'/>">
 					&laquo;
 				</a>
 			</c:if>		
 			<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
-				<a href="<c:url value='/qna/view?nowPage=${i}'/>">
+				<a href="<c:url value='/myqna/view?nowPage=${i}'/>">
 					${i }
 				</a>
 			</c:forEach>
 			<c:if test="${paging.next }">
-				<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}'/>">
+				<a href="<c:url value='/myqna/view?nowPage=${paging.pageBarEnd+1}'/>">
 					&raquo;
 				</a>
 			</c:if>

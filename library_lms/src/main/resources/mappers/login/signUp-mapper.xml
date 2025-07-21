@@ -48,6 +48,15 @@
 	
 
 </insert>
+<insert id ="insertUser" parameterType="com.hy.dto.login.User">
+	INSERT INTO user(
+	user_name, user_rrn,user_seat
+	)
+	VALUES(#{userName},#{userRrn },#{userSeat})
+	
+
+</insert>
+
 <select id ="checkId" resultMap="memberAccount" parameterType="string">
 	SELECT * 
 	FROM member
@@ -62,6 +71,23 @@
 		member_rrn=#{memberRrn}
 	</where>	
 </select>
+<select id ="checkPhone" resultMap="memberAccount" parameterType="string">
+	SELECT * 
+	FROM member
+	<where>
+		member_phone=#{memberPhone}
+	</where>	
+</select>
+
+<select id ="checkUserRrn" resultMap="userInfo" parameterType="string">
+	SELECT * 
+	FROM user
+	<where>
+		user_rrn=#{userRrn}
+	</where>	
+</select>
+
+
 <select id = "searchUser" resultMap = "userInfo" parameterType ="com.hy.dto.login.User">
 	SELECT *
 	FROM user
@@ -69,5 +95,60 @@
 		user_rrn=#{userRrn} AND
 		user_name=#{userName} 
 	</where>
+</select>
+<select id = "userList" resultMap ="userInfo" parameterType ="com.hy.dto.login.User">
+	SELECT *
+	FROM user
+	<where>
+		user_no !=1
+		<if test='userName != null and userName != ""'>
+			 AND user_name LIKE CONCAT('%',#{userName},'%')
+		</if>
+	</where>
+	
+</select>
+<select id = "memberList" resultMap ="memberAccount" parameterType ="com.hy.dto.Member">
+	SELECT *
+	FROM member
+	<where>
+		member_no !=1
+		<if test='memberName != null and memberName != ""'>
+			AND	 member_name LIKE CONCAT('%',#{memberName},'%')
+		</if>
+	</where>
+	
+</select>
+<select id = "selectUserCount" resultType ="_int" parameterType ="com.hy.dto.login.User">
+	SELECT COUNT(*)
+	FROM user
+	<where>
+		user_no !=1
+		<if test='userName != null and userName != ""'>
+			 AND user_name LIKE CONCAT('%',#{userName},'%')
+		</if>
+	</where>
+</select>
+<select id = "selectMemberCount" resultType ="_int" parameterType ="com.hy.dto.Member">
+	SELECT COUNT(*)
+	FROM member
+	<where>
+		member_no !=1
+		<if test='memberName != null and memberName != ""'>
+			AND member_name LIKE CONCAT('%',#{memberName},'%')
+		</if>
+	</where>
+</select>
+
+
+<delete id = "deleteUser" parameterType="_int">
+	DELETE FROM user 
+	WHERE user_no = ${userNo}
+</delete>
+<select id ="selectMember" parameterType="_int" resultType="_int">
+	SELECT member_no
+	FROM member
+	<where>
+		user_no=#{userNo}
+	</where>	
 </select>
 </mapper>
