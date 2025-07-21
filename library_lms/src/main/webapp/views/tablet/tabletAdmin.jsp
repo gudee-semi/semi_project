@@ -55,7 +55,7 @@
 		max-width: 1000px;
 		display: flex;
 		justify-content: flex-end;
-		margin-top: 10px;
+		margin-top: 30px;
 	}
 	
 	/*  하...   */
@@ -67,10 +67,10 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
+		column-gap: 250px;
 	}
 	
 	.container {
-		flex: 1; /* 사이드바를 제외한 나머지 영역 */
 		display: flex;
 		flex-direction: column;
 		align-items: center; /* 중앙 정렬 */
@@ -115,7 +115,7 @@
 								<c:forEach var="tm" items="${tabletListm }">
 									<c:if test="${t.memberNo eq tm.memberNo }">
 										<td style="width: 40%">${tm.memberName}</td>
-										<td style="width: 40%"><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
+										<td style="width: 20%"><input type="checkbox" name="penalty" value="${tm.memberNo},${tm.tabletId}"></td>
 										</tr>
 									</c:if>
 								</c:forEach>

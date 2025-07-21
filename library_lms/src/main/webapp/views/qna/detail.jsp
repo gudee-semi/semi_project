@@ -61,7 +61,7 @@
 		border-radius: 4px;
 		font-size: 15px;
 		cursor: pointer;
-		color: rgba(255, 255, 255, 1);
+		color: #fff;
 	}
 	td img {
 		max-width: 100%;
@@ -181,8 +181,8 @@
 				</c:if>
 			</table>
 			
-			<hr style="border: none; border-top: 1.5px dashed #ddd;">
 			<c:if test="${not empty replyList }">
+			<hr style="border: none; border-top: 1.5px dashed #ddd;">
 				<c:forEach var="r" items="${replyList }">
 					<table class="detail-table" style="margin-top: 20px">
 						<tr>

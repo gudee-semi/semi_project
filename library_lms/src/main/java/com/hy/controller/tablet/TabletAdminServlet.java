@@ -36,7 +36,6 @@ public class TabletAdminServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String[] penaltyMemberInfos = request.getParameterValues("penalty");
-		System.out.println(penaltyMemberInfos[0]);
 		int result = 0;
 		
 		
@@ -48,7 +47,9 @@ public class TabletAdminServlet extends HttpServlet {
 		    			int memberNo = Integer.parseInt(paneltyInfo[0]);
 		    			int tabletNo = Integer.parseInt(paneltyInfo[1]);
 		    			result = tabletService.updatePenalty(memberNo);
+		    			// 태블릿 반납
 		    			tabletService.returnTablet(tabletNo, memberNo);
+		    			// 태블릿 로그
 		    			tabletService.insertTabletLog(tabletNo, memberNo, 0);
 		    		}
 		    }

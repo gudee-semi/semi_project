@@ -53,7 +53,7 @@
 	input[type="text"]:focus,
 	select:focus,
 	textarea:focus {
-		border: 2px solid #205DAC;  /* 진한 파란색 */
+		border: 1px solid #205DAC;  /* 진한 파란색 */
 		box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
 	}
 	.detail-table {
