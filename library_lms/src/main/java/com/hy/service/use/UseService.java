@@ -37,4 +37,17 @@ public class UseService {
 		return dao.insertUse(param);
 	}
 
+	public List<Use> getUseStatus() {
+		List<Use> list = dao.getUseStatus();
+		for (Use u : list) {
+			if (u.getStatus() == 1) u.setStatusDisplay("입실");
+			else if (u.getStatus() == 2) u.setStatusDisplay("외출");
+		}
+		return list;
+	}
+
+	public int abortMember(int memberNo) {
+		return dao.abortMember(memberNo);
+	}
+
 }
