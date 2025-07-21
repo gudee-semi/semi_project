@@ -32,7 +32,7 @@ public class AttachService {
 			Attach result = null;
 			try {
 				Part filePart = request.getPart("qnaFile");
-				if(filePart.getSize() > 0) {
+				if(filePart != null && filePart.getSize() > 0) {
 					result = getFileMeta(filePart, uploadDir);
 				}
 			}catch(Exception e) {
@@ -70,6 +70,7 @@ public class AttachService {
 			Attach a =new Attach();
 			a.setOriName(oriName);
 			a.setReName(saveName+"."+ext);
+			a.setPath("C://upload/qna/" + saveName + "." + ext);
 			
 			return a;
 			

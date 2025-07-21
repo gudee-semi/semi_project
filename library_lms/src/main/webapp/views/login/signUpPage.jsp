@@ -122,6 +122,7 @@
 	let memberName="";
 	let memberRrn="";
 	let memberAddress="";
+	let memberAddressDetail="";
 	let memberSchul="";
 	let memberGrade=0;
 	let memberProfile="";
@@ -181,8 +182,20 @@
 		}else if (!phoneReg.test(memberPhone)){
 			$("#member_phone_msg").text("전화번호: - 제외하고 입력해주세요 ").css('color','red');
 		}else{
-			$("#member_phone_msg").text("").css('color','red');
-			phoneStatus=true;
+			$.ajax({
+				url : "/login/member/repeatcheck",
+				type : "post",
+				data : {member_phone  : memberPhone},
+				dataType :"json",
+				success : function(data) {
+					if(data.phoneCheck=="no"){
+					$("#member_phone_msg").text("이미 등록된 전화번호 입니다.").css('color','red');
+					}else{
+					$("#member_phone_msg").text("").css('color','red');
+						phoneStatus=true;
+					}
+				}
+			});
 		}
 	});
 	
