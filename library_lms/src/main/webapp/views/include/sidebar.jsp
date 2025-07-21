@@ -135,7 +135,7 @@
   </div>
   
 	<div class="logout-text" style="text-align: center; margin-top: 12px;">
-	  <a href="/member/logout" style="
+	  <a href="/logout" style="
 	    font-size: 13px;
 	    color: #555;
 	    text-decoration: none;
