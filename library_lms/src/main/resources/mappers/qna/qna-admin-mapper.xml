@@ -55,11 +55,12 @@
 		WHERE
 		qna_reply_id = #{qnaReplyId}
 	</update>
-	
+
 	<!-- answer_status 0으로 변경 -->
 	<update id="updateAnswerStatus" parameterType="int">
 		UPDATE qna
-		SET answer_status = 1
+		SET
+		answer_status = 1
 		WHERE qna_id = #{qnaId}
 	</update>
 
@@ -75,6 +76,13 @@
 		DELETE FROM qna_reply
 		WHERE qna_reply_id = #{value}
 	</delete>
+
+	<!-- 답글 삭제시 answer_status 1로 변경 -->
+	<update id="updateAnswerStatusZero" parameterType="int">
+		UPDATE qna
+		SET answer_status = 0
+		WHERE qna_id = #{qnaId}
+	</update>
 
 	<!-- 조회수 -->
 	<update id="incrementViewCount" parameterType="int">

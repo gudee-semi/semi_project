@@ -21,14 +21,9 @@ public class QnaAdminService{
 	}
 	
 	// 답글 추가
-    public void insertReply(QnaReply reply) {
+    public void insertReplyAndUpdateStatus(QnaReply reply) {
         qnaAdminDao.insertReplyAndUpdateStatus(reply);
     }
-
-//	// 답글 작성 메소드
-//	public void insertReply(QnaReply reply) {
-//	    qnaAdminDao.insertReply(reply);
-//	}
 	
 	// 답글 수정 서비스
     public int updateReply(QnaReply reply) {
@@ -40,9 +35,9 @@ public class QnaAdminService{
         return qnaAdminDao.selectReplyOne(qnaReplyId);
     }
     
-    // 답글 삭제
-    public int deleteReply(int qnaReplyId) {
-        return qnaAdminDao.deleteReply(qnaReplyId);
+    // 답글 삭제 (답글 ID, 질문글 ID를 모두 받아야 함)
+    public void deleteReply(int qnaReplyId, int qnaId) {
+        qnaAdminDao.deleteReplyAndUpdateStatus(qnaReplyId, qnaId);
     }
     
     // 조회수
