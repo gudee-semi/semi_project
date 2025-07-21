@@ -57,6 +57,7 @@ public class QnaViewServlet extends HttpServlet {
 	
 		
 		
+		request.setAttribute("totaldata", totaldata);
 		request.setAttribute("paging", qna);
 		request.setAttribute("qnaList", qnaList);
 		request.getRequestDispatcher("/views/qna/list.jsp").forward(request, response);

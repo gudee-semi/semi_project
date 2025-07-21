@@ -95,10 +95,10 @@ public class QnaUpdateServlet extends HttpServlet {
 
 		
 		if (result > 0) {
-			obj.put("res_msg", "공지사항이 성공적으로 수정되었습니다.");
+			obj.put("res_msg", "성공적으로 수정되었습니다.");
 			obj.put("res_code", "200");
 		} else {
-			obj.put("res_msg", "공지사항 수정이 실패했습니다.");
+			obj.put("res_msg", "게시글 수정 중 오류가 발생했습니다.");
 			obj.put("res_code", "500");			
 		}
 		
