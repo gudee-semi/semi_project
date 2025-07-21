@@ -19,7 +19,6 @@
 	}
 	.container {
 		width : 70%;
-		margin : 0 auto;	
 	}
 	h1 {
 		margin-left: 20px;
@@ -111,68 +110,100 @@
 		align-items: center;
 		gap: 0;
 	}
+	
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+	 		column-gap: 150px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 </head>
 <body>
-	<%@include file="/views/include/header.jsp"%>
+	<%@ include file="/views/include/header.jsp"%>
 	
-	<div class="container">
-		<h1>공지사항</h1>
-		
-		<table class="detail-table">
-			<tr>
-				<th style="width: 15%">No</th>
-				<td style="width: 35%">${ notice.noticeId }</td>
-				<th style="width: 15%">작성일</th>
-				<td style="width: 35%">${ notice.createAt }</td>
-			</tr>
-			<tr>
-				<th>카테고리</th>
-				<td>${ notice.category }</td>
-				<th>작성자</th>
-				<td>관리자</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td colspan="3">${ notice.title }</td>
-			</tr>
-			<tr>
-				<th class="content">내용</th>
-				<td class="content-cell" colspan="3">${ notice.content }</td>
-			</tr>
+	<div class="flex-container">
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>	
+		<div class="container">
+			<h1>공지사항</h1>
 			
-			<c:if test="${ not empty attach }">
+			<table class="detail-table">
 				<tr>
-					<th>첨부파일</th>
-					<td colspan="3">
-				    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a><br>						
-				    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }'/>"><br>
-					</td>
+					<th style="width: 15%">No</th>
+					<td style="width: 35%">${ notice.noticeId }</td>
+					<th style="width: 15%">작성일</th>
+					<td style="width: 35%">${ notice.createAt }</td>
 				</tr>
-			</c:if>
-		</table>
-			
-			<div class="right-btn">
-				<form action="<c:url value='/notice/list'/>" method="get">
-					<button class="btn-common">목록</button>
-				</form>
-			</div>
-	
+				<tr>
+					<th>카테고리</th>
+					<td>${ notice.category }</td>
+					<th>작성자</th>
+					<td>관리자</td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td colspan="3">${ notice.title }</td>
+				</tr>
+				<tr>
+					<th class="content">내용</th>
+					<td class="content-cell" colspan="3">${ notice.content }</td>
+				</tr>
+				
+				<c:if test="${ not empty attach }">
+					<tr>
+						<th>첨부파일</th>
+						<td colspan="3">
+					    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a><br>						
+					    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }'/>"><br>
+						</td>
+					</tr>
+				</c:if>
+			</table>
+				
+				<div class="right-btn">
+					<form action="<c:url value='/notice/list'/>" method="get">
+						<button class="btn-common">목록</button>
+					</form>
+				</div>
+		
+			<div class="center-btns">
+				<c:if test="${ memberNo eq 1 }">
+					<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
+					
+					
+					<form id="noticeDeleteFrm">
+						<input type="hidden">
+						<button class="btn-common">삭제</button>
+					</form>
+				</c:if>	
+				<c:set var="noticeId" value="${ notice.noticeId }"/>
+			</div>			
+		</div>
 		
 	</div>
 	
-	<div class="center-btns">
-		<c:if test="${ memberNo eq 1 }">
-			<a href="/notice/update?id=${ notice.noticeId }">수정</a>	
-			
-			
-			<form id="noticeDeleteFrm">
-				<input type="hidden">
-				<button class="btn-common">삭제</button>
-			</form>
-		</c:if>	
-		<c:set var="noticeId" value="${ notice.noticeId }"/>
-	</div>
+	<%@ include file="/views/include/footer.jsp"%>
 	
 	<script>
 		$("#noticeDeleteFrm").on('submit', (e) => {
