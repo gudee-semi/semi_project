@@ -41,6 +41,116 @@
 		font-size: 30px;
 	}
 	
+	/* modal... */
+	.todo-input-title,
+	.todo-update-title {
+	    width: 85%;
+	    height: 30px;
+	    margin-left: 20px;
+	    padding-left: 10px;
+	    border: 1px solid #ccc;
+	    border-radius: 8px;
+	    background-color: #fff;
+	    font-size: 15px;
+	    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+	    outline: none;
+	}
+	
+	/* 포커스 효과 */
+	.todo-input-title:focus,
+	.todo-update-title:focus {
+	    border-color: #66afe9;
+	    box-shadow: 0 2px 10px rgba(102, 175, 233, 0.4);
+	}
+	
+	.todo-input-date,
+	.todo-update-date {
+	    height: 30px;
+	    margin-left: 20px;
+	    padding-left: 10px;
+	    border: 1px solid #ccc;
+	    border-radius: 8px;
+	    background-color: #fff;
+	    font-size: 14px;
+	    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+	    outline: none;
+	    width: 85%;
+	}
+	
+	/* 포커스 시 효과 */
+	.todo-input-date:focus,
+	.todo-update-date:focus {
+	    border-color: #66afe9;
+	    box-shadow: 0 2px 10px rgba(102, 175, 233, 0.4);
+	}
+	
+	.todo-input-detail,
+	.todo-update-detail {
+	    width: 85%;
+	    margin-left: 20px;
+	    resize: none;
+	    border: 1px solid #ccc;
+	    border-radius: 8px;
+	    padding-left: 12px;
+	    padding-top: 12px;
+	    padding-bottom: 12px;
+	    background-color: #fff;
+	    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+	    outline: none;
+	}
+	
+	.todo-input-add,
+	.todo-input-update,
+	.todo-input-delete {
+	    width: 89%;
+	    margin-left: 20px;
+	    margin-top: 20px;
+	    color: white;
+	    background-color: #205DAC;
+	    border-color: transparent;
+	    border-radius: 6px;
+	    height: 40px;
+	    font-size: 18px;
+	    cursor: pointer;
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	    transition: background-color 0.3s ease;
+	}
+	
+	.todo-input-add:hover,
+	.todo-input-update:hover,
+	.todo-input-delete:hover {
+		background-color: #3E7AC8;
+	}
+	
+	input[type="date"]::-webkit-calendar-picker-indicator {
+	  position: relative;
+	  left: -5px; /* ← 이 값으로 왼쪽으로 밀 수 있어 */
+	  cursor: pointer;
+	  filter: invert(0.5);
+	  transform: scale(1.5); /* ← 아이콘 자체 크기 키우기 */
+	}
+
+	/* 포커스 효과 */
+	.todo-input-detail:focus,
+	.todo-update-detail:focus {
+	    border-color: #66afe9;
+	    box-shadow: 0 4px 12px rgba(102, 175, 233, 0.4);
+	}
+	
+	.edit-btn {
+		border-color: transparent;
+    	background-color: #205DAC;
+    	color: white;
+    	border-radius: 3px;
+    	cursor: pointer;
+	}
+	
+	.delete-btn {
+	    border-color: transparent;
+    	border-radius: 3px;
+    	cursor: pointer;
+	}
+	
 	/*  하...   */
 	header {
 		margin: 0 !important;
@@ -481,7 +591,7 @@
 			        		<p>상세 내용</p>
 			        		<textarea rows="10" cols="20" class="todo-input-detail"></textarea>
 			        		<br>
-			        		<button type="submit">할 일 목록 추가</button>     		 	
+			        		<button type="submit" class="todo-input-add">할 일 목록 추가</button>     		 	
 		     		 	</form>
 		      		</div>
 		    	</div>
@@ -504,7 +614,7 @@
 			        		<p>상세 내용</p>
 			        		<textarea rows="10" cols="20" class="todo-update-detail"></textarea>
 			        		<br>
-			        		<button type="submit">할 일 목록 수정</button>     		 	
+			        		<button type="submit" class="todo-input-update">할 일 목록 수정</button>     		 	
 		     		 	</form>
 		      		</div>
 		    	</div>
@@ -519,7 +629,7 @@
 		     		 <div class="modal-body">
 		     		 	<form id="todo-delete">
 							<p class="todo-delete-title"></p>
-			        		<button type="submit">삭제하기</button>     		 	
+			        		<button type="submit" class="todo-input-delete">삭제하기</button>     		 	
 		     		 	</form>
 		      		</div>
 		    	</div>
@@ -661,6 +771,7 @@
 				const fp = flatpickr("#calendarPop", {
 				    clickOpens: true,
 				    allowInput: false,
+				    closeOnSelect: false,
 				    defaultDate: new Date(),
 				    locale: 'ko',
 				    onDayCreate: function (dObj, dStr, fp, dayElem) {

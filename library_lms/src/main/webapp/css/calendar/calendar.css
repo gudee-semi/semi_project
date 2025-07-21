@@ -81,7 +81,16 @@ body h1 {
 
 .modal .modal-content {
 	width: 25%;
-	height: 50%;
+	height: 55%;
+	background-color: #fff;
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal.modal-3  .modal-content {
+	width: 25%;
+	height: 20%;
 	background-color: #fff;
 	border-radius: 15px;
 	display: flex;
