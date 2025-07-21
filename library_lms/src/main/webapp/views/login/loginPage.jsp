@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,24 +8,90 @@
 <title>Insert title here</title>
 </head>
 <style>
-.container_login { 
-
+input:-webkit-autofill:focus {
+    border: 1px solid #B6D0E2 !important;
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: black !important;
+}
+input:-webkit-autofill {
+    border: 1px solid #c5ccd2 !important;  /* 포커스 상태처럼 테두리 */
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: black !important;
+}
+a { 
+	color: #888; 
+	text-decoration: none;
+}
+#member_id ,#member_pw{
 	display : flex;
+	box-sizing: border-box;
+	border-radius : 5px;
+	width:300px;
+	height : 50px;
+	border : 1px solid #c5ccd2;
+	background-color: white;
+	cursor:pointer;
+}
+#member_id:focus, #member_pw:focus{
+    border :1px solid #B6D0E2;
+}
+.container_login { 
+	width : 400px;
+	display : flex;
+	
 	justify-content: center;
-	align-content: center;
+	flex-direction: column;
+	align-items: center;
+	margin : 200px auto 100px;
+	border : 1px solid #c5ccd2 ;
+	border-radius : 5px;
+}
+.insert_login_data{
+	margin-top:50px;
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+
+}
+.login_btn{
+	margin-top:40px;
+	width:300px;
+	height : 50px;
+	background-color: #D8E5F4;
+	color : black;
+	border: none;
+	border-radius:5px;
+	
 	
 }
- 
+.login_btn:hover{
+	cursor :pointer;
+	background-color: #205DAC;
+	color : white;
+}
+.search_login_data{
+	display:flex;
+	gap: 6px;
+	align-items: center;
+	margin-bottom :18px;
+}
+.line{
+	padding : 0;
+	height: 15px;
+	width : 1px;
+	background-color: #888;
+	box-sizing: border-box;
+	margin : 0 2px;
+}
+
 </style>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
-	<div style = "height : 100px;" ></div>
 	
 	<div class = "container_login">
-	
-		
-		
-		<div>		
+		<div class = "insert_login_data">		
 			<form id ="member_login">
 			
 				<c:if test="${not empty cookie.memberId}">
@@ -38,18 +103,17 @@
 				</c:if>
 			
 				<input type="password" id = "member_pw"name="member_pw" placeholder="비밀번호 : ">	
-				<p id="member_id_msg"></p>
-				<input type="submit" value ="로그인">
-			</form>
-			
-			
-			<br>
-			
-			<a href="<c:url value='/login/signup'/>">회원가입</a> <br>
-			<a href="<c:url value='/login/search?type=id'/>">아이디찾기</a> <br>
-			<a href="<c:url value='/login/search?type=pw'/>">비밀번호찾기</a> <br>
 		
-			
+				<input type="submit" class="login_btn" value ="로그인">
+				<p id="member_id_msg"></p>
+			</form>
+		</div>
+		<div class = "search_login_data">
+			<a href="<c:url value='/login/signup'/>" class="signup">회원가입</a>
+			<div class="line"></div>
+			<a href="<c:url value='/login/search?type=id'/>"class="search_id">아이디찾기</a>
+			<div class="line"></div>
+			<a href="<c:url value='/login/search?type=pw'/>"class="search_pw">비밀번호찾기</a>
 		</div>
 		
 		

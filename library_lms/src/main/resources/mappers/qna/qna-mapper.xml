@@ -126,7 +126,7 @@
 	</update>
 	
 	<update id="updateAttach" parameterType="com.hy.dto.qna.Attach">
-		UPDATE notice_attach
+		UPDATE qna_attach
 		SET ori_name = #{oriName} 
 			,re_name = #{reName} 
 			,path = #{path}

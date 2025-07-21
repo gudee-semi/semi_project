@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <style>
 	body, header{
-		margin: 0 0 50px 0;
+		margin : 0;
 		padding: 0;
 		height: 100px;
 	}
