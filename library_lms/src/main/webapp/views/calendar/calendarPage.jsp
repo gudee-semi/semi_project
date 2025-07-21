@@ -22,6 +22,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
+	/* 세로 그리드 라인 부드럽게 */
+	.fc .fc-timegrid-col {
+	  border-left: 1px solid #eee;
+	  border-right: 1px solid #eee;
+	}
+
 	.sidebars {
 		width: 250px;
 		height: 1000px;
