@@ -6,9 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<!-- jquery -->
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
 	table {
 		border-collapse: collapse;
@@ -147,7 +144,7 @@
 	<jsp:include page="/views/include/header.jsp" />
 	
 	<div class="flex-container">
-		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>공지사항</h1>
 				

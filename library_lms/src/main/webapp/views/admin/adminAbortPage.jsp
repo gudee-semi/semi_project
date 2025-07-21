@@ -57,7 +57,7 @@ footer {
 <body>
 	<jsp:include page="/views/include/header.jsp" />
 	<div class="flex-container">
-		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>강제 퇴실</h1>
 			<form id="memberAbortFrm">

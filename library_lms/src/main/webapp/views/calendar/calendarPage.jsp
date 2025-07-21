@@ -58,7 +58,7 @@
 <body>
 	<jsp:include page="/views/include/header.jsp" />
 	<div class="flex-container">
-		<div class="sidebars"><jsp:include page="/views/include/backup.jsp" /></div>
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>학습 플래너</h1>
 			<div id='calendar'></div>
