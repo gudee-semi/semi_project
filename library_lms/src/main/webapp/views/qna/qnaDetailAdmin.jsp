@@ -10,7 +10,6 @@
 <body>
 
 	<style>
-	
 .center {
 	width: 50vw;
 	margin: 0 auto;
@@ -46,18 +45,18 @@ tr:last-child td {
 }
 
 button {
-  border: none;
-  background-color: #205DAC;
-  color: #fff;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.button:hover {
-  background-color: #3E7AC8;
+	border: none;
+	background-color: #205DAC;
+	color: #fff;
+	border-radius: 6px;
+	font-size: 15px;
+	cursor: pointer;
+	transition: 0.2s;
 }
 
+.button:hover {
+	background-color: #3E7AC8;
+}
 </style>
 
 	<h3>QnA 상세</h3>
@@ -88,12 +87,10 @@ button {
 		</tr>
 		<tr>
 			<th>공개여부</th>
-			<th>
-				<%--             <c:choose>
-                <c:when test="${qna.isOpen eq 1}">공개</c:when>
-                <c:otherwise>비공개</c:otherwise>
-            </c:choose> --%>
-			</th>
+			<th><c:choose>
+					<c:when test="${qna.visibility eq 1}">공개</c:when>
+					<c:otherwise>비공개</c:otherwise>
+				</c:choose></th>
 		</tr>
 		<tr>
 			<th>첨부파일</th>
@@ -148,10 +145,13 @@ button {
 		<!-- 댓글 내용 -->
 		<div class="center">
 			<b>수정 목록 : </b>
-			<form action="${pageContext.request.contextPath}/qna/reply/admin/update" method="post" style="display: inline;">
+			<form
+				action="${pageContext.request.contextPath}/qna/reply/admin/update"
+				method="post" style="display: inline;">
 				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
-				<input type="hidden" name="qnaId" value="${reply.qnaId}" />
-				<input type="text"  class="inputtype-text" name="content" value="${reply.content}" />
+				<input type="hidden" name="qnaId" value="${reply.qnaId}" /> <input
+					type="text" class="inputtype-text" name="content"
+					value="${reply.content}" />
 				<button type="submit">수정</button>
 			</form>
 		</div>
@@ -160,7 +160,9 @@ button {
 	<c:forEach var="reply" items="${replyList}">
 		<div class="center">
 			<b>삭제 목록 : </b> ${reply.content}
-			<form action="${pageContext.request.contextPath}/qna/reply/admin/delete" method="post" style="display: inline;">
+			<form
+				action="${pageContext.request.contextPath}/qna/reply/admin/delete"
+				method="post" style="display: inline;">
 				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
 				<input type="hidden" name="qnaId" value="${reply.qnaId}" />
 				<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>

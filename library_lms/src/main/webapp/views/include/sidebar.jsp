@@ -193,7 +193,7 @@
   </c:if>
 
   
-  <div class="nav-item"><a href="<c:url value='/weatherservlet' />">날씨</a></div>
+
 </div>
 
 
