@@ -67,7 +67,7 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
         	    PrintWriter out = res.getWriter();
 
         	    out.println("<script>");
-        	    out.println("alert('세션이 만료되었습니다. 다시 로그인해주세요.');");
+        	    out.println("alert('세션이 만료되어 로그아웃 되었습니다.');");
         	    out.println("location.href='" + safeContext + "/login/view';");
         	    out.println("</script>");
         	    out.close();

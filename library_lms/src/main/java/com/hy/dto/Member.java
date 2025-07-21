@@ -1,5 +1,7 @@
 package com.hy.dto;
 
+import com.hy.common.vo.Paging;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member extends Paging{
 	private int memberNo;
 	private int userNo;
 	private String memberId;
