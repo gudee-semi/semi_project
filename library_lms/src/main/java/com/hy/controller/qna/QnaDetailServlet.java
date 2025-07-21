@@ -51,9 +51,7 @@ public class QnaDetailServlet extends HttpServlet {
 		if(memberNo==qna.getMemberNo()) {
 		int result =mypageservice.updateReplyCheck(qnaId);
 		}
-		
-		
-		
+	
 		request.setAttribute("qna", qna);
 		request.setAttribute("attach", attach);
 		request.setAttribute("replyList", replyList);
