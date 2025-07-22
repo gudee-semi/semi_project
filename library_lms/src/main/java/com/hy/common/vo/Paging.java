@@ -31,6 +31,8 @@ public class Paging {
 		calcPaging();
 	}
 	
+	public Paging() {}
+	
 	private void calcPaging() {
 		// setTotalData 메소드 호출 전에 nowPage 정보 셋팅
 		// 1. 현재 페이지를 기준으로 건너뛸 데이터의 개수
@@ -103,5 +105,12 @@ public class Paging {
 	}
 	public void setNext(boolean next) {
 		this.next = next;
+	}
+	
+	// 한 줄 주석: 현재 페이지, 전체 데이터 수, 한 페이지당 개수로 초기화
+	public Paging(int nowPage, int totalData, int numPerPage) {
+	    this.nowPage = nowPage;
+	    this.numPerPage = numPerPage;
+	    setTotalData(totalData); // 전체 개수 세팅하면서 자동으로 calcPaging 호출됨
 	}
 }
