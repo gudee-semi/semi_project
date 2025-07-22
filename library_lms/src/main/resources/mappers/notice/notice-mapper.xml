@@ -148,5 +148,12 @@
 		UPDATE notice SET view_count = view_count + 1
 		WHERE notice_id = #{noticeId}
 	</update>
+	
+	<select id="selectNoticeMain" resultMap="noticeResultMap">
+		SELECT notice_id, title, content, view_count, category, DATE_FORMAT(create_at, '%Y-%m-%d') AS create_at, DATE_FORMAT(update_at, '%Y-%m-%d') AS update_at
+		FROM notice
+		ORDER BY notice_id DESC
+		LIMIT 5 
+	</select>
 
 </mapper>

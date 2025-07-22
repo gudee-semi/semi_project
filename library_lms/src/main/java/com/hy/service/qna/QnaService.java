@@ -168,4 +168,8 @@ public class QnaService {
 		
 		return result;
 	}
+
+	public List<Qna> selectQnaMain() {
+		return qnaDao.selectQnaMain();
+	}
 }
