@@ -3,14 +3,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 
 	.seatBox {
 		background-color: #EFEFEF;
-		margin-top: 110px;
-		margin-bottom: 140px;
-		margin-left: 460px;
-		margin-right: 200px;
 		width: 787px;
 		height: 752px;
 		
@@ -122,6 +119,10 @@
 		display:flex;
 	
 	}
+	footer{
+	margin-top: 0 !important;
+	
+	}
 </style>
 
 <!-- jquery -->
@@ -137,13 +138,11 @@
 
   <div class="totalBox">
 	<div class="sidebars">
-	<%@ include file="/views/include/sidebar.jsp" %>
-	
-	
+		<%@ include file="/views/include/sidebar.jsp" %>
 	</div>
 
 
-	<div class="seatBox" style="margin: 11px 400px 14px;">
+	<div class="seatBox" style="margin: 80px 400px 14px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -290,7 +289,12 @@
 
 			// 이미 사용 중인 좌석이면 클릭 무시
 			if (seatEl.classList.contains('used')) {
-				alert('이미 사용 중인 좌석입니다.');
+				Swal.fire({
+					  icon: "error",
+					  title: "이미 사용중인 좌석입니다",
+					  text: "Something went wrong!",
+					  
+					});
 				return;
 			}
 
@@ -312,129 +316,132 @@
 	useButton.addEventListener('click', () => {
 		if(!selectedSeat) return; 
 		
-		const isYes = confirm('이 좌석으로 하시겠습니까?');
-			
-			if(isYes){
-			
-				if(currentUsedSeat){
-					currentUsedSeat.classList.remove('used');
-				}
-				
-				// 새 좌석 사용 처리
-				selectedSeat.classList.add('used');
-				selectedSeat.classList.remove('active');
-				
-				
-				// 현재 사용 좌석 업데이트
-				currentUsedSeat = selectedSeat;
-				const seatNo = selectedSeat.dataset.seatNo;
-				
-				
-				$.ajax({
-					url: '/seat/use',
-                    type: 'post',
-                    data: {
-                        seatNo: seatNo   
-                    },
-                    dataType: 'json',
-                    success: (data) => {
-                    	console.log(data.res_msg);	
-                    }
-				})
-			}
+		Swal.fire({
+		    title: '이 좌석으로 하시겠습니까?',
+		    text: '좌석이 설정됩니다.',
+		    icon: 'question',
+		    showCancelButton: true,
+		    confirmButtonText: '네',
+		    cancelButtonText: '취소',
+		    confirmButtonColor: '#205DAC'
+		  }).then((result) => {
+		    if (result.isConfirmed) {
+		      if (currentUsedSeat) currentUsedSeat.classList.remove('used');
+		      selectedSeat.classList.add('used');
+		      selectedSeat.classList.remove('active');
+		      currentUsedSeat = selectedSeat;
 
-			
-				selectedSeat = null;
-			useButton.disabled = true;
-			cancelButton.disabled = false;
-		
-	});
+		      const seatNo = selectedSeat.dataset.seatNo;
+
+		      $.ajax({
+		        url: '/seat/use',
+		        type: 'post',
+		        data: { seatNo: seatNo },
+		        dataType: 'json',
+		        success: (data) => {
+		          console.log(data.res_msg);
+		          Swal.fire('성공!', '좌석이 설정되었습니다.', 'success');
+		        }
+		      });
+
+		      selectedSeat = null;
+		      useButton.disabled = true;
+		      cancelButton.disabled = false;
+		    }
+		  });
+		});
 	
 	
 	changeButton.addEventListener('click', () => {
 		if(!selectedSeat) return; 
 		
-		const isYes = confirm('이 좌석으로 하시겠습니까?');
-			
-			if(isYes){
+		Swal.fire({
+		    title: '좌석을 변경하시겠습니까?',
+		    text: '기존 좌석이 해제되고 새 좌석이 설정됩니다.',
+		    icon: 'warning',
+		    showCancelButton: true,
+		    confirmButtonText: '네',
+		    cancelButtonText: '취소',
+		    confirmButtonColor: '#205DAC'
+		  }).then((result) => {
+		    if (result.isConfirmed) {
+		      const newSeatNo = selectedSeat.dataset.seatNo;
+		      const oldSeatNo = currentUsedSeat ? currentUsedSeat.dataset.seatNo : null;
 
-				const newSeatNo = selectedSeat.dataset.seatNo;
-				const oldSeatNo = currentUsedSeat ? currentUsedSeat.dataset.seatNo : null;
-				
-				$.ajax({
-					url: '/seat/change',
-					type: 'post',
-					data: {
-						oldSeatNo: oldSeatNo,
-						newSeatNo: newSeatNo
-					},
-					dataType: 'json',
-					success: (data) =>{
-						if(data.res_code === "200"){
-							// UI 반영
-							if(currentUsedSeat){
-								currentUsedSeat.classList.remove('used');
-							}
-							// 새 좌석 사용 처리
-							selectedSeat.classList.add('used');
-							selectedSeat.classList.remove('active');
-							
-							
-							// 현재 사용 좌석 업데이트
-							currentUsedSeat = selectedSeat;
-							selectedSeat = null;
-							
-							
-							changeButton.disabled = true;
-							cancelButton.disabled = false;
-						} else {
-							alert("좌석 변경 실패: " + data.res_msg);
-						}
-					},
-					error: () => {
-						alert("서버 오류 발생");
-					}
-				});
-			}
+		      $.ajax({
+		        url: '/seat/change',
+		        type: 'post',
+		        data: { oldSeatNo, newSeatNo },
+		        dataType: 'json',
+		        success: (data) => {
+		          if (data.res_code === "200") {
+		            if (currentUsedSeat) currentUsedSeat.classList.remove('used');
+		            selectedSeat.classList.add('used');
+		            selectedSeat.classList.remove('active');
+
+		            currentUsedSeat = selectedSeat;
+		            selectedSeat = null;
+
+		            changeButton.disabled = true;
+		            cancelButton.disabled = false;
+
+		            Swal.fire('변경 완료!', '좌석이 변경되었습니다.', 'success');
+		          } else {
+		            Swal.fire('실패', '좌석 변경 실패: ' + data.res_msg, 'error');
+		          }
+		        },
+		        error: () => {
+		          Swal.fire('오류', '서버 오류 발생', 'error');
+		        }
+		      });
+		    }
+		  });
 		});
 	
 	
 	cancelButton.addEventListener('click', () => {
-		const isYes = confirm('정말 취소 하시겠습니까?')
-		if(isYes){
-			if (!currentUsedSeat) {
-	            alert('현재 사용 중인 좌석이 없습니다.');
-	            return;
-	        }
-			
-		const seatNo = currentUsedSeat.dataset.seatNo;	
-			
-			$.ajax({
-				url: '/seat/cancel',
-                type: 'post',
-                data: {
-                    seatNo: seatNo
-                },
-                dataType: 'json',
-                success: (data) => {
-                	console.log(data.res_msg);	
-                }
-			});
-			
-			
-			currentUsedSeat.classList.remove('used');
-			currentUsedSeat = null;
-			
-			if (selectedSeat) {
-	            selectedSeat.classList.remove('active');
-	            selectedSeat = null;
-	        }
-			
-			cancelButton.disabled = true;
-			useButton.disabled = true;
-			changeButton.disabled = true;
-		}
-	});
+		if (!currentUsedSeat) {
+		    Swal.fire('취소할 좌석이 없습니다.', '', 'info');
+		    return;
+		  }
+
+		  Swal.fire({
+		    title: '좌석을 취소하시겠습니까?',
+		    text: '현재 사용 중인 좌석이 해제됩니다.',
+		    icon: 'warning',
+		    showCancelButton: true,
+		    confirmButtonText: '네',
+		    cancelButtonText: '유지하기',
+		    confirmButtonColor: '#205DAC'
+		  }).then((result) => {
+		    if (result.isConfirmed) {
+		      const seatNo = currentUsedSeat.dataset.seatNo;
+
+		      $.ajax({
+		        url: '/seat/cancel',
+		        type: 'post',
+		        data: { seatNo },
+		        dataType: 'json',
+		        success: (data) => {
+		          console.log(data.res_msg);
+		          Swal.fire('취소 완료', '좌석이 해제되었습니다.', 'success');
+		        }
+		      });
+
+		      currentUsedSeat.classList.remove('used');
+		      currentUsedSeat = null;
+
+		      if (selectedSeat) {
+		        selectedSeat.classList.remove('active');
+		        selectedSeat = null;
+		      }
+
+		      cancelButton.disabled = true;
+		      useButton.disabled = true;
+		      changeButton.disabled = true;
+		    }
+		  });
+		});
 
 	
 	</script>

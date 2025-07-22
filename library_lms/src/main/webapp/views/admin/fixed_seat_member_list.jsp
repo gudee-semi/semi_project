@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, com.hy.dto.seat.FixedSeatMemberView" %>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <html>
 <head>
     <title>고정좌석 이용 회원</title>
@@ -139,7 +139,11 @@
     if (seatUpdateSuccess != null && seatUpdateSuccess) {
 %>
 <script>
-    alert("좌석 변경을 성공했습니다.");
+Swal.fire({
+	  title: "좌석 변경을 성공했습니다",
+	  icon: "success",
+	  draggable: true
+	});
 </script>
 <%
         session.removeAttribute("seatUpdateSuccess");

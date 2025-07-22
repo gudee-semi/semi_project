@@ -44,10 +44,4 @@ public class QnaAdminService{
     public void incrementViewCount(int qnaNo) {
         qnaAdminDao.incrementViewCount(qnaNo);
     }
-    
-    // 조회수
-    public void incrementViewCount(int qnaNo) {
-        qnaAdminDao.incrementViewCount(qnaNo);
-    }
-
 }
