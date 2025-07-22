@@ -6,7 +6,8 @@
   session.setAttribute("currentYear", currentYear);
 %>
 
-<h3><%= currentYear %>년 ${scores['0'].examTypeName}월 모의고사</h3>
+<h2 style="text-align: center; font-size: 27px;"><%= currentYear %>년 ${scores['0'].examTypeName}월 모의고사</h2>
+
 
 <div>
   <table id="score-table">
@@ -25,7 +26,14 @@
           <td>${a.subjectName}</td>
           <td>${a.actualScore}</td>
           <td>${a.actualLevel}</td>
-          <td>${a.actualPercentage}</td>
+          <td>
+            <c:choose>
+              <c:when test="${a.subjectName == '영어' || a.subjectName == '한국사' || a.subjectName == '독일어' || a.subjectName == '프랑스어' || a.subjectName == '스페인어' || a.subjectName == '중국어' || a.subjectName == '일본어' || a.subjectName == '러시아어' || a.subjectName == '아랍어' || a.subjectName == '베트남어' || a.subjectName == '한문'}">
+                -
+              </c:when>
+              <c:otherwise>${a.actualPercentage}</c:otherwise>
+            </c:choose>
+          </td>
           <td>
             <c:choose>
               <c:when test="${a.subjectName == '국어' || a.subjectName == '수학'}">${a.actualRank}</c:when>
