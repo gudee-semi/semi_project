@@ -186,6 +186,7 @@
 	  <div class="nav-item"><a href="<c:url value='#' />">회원목록</a></div>
 	  <div class="nav-item"><a href="<c:url value='/admin/abort' />">강제퇴실</a></div>
 	  <div class="nav-item"><a href="<c:url value='/admin/fixed-seat' />">좌석지정</a></div>
+	  <div class="nav-item"><a href="<c:url value='/admin/tablet' />">태블릿</a></div>
 	  <div class="nav-item"><a href="<c:url value='/qna/list/admin' />">질의응답 답변</a></div>
   	  <div class="nav-item"><a href="<c:url value='/notice/list' />">공지사항</a></div>
   
