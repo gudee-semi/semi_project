@@ -60,29 +60,34 @@ footer {
 		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>강제 퇴실</h1>
-			<form id="memberAbortFrm">
-				<table style="border-collapse: collapse; width: 100%">
-					<thead>
-						<tr>
-							<th style="width: 10%">사용자 번호</th>
-							<th style="width: 40%">사용자</th>
-							<th style="width: 40%">상태</th>
-							<th style="width: 10%">퇴실 조치</th>
-						</tr>
-					</thead>			
-				    <tbody>
-					    <c:forEach var="member" items="${ list }">
-					    	<tr>
-					    		<td>${ member.memberNo }</td>
-					    		<td>${ member.memberName }</td>
-					    		<td>${ member.statusDisplay }</td>
-					    		<td><input type="checkbox" name="memberId" value="${ member.memberNo }"></td>
-					    	</tr>
-					    </c:forEach>
-				    </tbody>
-				</table>
-				<input type="submit" value="강제 퇴실">
-			</form>
+			<c:if test="${ empty list }">
+				<div>현재 독서실을 이용중인 회원이 없습니다.</div>
+			</c:if>
+			<c:if test="${ not empty list }">			
+				<form id="memberAbortFrm">
+					<table style="border-collapse: collapse; width: 100%">
+						<thead>
+							<tr>
+								<th style="width: 10%">사용자 번호</th>
+								<th style="width: 40%">사용자</th>
+								<th style="width: 40%">상태</th>
+								<th style="width: 10%">퇴실 조치</th>
+							</tr>
+						</thead>			
+					    <tbody>
+						    <c:forEach var="member" items="${ list }">
+						    	<tr>
+						    		<td>${ member.memberNo }</td>
+						    		<td>${ member.memberName }</td>
+						    		<td>${ member.statusDisplay }</td>
+						    		<td><input type="checkbox" name="memberId" value="${ member.memberNo }"></td>
+						    	</tr>
+						    </c:forEach>
+					    </tbody>
+					</table>
+					<input type="submit" value="강제 퇴실">
+				</form>
+			</c:if>
 		</div>
 	</div>
 	<jsp:include page="/views/include/footer.jsp" />

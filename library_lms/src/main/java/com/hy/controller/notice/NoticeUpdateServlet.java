@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
 
 import org.json.simple.JSONObject;
 
+import com.hy.dto.Member;
 import com.hy.dto.notice.Notice;
 import com.hy.dto.notice.NoticeAttach;
 import com.hy.service.notice.NoticeAttachService;
@@ -43,15 +45,36 @@ public class NoticeUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int noticeId = Integer.parseInt(request.getParameter("id"));
 		
-		Notice notice = noticeService.selectNoticeByNo(noticeId);
-		NoticeAttach attach = noticeService.selectAttachByNo(noticeId);
+		HttpSession session = request.getSession(false);
+		int memberNo = 0; // 여기는 세선에서 값을 가져오도록!!
 		
-		request.setAttribute("notice", notice);
-		request.setAttribute("attach", attach);
+		if (session == null) {
+			response.sendRedirect(request.getContentType() + "/");
+			return;
+		} else {
+			if (session.getAttribute("loginMember") == null) {
+				response.sendRedirect(request.getContextPath() + "/");
+				return;
+			} else {
+				Member member = (Member)session.getAttribute("loginMember");
+				memberNo = member.getMemberNo();
+				if (memberNo != 1) {
+					response.sendRedirect(request.getContextPath() + "/views/error/403.jsp");
+				} else {
+						int noticeId = Integer.parseInt(request.getParameter("id"));
+						
+						Notice notice = noticeService.selectNoticeByNo(noticeId);
+						NoticeAttach attach = noticeService.selectAttachByNo(noticeId);
+						
+						request.setAttribute("notice", notice);
+						request.setAttribute("attach", attach);
+						
+						request.getRequestDispatcher("/views/notice/noticeUpdatePage.jsp").forward(request, response);					
+				}
+			}
+		}
 		
-		request.getRequestDispatcher("/views/notice/noticeUpdatePage.jsp").forward(request, response);
 	}
 
 	/**
