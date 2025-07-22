@@ -108,14 +108,14 @@
 	
 	/*  하...   */
 	.sidebars {
-		width: 250px;
+		width: 300px;
 		height: 1000px;
 	}
 	
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
-	 	column-gap: 150px;
+	 	column-gap: 100px;
 	}
 	
 	.container {
@@ -132,6 +132,10 @@
 	
 	footer {
 		margin-top: 0px !important;
+	}
+	
+	.nav-item {
+		padding: 5px;
 	}
 </style>
 
