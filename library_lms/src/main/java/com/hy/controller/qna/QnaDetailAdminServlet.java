@@ -16,10 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/qna/detail/admin")
 public class QnaDetailAdminServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private QnaAdminService qnaAdminService = new QnaAdminService();
-	private QnaService qnaService = new QnaService();
+	private static final long serialVersionUID = 1L;	
+
+    private QnaService   qnaService      = new QnaService();      
+    private QnaAdminService qnaAdminService = new QnaAdminService(); // 답글·조회수용
 
     public QnaDetailAdminServlet() {
         super();
@@ -30,6 +30,7 @@ public class QnaDetailAdminServlet extends HttpServlet {
 		
 		// QnA ID 파라미터 받기
 		String qnaId = request.getParameter("qnaId");
+		
 
 		// 파라미터가 없거나 빈 값이면 메인 페이지로 이동 (에러 처리)
 		if (qnaId == null || qnaId.isEmpty()) {

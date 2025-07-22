@@ -95,10 +95,14 @@ button {
 		<tr>
 			<th>첨부파일</th>
 			<th>
-				<%--             <c:if test="${not empty qna.fileName}">
-                <a href="/upload/${qna.fileName}" download>${qna.fileName}</a>
-            </c:if> --%>
-			</th>
+			<c:if test="${ not empty qna.qnaAttachId }">
+					<tr>
+						<td colspan="4" style="text-align: center;"><img
+							src="<c:url value='/filePath?no=${qna.qnaAttachId}'/>"
+							alt="첨부 이미지" style="max-width: 100%; height: auto;" /></td>
+					</tr>
+				</c:if>
+				</th>
 		</tr>
 		<tr>
 			<th>내용</th>
