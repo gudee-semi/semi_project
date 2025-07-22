@@ -66,8 +66,7 @@
 <h2>고정좌석 이용 회원</h2>
 
 <!-- ✅ 확인창 띄우는 form -->
-<form action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post"
-      onsubmit="return confirm('정말 변경하시겠습니까?');">
+<form id="seatForm" action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
 
     <table>
         <thead>
@@ -126,7 +125,12 @@
         }
 %>
 <script>
-    alert("<%= warningMessage.toString() %>");
+Swal.fire({
+    icon: "error",
+    title: "중복된 좌석이 있습니다",
+    html: `<%= warningMessage.toString().replaceAll("\\\\n", "<br>") %>`,
+    footer: "각 회원의 좌석이 겹치지 않도록 다시 선택해주세요."
+});
 </script>
 <%
         session.removeAttribute("seatUpdateWarnings");
@@ -149,7 +153,25 @@ Swal.fire({
         session.removeAttribute("seatUpdateSuccess");
     }
 %>
+<script>
+document.querySelector('.btn-change').addEventListener('click', function (event) {
+    event.preventDefault(); // 기본 제출 막기
 
+    Swal.fire({
+        title: '변경하시겠습니까?',
+        text: "해당 변경 사항을 저장합니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#205DAC',
+        confirmButtonText: '변경하기',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('seatForm').submit();
+        }
+    });
+});
+</script>
 <%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
