@@ -135,9 +135,9 @@
 	    <img src="/images/test.jpg" alt="프로필 이미지">  	
   	</c:if>
     <h2>${loginMember.memberName}</h2>
-    <c:if test="${ useStatus.status eq 0 }"><p class="status-text">현재 퇴실 상태입니다.</p></c:if>
-    <c:if test="${ useStatus.status eq 1 }"><p class="status-text">현재 입실 상태입니다.</p></c:if>
-    <c:if test="${ useStatus.status eq 2 }"><p class="status-text">현재 외출 상태입니다.</p></c:if>
+    <c:if test="${ useStatus.status eq 0 }"><p class="status-text">현재 퇴실 상태입니다</p></c:if>
+    <c:if test="${ useStatus.status eq 1 }"><p class="status-text">현재 입실 상태입니다</p></c:if>
+    <c:if test="${ useStatus.status eq 2 }"><p class="status-text">현재 외출 상태입니다</p></c:if>
   </div>
   
   <div class="check-buttons" style="display: flex; gap: 10px; justify-content: space-evenly; margin-bottom: 15px;">
