@@ -171,4 +171,16 @@
 		INSERT INTO qna_attach(qna_id ,ori_name ,re_name ,path)
 		VALUES (#{qnaId} ,#{oriName} ,#{reName} ,#{path})
 	</insert>
+	
+	<select id="selectQnaMain" resultMap="qnaResultMap">
+		SELECT qna_id
+			,category
+			,title 
+			,content 
+			,DATE_FORMAT(reg_date, '%Y-%m-%d') AS reg_date
+			,DATE_FORMAT(mod_date, '%Y-%m-%d') AS mod_date
+		FROM qna
+		ORDER BY qna_id DESC
+		LIMIT 5
+	</select>
 </mapper>

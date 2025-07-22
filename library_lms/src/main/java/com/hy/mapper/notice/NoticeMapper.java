@@ -28,5 +28,7 @@ public interface NoticeMapper {
 	int deleteNotice(int noticeId);
 	
 	int updateViewCount(int noticeId);
+	
+	List<Notice> selectNoticeMain();
 
 }

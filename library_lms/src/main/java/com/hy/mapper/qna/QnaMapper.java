@@ -31,4 +31,6 @@ public interface QnaMapper {
 	int insertQna(Qna param);
 	
 	int insertAttach(Attach param);
+	
+	List<Qna> selectQnaMain();
 }
