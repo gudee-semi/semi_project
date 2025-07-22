@@ -1,6 +1,8 @@
 package com.hy.dao.qna;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -8,14 +10,19 @@ import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.controller.tablet.MyBatisUtil;
 import com.hy.dto.qna.QnaReply;
 
-public class QnaAdminDao {
+public class QnaListAdminDao {
 
 	// 전체 목록 조회
-	public List<QnaReply> selectAll() {
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
-		List<QnaReply> list = session.selectList("com.hy.mapper.qna.QnaAdminMapper.selectAll");
-		session.close();
-		return list;
+	public List<QnaReply> selectAll(String category, String keyword, String searchType) {
+	    SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	    // 2. 파라미터를 Map으로 묶어서 전달
+	    Map<String, Object> param = new HashMap<>();
+	    param.put("category", category);
+	    param.put("keyword", keyword);
+	    param.put("searchType", searchType);
+	    List<QnaReply> list = session.selectList("com.hy.mapper.qna.QnaAdminMapper.selectAll", param);
+	    session.close();
+	    return list;
 	}
 
 	// 답글 목록 조회
@@ -25,6 +32,14 @@ public class QnaAdminDao {
 	    session.close();
 	    return list;
 	}	
+	
+	// 답글 단일 조회
+	public QnaReply selectReplyOne(int qnaReplyId) {
+	    SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	    QnaReply reply = session.selectOne("com.hy.mapper.qna.QnaAdminMapper.selectReplyOne", qnaReplyId);
+	    session.close();
+	    return reply;
+	}
 
 	// 답글 추가 + answerStatus 1 업데이트 같이 하기
 	public void insertReplyAndUpdateStatus(QnaReply reply) {
@@ -35,7 +50,7 @@ public class QnaAdminDao {
 	        session.insert("com.hy.mapper.qna.QnaAdminMapper.insertReply", reply);
 	        
 	        // 3. answerStatus = 1로 업데이트
-	        session.update("com.hy.mapper.qna.QnaMapper.updateAnswerStatus", reply.getQnaId());
+	        session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusOne", reply.getQnaId());
 	        
 	        // 4. 커밋
 	        session.commit();
@@ -47,6 +62,7 @@ public class QnaAdminDao {
 	        // 6. 세션 닫기
 	        session.close();
 	    }
+	}
 	
 	// 답글 수정
     public int updateReply(QnaReply reply) {
@@ -54,14 +70,6 @@ public class QnaAdminDao {
         int result = session.update("com.hy.mapper.qna.QnaAdminMapper.updateReply", reply);
         session.close();
         return result;
-    }
-
-    // 단일 답글 조회
-    public QnaReply selectReplyOne(int qnaReplyId) {
-        SqlSession session = SqlSessionTemplate.getSqlSession(true);
-        QnaReply reply = session.selectOne("com.hy.mapper.qna.QnaAdminMapper.selectReplyOne", qnaReplyId);
-        session.close();
-        return reply;
     }
     
     // 답글 삭제 + answer_status 0 업데이트 같이 하기
@@ -73,7 +81,7 @@ public class QnaAdminDao {
             session.delete("com.hy.mapper.qna.QnaAdminMapper.deleteReply", qnaReplyId);
 
             // 2. answer_status를 0으로 변경
-            session.update("com.hy.mapper.qna.QnaMapper.updateAnswerStatusZero", qnaId);
+            session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusZero", qnaId);
 
             // 3. 커밋
             session.commit();
