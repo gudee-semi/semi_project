@@ -12,7 +12,6 @@
 <style>
 	.container {
 		width: 70%;
-		margin : 0 auto;
 	}
 	h1 {
 		margin-left: 20px;
@@ -140,7 +139,7 @@
 	footer{
 		margin-top: 100px !important;
 	}
-	.btn, input[type="submit"] {
+	.btn {
 		border: none;
 		background-color: #205DAC;
 		color: #fff;
@@ -152,116 +151,147 @@
 		transition: .2s;
 		font-size: 16px;
 	}
+	
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+ 		column-gap: 150px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
-	<div class="container">
-	
-		<h1>공지사항</h1>
-		<div class="search-row">
-			<span class="total-count">총 ${totaldata} 건</span>
-			<div class="searchBox">
-				<form method="get" action="<c:url value='/notice/list' />">
-				
-					<select name="category" id="category_crate">
-						<option value="">전체</option>
-						<option value="일반공지">일반공지</option>
-						<option value="중요공지">중요공지</option>
-						<option value="시설공지">시설공지</option>
-					</select>
-					
-					<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
-					<button type="submit" class="btn search">검색</button>
-					<!-- <input type="submit" value="검색"> -->
-				</form>
-			</div>
-		</div>
+	<div class="flex-container">
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
+		<div class="container">
 		
-		<script>
-			$("#category_crate").val("${paging.searchCategory}").attr("selected","selected");	
-		</script>
-	
-		<table class="center" style="border-collapse: collapse; width: 100%">
-			<thead>
-				<tr>
-					<th style="width: 5%">No</th>
-					<th style="width: 15%">분류</th>
-					<th style="width: 45%">제목</th>
-					<th style="width: 10%">작성자</th>
-					<th style="width: 15%">작성일</th>			
-					<th style="width: 10%">조회수</th>			
-				</tr>
-			</thead>
-			
-			<tbody>
-				<c:forEach var="notice" items="${ noticeList }">
-					<tr class="row" onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'">
-						<td>${ notice.noticeId }</td>
-						<td>${ notice.category }</td>
-						<td>${ notice.title }</td>
-						<td>관리자</td>
-						<td>${ notice.createAt }</td>
-						<td>${ notice.viewCount }</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-			
-		<c:if test="${ not empty noticeList }">
-			<div class="table-bottom">
-				<c:if test="${ memberNo eq 1 }">
-					<form action="/notice/write" method="get">
-						<button class="btn">작성</button>
-					</form>
-				</c:if>
-			
-				<div class="paging-pages">
-					<c:choose>
-						<c:when test="${ paging.prev }">
-							<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
-								<span class="material-symbols-outlined">chevron_left</span>
-							</a>
-						</c:when>
-						<c:otherwise>
-								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="disabled">
-									<span class="material-symbols-outlined">chevron_left</span>
-								</a>
-						</c:otherwise>
-					</c:choose>	
+			<h1>공지사항</h1>
+			<div class="search-row">
+				<span class="total-count">총 ${totaldata} 건</span>
+				<div class="searchBox">
+					<form method="get" action="<c:url value='/notice/list' />">
 					
-					<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+						<select name="category" id="category_crate">
+							<option value="">전체</option>
+							<option value="일반공지">일반공지</option>
+							<option value="중요공지">중요공지</option>
+							<option value="시설공지">시설공지</option>
+						</select>
+						
+						<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
+						<button type="submit" class="btn search">검색</button>
+						<!-- <input type="submit" value="검색"> -->
+					</form>
+				</div>
+			</div>
+			
+			<script>
+				$("#category_crate").val("${paging.searchCategory}").attr("selected","selected");	
+			</script>
+		
+			<table class="center" style="border-collapse: collapse; width: 100%">
+				<thead>
+					<tr>
+						<th style="width: 5%">No</th>
+						<th style="width: 15%">분류</th>
+						<th style="width: 45%">제목</th>
+						<th style="width: 10%">작성자</th>
+						<th style="width: 15%">작성일</th>			
+						<th style="width: 10%">조회수</th>			
+					</tr>
+				</thead>
+				
+				<tbody>
+					<c:forEach var="notice" items="${ noticeList }">
+						<tr class="row" onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'">
+							<td>${ notice.noticeId }</td>
+							<td>${ notice.category }</td>
+							<td>${ notice.title }</td>
+							<td>관리자</td>
+							<td>${ notice.createAt }</td>
+							<td>${ notice.viewCount }</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+				
+			<c:if test="${ not empty noticeList }">
+				<div class="table-bottom">
+					<c:if test="${ memberNo eq 1 }">
+						<form action="/notice/write" method="get">
+							<button class="btn">작성</button>
+						</form>
+					</c:if>
+				
+					<div class="paging-pages">
 						<c:choose>
-							<c:when test="${ i eq paging.nowPage }">
-								<a href="<c:url value='/notice/list?nowPage=${i}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="current-page">
-									${i }
+							<c:when test="${ paging.prev }">
+								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
+									<span class="material-symbols-outlined">chevron_left</span>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="<c:url value='/notice/list?nowPage=${i}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
-									${ i }
+									<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="disabled">
+										<span class="material-symbols-outlined">chevron_left</span>
+									</a>
+							</c:otherwise>
+						</c:choose>	
+						
+						<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+							<c:choose>
+								<c:when test="${ i eq paging.nowPage }">
+									<a href="<c:url value='/notice/list?nowPage=${i}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="current-page">
+										${i }
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a href="<c:url value='/notice/list?nowPage=${i}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
+										${ i }
+									</a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						
+						<c:choose>
+							<c:when test="${ paging.next }">
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
+									<span class="material-symbols-outlined">chevron_right</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="disabled">
+									<span class="material-symbols-outlined">chevron_right</span>
 								</a>
 							</c:otherwise>
 						</c:choose>
-					</c:forEach>
-					
-					<c:choose>
-						<c:when test="${ paging.next }">
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:when>
-						<c:otherwise>
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>" class="disabled">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:otherwise>
-					</c:choose>
+					</div>
 				</div>
-			</div>
-		</c:if>
-	
+			</c:if>
+		
+	</div>
 	</div>
 	<jsp:include page="/views/include/footer.jsp" />
 </body>

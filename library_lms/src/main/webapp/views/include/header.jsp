@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <style>
 	body, header{
-		margin : 0;
 		padding: 0;
 		height: 100px;
 	}
@@ -27,9 +26,9 @@
 	<div class="headerBox">
 		<div class="headerImg">
 			<img src="/images/logo.png" style="width: 100%; height: 100%; object-fit: cover; margin-top: 8.5px;"
-			onclick="location.href='/'">
-			
+			onclick="location.href='/main'">
 		</div>
+
 	</div>
 </header>
 

@@ -81,5 +81,9 @@ public class SeatService {
 	    }
 	}
 
+	public int insertFix(int memberNo) {
+		return dao.insertFix(memberNo);
+	}
+
 	
 }

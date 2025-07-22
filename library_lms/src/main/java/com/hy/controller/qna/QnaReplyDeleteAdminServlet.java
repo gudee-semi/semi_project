@@ -2,6 +2,7 @@ package com.hy.controller.qna;
 
 import java.io.IOException;
 
+import com.hy.dao.qna.QnaListAdminDao;
 import com.hy.service.qna.QnaAdminService;
 
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ public class QnaReplyDeleteAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private QnaAdminService qnaAdminService = new QnaAdminService();
+	QnaListAdminDao qnaAdminDao = new QnaListAdminDao();
 
 	public QnaReplyDeleteAdminServlet() {
 		super();
@@ -45,7 +47,7 @@ public class QnaReplyDeleteAdminServlet extends HttpServlet {
 		int qnaNo = Integer.parseInt(qnaId);
 
 		// 2. 서비스 계층에서 삭제
-		qnaAdminService.deleteReply(replyNo);
+		qnaAdminDao.deleteReplyAndUpdateStatus(replyNo, qnaNo);
 
 		// 3. 원글 상세페이지로 리다이렉트
 		response.sendRedirect(request.getContextPath() + "/qna/detail/admin?qnaId=" + qnaNo);

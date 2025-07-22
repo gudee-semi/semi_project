@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  // [1] 삭제 결과 모달 알림
+  // [1] 삭제 결과에 따라 모달(알림) 노출 (URL 파라미터 검사)
   const params = new URLSearchParams(window.location.search);
   const deleteResult = params.get("delete");
   const msg = params.get("msg") ? decodeURIComponent(params.get("msg")) : "";
@@ -18,6 +18,9 @@ $(document).ready(function () {
 
   // [3] 시험 체크박스
   const examCheckboxes = $('input[name="exam"]');
+  
+  // 삭제 버튼 초기 숨김 처리
+  $('#delete-submit').hide();
 
   // [A] DB에 입력된 시험만 체크박스 활성화
   $.ajax({
@@ -42,6 +45,8 @@ $(document).ready(function () {
 
     if (!$(this).is(':checked')) {
       $('#score-table-wrapper').empty();
+	  $('#delete-btn').prop('disabled', true);
+   	  $('#delete-submit').hide();
       $('#scoreComparisonChart').hide();
       $('#scoreRadarChart').hide();
       return;
@@ -60,7 +65,7 @@ $(document).ready(function () {
       },
       success: function (res) {
         $('#score-table-wrapper').html(res); // 서버에서 렌더링한 <table> 응답 삽입
-
+		
         // [2] 차트 데이터 요청
         $.ajax({
           url: '/analysis_score/select',
@@ -71,6 +76,7 @@ $(document).ready(function () {
             chartOnly: true
           },
           success: function (chartRes) {
+			$('#delete-submit').show(); // ✅ 삭제 버튼 표시
             $('#scoreComparisonChart').show();
             $('#scoreRadarChart').show();
 
@@ -86,19 +92,23 @@ $(document).ready(function () {
               type: 'bar',
               data: {
                 labels: labels,
+				options: {
+				    responsive: true, 
+				    maintainAspectRatio: false
+				  },
                 datasets: [
 					{
 					        label: '목표 점수',
 					        data: goalScores,
-					        backgroundColor: 'rgba(59, 130, 246, 0.5)',  // 파란색
-					        borderColor: 'rgba(59, 130, 246, 1)',
+					        backgroundColor: 'rgba(147, 197, 253, 0.5)',  // 연파랑
+					        borderColor: 'rgba(147, 197, 253, 0.5)',
 					        borderWidth: 1
 					      },
 					      {
 					        label: '실제 점수',
 					        data: actualScores,
-					        backgroundColor: 'rgba(147, 197, 253, 0.5)',  // 연파랑
-					        borderColor: 'rgba(147, 197, 253, 1)',
+					        backgroundColor: 'rgba(59, 130, 246, 0.5)',  // 파랑
+					        borderColor: 'rgba(59, 130, 246, 0.5)',
 					        borderWidth: 1
 					      }
                 ]
@@ -114,22 +124,26 @@ $(document).ready(function () {
               type: 'radar',
               data: {
                 labels: labels,
+				options: {
+				    responsive: true, 
+				    maintainAspectRatio: false
+				  },
                 datasets: [
                   {
                     label: '목표 점수',
                     data: goalScores,
                     fill: true,
-					backgroundColor: 'rgba(59, 130, 246, 0.2)',
-			        borderColor: 'rgba(59, 130, 246, 1)',
-			        pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+					backgroundColor: 'rgba(147, 197, 253, 0.5)',
+			        borderColor: 'rgba(147, 197, 253, 0.5)',
+			        pointBackgroundColor: 'rgba(147, 197, 253, 0.5)'
                   },
                   {
                     label: '실제 점수',
                     data: actualScores,
                     fill: true,
-					backgroundColor: 'rgba(147, 197, 253, 0.2)',
-			       borderColor: 'rgba(147, 197, 253, 1)',
-			       pointBackgroundColor: 'rgba(147, 197, 253, 1)'
+					backgroundColor: 'rgba(59, 130, 246, 0.5)',
+			        borderColor: 'rgba(147, 197, 253, 1)',
+			        pointBackgroundColor: 'rgba(147, 197, 253, 1)'
                   }
                 ]
               },

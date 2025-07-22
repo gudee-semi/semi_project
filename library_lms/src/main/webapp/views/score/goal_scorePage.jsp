@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.hy.dto.Member" %>
-
 <%
   // 로그인한 사용자 정보 세션에서 가져오기
   Member loginMember = (Member) session.getAttribute("loginMember");
@@ -23,42 +21,337 @@
   <meta charset="UTF-8">
   <title>목표 성적 설정</title>
   
-  <%-- <script src="<c:url value='/resources/jquery-3.7.1.js'/>"></script> --%>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <style>
-    body { font-family: 'Pretendard', sans-serif; margin: 40px; background: #fff; }
-    h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
-    h2, h3 { text-align: left; font-size: 18px; font-weight: bold; margin: 24px 0 8px 10%; }
-    .section { margin-bottom: 24px; }
-    .checkbox-group {
-      display: flex; flex-wrap: wrap; gap: 15px 30px; margin: 0 10%;
-      align-items: center;
-    }
-    label { font-size: 16px; }
-    .btn {
-      display: block; margin: 35px auto 0; padding: 10px 24px;
-      border: 1.5px solid #3b82f6; background: white;
-      color: #3b82f6; border-radius: 6px; font-weight: 500;
-      font-size: 16px; cursor: pointer; transition: .2s;
-    }
-    .btn:hover { background: #3b82f6; color: white; }
-    table { margin: 0 auto; border-collapse: collapse; font-size: 16px;}
-    th, td { border: 1px solid #d1d5db; padding: 10px 18px; text-align: center;}
-    #exam-title { text-align: center; margin-top: 42px; font-size: 18px;}
-    #selected-subjects { text-align: center; margin-bottom: 20px; font-size: 16px;}
-    #score-table {  margin: 30px auto 0 auto;  width: 70%;  min-width: 520px;  border-collapse: collapse;  font-size: 17px; background: #fff; }
-	#score-table th, #score-table td {  border: 1px solid #bbb;  padding: 20px 0;  text-align: center; }
-	.input-center {  width: 110px;  height: 34px;  font-size: 17px;  text-align: center;  border: 1.5px solid #bbb;  border-radius: 6px;  margin: 0 auto;  display: block;  background: #fafcff;  transition: border 0.18s; }
-	.input-center:focus {  outline: none;  border: 1.5px solid #3b82f6; }
-    #modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.32); z-index: 999; }
-    .modal-content { background: #fff; padding: 24px; margin: 22% auto 0;  width: 320px; border-radius: 10px; text-align: center;  box-shadow: 0 6px 30px #2222;  }
-    #modal-close-btn { margin-top: 18px; padding: 7px 22px; border: none; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 16px;}
+  	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+  		column-gap: 40px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
+  
+	body {
+	  font-family: 'Pretendard', sans-serif;
+	  margin: 40px;
+	  background-color: #fff;
+	  color: #333;
+	}
+	
+	.score-container {
+		margin: 0 180px;
+	}
+	
+	h1 {
+	  font-size: 34px;
+	  font-weight: bold;
+	  text-align: center;
+	  margin: 80px auto 50px auto;
+	}
+	
+	.section-row {
+	  display: flex;
+	  align-items: flex-start;
+	  margin-bottom: 45px;
+	  gap: 30px;
+	}
+	
+	.section-label {
+	  width: 100px;
+	  margin-left:30px;
+	  font-weight: 600;
+	  font-size: 18px;
+	  padding-top: 5px;
+	  border-right: 1px solid #ccc;
+	  flex-shrink: 0;
+	}
+	
+	.checkbox-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 30px 50px;   /* 세로 간격 12px, 가로 간격 32px */
+	  font-size: 16px;
+	  padding-left: 10px;
+	  margin-top: 6px;
+	}
+	
+	.checkbox-group label {
+	  display: inline-flex;
+	  align-items: center;
+	  width: 120px;      /* ✅ 열 너비 고정 */
+	  white-space: nowrap;
+	}
+
+	input[type="checkbox"] {
+	  margin-right: 6px;
+	  width: 16px;
+	  height: 16px;
+	  vertical-align: middle;
+	}
+
+	.btn {
+	  display: block;
+	  margin: 60px auto;
+	  padding: 10px 22px;
+	  border: none;
+	  background-color: #205DAC;
+	  color: #fff;
+	  border-radius: 10px;
+	  font-size: 15px;
+	  cursor: pointer;
+	  transition: 0.2s;
+	}
+	
+	.btn:hover {
+	  background-color: #3E7AC8;
+	}
+
+	#exam-title {
+	  margin-top: 80px;
+	  font-size: 28px;
+	  font-weight: 600;
+	  text-align: center;
+	}
+	
+	#selected-subjects {
+	  text-align: center;
+	  font-size: 18px;
+	  margin-bottom: 40px;
+	}
+	
+	#score-table {
+	  margin: 60px auto;
+	  border-collapse: separate;  
+	  border-spacing: 0;           
+	  font-size: 20px;
+	  width: 720px;
+	  background-color: #fff;
+	  border: 1px solid #d1d5db; 
+	  border-radius: 10px;    
+	  overflow: hidden;
+	  outline: none;
+	}
+	
+	#score-table th,
+	#score-table td {
+	  border: 1px solid #d1d5db; 
+	  padding: 18px;
+	  text-align: center;
+	}
+
+	.input-center {
+	  width: 100px;
+	  height: 34px;
+	  border: 1px solid #bbb;
+	  border-radius: 10px;
+	  text-align: center;
+	  font-size: 16px;
+	  background-color: #f9fafb;
+	  transition: border 0.2s;
+	}
+	
+	.input-center:focus {
+	  outline: none;
+	  border-color: #2563eb;
+	}
+	
+	#final-submit {
+	  margin-top: 28px;
+	}
+	
+	#modal {
+	  display: none;
+	  position: fixed;
+	  top: 0; left: 0;
+	  width: 100vw; height: 100vh;
+	  background: rgba(0,0,0,0.4);
+	  z-index: 999;
+	}
+	
+	.modal-content {
+	  background: #fff;
+	  padding: 20px;
+	  margin: 18% auto;
+	  width: 320px;
+	  border-radius: 10px;
+	  text-align: center;
+	  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+	}
+	
+	#modal-close-btn {
+	  margin-top: 16px;
+	  padding: 6px 20px;
+	  border: none;
+	  background: #2563eb;
+	  color: #fff;
+	  border-radius: 6px;
+	}
+
   </style>
 </head>
 <body>
 
 
+<%@ include file="/views/include/header.jsp" %>
+
+
+<div class="flex-container">
+<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+<div class="container">
+	<!-- D-Day 카드 표시 -->
+	<jsp:include page="/views/include/d-day.jsp" />
+
+	<div class="score-container">
+	<h1>목표 성적 설정</h1>
+
+
+<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
+<div class="section-row">
+  <div class="section-label">시험 분류</div>
+  <div class="checkbox-group" id="exam-options">
+    <c:forEach var="month" items="${examOptions}">
+      <c:choose>
+        <c:when test="${month == autoExamMonth}">
+          <label>
+            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
+            <c:out value="${month}"/>월
+            <c:if test="${month == 11}">(수능)</c:if>
+          </label>
+        </c:when>
+        <c:otherwise>
+          <label>
+            <input type="checkbox" class="exam-type" name="exam" value="${month}">
+            <c:out value="${month}"/>월
+            <c:if test="${month == 11}">(수능)</c:if>
+          </label>
+        </c:otherwise>
+      </c:choose>
+    </c:forEach>
+  </div>
+</div>
+
+<!-- 필수 과목 (항상 체크/비활성) -->
+<div class="section-row">
+	<div class="section-label">필수 과목</div>
+  <div class="checkbox-group">
+      <label><input type="checkbox" checked disabled> 국어</label>
+      <label><input type="checkbox" checked disabled> 수학</label>
+      <label><input type="checkbox" checked disabled> 영어</label>
+      <label><input type="checkbox" checked disabled> 한국사</label>
+  </div>
+</div>
+
+<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
+<!-- 사회탐구 -->
+<div class="section-row">
+	<div class="section-label">사회탐구</div>
+  <div class="checkbox-group" id="social-subjects-group">
+      <c:forEach var="subject" items="${socialSubjects}">
+        <label>
+          <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
+  </div>
+</div>
+
+<!-- 과학탐구1 -->
+<div class="section-row">
+  <div class="section-label">과학탐구1</div>
+  <div class="checkbox-group" id="science1-subjects-group">
+      <c:forEach var="subject" items="${science1Subjects}">
+        <label>
+          <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
+  </div>
+</div>
+
+<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
+<div class="section-row" id="science2-section">
+  <div class="section-label">과학탐구2</div>
+  <div class="checkbox-group">
+      <c:forEach var="subject" items="${science2Subjects}">
+        <label>
+          <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
+  </div>
+</div>
+
+<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
+<div class="section-row" id="lang2-section">
+  <div class="section-label">제2외국어</div>
+  <div class="checkbox-group">
+      <c:forEach var="subject" items="${lang2Subjects}">
+        <label>
+          <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+          <c:out value="${subject}"/>
+        </label>
+      </c:forEach>
+  </div>
+</div>
+</div>
+<button id="confirm-subjects" class="btn">선택완료</button>
+
+<!-- 선택 과목/점수 입력 영역 -->
+<h2 id="exam-title"></h2>
+
+<!-- 선택된 과목 목록 표시 영역 -->
+<div id="selected-subjects"></div>
+
+<table id="score-table">
+  <thead>
+    <tr>
+	    <th>과목</th>
+	    <th>원점수</th>
+	    <th>등급</th>
+    </tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
+
+
+<!-- 모달창 -->
+<div id="modal">
+  <div class="modal-content">
+    <p id="modal-message"></p>
+    <button id="modal-close-btn">확인</button>
+  </div>
+</div>
+
+<!-- js 연동 -->
+<script src="../../js/goal_score.js"></script>
+
+
+<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
+<div style="text-align:center;">
+  <button id="final-submit" class="btn">입력완료</button>
+</div>
+</div>
+</div>
 
 <script>
   // [0] 서버-side 변수 JS로 전달
@@ -108,129 +401,9 @@
   });
 </script>
 
-<!-- D-Day 카드 표시 -->
-<jsp:include page="/views/include/d-day.jsp" />
 
 
-<h1>목표 성적 설정</h1>
-
-<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
-<div class="section">
-  <h2>시험 분류</h2>
-  <div class="checkbox-group" id="exam-options">
-    <c:forEach var="month" items="${examOptions}">
-      <c:choose>
-        <c:when test="${month == autoExamMonth}">
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:when>
-        <c:otherwise>
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}">
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 필수 과목 (항상 체크/비활성) -->
-<div class="section">
-  <h3>필수 과목</h3>
-  <div class="checkbox-group">
-    <label><input type="checkbox" checked disabled> 국어</label>
-    <label><input type="checkbox" checked disabled> 수학</label>
-    <label><input type="checkbox" checked disabled> 영어</label>
-    <label><input type="checkbox" checked disabled> 한국사</label>
-  </div>
-</div>
-
-<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
-<!-- 사회탐구 -->
-<div class="section">
-  <h3>사회탐구</h3>
-  <div class="checkbox-group" id="social-subjects-group">
-    <c:forEach var="subject" items="${socialSubjects}">
-      <label>
-        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구1 -->
-<div class="section">
-  <h3>과학탐구1</h3>
-  <div class="checkbox-group" id="science1-subjects-group">
-    <c:forEach var="subject" items="${science1Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="science2-section">
-  <h3>과학탐구2</h3>
-  <div class="checkbox-group">
-    <c:forEach var="subject" items="${science2Subjects}">
-      <label>
-        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section" id="lang2-section">
-  <h3>제2외국어</h3>
-  <div class="checkbox-group">
-    <c:forEach var="subject" items="${lang2Subjects}">
-      <label>
-        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-        <c:out value="${subject}"/>
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-<button id="confirm-subjects" class="btn" style="margin-bottom:24px;">선택완료</button>
-
-<!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title" style="display:block;"></h2>
-<div id="selected-subjects"></div>
-<table id="score-table" style="display:none;">
-  <thead>
-    <tr><th>과목</th><th>원점수</th><th>등급</th></tr>
-  </thead>
-  <tbody id="score-body"></tbody>
-</table>
-
-
-<!-- 모달창 -->
-<div id="modal">
-  <div class="modal-content">
-    <p id="modal-message"></p>
-    <button id="modal-close-btn">확인</button>
-  </div>
-</div>
-
-<!-- js 연동 -->
-<script src="../../js/goal_score.js"></script>
-
-<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
-<div style="width:70%;margin:28px auto 0;text-align:center;">
-  <button id="final-submit" class="btn" style="display:none;">설정완료</button>
-</div>
-
+<!-- footer 삽입 -->
+<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
