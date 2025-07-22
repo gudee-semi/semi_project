@@ -47,6 +47,8 @@ public class QnaAdminService{
     	qnaListAdminDao.incrementViewCount(qnaNo);
     }
     
+    
+    // 문의글 개수 세기
     public int countQna(String category, String searchType, String keyword) {
         return qnaListAdminDao.countQna(category, searchType, keyword);
     }
@@ -55,4 +57,5 @@ public class QnaAdminService{
     public List<Qna> selectQnaListPaging(Paging paging, String category, String searchType, String keyword) {
         return qnaListAdminDao.selectQnaListPaging(paging, category, searchType, keyword);
     }
+    
 }

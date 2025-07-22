@@ -126,7 +126,7 @@ public class QnaListAdminDao {
         return list;
     }
     
-    // 페이징
+    // 전체 문의글 개수 세기
     public int countQna(String category, String searchType, String keyword) {
         SqlSession session = SqlSessionTemplate.getSqlSession(true);
 
