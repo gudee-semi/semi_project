@@ -8,43 +8,78 @@
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main/main.css">
 <style>
-.sidebars {
-		width: 250px;
+	
+	.sidebars {
+		width: 300px;
 		height: 100vh;
-}
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+	}
+	
+	.container {
+		flex: 1;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
+	
+	.background-image {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+	}
+	
+	.notice-section, .qna-section {
+		width: 35%;
+		height: 245px;
+		background-color: rgba(0, 0, 0, 0.6);
+		padding: 20px;
+		color: white;
+		margin: 60px;
+	}
+	
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid #fff;
+		margin: 5px 40px 20px 40px;
+		
+	}
+	.section-header strong {
+		font-size: 25px;
+		margin-bottom: 15px;
+		margin-left: 15px;
+	}
+	.section-plus {
+		font-size: 24px;
+		margin-right: 15px;
+		cursor: pointer;
+	}
+	.section-plus:hover {
+		text-decoration: underline;
+	}
+	
+	.section-row {
+		display: flex;
+		font-size: 18px;
+		justify-content: space-between;
+		margin: 8px 45px;
+	}
+	.link {
+		cursor: pointer;
+	}
+	.link:hover {
+		text-decoration: underline;
+	}
 
-.flex-container {
-	display: flex;
-	align-items: flex-start;
-}
-
-.container {
-	width: 100%;
-}
-
-header {
-	margin: 0 !important;
-}
-
-footer {
-	margin-top: 0px !important;
-}
-
-.background-image {
-	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-}
-
-.background-image span {
-	color: #ffffff;
-	font-size: 20px;
-	opacity: 1;
-}
-
-.link:hover {
-	text-decoration: underline;
-}
 </style>
 </head>
 <body>
@@ -52,30 +87,30 @@ footer {
 	<div class="flex-container">
 		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 		<div class="container">
-			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 945px">
+			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 850px">
 			    <!-- 공지사항 -->
-			    <div style="width: 50%; height: 230px; background-color: rgba(0, 0, 0, 0.6); padding: 20px; color: white;">
-			        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fff; margin-bottom: 10px;">
-			            <strong style="font-size: 20px;">공지사항</strong>
-			            <span style="font-size: 24px; cursor: pointer;" onclick="location.href='<c:url value="/notice/list"/>'">+</span>
+			    <div class="notice-section">
+			        <div class="section-header">
+			            <strong>공지사항</strong>
+			            <span class="section-plus" onclick="location.href='<c:url value="/notice/list"/>'">+</span>
 			        </div>
 			        <c:forEach var="notice" items="${noticeList}" varStatus="status" begin="0" end="4">
-			            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-			                <span onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'" style="cursor: pointer;" class="link">${notice.title}</span>
+			            <div class="section-row">
+			                <span onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'" class="link">${notice.title}</span>
 			                <span>${notice.createAt}</span>
 			            </div>
 			        </c:forEach>
 			    </div>
 			
 			    <!-- 질의응답 영역 -->
-			    <div style="width: 50%; height: 230px; background-color: rgba(0, 0, 0, 0.6); padding: 20px; color: white;">
-			        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fff; margin-bottom: 10px;">
-			            <strong style="font-size: 20px;">질의응답</strong>
-			            <span style="font-size: 24px; cursor: pointer;" onclick="location.href='<c:url value="/qna/view"/>'">+</span>
+			    <div class="qna-section">
+			        <div class="section-header">
+			            <strong>질의응답</strong>
+			            <span class="section-plus" onclick="location.href='<c:url value="/qna/view"/>'">+</span>
 			        </div>
 			        <c:forEach var="qna" items="${qnaList}" varStatus="status" begin="0" end="4">
-			            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-			                <span onclick="location.href='<c:url value="/qna/detail?no=${qna.qnaId }"/>'" style="cursor: pointer;" class="link">${qna.title}</span>
+			            <div class="section-row">
+			                <span onclick="location.href='<c:url value="/qna/detail?no=${qna.qnaId }"/>'" class="link">${qna.title}</span>
 			                <span>${qna.regDate}</span>
 			            </div>
 			        </c:forEach>
