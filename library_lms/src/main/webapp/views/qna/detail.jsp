@@ -180,14 +180,15 @@
 				<c:forEach var="r" items="${replyList }">
 					<table class="detail-table" style="margin-top: 20px">
 						<tr>
-							<th style="width: 15%">작성일</th>
-							<td style="width: 35%">${fn:replace(r.modDate, 'T', ' ')}</td>
-							<th style="width: 15%">작성자</th>
-							<td style="width: 35%">관리자</td>
+							<th colspan="2">관리자 답변</th>
 						</tr>
 						<tr>
 							<th style="height: 120px">답변내용</th>
-							<td colspan="3">${r.content }</td>
+							<td>${r.content }</td>
+						</tr>
+						<tr>
+							<th style="height: 20px">작성일자</th>
+							<td style="height: 20px">${fn:replace(r.modDate, 'T', ' ')}</td>
 						</tr>
 					</table>
 				</c:forEach>

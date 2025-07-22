@@ -57,7 +57,7 @@ public class MyQnaPage extends HttpServlet {
 		List<Qna> qnaList = service.selectMyQnaList(qna);
 		//내가 쓴 글에 대한 관리자 답변 
 		List<QnaReply> qnaReply = service.selectMyQnaReplyList(memberNo);
-		Map m = new HashMap<Qna, Integer>(); 
+		Map<Qna, Integer> m = new HashMap<Qna, Integer>(); 
 		for(Qna q : qnaList) {
 			
 			for(QnaReply r : qnaReply ) {
@@ -65,6 +65,7 @@ public class MyQnaPage extends HttpServlet {
 				if(q.getQnaId()== r.getQnaId())
 				{
 					m.put(q, r.getReplyCheck());
+					System.out.println(r.getReplyCheck());
 				}
 			}
 		}	
