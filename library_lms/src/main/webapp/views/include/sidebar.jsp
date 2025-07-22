@@ -122,7 +122,6 @@
   
   .status-text {
   	font-size: 13px;
-  	font-weight: bold;
   }
   
 </style>
@@ -136,6 +135,9 @@
 	    <img src="/images/test.jpg" alt="프로필 이미지">  	
   	</c:if>
     <h2>${loginMember.memberName}</h2>
+    <c:if test="${ useStatus.status eq 0 }"><p class="status-text">현재 퇴실 상태입니다.</p></c:if>
+    <c:if test="${ useStatus.status eq 1 }"><p class="status-text">현재 입실 상태입니다.</p></c:if>
+    <c:if test="${ useStatus.status eq 2 }"><p class="status-text">현재 외출 상태입니다.</p></c:if>
   </div>
   
   <div class="check-buttons" style="display: flex; gap: 10px; justify-content: space-evenly; margin-bottom: 15px;">
@@ -290,7 +292,7 @@ $('#check-in').on('submit', (e) => {
 	                	$('#temp-input').removeAttr("disabled");
 	                	$('.seat').toggleClass("disabled");
 	                	$('.tablet').toggleClass("disabled");
-	                	$(".status-text").text("입실 상태입니다");
+	                	$(".status-text").text("현재 입실 상태입니다");
 	               	}
 	               }
 			});	
@@ -332,7 +334,7 @@ $('#check-out').on('submit', (e) => {
 	                	$('#temp-input').attr("disabled", true);
 	                	$('.seat').toggleClass("disabled");
 	                	$('.tablet').toggleClass("disabled");
-	                	$(".status-text").text("퇴실 상태입니다");
+	                	$(".status-text").text("현재 퇴실 상태입니다");
 	               	}
 	               }
 			});		
@@ -374,7 +376,7 @@ $('#temp').on('submit', (e) => {
 		                	$('#check-out-input').attr("disabled", true);
 		                	$('#temp-input').removeAttr("disabled");	
 		                	$('#temp-input').val('재입실');
-		                	$(".status-text").text("외출 상태입니다");
+		                	$(".status-text").text("현재 외출 상태입니다");
 	                	}
 	                }
 				});	
@@ -411,7 +413,7 @@ $('#temp').on('submit', (e) => {
 		                	$('#check-out-input').removeAttr("disabled");
 		                	$('#temp-input').removeAttr("disabled");	
 		                	$('#temp-input').val('외출');	
-		                	$(".status-text").text("입실 상태입니다");
+		                	$(".status-text").text("현재 입실 상태입니다");
 	                	}
 	                }
 				});
