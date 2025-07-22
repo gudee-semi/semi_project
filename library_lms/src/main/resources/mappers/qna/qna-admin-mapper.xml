@@ -40,20 +40,28 @@
 		SELECT * FROM qna_reply WHERE qna_id = #{qnaId}
 	</select>
 
-	<!-- 답글 등록 -->
+	<!-- 관리자가 답글 등록 -->
 	<insert id="insertReply" parameterType="com.hy.dto.qna.QnaReply">
 		INSERT INTO qna_reply
 		(qna_id, content, reg_date)
 		VALUES (#{qnaId}, #{content}, NOW())
 	</insert>
 
-	<!-- 답글 수정 -->
+	<!-- 관리자가 답글 수정 -->
 	<update id="updateReply" parameterType="com.hy.dto.qna.QnaReply">
 		UPDATE qna_reply
 		SET
 		content = #{content}, mod_date = NOW(), reply_check = 0
 		WHERE
 		qna_reply_id = #{qnaReplyId}
+	</update>
+
+	<!-- answer_status 0으로 변경 -->
+	<update id="updateAnswerStatus" parameterType="int">
+		UPDATE qna
+		SET
+		answer_status = 1
+		WHERE qna_id = #{qnaId}
 	</update>
 
 	<!-- 답글 단건 조회 -->
@@ -68,6 +76,13 @@
 		DELETE FROM qna_reply
 		WHERE qna_reply_id = #{value}
 	</delete>
+
+	<!-- 답글 삭제시 answer_status 1로 변경 -->
+	<update id="updateAnswerStatusZero" parameterType="int">
+		UPDATE qna
+		SET answer_status = 0
+		WHERE qna_id = #{qnaId}
+	</update>
 
 	<!-- 조회수 -->
 	<update id="incrementViewCount" parameterType="int">

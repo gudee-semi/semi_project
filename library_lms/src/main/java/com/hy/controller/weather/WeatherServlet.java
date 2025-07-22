@@ -26,89 +26,60 @@ public class WeatherServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-	// 1. 도시명과 API 키 지정
-	String city = "Seoul"; // 또는 request.getParameter("city") 등으로 받기
-		
-    // 2. OpenWeatherMap API 키 입력
-    String apiKey = "a5734c7567afe401a5c7d6ee351aacec"; // 본인 API 키 입력
-    
-	// 2. 날씨 API URL 조립 (필요한 옵션 파라미터 추가)
-	// - q=도시명 : 도시명 (영문/한글 모두 가능)
-	// - appid=API키 : 본인 API키
-	// - units=metric : 섭씨(Celsius)로 온도 단위 변환
-	// - lang=kr : 한국어 설명 받기
-	String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric" + "&lang=kr";
+		// 1. 도시명과 API 키 지정
+        String city = request.getParameter("city");
+        if (city == null || city.trim().isEmpty()) city = "Seoul";
+        String apiKey = "a5734c7567afe401a5c7d6ee351aacec"; // 본인 API 키
+        String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city
+                + "&appid=" + apiKey
+                + "&units=metric"
+                + "&lang=kr";
 
-    // 4. URL 객체 생성
-    URL url = new URL(apiUrl);
+        // 2. OpenWeatherMap API 호출
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        int responseCode = conn.getResponseCode();
 
-    // 5. HTTP 연결 객체 생성
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        BufferedReader br;
+        if (responseCode == 200) {
+            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
 
-    // 6. GET 방식으로 요청 설정
-    conn.setRequestMethod("GET");
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        br.close();
 
-    // 7. 응답 코드 확인
-    int responseCode = conn.getResponseCode();
+        // 3. JSON 파싱
+        JsonObject jsonObject = JsonParser.parseString(sb.toString()).getAsJsonObject();
 
-    // 8. 응답 읽기용 버퍼 생성
-    BufferedReader br;
-    if (responseCode == 200) { // 성공 시
-        br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-    } else { // 에러 시
-        br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-    }
+        // 4. 필요한 값 추출
+        String weatherDesc = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject().get("description").getAsString();
+        String icon = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        double temp = jsonObject.getAsJsonObject("main").get("temp").getAsDouble();
+        double feelsLike = jsonObject.getAsJsonObject("main").get("feels_like").getAsDouble();
+        int humidity = jsonObject.getAsJsonObject("main").get("humidity").getAsInt();
+        double windSpeed = jsonObject.getAsJsonObject("wind").get("speed").getAsDouble();
+        String cityName = jsonObject.get("name").getAsString();
 
-    // 9. 응답 데이터(한 줄씩 읽어오기)
-    StringBuilder sb = new StringBuilder();
-    String line;
-    while ((line = br.readLine()) != null) {
-        sb.append(line);
-    }
+        // 5. JSON 객체로 응답 만들기
+        JsonObject resObj = new JsonObject();
+        resObj.addProperty("cityName", cityName);
+        resObj.addProperty("weather", weatherDesc);
+        resObj.addProperty("icon", icon);
+        resObj.addProperty("temperature", temp);
+        resObj.addProperty("feelsLike", feelsLike);
+        resObj.addProperty("humidity", humidity);
+        resObj.addProperty("windSpeed", windSpeed);
 
-    // 10. 버퍼 닫기
-    br.close();
-
-    // 11. JSON 문자열 파싱 (Gson 사용)
-    JsonObject jsonObject = JsonParser.parseString(sb.toString()).getAsJsonObject();
-    
-    // 요청 파라미터에서 도시명 받기 (없으면 기본값 Seoul)
-    String cityName = request.getParameter("city");
-    if (cityName == null || cityName.trim().equals("")) {
-        cityName = "Seoul";
-    }
-    
-    // weather 정보
-    String weatherDesc = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject().get("description").getAsString();
-    String icon = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
-
-    // main 정보
-    double temp = jsonObject.getAsJsonObject("main").get("temp").getAsDouble();
-    double feelsLike = jsonObject.getAsJsonObject("main").get("feels_like").getAsDouble();
-    double tempMin = jsonObject.getAsJsonObject("main").get("temp_min").getAsDouble();
-    double tempMax = jsonObject.getAsJsonObject("main").get("temp_max").getAsDouble();
-    int humidity = jsonObject.getAsJsonObject("main").get("humidity").getAsInt();
-    int pressure = jsonObject.getAsJsonObject("main").get("pressure").getAsInt();
-
-    // wind 정보
-    double windSpeed = jsonObject.getAsJsonObject("wind").get("speed").getAsDouble();
-    int windDeg = jsonObject.getAsJsonObject("wind").get("deg").getAsInt();
-
-
-
-    // 날씨 설명, 온도
-    request.setAttribute("weather", weatherDesc);
-    request.setAttribute("temp", temp);
-    request.setAttribute("icon", icon);
-    // 체감온도, 습도, 풍속 등
-    request.setAttribute("feelsLike", feelsLike);
-    request.setAttribute("humidity", humidity);
-    request.setAttribute("windSpeed", windSpeed);
-    // 도시명
-    request.setAttribute("cityName", cityName);
-
-    // 14. JSP로 포워딩
-    request.getRequestDispatcher("/views/weather/weather.jsp").forward(request, response);
+        // 6. 응답 타입 지정 및 JSON 반환
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write(resObj.toString());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
