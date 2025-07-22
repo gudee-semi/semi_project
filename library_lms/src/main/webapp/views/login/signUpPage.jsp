@@ -56,7 +56,7 @@
 	<!-- 학교 검색  -->
 	<input type="button" id = "member_schul_search" value="학교검색"><br>
 	<input type="text" id="member_schul" name="member_schul" placeholder="학교이름" readonly><br>
-	<p id = "member_schul_msg">
+	<p id = "member_schul_msg"></p>
 	
 	<!-- 학교 검색 모달 -->
 	<div id="schul_modal">

@@ -48,7 +48,7 @@
 	
 
 </insert>
-<insert id ="insertUser" parameterType="com.hy.dto.login.User">
+<insert id ="insertUser" parameterType="com.hy.dto.login.User" useGeneratedKeys="true" keyProperty="userNo">
 	INSERT INTO user(
 	user_name, user_rrn,user_seat
 	)

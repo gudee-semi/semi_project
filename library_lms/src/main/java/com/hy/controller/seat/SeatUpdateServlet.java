@@ -53,10 +53,13 @@ public class SeatUpdateServlet extends HttpServlet {
             session.commit();
         }
 
-        // 중복 경고가 있으면 세션에 저장해서 redirect 후 보여줄 수도 있음
+     // ✅ 성공 또는 실패 여부 저장
+        HttpSession httpSession = request.getSession();
+
         if (!duplicateSeatWarnings.isEmpty()) {
-            HttpSession httpSession = request.getSession();
             httpSession.setAttribute("seatUpdateWarnings", duplicateSeatWarnings);
+        } else {
+            httpSession.setAttribute("seatUpdateSuccess", true); // ✅ 성공 alert용 플래그
         }
 
         response.sendRedirect("fixed-seat"); // 목록으로 이동
