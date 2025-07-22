@@ -9,10 +9,11 @@
 		height: 100px;
 	}
 	
+	
 	header{
-	
+	z-index: 1099;
 	background-color: #B6D0E2;
-	
+	position: relative;
 	
 	}
 	.headerImg{
