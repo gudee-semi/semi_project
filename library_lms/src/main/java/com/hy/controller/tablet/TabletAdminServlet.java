@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/tablet/admin")
+@WebServlet("/admin/tablet")
 public class TabletAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private TabletService tabletService = new TabletService();   
@@ -24,10 +24,7 @@ public class TabletAdminServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Tablet> tabletList = tabletService.selectAll();
-		System.out.println(tabletList);
-		
 		List<Tablet> tabletListm = tabletService.selectAllTabletMemberName();
-		System.out.println(tabletListm);
 		
 		request.setAttribute("tabletList", tabletList);
 		request.setAttribute("tabletListm", tabletListm);
@@ -39,7 +36,6 @@ public class TabletAdminServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String[] penaltyMemberInfos = request.getParameterValues("penalty");
-		System.out.println(penaltyMemberInfos[0]);
 		int result = 0;
 		
 		
@@ -51,7 +47,9 @@ public class TabletAdminServlet extends HttpServlet {
 		    			int memberNo = Integer.parseInt(paneltyInfo[0]);
 		    			int tabletNo = Integer.parseInt(paneltyInfo[1]);
 		    			result = tabletService.updatePenalty(memberNo);
+		    			// 태블릿 반납
 		    			tabletService.returnTablet(tabletNo, memberNo);
+		    			// 태블릿 로그
 		    			tabletService.insertTabletLog(tabletNo, memberNo, 0);
 		    		}
 		    }
@@ -60,11 +58,11 @@ public class TabletAdminServlet extends HttpServlet {
 		}
 		
 		request.setAttribute("msg", "반납처리 후, 해당 사용자에게 패널티를 적용하였습니다.");
-		request.setAttribute("path", "/tablet/admin");
+		request.setAttribute("path", "/admin/tablet");
 		
 		if(result < 1) {
 			request.setAttribute("msg", "처리 중 오류가 발생했습니다.");
-			request.setAttribute("path", "/tablet/admin");
+			request.setAttribute("path", "/admin/tablet");
 		}
 		
 		request.getRequestDispatcher("/views/qna/result.jsp").forward(request, response);
