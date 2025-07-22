@@ -94,34 +94,52 @@
 
   .disabled {
     pointer-events: none;
-    opacity: 0.5;
   }
   
   .check-buttons input[type="submit"] {
-    background: none;
-    border: none;
-    color: #007bff;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
-    font-size: 16px;
-    transition: color 0.2s;
+	cursor: pointer;
+    transition: background-color 0.2s;
   }
 
   .check-buttons input[type="submit"]:hover:not(:disabled) {
-    color: #0056b3;
-  }
-
-  .check-buttons input[type="submit"]:disabled {
-    color: gray;
-    opacity: 0.5;
-    text-decoration: none;
-    cursor: default;
-    font-weight: normal;
+	background-color: #3E7AC8;
   }
   
   .status-text {
   	font-size: 13px;
+  }
+  
+  .check-in-btn,
+  .temp-btn,
+  .temp-out-btn {
+    WIDTH: 80PX;
+    border-color: transparent;
+    border-radius: 6px;
+    height: 30px;
+    background-color: #205DAC;
+    color: white;
+  }
+  
+  .check-out-btn {
+    WIDTH: 80PX;
+    border-color: transparent;
+    border-radius: 6px;
+    height: 30px;
+    background-color: #dc2626;
+    color: white;
+  }
+  
+   .check-out-btn {
+    WIDTH: 80PX;
+    border-color: transparent;
+    border-radius: 6px;
+    height: 30px;
+    background-color: #dc2626;
+    color: white;
+  }
+  
+   .check-buttons input[type="submit"].check-out-btn:hover:not(:disabled) {
+	background-color: red;
   }
   
 </style>
@@ -140,43 +158,28 @@
     <c:if test="${ useStatus.status eq 2 }"><p class="status-text">현재 외출 상태입니다</p></c:if>
   </div>
   
-  <div class="check-buttons" style="display: flex; gap: 10px; justify-content: space-evenly; margin-bottom: 15px;">
-	  <form id="check-in">
-	    <c:if test="${ useStatus.status eq 0 }">
-	      <input type="submit" value="입실" id="check-in-input">
-	    </c:if>
-	    <c:if test="${ useStatus.status eq 1 }">
-	      <input type="submit" value="입실" id="check-in-input" disabled>
-	    </c:if>
-   	    <c:if test="${ useStatus.status eq 2 }">
-	      <input type="submit" value="입실" id="check-in-input" disabled>
-	    </c:if>
-	  </form>
+	<div class="check-buttons" style="display: flex; gap: 10px; justify-content: space-evenly; margin-bottom: 15px;">
+	  <c:if test="${ useStatus.status eq 0 }">
+	    <form id="check-in">
+	      <input type="submit" value="입실" id="check-in-input" class="check-in-btn">
+	    </form>
+	  </c:if>
 	
-	  <form id="check-out">
-	    <c:if test="${ useStatus.status eq 1 }">
-	      <input type="submit" value="퇴실" id="check-out-input">
-	    </c:if>
-	    <c:if test="${ useStatus.status eq 0}">
-	      <input type="submit" value="퇴실" id="check-out-input" disabled>
-	    </c:if>
-   	    <c:if test="${ useStatus.status eq 2}">
-	      <input type="submit" value="퇴실" id="check-out-input" disabled>
-	    </c:if>
-	  </form>
+	  <c:if test="${ useStatus.status eq 1 }">
+	    <form id="check-out">
+	      <input type="submit" value="퇴실" id="check-out-input" class="check-out-btn">
+	    </form>
+	    <form id="check-out-temp">
+	      <input type="submit" value="외출" id="check-out-temp" class="temp-out-btn">
+	    </form>
+	  </c:if>
 	
-	  <form id="temp">
-	    <c:if test="${ useStatus.status eq 1 }">
-	      <input type="submit" value="외출" id="temp-input">
-	    </c:if>
-	    <c:if test="${ useStatus.status eq 2 }">
-	      <input type="submit" value="재입실" id="temp-input">
-	    </c:if>
-	    <c:if test="${ useStatus.status eq 0 }">
-	      <input type="submit" value="외출" id="temp-input" disabled>
-	    </c:if>
-	  </form>
-  </div>
+	  <c:if test="${ useStatus.status eq 2 }">
+	    <form id="temp">
+	      <input type="submit" value="재입실" id="temp-input" class="temp-btn">
+	    </form>
+	  </c:if>
+	</div>
   
 	<div class="logout-text" style="text-align: center; margin-top: 12px; margin-bottom: 20px;">
 	  <a href="/logout" style="
@@ -268,7 +271,8 @@ $('#check-in').on('submit', (e) => {
 	e.preventDefault();
 
     Swal.fire({
-      title: '입실하시겠습니까?',
+      title: ' ',
+      text: '입실하시겠습니까?',
 	  showCancelButton: true,
 	  confirmButtonText: "입실",
 	  cancelButtonText: `취소`,
@@ -288,18 +292,14 @@ $('#check-in').on('submit', (e) => {
 	               dataType: 'json',
 	               success: (data) => {
             	   Swal.fire({
-                		  title: "입실 처리되었습니다.",
+                		  title: " ",
+                		  text: "입실 처리되었습니다.",
                 		  icon: "success",
                 		  confirmButtonText: '확인',
                 		  confirmButtonColor: '#205DAC'
              		});
 	               	if (data.res_code == 200) {
-	                	$('#check-in-input').attr("disabled", true); 
-	                	$('#check-out-input').removeAttr("disabled");
-	                	$('#temp-input').removeAttr("disabled");
-	                	$('.seat').toggleClass("disabled");
-	                	$('.tablet').toggleClass("disabled");
-	                	$(".status-text").text("현재 입실 상태입니다");
+	                	location.reload();
 	               	}
 	               }
 			});	
@@ -307,10 +307,10 @@ $('#check-in').on('submit', (e) => {
 	});
 });
 
-$('#check-out').on('submit', (e) => {
+$('#temp').on('submit', (e) => {
 	e.preventDefault();
 	Swal.fire({
-      title: '퇴실하시겠습니까?',
+      title: '재입실하시겠습니까?',
 	  showCancelButton: true,
 	  confirmButtonText: "퇴실",
 	  cancelButtonText: `취소`,
@@ -318,10 +318,10 @@ $('#check-out').on('submit', (e) => {
 	}).then((result) => {
 		if (result.isConfirmed) {
 			const memberNo = ${ loginMember.memberNo };
-			const check = 0;
+			const check = 1;
 			
 			$.ajax({
-				url: '/use/checkOut',
+				url: '/use/tempIn',
 	               type: 'post',
 	               data: {
 	                   memberNo: memberNo,
@@ -330,18 +330,13 @@ $('#check-out').on('submit', (e) => {
 	               dataType: 'json',
 	               success: (data) => {
             	   Swal.fire({
-                		  title: "퇴실 처리되었습니다.",
+                		  title: "재입실 처리되었습니다.",
                 		  icon: "success",
                 		  confirmButtonText: '확인',
                 		  confirmButtonColor: '#205DAC'
              		});
 	               	if (data.res_code == 200) {
-	                	$('#check-in-input').removeAttr("disabled");
-	                	$('#check-out-input').attr("disabled", true);
-	                	$('#temp-input').attr("disabled", true);
-	                	$('.seat').toggleClass("disabled");
-	                	$('.tablet').toggleClass("disabled");
-	                	$(".status-text").text("현재 퇴실 상태입니다");
+	               		location.reload();
 	               	}
 	               }
 			});		
@@ -349,7 +344,7 @@ $('#check-out').on('submit', (e) => {
 	});
 });
 
-$('#temp').on('submit', (e) => {
+$('#check-out').on('submit', (e) => {
 	e.preventDefault();
 	const tempValue = $('#temp-input').val();
 	if (tempValue === '외출') {
@@ -379,11 +374,7 @@ $('#temp').on('submit', (e) => {
 	                		  confirmButtonColor: '#205DAC'
 	             		});
 	                	if (data.res_code == 200) {
-		                	$('#check-in-input').attr("disabled", true);
-		                	$('#check-out-input').attr("disabled", true);
-		                	$('#temp-input').removeAttr("disabled");	
-		                	$('#temp-input').val('재입실');
-		                	$(".status-text").text("현재 외출 상태입니다");
+	                		location.reload();
 	                	}
 	                }
 				});	
@@ -391,17 +382,17 @@ $('#temp').on('submit', (e) => {
 		});
 	} else {
 		const memberNo = ${ loginMember.memberNo };
-		const check = 1;
+		const check = 0;
 		Swal.fire({
-	      title: '재입실하시겠습니까?',
+	      title: '퇴실하시겠습니까?',
 		  showCancelButton: true,
-		  confirmButtonText: "재입실",
+		  confirmButtonText: "퇴실",
 		  cancelButtonText: `취소`,
 		  confirmButtonColor: '#205DAC'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
-					url: '/use/tempIn',
+					url: '/use/checkOut',
 	                type: 'post',
 	                data: {
 	                    memberNo: memberNo,
@@ -410,17 +401,13 @@ $('#temp').on('submit', (e) => {
 	                dataType: 'json',
 	                success: (data) => {
 	                	Swal.fire({
-                		  title: "재입실 처리되었습니다.",
+                		  title: "퇴실 처리되었습니다.",
                 		  icon: "success",
                 		  confirmButtonText: '확인',
                 		  confirmButtonColor: '#205DAC'
 	             		});
 	                	if (data.res_code == 200) {
-		                	$('#check-in-input').attr("disabled", true);
-		                	$('#check-out-input').removeAttr("disabled");
-		                	$('#temp-input').removeAttr("disabled");	
-		                	$('#temp-input').val('외출');	
-		                	$(".status-text").text("현재 입실 상태입니다");
+	                		location.reload();
 	                	}
 	                }
 				});
@@ -428,5 +415,42 @@ $('#temp').on('submit', (e) => {
 		});
 		
 	}
+});
+
+$('#check-out-temp').on('submit', (e) => {
+	e.preventDefault();
+	Swal.fire({
+      title: '외출하시겠습니까?',
+	  showCancelButton: true,
+	  confirmButtonText: "외출",
+	  cancelButtonText: `취소`,
+	  confirmButtonColor: '#205DAC'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			const memberNo = ${ loginMember.memberNo };
+			const check = 2;
+			
+			$.ajax({
+				url: '/use/tempOut',
+	               type: 'post',
+	               data: {
+	                   memberNo: memberNo,
+	                   check: check
+	               },
+	               dataType: 'json',
+	               success: (data) => {
+            	   Swal.fire({
+                		  title: "외출 처리되었습니다.",
+                		  icon: "success",
+                		  confirmButtonText: '확인',
+                		  confirmButtonColor: '#205DAC'
+             		});
+	               	if (data.res_code == 200) {
+	               		location.reload();
+	               	}
+	               }
+			});		
+		}
+	});
 });
 </script>
