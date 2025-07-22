@@ -44,5 +44,4 @@ public class QnaAdminService{
     public void incrementViewCount(int qnaNo) {
         qnaAdminDao.incrementViewCount(qnaNo);
     }
-
 }
