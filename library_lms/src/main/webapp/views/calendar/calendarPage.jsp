@@ -29,7 +29,7 @@
 	}
 
 	.sidebars {
-		width: 250px;
+		width: 300px;
 		height: 1000px;
 	}
 	
@@ -41,6 +41,11 @@
 	
 	.container {
 		width: 70%;
+		height: 1200px;
+	}
+	
+	.sidebar {
+		height: 1200px !important;
 	}
 	
 	.calendar-icon {
@@ -168,6 +173,10 @@
 	
 	footer {
 		margin-top: 0px !important;
+	}
+	
+	.nav-item {
+		padding: 5px;
 	}
 </style>
 </head>
@@ -441,7 +450,8 @@
 				        		                	Swal.fire({
 														title: "할 일 목록이 수정되었습니다.",
 														icon: "success",
-														confirmButtonText: '확인'
+														confirmButtonText: '확인',
+														confirmButtonColor: '#205DAC'
 				      	                			});
 				        		                	
 				                                    event.remove();
@@ -477,7 +487,12 @@
 				                                    // 재정렬해서 다시 추가
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 				                                } else {
-				                                    window.alert('오류!');
+				                                	Swal.fire({
+								                		  title: "할 일 목록 수정이 실패했습니다.",
+								                		  icon: "error",
+								                		  confirmButtonText: '확인',
+								                		  confirmButtonColor: '#205DAC'
+							                		});
 				                                }
 				                            }
 				                        })
@@ -488,53 +503,64 @@
 			
 				            popup.find('.delete-btn').on('click', () => {
 				            	popup.remove();
-				            	readmePopUp3.style.display = 'flex';
 				            	
 				                const deleteTitle = event.title;
 				                const deleteDate = event.startStr.split('T')[0];
-				                $('.todo-delete-title').text('정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?');
-				                
-				                $('#todo-delete').off('submit').on('submit', (e) => {
-				                	e.preventDefault();
-				                    const dateToRearrange = deleteDate;
-					                $.ajax({
-					                    url: '/calendar/delete',
-					                    type: 'post',
-					                    data: {
-					                        plannerId: plannerId
-					                    },
-					                    dataType: 'json',
-					                    success: (data) => {
-					                        if (data.res_code == '200') {
-					                            window.alert('할 일 목록이 삭제되었습니다.');
-					                            event.remove();
-			                                    const date = dateToRearrange;
-			                                    const eventsToReAdd = [];
-		
-			                                    calendar.getEvents().forEach(e => {
-			                                        if (e.startStr.startsWith(date)) {
-			                                            eventsToReAdd.push({
-			                                                title: e.title,
-			                                                start: date,
-			                                                extendedProps: e.extendedProps
-			                                            });
-			                                            e.remove();
-			                                        }
-			                                    });
-		
-			                                    // 재정렬해서 다시 추가
-			                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
-					                        } else {
-							                	Swal.fire({
-							                		  title: "할 일 목록 수정이 실패했습니다.",
-							                		  icon: "error",
-							                		  confirmButtonText: '확인'
-						                		});
-					                        }
-					                    }
-					                });
-					                popup.remove();
-				                }) 
+
+				                Swal.fire({
+				                  text: '정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
+			                	  showCancelButton: true,
+			                	  confirmButtonText: "삭제",
+			                	  cancelButtonText: `취소`,
+			                	  confirmButtonColor: '#205DAC'
+			                	}).then((result) => {
+			                		if (result.isConfirmed) {
+						                $.ajax({
+						                    url: '/calendar/delete',
+						                    type: 'post',
+						                    data: {
+						                        plannerId: plannerId
+						                    },
+						                    dataType: 'json',
+						                    success: (data) => {
+						                        if (data.res_code == '200') {
+						                        	Swal.fire({
+								                		  title: "할 일 목록 삭제가 성공했습니다.",
+								                		  icon: "success",
+								                		  confirmButtonText: '확인',
+								                		  confirmButtonColor: '#205DAC'
+							                		});
+						                            event.remove();
+				                                    const date = dateToRearrange;
+				                                    const eventsToReAdd = [];
+			
+				                                    calendar.getEvents().forEach(e => {
+				                                        if (e.startStr.startsWith(date)) {
+				                                            eventsToReAdd.push({
+				                                                title: e.title,
+				                                                start: date,
+				                                                extendedProps: e.extendedProps
+				                                            });
+				                                            e.remove();
+				                                        }
+				                                    });
+			
+				                                    // 재정렬해서 다시 추가
+				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
+						                        } else {
+								                	Swal.fire({
+								                		  title: "할 일 목록 삭제가 실패했습니다.",
+								                		  icon: "error",
+								                		  confirmButtonText: '확인',
+								                		  confirmButtonColor: '#205DAC'
+							                		});
+						                        }
+						                    }
+						                });
+						                popup.remove();
+			                		}
+			                	})
+				         
 				            	
 				            });
 				        }
@@ -589,10 +615,10 @@
 		     		 <div class="modal-body">
 		     		 	<form id="todo-input">
 			        		<p>할 일 목록</p>
-			        		<input type="text" class="todo-input-title">
+			        		<input type="text" class="todo-input-title" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')">
 			        		<br>
 			        		<p>날짜</p>
-			        		<input type="date" class="todo-input-date">
+			        		<input type="date" class="todo-input-date" required oninvalid="setCustomMessage(this, '날짜는 필수항목입니다.')" oninput="setCustomMessage(this, '')">
 			        		<br>
 			        		<p>상세 내용</p>
 			        		<textarea rows="10" cols="20" class="todo-input-detail"></textarea>
@@ -612,10 +638,10 @@
 		     		 <div class="modal-body">
 		     		 	<form id="todo-update">
 			        		<p>할 일 목록</p>
-			        		<input type="text" class="todo-update-title">
+			        		<input type="text" class="todo-update-title" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')">
 			        		<br>
 			        		<p>날짜</p>
-			        		<input type="date" class="todo-update-date">
+			        		<input type="date" class="todo-update-date" required oninvalid="setCustomMessage(this, '날짜는 필수항목입니다.')" oninput="setCustomMessage(this, '')">
 			        		<br>
 			        		<p>상세 내용</p>
 			        		<textarea rows="10" cols="20" class="todo-update-detail"></textarea>
@@ -686,21 +712,6 @@
 				    const todoDate = $('.todo-input-date').val();
 				    const todoDetail = $('.todo-input-detail').val();
 			
-				    if (!todoTitle) {
-						Swal.fire({
-							title: "제목은 필수 항목입니다.",
-							icon: "error",
-							confirmButtonText: '확인',
-							confirmButtonColor: '#205DAC'
-						});
-				    } else if (!todoDate) {
-						Swal.fire({
-							title: "날짜는 필수 항목입니다.",
-							icon: "error",
-							confirmButtonText: '확인',
-							confirmButtonColor: '#205DAC'
-						});
-				    } else {
 				        $.ajax({
 				            url: '/calendar/view',
 				            type: 'post',
@@ -715,7 +726,8 @@
 				                	Swal.fire({
 				                		  title: "할 일 목록이 등록되었습니다.",
 				                		  icon: "success",
-				                		  confirmButtonText: '확인'
+				                		  confirmButtonText: '확인',
+				                		  confirmButtonColor: '#205DAC'
 			                		});
 				                    
 				                    $('.todo-input-title').val('');
@@ -757,12 +769,12 @@
 				                	Swal.fire({
 				                		  title: "할 일 목록이 등록이 실패했습니다.",
 				                		  icon: "error",
-				                		  confirmButtonText: '확인'
+				                		  confirmButtonText: '확인',
+				                		  confirmButtonColor: '#205DAC'
 			                		});
 				                }
 				            }
 				        });
-				    }
 				});
 			</script>
 			 
@@ -813,6 +825,12 @@
 				    title.className = 'calendar-title';
 				    title.innerText = label;
 				    calendar.insertBefore(title, calendar.firstChild);
+				}
+			</script>
+			
+			<script>
+				function setCustomMessage(input, message) {
+				  input.setCustomValidity(message);
 				}
 			</script>
 		

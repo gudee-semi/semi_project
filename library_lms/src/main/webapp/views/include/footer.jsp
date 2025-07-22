@@ -7,7 +7,6 @@
 		background-color: #333333;
 		height: 150px;
 		color: white;
-		margin-top: 50px;
 	}
 
 

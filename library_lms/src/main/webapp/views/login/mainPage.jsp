@@ -9,8 +9,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main/main.css">
 <style>
 .sidebars {
-		width: 250px;
-		height: 100vh;
+	width: 300px;
+	height: 100vh;
 }
 
 .flex-container {
@@ -19,7 +19,7 @@
 }
 
 .container {
-	width: 100%;
+	flex: 1;
 }
 
 header {

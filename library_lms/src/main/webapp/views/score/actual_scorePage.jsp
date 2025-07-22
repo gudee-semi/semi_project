@@ -36,7 +36,7 @@
 	
 	.container {
 		width: 70%;
-		/* margin: 0 200px; */
+		margin-bottom: 40px;
 	}
 	
 	header {
@@ -111,7 +111,7 @@
 
 	.btn {
 	  display: block;
-	  margin: 60px auto;
+	  margin: 80px auto;
 	  padding: 10px 22px;
 	  border: none;
 	  background-color: #205DAC;

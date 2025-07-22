@@ -37,6 +37,7 @@
 	
 	.container {
 		width: 70%;
+		margin-bottom: 40px;
 	}
 	
 	header {
@@ -89,7 +90,7 @@
 	.checkbox-group {
 	  display: flex;
 	  flex-wrap: wrap;
-	  gap: 30px 50px;   /* 세로 간격 12px, 가로 간격 32px */
+	  gap: 30px 50px; 
 	  font-size: 16px;
 	  padding-left: 10px;
 	  margin-top: 6px;
@@ -98,7 +99,7 @@
 	.checkbox-group label {
 	  display: inline-flex;
 	  align-items: center;
-	  width: 120px;      /* ✅ 열 너비 고정 */
+	  width: 120px; 
 	  white-space: nowrap;
 	}
 
@@ -111,7 +112,7 @@
 
 	.btn {
 	  display: block;
-	  margin: 60px auto;
+	  margin: 80px auto;
 	  padding: 10px 22px;
 	  border: none;
 	  background-color: #205DAC;
@@ -218,139 +219,139 @@
 <div class="flex-container">
 <div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 <div class="container">
-	<!-- D-Day 카드 표시 -->
-	<jsp:include page="/views/include/d-day.jsp" />
-
-	<div class="score-container">
-	<h1>목표 성적 설정</h1>
-
-
-<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
-<div class="section-row">
-  <div class="section-label">시험 분류</div>
-  <div class="checkbox-group" id="exam-options">
-    <c:forEach var="month" items="${examOptions}">
-      <c:choose>
-        <c:when test="${month == autoExamMonth}">
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:when>
-        <c:otherwise>
-          <label>
-            <input type="checkbox" class="exam-type" name="exam" value="${month}">
-            <c:out value="${month}"/>월
-            <c:if test="${month == 11}">(수능)</c:if>
-          </label>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-  </div>
-</div>
-
-<!-- 필수 과목 (항상 체크/비활성) -->
-<div class="section-row">
-	<div class="section-label">필수 과목</div>
-  <div class="checkbox-group">
-      <label><input type="checkbox" checked disabled> 국어</label>
-      <label><input type="checkbox" checked disabled> 수학</label>
-      <label><input type="checkbox" checked disabled> 영어</label>
-      <label><input type="checkbox" checked disabled> 한국사</label>
-  </div>
-</div>
-
-<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
-<!-- 사회탐구 -->
-<div class="section-row">
-	<div class="section-label">사회탐구</div>
-  <div class="checkbox-group" id="social-subjects-group">
-      <c:forEach var="subject" items="${socialSubjects}">
-        <label>
-          <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-          <c:out value="${subject}"/>
-        </label>
-      </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구1 -->
-<div class="section-row">
-  <div class="section-label">과학탐구1</div>
-  <div class="checkbox-group" id="science1-subjects-group">
-      <c:forEach var="subject" items="${science1Subjects}">
-        <label>
-          <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-          <c:out value="${subject}"/>
-        </label>
-      </c:forEach>
-  </div>
-</div>
-
-<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section-row" id="science2-section">
-  <div class="section-label">과학탐구2</div>
-  <div class="checkbox-group">
-      <c:forEach var="subject" items="${science2Subjects}">
-        <label>
-          <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-          <c:out value="${subject}"/>
-        </label>
-      </c:forEach>
-  </div>
-</div>
-
-<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-<div class="section-row" id="lang2-section">
-  <div class="section-label">제2외국어</div>
-  <div class="checkbox-group">
-      <c:forEach var="subject" items="${lang2Subjects}">
-        <label>
-          <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-          <c:out value="${subject}"/>
-        </label>
-      </c:forEach>
-  </div>
-</div>
-</div>
-<button id="confirm-subjects" class="btn">선택완료</button>
-
-<!-- 선택 과목/점수 입력 영역 -->
-<h2 id="exam-title"></h2>
-
-<!-- 선택된 과목 목록 표시 영역 -->
-<div id="selected-subjects"></div>
-
-<table id="score-table">
-  <thead>
-    <tr>
-	    <th>과목</th>
-	    <th>원점수</th>
-	    <th>등급</th>
-    </tr>
-  </thead>
-  <tbody id="score-body"></tbody>
-</table>
+		<!-- D-Day 카드 표시 -->
+		<jsp:include page="/views/include/d-day.jsp" />
+	
+		<div class="score-container">
+		<h1>목표 성적 설정</h1>
 
 
-<!-- 모달창 -->
-<div id="modal">
-  <div class="modal-content">
-    <p id="modal-message"></p>
-    <button id="modal-close-btn">확인</button>
-  </div>
-</div>
+		<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
+		<div class="section-row">
+		  <div class="section-label">시험 분류</div>
+		  <div class="checkbox-group" id="exam-options">
+		    <c:forEach var="month" items="${examOptions}">
+		      <c:choose>
+		        <c:when test="${month == autoExamMonth}">
+		          <label>
+		            <input type="checkbox" class="exam-type" name="exam" value="${month}" checked>
+		            <c:out value="${month}"/>월
+		            <c:if test="${month == 11}">(수능)</c:if>
+		          </label>
+		        </c:when>
+		        <c:otherwise>
+		          <label>
+		            <input type="checkbox" class="exam-type" name="exam" value="${month}">
+		            <c:out value="${month}"/>월
+		            <c:if test="${month == 11}">(수능)</c:if>
+		          </label>
+		        </c:otherwise>
+		      </c:choose>
+		    </c:forEach>
+		  </div>
+		</div>
 
-<!-- js 연동 -->
-<script src="../../js/goal_score.js"></script>
+		<!-- 필수 과목 (항상 체크/비활성) -->
+		<div class="section-row">
+			<div class="section-label">필수 과목</div>
+		  <div class="checkbox-group">
+		      <label><input type="checkbox" checked disabled> 국어</label>
+		      <label><input type="checkbox" checked disabled> 수학</label>
+		      <label><input type="checkbox" checked disabled> 영어</label>
+		      <label><input type="checkbox" checked disabled> 한국사</label>
+		  </div>
+		</div>
+		
+		<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
+		<!-- 사회탐구 -->
+		<div class="section-row">
+			<div class="section-label">사회탐구</div>
+		  <div class="checkbox-group" id="social-subjects-group">
+		      <c:forEach var="subject" items="${socialSubjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
+		  </div>
+		</div>
+	
+		<!-- 과학탐구1 -->
+		<div class="section-row">
+		  <div class="section-label">과학탐구1</div>
+		  <div class="checkbox-group" id="science1-subjects-group">
+		      <c:forEach var="subject" items="${science1Subjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
+		  </div>
+		</div>
+	
+		<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
+		<div class="section-row" id="science2-section">
+		  <div class="section-label">과학탐구2</div>
+		  <div class="checkbox-group">
+		      <c:forEach var="subject" items="${science2Subjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
+		  </div>
+		</div>
+	
+		<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
+		<div class="section-row" id="lang2-section">
+		  <div class="section-label">제2외국어</div>
+		  <div class="checkbox-group">
+		      <c:forEach var="subject" items="${lang2Subjects}">
+		        <label>
+		          <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
+		  </div>
+		</div>
+	</div>
+	<button id="confirm-subjects" class="btn">선택완료</button>
+	
+	<!-- 선택 과목/점수 입력 영역 -->
+	<h2 id="exam-title"></h2>
+	
+	<!-- 선택된 과목 목록 표시 영역 -->
+	<div id="selected-subjects"></div>
+	
+	<table id="score-table">
+	  <thead>
+	    <tr>
+		    <th>과목</th>
+		    <th>원점수</th>
+		    <th>등급</th>
+	    </tr>
+	  </thead>
+	  <tbody id="score-body"></tbody>
+	</table>
 
-
-<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
-<div style="text-align:center;">
-  <button id="final-submit" class="btn">입력완료</button>
-</div>
-</div>
+	
+	<!-- 모달창 -->
+	<div id="modal">
+	  <div class="modal-content">
+	    <p id="modal-message"></p>
+	    <button id="modal-close-btn">확인</button>
+	  </div>
+	</div>
+	
+	<!-- js 연동 -->
+	<script src="../../js/goal_score.js"></script>
+	
+	
+	<!-- 입력 완료 버튼은 점수 테이블 아래에 위치 -->
+	<div style="text-align:center;">
+	  <button id="final-submit" class="btn">입력완료</button>
+	</div>
+	</div>
 </div>
 
 <script>
