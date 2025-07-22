@@ -7,7 +7,9 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.hy.common.sql.SqlSessionTemplate;
+import com.hy.common.vo.Paging;
 import com.hy.controller.tablet.MyBatisUtil;
+import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaReply;
 
 public class QnaListAdminDao {
@@ -93,7 +95,7 @@ public class QnaListAdminDao {
         }
     }
 
-    
+    // 페널티 증가
     public int updatePenalty(int memberNo) {
    	 SqlSession session = SqlSessionTemplate.getSqlSession(true);
    	 int result = session.update("com.hy.mapper.tablet.TabletMapper.updatePenalty", memberNo);
@@ -101,9 +103,40 @@ public class QnaListAdminDao {
    	 return result;
     }
     
+    // 조회수 증가
     public void incrementViewCount(int qnaNo) {
         SqlSession session = MyBatisUtil.getSqlSession(true);
         session.update("com.hy.mapper.qna.QnaAdminMapper.incrementViewCount", qnaNo);
         session.close();
+    }
+    
+    // 페이징
+    public List<Qna> selectQnaListPaging(Paging paging, String category, String searchType, String keyword) {
+        SqlSession session = SqlSessionTemplate.getSqlSession(true);
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("limitPageNo", paging.getLimitPageNo());
+        param.put("numPerPage", paging.getNumPerPage());
+        param.put("category", category);
+        param.put("searchType", searchType);
+        param.put("keyword", keyword);
+
+        List<Qna> list = session.selectList("com.hy.mapper.qna.QnaAdminMapper.selectQnaListPaging", param);
+        session.close();
+        return list;
+    }
+    
+    // 페이징
+    public int countQna(String category, String searchType, String keyword) {
+        SqlSession session = SqlSessionTemplate.getSqlSession(true);
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("category", category);
+        param.put("searchType", searchType);
+        param.put("keyword", keyword);
+
+        int cnt = session.selectOne("com.hy.mapper.qna.QnaAdminMapper.countQna", param); // 변수에 담아야 함!
+        session.close();
+        return cnt;
     }
 }

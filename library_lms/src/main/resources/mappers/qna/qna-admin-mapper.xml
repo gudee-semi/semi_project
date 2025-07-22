@@ -19,7 +19,7 @@
 			<id property="qnaId" column="qna_id" />
 			<result property="category" column="category" />
 			<result property="title" column="title" />
-			<result property="content" column="qna_content" />
+			<result property="content" column="content" />
 			<result property="memberNo" column="memberNo" />
 			<result property="regDate" column="qna_reg_date" />
 			<result property="modDate" column="qna_mod_date" />
@@ -42,51 +42,70 @@
 		<result property="modDate" column="mod_date" />
 	</resultMap>
 
+	<resultMap id="QnaMapper" type="com.hy.dto.qna.Qna">
+		<id property="qnaId" column="qna_id" />
+		<result property="memberId" column="member_id" />
+		<result property="category" column="category" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		<result property="visibility" column="visibility" />
+		<result property="viewCount" column="view_count" />
+		<result property="answerStatus" column="answer_status" />
+		<result property="memberNo" column="member_no" />
+		<result property="memberName" column="member_name" />
+	</resultMap>
+
 	<!-- 게시글 목록 조회 -->
 	<select id="selectAll" resultMap="QnaAdminMapper">
 		SELECT
-  q.qna_id,
-  q.category,
-  q.title,
-  q.content AS qna_content,
-  q.member_no,
-  q.reg_date AS qna_reg_date,
-  q.mod_date AS qna_mod_date,
-  q.visibility,
-  q.view_count,
-  q.answer_status,
-  m.member_id AS memberId,
-  m.member_name AS memberName,
-  r.qna_reply_id,
-  r.reply_check,
-  r.content AS reply_content,
-  r.reg_date AS reply_reg_date,
-  r.mod_date AS reply_mod_date
-FROM qna q
-LEFT JOIN member m ON q.member_no = m.member_no
-LEFT JOIN qna_reply r ON q.qna_id = r.qna_id
-<where>
-  <if test="category != null and category != ''">
-    q.category = #{category}
-  </if>
-  <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
-    <choose>
-      <when test="searchType == 'title'">
-        AND q.title LIKE CONCAT('%', #{keyword}, '%')
-      </when>
-      <when test="searchType == 'content'">
-        AND q.content LIKE CONCAT('%', #{keyword}, '%')
-      </when>
-      <when test="searchType == 'memberId'">
-        AND m.member_id LIKE CONCAT('%', #{keyword}, '%')
-      </when>
-      <when test="searchType == 'memberName'">
-        AND m.member_name LIKE CONCAT('%', #{keyword}, '%')
-      </when>
-    </choose>
-  </if>
-</where>
-ORDER BY q.qna_id DESC
+		q.qna_id,
+		q.category,
+		q.title,
+		q.content AS qna_content,
+		q.member_no,
+		q.reg_date AS qna_reg_date,
+		q.mod_date AS qna_mod_date,
+		q.visibility,
+		q.view_count,
+		q.answer_status,
+		m.member_id AS memberId,
+		m.member_name AS memberName,
+		r.qna_reply_id,
+		r.reply_check,
+		r.content AS
+		reply_content,
+		r.reg_date AS reply_reg_date,
+		r.mod_date AS
+		reply_mod_date
+		FROM qna q
+		LEFT JOIN member m ON q.member_no =
+		m.member_no
+		LEFT JOIN qna_reply r ON q.qna_id = r.qna_id
+		<where>
+			<if test="category != null and category != ''">
+				q.category = #{category}
+			</if>
+			<if
+				test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+				<choose>
+					<when test="searchType == 'title'">
+						AND q.title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test="searchType == 'content'">
+						AND q.content LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test="searchType == 'memberId'">
+						AND m.member_id LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test="searchType == 'memberName'">
+						AND m.member_name LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY q.qna_id DESC
 	</select>
 
 	<!-- 답글 목록 조회 -->
@@ -145,6 +164,43 @@ ORDER BY q.qna_id DESC
 		view_count = view_count + 1
 		WHERE qna_id = #{qnaId}
 	</update>
+
+	<!-- 문의글 전체 개수를 세는 쿼리 -->
+	<select id="countQna" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM qna
+		WHERE 1=1
+		<if test="category != null and category != ''">
+			AND category = #{category}
+		</if>
+		<if test="searchType != null and keyword != null and keyword != ''">
+			<choose>
+				<when test="searchType == 'title'">
+					AND title LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'content'">
+					AND qna_content LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'memberName'">
+					AND member_name LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<!-- 페이징 -->
+	<select id="selectQnaListPaging" parameterType="map"
+		resultMap="QnaMapper">
+    SELECT
+        q.qna_id, q.category, q.title, q.content,
+        q.member_no, q.reg_date, q.mod_date, q.visibility, q.view_count, q.answer_status,
+        m.member_id, m.member_name
+    FROM qna q
+    LEFT JOIN member m ON q.member_no = m.member_no
+		WHERE 1=1
+		ORDER BY qna_id DESC
+		LIMIT #{limitPageNo}, #{numPerPage}
+	</select>
 
 
 

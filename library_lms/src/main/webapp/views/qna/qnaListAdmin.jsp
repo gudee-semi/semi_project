@@ -13,10 +13,11 @@
 	<style>
 h2 {
 	text-align: center;
+	
 }
 
 .center {
-	width: 50vw;
+	width: 60vw;
 	margin: 0 auto;
 	text-align: center;
 }
@@ -58,7 +59,7 @@ button {
 
 .search {
 	text-align: center;
-	padding: 20px;
+	padding: 10px;
 }
 
 .paging-pages {
@@ -94,9 +95,9 @@ button {
 
 	<jsp:include page="/views/include/header.jsp" />
 
-	<h2>QnA 관리자 리스트</h2>
+	<h2>QnA 관리자 페이지</h2>
 
-	<%-- 1. 검색 폼 추가 (카테고리 + 검색어) --%>
+	<%-- 1. 검색 영역 --%>
 	<form action="${pageContext.request.contextPath}/qna/list/admin"
 		method="get" class="search">
 		<select name="category">
@@ -122,75 +123,82 @@ button {
 		<button type="submit" style="display: inline">검색</button>
 	</form>
 
-
+	<!-- 리스트 영역 -->
 	<table class="center" style="border-collapse: collapse;">
 		<thead>
 			<tr>
-				<th>No</th>
-				<th>분류</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>조회수</th>
-				<th>등록일</th>
+				<th style="width: 5%">No</th>
+				<th style="width: 15%">분류</th>
+				<th style="width: 35%">제목</th>
+				<th style="width: 10%">작성자</th>
+				<th style="width: 25%">작성일</th>
+				<th style="width: 10%">조회수</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="t" items="${qnaAdminList}">
 				<tr style="cursor: pointer;"
-					onclick="location.href='${pageContext.request.contextPath}/qna/detail/admin?qnaId=${t.qna.qnaId}'">
-					<td>${t.qna.qnaId}</td>
-					<td>${t.qna.category}</td>
-					<td>${t.qna.title}</td>
-					<td>${t.qna.memberName}</td>
-					<td>${t.qna.viewCount}</td>
-					<td>${t.qna.modDate}</td>
+					onclick="location.href='${pageContext.request.contextPath}/qna/detail/admin?qnaId=${t.qnaId}'">
+					<td>${t.qnaId}</td>
+					<td>${t.category}</td>
+					<td style="text-align: left;">${t.title}</td>
+					<td>${t.memberName}</td>
+					<td>${t.modDate}</td>
+					<td>${t.viewCount}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 
-				<c:if test="${ not empty noticeList }">
-				<div class="paging-pages">
+	<!-- 페이징 영역 -->
+	<div class="paging-pages">
+		<c:if test="${ not empty qnaAdminList }">
+			<div class="paging-pages">
+				<c:choose>
+					<c:when test="${ paging.prev }">
+						<a
+							href="<c:url value='/qna/list/admin?page=${ paging.pageBarStart - 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
+							<span class="material-symbols-outlined">chevron_left</span>
+						</a>
+					</c:when>
+					<c:otherwise>
+						<a class="disableddd"> <span class="material-symbols-outlined">chevron_left</span>
+						</a>
+					</c:otherwise>
+				</c:choose>
+
+				<c:forEach var="i" begin="${ paging.pageBarStart }"
+					end="${ paging.pageBarEnd }">
 					<c:choose>
-						<c:when test="${ paging.prev }">
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
-								<span class="material-symbols-outlined">chevron_left</span>
-							</a>
+						<c:when test="${ i eq paging.nowPage }">
+							<a
+								href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />"
+								class="current-page">${ i }</a>
 						</c:when>
 						<c:otherwise>
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarStart - 1}&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disableddd">
-								<span class="material-symbols-outlined">chevron_left</span>
-							</a>
+							<a
+								href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
+								${ i }</a>
 						</c:otherwise>
 					</c:choose>
-					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-						<c:choose>
-							<c:when test="${ i eq paging.nowPage }">
-								<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="current-page">
-									${ i }
-								</a>
-							</c:when>
-							<c:otherwise>
-								<a href="<c:url value='/notice/list?nowPage=${ i }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" >
-									${ i }
-								</a>
-							</c:otherwise>
-						</c:choose>	
-					</c:forEach>
-					<c:choose>
-						<c:when test="${ paging.next }">
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:when>
-						<c:otherwise>
-							<a href="<c:url value='/notice/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }&category=${ paging.searchCategory }' />" class="disableddd">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</c:if>
+				</c:forEach>
+
+				<c:choose>
+					<c:when test="${ paging.next }">
+						<a
+							href="<c:url value='/qna/list/admin?page=${ paging.pageBarEnd + 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
+							<span class="material-symbols-outlined">chevron_right</span>
+						</a>
+					</c:when>
+					<c:otherwise>
+						<a class="disableddd"> <span class="material-symbols-outlined">chevron_right</span>
+						</a>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</c:if>
+	</div>
+
 
 	<jsp:include page="/views/include/footer.jsp" />
 </body>
