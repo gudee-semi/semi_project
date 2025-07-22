@@ -1,13 +1,19 @@
 $(document).ready(function () {
   const examCheckboxes = $('input[name="exam"]');
   let availableCount = 0;
+  let invalidInput = null; // [전역] 유효하지 않은 입력 기억용
 
+  // [전역] 제한 과목 배열 정의
+    const socialSubjects = ["경제", "사회문화", "법과정치", "윤리와 사상", "세계지리", "한국지리", "세계사", "동아시아사", "생활과 윤리"];
+    const science1Subjects = ["물리1", "화학1", "생명과학1", "지구과학1"];
+    const science2Subjects = ["물리학2", "화학2", "생명과학2", "지구과학2"];
+    const lang2Subjects = ["독일어", "프랑스어", "스페인어", "중국어", "일본어", "러시아어", "아랍어", "베트남어", "한문"];
+  
   // [A] 시험 체크박스 활성화 조건
   examCheckboxes.each(function () {
     const examMonth = parseInt($(this).val(), 10);
 
     if (examMonth === 11) {
-      // 11월(수능)은 3학년만 선택 가능
       if (studentGrade === 3) {
         $(this).prop('disabled', false).prop('checked', false);
         availableCount++;
@@ -15,7 +21,6 @@ $(document).ready(function () {
         $(this).prop('disabled', true).prop('checked', false);
       }
     } else {
-      // 3, 6, 9월은 전 학년 허용
       $(this).prop('disabled', false).prop('checked', false);
       availableCount++;
     }
@@ -32,9 +37,8 @@ $(document).ready(function () {
 
   // [C] 시험 선택: 하나만 선택 + 과목 토글
   examCheckboxes.change(function () {
-    examCheckboxes.not(this).prop('checked', false); // 하나만 선택되도록
+    examCheckboxes.not(this).prop('checked', false);
 
-    // 초기화
     $('#exam-title').hide().text('');
     $('#selected-subjects').text('');
     $('#score-table').hide();
@@ -42,7 +46,6 @@ $(document).ready(function () {
     $('#final-submit').hide();
     $('.explore-subject, .lang2-subject').prop('checked', false);
 
-    // 과목 토글 조건
     const val = $(this).val();
     if (studentGrade === 3 && ['6', '9', '11'].includes(val)) {
       $('#science2-section, #lang2-section').show();
@@ -95,20 +98,81 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  // [G] 입력값 유효성 검사
+  
+  // [G] 원점수 유효성 검사
   $(document).on('blur', '.score-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 0 || v > 100)) {
-      showModal("원점수는 0~100 사이여야 합니다.");
-    }
-  });
+     const input = $(this);
+     const sub = input.data('subject');
+     const val = input.val().trim();
+     const v = parseInt(val);
 
+     const isRestricted =
+       sub === "한국사" ||
+       socialSubjects.includes(sub) ||
+       science1Subjects.includes(sub) ||
+       science2Subjects.includes(sub) ||
+       lang2Subjects.includes(sub);
+
+     const min = 0;
+     const max = isRestricted ? 50 : 100;
+
+     if (val !== '' && (isNaN(v) || v < min || v > max)) {
+       input.css('border', '2px solid #dc2626');
+       invalidInput = this;
+       const msg = isRestricted
+         ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
+         : "원점수는 0~100 사이여야 합니다.";
+       return showModal(msg);
+     } else {
+       input.css('border', '');
+     }
+   });
+   
+  // [G] 등급 유효성 검사
   $(document).on('blur', '.grade-input', function () {
-    const v = parseInt($(this).val());
-    if ($(this).val() !== '' && (isNaN(v) || v < 1 || v > 9)) {
-      showModal("등급은 1~9 사이여야 합니다.");
+    const val = $(this).val().trim();
+    const v = parseInt(val);
+    if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
+      $(this).css('border', '2px solid #dc2626');
+      invalidInput = this;
+      return showModal("등급은 1~9 사이여야 합니다.");
+    } else {
+      $(this).css('border', '');
     }
   });
+  
+  
+  // [H] 입력하지 않은 항목에 빨간 테두리 표시
+  $('.score-input').each(function (i) {
+    const scoreInput = $(this);
+    const gradeInput = $('.grade-input').eq(i);
+    const scoreRaw = scoreInput.val().trim();
+    const gradeRaw = gradeInput.val().trim();
+
+    scoreInput.css('border', ''); // 초기화
+    gradeInput.css('border', '');
+
+    if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
+    if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
+
+    if (scoreRaw === '' || gradeRaw === '') {
+      emptyFound = true;
+      return false;
+    }
+  });
+  
+  
+  // [J] 모달 닫기 + 유효하지 않은 값 삭제
+  $('#modal-close-btn').click(() => {
+    $('#modal').hide();
+
+    // 잘못된 입력 삭제
+    if (invalidInput) {
+      $(invalidInput).val('').css('border', '2px solid #dc2626');
+      invalidInput = null;
+    }
+  });
+  
 
   // [H] 설정완료 → DB 전송
   $('#final-submit').click(function () {
@@ -121,30 +185,40 @@ $(document).ready(function () {
     const gradeValues = [];
     let emptyFound = false;
 
-    $('.score-input').each(function (i) {
-      const scoreInput = $(this);
-      const gradeInput = $('.grade-input').eq(i);
-      const sub = scoreInput.data('subject');
-      const scoreRaw = scoreInput.val().trim();
-      const gradeRaw = gradeInput.val().trim();
+	$('.score-input').each(function (i) {
+	  const scoreInput = $(this);
+	  const gradeInput = $('.grade-input').eq(i);
+	  const sub = scoreInput.data('subject');
+	  const scoreRaw = scoreInput.val().trim();
+	  const gradeRaw = gradeInput.val().trim();
+	
+	  // 초기화
+	  scoreInput.css('border', ''); // 초기화
+	  gradeInput.css('border', '');
 
-      scoreInput.css('border', '');
-      gradeInput.css('border', '');
+	  // 입력 누락 시 빨간 테두리 표시
+	  if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
+	  if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
 
-      if (scoreRaw === '' || gradeRaw === '') {
-        if (scoreRaw === '') scoreInput.css('border', '2px solid #dc2626');
-        if (gradeRaw === '') gradeInput.css('border', '2px solid #dc2626');
-        emptyFound = true;
-        return false;
-      }
+	  if (scoreRaw === '' || gradeRaw === '') {
+	    emptyFound = true;
+	    return false; // 중단
+	  }
 
-      if ((isNaN(scoreRaw) || scoreRaw < 0 || scoreRaw > 100)) return showModal('원점수는 0~100 사이여야 합니다.');
-      if ((isNaN(gradeRaw) || gradeRaw < 1 || gradeRaw > 9)) return showModal('등급은 1~9 사이여야 합니다.');
+	  const scoreVal = parseInt(scoreRaw);
+	  const gradeVal = parseInt(gradeRaw);
+
+	  if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
+	    return showModal('원점수는 0 이상 100 이하의 숫자로 입력하세요.');
+	  }
+	  if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
+	    return showModal('등급은 1 이상 9 이하의 숫자로 입력하세요.');
+	  }
 
       data.push({
         subjectName: sub,
-        targetScore: parseInt(scoreRaw),
-        targetLevel: parseInt(gradeRaw)
+        targetScore: scoreVal,
+        targetLevel: gradeVal
       });
 
       subjectNames.push(sub);
@@ -160,30 +234,29 @@ $(document).ready(function () {
       subjectScores: data
     };
 
-	$.ajax({
-	  url: '/goal_score/insert',
-	  method: 'POST',
-	  contentType: 'application/json',
-	  data: JSON.stringify(requestPayload),
-	  xhrFields: {
-	    withCredentials: true    // ✅ 세션 쿠키 포함 필수!
-	  },
-	  success: function (res) {
-	    if (!res.success) {
-	      if (res.reason === 'duplicate') return showModal('이미 목표 성적을 입력하였습니다.');
-	      return showModal('입력실패');
-	    }
-	    showModal('입력완료');
-	    renderResultTable(subjectNames, scoreValues, gradeValues);
-	    $('.score-input, .grade-input').hide();
-	    $('#final-submit').hide();
-	  },
-	  error: function () {
-	    showModal('서버 오류로 저장에 실패했습니다.');
-	  }
-	});
-	});
-  // [I] 결과 테이블 렌더링 함수
+    $.ajax({
+      url: '/goal_score/insert',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(requestPayload),
+      xhrFields: { withCredentials: true },
+      success: function (res) {
+        if (!res.success) {
+          if (res.reason === 'duplicate') return showModal('이미 목표 성적을 입력하였습니다.');
+          return showModal('입력실패');
+        }
+        showModal('입력완료');
+        renderResultTable(subjectNames, scoreValues, gradeValues);
+        $('.score-input, .grade-input').hide();
+        $('#final-submit').hide();
+      },
+      error: function () {
+        showModal('서버 오류로 저장에 실패했습니다.');
+      }
+    });
+  });
+
+  // [I] 결과 테이블 렌더링
   function renderResultTable(subs, scores, grades) {
     let html = '';
     for (let i = 0; i < subs.length; i++) {
@@ -192,7 +265,7 @@ $(document).ready(function () {
     $('#score-body').html(html);
   }
 
-  // [J] 모달 출력 함수
+  // [J] 모달창
   function showModal(msg) {
     $('#modal-message').text(msg);
     $('#modal').show();

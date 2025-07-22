@@ -19,6 +19,9 @@ $(document).ready(function () {
 
   // [3] 시험 체크박스 객체
   const examCheckboxes = $('input[name="exam"]');
+  
+  // 삭제 버튼 초기 숨김 처리
+  $('#delete-submit').hide();
 
   // [A] DB에 입력된 시험만 체크박스 활성화
   $.ajax({
@@ -50,9 +53,11 @@ $(document).ready(function () {
       $('#selected-subjects').empty();
       $('#score-body').empty();
       $('#delete-btn').prop('disabled', true);
+      $('#delete-submit').hide();
       return;
     }
 
+		
     const examTypeId = parseInt($(this).val());
 
     // [C] 선택된 시험의 목표 성적 조회 AJAX
@@ -67,7 +72,8 @@ $(document).ready(function () {
         $('#exam-title').html(res);
         // 여기서 테이블, 점수 등 필요한 화면 렌더링 추가
         // 삭제 버튼 활성화
-        $('#delete-btn').prop('disabled', false);
+		$('#score-table').show(); // ✅ 테이블 표시
+        $('#delete-submit').show(); // ✅ 삭제 버튼 표시
       },
       error: function () {
         alert('성적 데이터를 불러오는데 실패했습니다.');
@@ -86,7 +92,6 @@ $(document).ready(function () {
       return;
     }
 
-	
     $.ajax({
       url: '/goal_score/delete',
       type: 'post',
