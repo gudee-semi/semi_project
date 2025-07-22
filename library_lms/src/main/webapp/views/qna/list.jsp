@@ -13,7 +13,6 @@
 <style>
 	.container {
 		width: 70%;
-		margin : 0 auto;
 	}
 	h1 {
 		margin-left: 20px;
@@ -133,7 +132,6 @@
 		pointer-events: none;
 		opacity: 0.2;
 	}
-    
 	.paging-pages a.current-page {
 		color: #205DAC;
 		text-decoration: underline;
@@ -141,7 +139,7 @@
 	footer{
 		margin-top: 100px !important;
 	}
-	.btn, input[type="submit"] {
+	.btn, input[type="submit"].table-bottom {
 		border: none;
 		background-color: #205DAC;
 		color: #fff;
@@ -153,152 +151,176 @@
 		transition: .2s;
 		font-size: 16px;
 	}
+	
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+ 		column-gap: 150px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
-	<div class="container">
-
-		<h1>질의응답</h1>
-		<div class="search-row">
-			<span class="total-count">총 ${totaldata} 건</span>
+	<div class="flex-container">
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
+		<div class="container">
+	
+			<h1>질의응답</h1>
+			<div class="search-row">
+				<span class="total-count">총 ${totaldata} 건</span>
+				<div class="searchBox">
+					<form method="get" action="<c:url value='/qna/view'/>">
 			
-			<a href="/tablet/admin">태블릿 관리자 페이지</a>
-			<div class="searchBox">
-				<form method="get" action="<c:url value='/qna/view'/>">
-		
-					<select name="keywordIn" id="keywordIn">
-						<option value="전체"${paging.keywordIn == "전체" ? "selected" : "" }>전체</option>
-						<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
-						<option value="작성자"${paging.keywordIn == "작성자" ? "selected" : "" }>작성자</option>
-					</select>
-					
-					<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
-					
-					<!-- <input type="submit" value="검색"> -->
-					<button type="submit" class="btn search">검색</button>
-					
-				</form>
+						<select name="keywordIn" id="keywordIn">
+							<option value="전체"${paging.keywordIn == "전체" ? "selected" : "" }>전체</option>
+							<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
+							<option value="작성자"${paging.keywordIn == "작성자" ? "selected" : "" }>작성자</option>
+						</select>
+						
+						<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
+						<button type="submit" class="btn search">검색</button>
+						
+					</form>
+				</div>
 			</div>
-		</div>
-		
-		<!-- <script>
-			$("#keywordIn").val("${paging.keywordIn}").attr("selected","selected");	
-		</script> -->
-		
-		<table class="center" style="border-collapse: collapse; width: 100%">
-			<thead>
-				<tr>
-					<th style="width: 5%">No</th>
-					<th style="width: 15%">분류</th>
-					<th style="width: 45%">제목</th>
-					<th style="width: 10%">작성자</th>
-					<th style="width: 15%">작성일</th>
-					<th style="width: 10%">조회수</th>			
-				</tr>
-			</thead>
 			
-			<tbody>
-				<c:forEach var="q" items="${qnaList }">
-					<c:if test ="${q.memberId eq loginMember.memberId}">
-						<tr class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-							<td>${q.qnaId }</td>
-							<td>${q.category }</td>
-							
-							<c:if test="${q.visibility == 1 }">
-								<td class="title" style="text-align: left">${q.title}</td>
-							</c:if>
-							
-							<c:if test="${q.visibility == 0 }">
-								<td class="title" style="text-align: left">🔒 ${q.title }</td>
-							</c:if>
-							
-							<td>${q.memberName }</td>
-							<td>${q.regDate }</td>
-							<td>${q.viewCount }</td>
-						</tr>
-					</c:if>
-					
-					<c:if test ="${q.memberId ne loginMember.memberId}">
-					
-						<c:if test = "${q.visibility == 1}">
+			<table class="center" style="border-collapse: collapse; width: 100%">
+				<thead>
+					<tr>
+						<th style="width: 5%">No</th>
+						<th style="width: 15%">분류</th>
+						<th style="width: 45%">제목</th>
+						<th style="width: 10%">작성자</th>
+						<th style="width: 15%">작성일</th>
+						<th style="width: 10%">조회수</th>			
+					</tr>
+				</thead>
+				
+				<tbody>
+					<c:forEach var="q" items="${qnaList }">
+						<c:if test ="${q.memberId eq loginMember.memberId}">
 							<tr class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
 								<td>${q.qnaId }</td>
 								<td>${q.category }</td>
-								<td class="title" style="text-align: left">${q.title }</td>
+								
+								<c:if test="${q.visibility == 1 }">
+									<td class="title" style="text-align: left">${q.title}</td>
+								</c:if>
+								
+								<c:if test="${q.visibility == 0 }">
+									<td class="title" style="text-align: left">🔒 ${q.title }</td>
+								</c:if>
+								
 								<td>${q.memberName }</td>
 								<td>${q.regDate }</td>
 								<td>${q.viewCount }</td>
 							</tr>
 						</c:if>
 						
-						<c:if test = "${q.visibility == 0}">
-							<tr class="row">
-								<td>${q.qnaId }</td>
-								<td>${q.category }</td>
-								<td class="title" style="text-align: left">🔒비공개된 글입니다.</td>
-								<td>${q.memberName }</td>
-								<td>${q.regDate }</td>
-								<td>${q.viewCount }</td>
-							</tr>
+						<c:if test ="${q.memberId ne loginMember.memberId}">
+						
+							<c:if test = "${q.visibility == 1}">
+								<tr class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
+									<td>${q.qnaId }</td>
+									<td>${q.category }</td>
+									<td class="title" style="text-align: left">${q.title }</td>
+									<td>${q.memberName }</td>
+									<td>${q.regDate }</td>
+									<td>${q.viewCount }</td>
+								</tr>
+							</c:if>
+							
+							<c:if test = "${q.visibility == 0}">
+								<tr class="row">
+									<td>${q.qnaId }</td>
+									<td>${q.category }</td>
+									<td class="title" style="text-align: left">🔒비공개된 글입니다.</td>
+									<td>${q.memberName }</td>
+									<td>${q.regDate }</td>
+									<td>${q.viewCount }</td>
+								</tr>
+							</c:if>
 						</c:if>
-					</c:if>
-				</c:forEach>
-			</tbody>
-		</table>
-			
-		<c:if test="${not empty qnaList }">
-			<div class="table-bottom">
-				<form action="/qna/write" method="get">
-					<button class="btn">작성</button>
-				</form>
+					</c:forEach>
+				</tbody>
+			</table>
 				
-				<div class="paging-pages">
-					<c:choose>
-						<c:when test="${ paging.prev }">
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
-								<span class="material-symbols-outlined">chevron_left</span>
-							</a>
-						</c:when>
-						<c:otherwise>
-								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
-									<span class="material-symbols-outlined">chevron_left</span>
-								</a>
-						</c:otherwise>
-					</c:choose>	
+			<c:if test="${not empty qnaList }">
+				<div class="table-bottom">
+					<form action="/qna/write" method="get">
+						<button class="btn">작성</button>
+					</form>
 					
-					<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+					<div class="paging-pages">
 						<c:choose>
-							<c:when test="${ i eq paging.nowPage }">
-								<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="current-page">
-									${i }
+							<c:when test="${ paging.prev }">
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
+									<span class="material-symbols-outlined">chevron_left</span>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
-									${ i }
+									<a href="<c:url value='/qna/view?nowPage=${paging.pageBarStart-1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
+										<span class="material-symbols-outlined">chevron_left</span>
+									</a>
+							</c:otherwise>
+						</c:choose>	
+						
+						<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+							<c:choose>
+								<c:when test="${ i eq paging.nowPage }">
+									<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="current-page">
+										${i }
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a href="<c:url value='/qna/view?nowPage=${i}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
+										${ i }
+									</a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						
+						<c:choose>
+							<c:when test="${ paging.next }">
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
+									<span class="material-symbols-outlined">chevron_right</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
+									<span class="material-symbols-outlined">chevron_right</span>
 								</a>
 							</c:otherwise>
 						</c:choose>
-					</c:forEach>
-					
-					<c:choose>
-						<c:when test="${ paging.next }">
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:when>
-						<c:otherwise>
-							<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&keywordIn=${paging.keywordIn }'/>" class="disabled">
-								<span class="material-symbols-outlined">chevron_right</span>
-							</a>
-						</c:otherwise>
-					</c:choose>
+					</div>
 				</div>
-			</div>
-		</c:if>
+			</c:if>
+		</div>
 	</div>
+	
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
