@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <style>
 	body, header{
+		margin: 0;
 		padding: 0;
 		height: 100px;
 	}
