@@ -27,6 +27,16 @@
 	  border-left: 1px solid #eee;
 	  border-right: 1px solid #eee;
 	}
+	
+	.fc-toolbar-title,
+	.fc-col-header-cell-cushion {
+		font-weight: normal;
+	}
+	
+	.fc-day-today .fc-col-header-cell-cushion {
+		font-weight: bold;
+		color: #205DAC;
+	}
 
 	.sidebars {
 		width: 300px;
@@ -508,6 +518,7 @@
 				                const deleteDate = event.startStr.split('T')[0];
 
 				                Swal.fire({
+				                  title: " ",
 				                  text: '정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
@@ -525,7 +536,8 @@
 						                    success: (data) => {
 						                        if (data.res_code == '200') {
 						                        	Swal.fire({
-								                		  title: "할 일 목록 삭제가 성공했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 성공했습니다.",
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -549,7 +561,8 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 						                        } else {
 								                	Swal.fire({
-								                		  title: "할 일 목록 삭제가 실패했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'

@@ -21,8 +21,8 @@ body h1 {
 	width: 150px;
 	text-align: center;
 	position: fixed;
-	top: 500px;
-	right: 50px;
+	top: 610px;
+	right: 100px;
 	z-index: 9999;
 }
 
@@ -126,7 +126,7 @@ input[type="checkbox"] {
 
 /* --------------------- 날짜 배경 --------------------- */
 .fc-day-today {
-	background-color: #F5F5F5 !important;
+	background-color: rgba(32, 93, 172, 0.1) !important;
 }
 
 

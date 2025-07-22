@@ -9,124 +9,124 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <style>
-	.container {
-		width : 70%;
-	}
-	h1 {
-		margin-left: 20px;
-	}
-	select {
-		height: 36px;
-		padding: 5px 10px;
-		font-size: 14px;
-		line-height: 1.4;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		background-color: white;
-	}
-	.category {
-		width: 100px;
-	}
-	text {
-		font-size: 15px;
-	}
-	textarea {
-		resize: none;
-		font-size: 15px;
-	}
-	.input.flexible {
-		width: 100%;
-	}
-	input[type="text"],
-	select,
-	textarea {
-		border: 1px solid #ccc; /* 연한 회색 */
-		border-radius: 4px;
-		padding: 8px;
-		font-size: 14px;
-		box-sizing: border-box;
-		outline: none; /* 포커스시 기본 파란 외곽선 제거 */
-		transition: border-color 0.3s;
-	}
-	input[type="text"]:focus,
-	select:focus,
-	textarea:focus {
-		border: 2px solid #205DAC;  /* 진한 파란색 */
-		box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
-	}
-	.detail-table {
-		width: 100%;
-		border-collapse: collapse;
-		margin-bottom: 20px;
-		table-layout: fixed;
-	}
-	.detail-table th,
-	.detail-table td {
-		border: 1px solid #ddd;
-		padding: 10px 12px;
-		vertical-align: middle;
-		white-space: nowrap; /* 줄바꿈 방지 */
-		overflow: hidden;    /* 넘치는 텍스트 숨김 */
-		text-overflow: ellipsis; /* ... 처리 */
-	}
-	.detail-table th {
-		background-color: #F5F5F5;
-		width: 120px;
-		text-align: center;
-		font-weight: normal;
-		vertical-align: middle;
-	}
-	.content {
-		height: 250px;
-	}
-	.content-cell {
-		vertical-align: top !important;
-		white-space: normal !important; /* 줄바꿈 허용 */
-	}
-	.btn {
-		border: none;
-		background-color: #205DAC;
-		color: #fff;
-		border-radius: 6px;
-		cursor: pointer;
-		height: 40px;
-		width: 90px;
-    	margin-right: 10px;
-    	transition: .2s;
-    	font-size: 16px;
-	}
-	
-	/*  하...   */
-	.sidebars {
-		width: 300px;
-		height: 1000px;
-	}
-	
-	.flex-container {
-		display: flex;
-		align-items: flex-start;
-		column-gap: 100px;
-	}
-	
-	.container {
-		width: 70%;
-	}
-	
-	header {
-		margin: 0 !important;
-	}
-	
-	h1 {
-		margin-top: 50px;
-	}
-	
-	footer {
-		margin-top: 0px !important;
-	}
-	
-	.nav-item {
-		padding: 5px;
-	}
+.container {
+	width : 70%;
+}
+h1 {
+	margin-left: 20px;
+}
+select {
+	height: 36px;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.4;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: white;
+}
+.category {
+	width: 100px;
+}
+text {
+	font-size: 15px;
+}
+textarea {
+	resize: none;
+	font-size: 15px;
+}
+.input.flexible {
+	width: 100%;
+}
+input[type="text"],
+select,
+textarea {
+	border: 1px solid #ccc; /* 연한 회색 */
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 14px;
+	box-sizing: border-box;
+	outline: none; /* 포커스시 기본 파란 외곽선 제거 */
+	transition: border-color 0.3s;
+}
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+	border: 1px solid #205DAC;  /* 진한 파란색 */
+	box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
+}
+.detail-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	table-layout: fixed;
+}
+.detail-table th,
+.detail-table td {
+	border: 1px solid #ddd;
+	padding: 10px 12px;
+	vertical-align: middle;
+	white-space: nowrap; /* 줄바꿈 방지 */
+	overflow: hidden;    /* 넘치는 텍스트 숨김 */
+	text-overflow: ellipsis; /* ... 처리 */
+}
+.detail-table th {
+	background-color: #F5F5F5;
+	width: 120px;
+	text-align: center;
+	font-weight: normal;
+	vertical-align: middle;
+}
+.content {
+	height: 250px;
+}
+.content-cell {
+	vertical-align: top !important;
+	white-space: normal !important; /* 줄바꿈 허용 */
+}
+.btn {
+	border: none;
+	background-color: #205DAC;
+	color: #fff;
+	border-radius: 6px;
+	cursor: pointer;
+	height: 40px;
+	width: 90px;
+   	margin-right: 10px;
+   	transition: .2s;
+   	font-size: 16px;
+}
+
+/*  하...   */
+.sidebars {
+	width: 300px;
+	height: 1000px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+	column-gap: 100px;
+}
+
+.container {
+	width: 70%;
+}
+
+header {
+	margin: 0 !important;
+}
+
+h1 {
+	margin-top: 50px;
+}
+
+footer {
+	margin-top: 0px !important;
+}
+
+.nav-item {
+	padding: 5px;
+}
 </style>
 
 </head>
@@ -199,11 +199,26 @@
 				cache: false,
 				dataType: 'json',
 				success: (data) => {	
-					window.alert(data.res_msg);
 					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/notice/list";
-					} else {						
-						location.href = "<%= request.getContextPath() %>/notice/list";
+						Swal.fire({
+			              title: " ",
+			              text: "공지사항이 작성되었습니다.",
+			              icon: "success",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {
+							location.href = "<%= request.getContextPath() %>/notice/list";			            	
+			            });
+					} else {
+						Swal.fire({
+			              title: " ",
+			              text: "공지사항 작성에 실패했습니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/notice/list";
+			            });
 					}
 				}
 			});
