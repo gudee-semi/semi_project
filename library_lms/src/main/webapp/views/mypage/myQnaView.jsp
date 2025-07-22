@@ -182,11 +182,7 @@
 	
 	.new_reply{
     	
-    	text-align :center;
-    	width : 50px;
     	display: inline-block;
-    	position:absolute;
-    	right:10px;
     	color : Green;
     }
 </style>
@@ -219,18 +215,13 @@
 						<td>${i}</td>
 						<td>${q.category }</td>
 						
-						<td style="text-align: left">${q.title }
+						<td style="text-align: left">
+							<span>${q.title }</span>
 						
 							<c:forEach var = "r" items= "${qnaReply}">
-								<c:if test="${q.qnaId eq r.qnaId and r.replyCheck eq 0}">
-						
-									<div class ="new_reply ${q.qnaId}">N</div>
+								<c:if test="${(q.qnaId eq r.qnaId) and (r.replyCheck eq 1)}">
+									<span class="new_reply">N</span>
 								</c:if>
-							
-								<%-- <c:if test="${q.qnaId eq r.qnaId and r.replyCheck eq 0}">
-									✅
-								</c:if> --%>
-								
 							</c:forEach>
 							
 						</td>

@@ -48,7 +48,7 @@ public class MyQnaPage extends HttpServlet {
 		qna.setMemberNo(memberNo);
 
 		int totalData = service.selectMyQnaCount(qna);
-		
+		System.out.println(totalData);
 		
 		//내가 문의한 글 전체 개수
 		qna.setTotalData(totalData);
@@ -65,7 +65,6 @@ public class MyQnaPage extends HttpServlet {
 				if(q.getQnaId()== r.getQnaId())
 				{
 					m.put(q, r.getReplyCheck());
-					System.out.println(r.getReplyCheck());
 				}
 			}
 		}	

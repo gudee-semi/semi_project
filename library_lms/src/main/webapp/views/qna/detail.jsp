@@ -210,7 +210,7 @@
 					</c:if>
 						<form id="deleteForm" action="<c:url value='/qna/delete'/>" method="get">
 							<input type="hidden" name="no" value="${qna.qnaId}"/>
-							<button type="button" class="btn-common" id="deleteBtn">삭제</button>
+							<button type="button" class="btn-common" id="deleteBtn" style="margin-bottom: 10px">삭제</button>
 						</form>		
 				</c:if>
 			</div>

@@ -114,7 +114,7 @@
 	</select>
 	<update id ="updateReplyCheck" parameterType="_int">
 		UPDATE qna_reply
-		SET reply_check = 1
+		SET reply_check = 0
 		WHERE qna_id= #{qnaId}
 	</update>
 	
