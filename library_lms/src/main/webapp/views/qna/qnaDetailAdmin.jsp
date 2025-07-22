@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,7 +125,7 @@ button {
 			<tr>
 				<td>관리자</td>
 				<td>${r.content}</td>
-				<td>${r.regDate}</td>
+				<td>${fn:replace(r.modDate, 'T', ' ')}</td>
 
 			</tr>
 		</c:forEach>

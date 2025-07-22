@@ -45,23 +45,27 @@ public class QnaListAdminDao {
 
 	// 답글 추가 + answerStatus 1 업데이트 같이 하기
 	public void insertReplyAndUpdateStatus(QnaReply reply) {
-	    // 1. SqlSession 생성 (autoCommit = false: 직접 커밋)
+	    // SqlSession 생성 (autoCommit = false: 직접 커밋)
 	    SqlSession session = SqlSessionTemplate.getSqlSession(false); // 트랜잭션 관리 직접
 	    try {
-	        // 2. 답글 등록
+	        // 답글 등록
 	        session.insert("com.hy.mapper.qna.QnaAdminMapper.insertReply", reply);
 	        
-	        // 3. answerStatus = 1로 업데이트
+	        // answerStatus = 1로 업데이트
 	        session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusOne", reply.getQnaId());
 	        
-	        // 4. 커밋
+            // QnA.answer_status = 1로 업데이트
+            session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusOne",
+                           reply.getQnaId());
+	        
+	        // 커밋
 	        session.commit();
 	    } catch (Exception e) {
-	        // 5. 예외시 롤백
+	        // 예외시 롤백
 	        session.rollback();
 	        throw e;
 	    } finally {
-	        // 6. 세션 닫기
+	        // 세션 닫기
 	        session.close();
 	    }
 	}
@@ -79,21 +83,25 @@ public class QnaListAdminDao {
         SqlSession session = SqlSessionTemplate.getSqlSession(false); // autoCommit=false
 
         try {
-            // 1. 답글 삭제
+            // 답글 삭제
             session.delete("com.hy.mapper.qna.QnaAdminMapper.deleteReply", qnaReplyId);
 
-            // 2. answer_status를 0으로 변경
+            // answer_status를 0으로 변경
             session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusZero", qnaId);
+            
 
-            // 3. 커밋
-            session.commit();
-        } catch (Exception e) {
-            session.rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
-    }
+
+	        // 커밋
+	        session.commit();
+	    } catch (Exception e) {
+	        // 예외시 롤백
+	        session.rollback();
+	        throw e;
+	    } finally {
+	        // 세션 닫기
+	        session.close();
+	    }
+	}
 
     // 페널티 증가
     public int updatePenalty(int memberNo) {

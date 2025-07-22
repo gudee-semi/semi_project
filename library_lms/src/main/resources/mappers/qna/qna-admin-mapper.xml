@@ -129,8 +129,9 @@
 	<!-- 관리자가 답글 등록 -->
 	<insert id="insertReply" parameterType="com.hy.dto.qna.QnaReply">
 		INSERT INTO qna_reply
-		(qna_id, content, reg_date)
-		VALUES (#{qnaId}, #{content}, NOW())
+		(qna_id, content, reply_check, reg_date)
+		VALUES
+		(#{qnaId}, #{content}, 1, NOW())
 	</insert>
 
 	<!-- answer_status 0으로 변경 -->
@@ -145,7 +146,7 @@
 	<update id="updateReply" parameterType="com.hy.dto.qna.QnaReply">
 		UPDATE qna_reply
 		SET
-		content = #{content}, mod_date = NOW(), reply_check = 0
+		content = #{content}, mod_date = NOW(), reply_check = 1
 		WHERE
 		qna_reply_id = #{qnaReplyId}
 	</update>
@@ -213,7 +214,8 @@
 	</select>
 
 
-	<select id="selectQnaOne" parameterType="int" resultMap="QnaMapper">
+	<select id="selectQnaOne" parameterType="int"
+		resultMap="QnaMapper">
 		SELECT
 		q.qna_id,
 		q.member_id,
@@ -228,7 +230,8 @@
 		q.member_no,
 		m.member_name,
 		a.qna_attach_id AS attach_id,
-		a.ori_name AS ori_name,
+		a.ori_name AS
+		ori_name,
 		a.save_name AS save_name,
 		a.file_size AS file_size
 		FROM qna q
@@ -238,5 +241,6 @@
 		ON q.qna_id = a.qna_id
 		WHERE q.qna_id = #{value}
 	</select>
+
 
 </mapper>
