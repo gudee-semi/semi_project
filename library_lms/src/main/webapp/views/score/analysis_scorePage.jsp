@@ -165,10 +165,6 @@
 	  background-color: #CCD7E3;
 	}
 	
-	#delete-submit {
-	  display: none;
-	}
-	
 	#chart-area {
 	  display: flex;
       justify-content: center;
@@ -196,6 +192,11 @@
 	  display: block;
 	}
 
+	
+	#delete-submit {
+	  display: none;
+	  margin-bottom: 100px;
+	}
 	
    #modal {
 	  display: none;
@@ -274,11 +275,6 @@
 	<!-- 성적 테이블을 삽입할 위치 -->
 	<div id="score-table-wrapper"></div>
 	
-	<!-- 삭제하기 버튼 -->
-	<div style="text-align: center;">
-	  <button id="delete-submit" class="btn">삭제하기</button>
-	</div>
-	
 	<!-- 별도 JS 파일 불러오기 -->
 	<script src="../../js/analysis_score.js"></script>
 	
@@ -297,6 +293,11 @@
 	    <canvas id="scoreRadarChart"></canvas>
 	  </div>
 	</div>	
+	
+	<!-- 삭제하기 버튼 -->
+	<div style="text-align: center;">
+	  <button id="delete-submit" class="btn">삭제하기</button>
+	</div>
   </div>
 </div>
 

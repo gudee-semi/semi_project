@@ -6,7 +6,8 @@
   session.setAttribute("currentYear", currentYear);
 %>
 
-<h3><%= currentYear %>년 ${scores['0'].examTypeName}월 모의고사</h3>
+<h2 style="text-align: center; font-size: 27px;"><%= currentYear %>년 ${scores['0'].examTypeName}월 모의고사</h2>
+
 
 <div>
   <table id="score-table">

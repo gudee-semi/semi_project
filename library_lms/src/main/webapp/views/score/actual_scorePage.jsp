@@ -23,7 +23,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
-    .sidebars {
+  	.sidebars {
 		width: 250px;
 		height: 1000px;
 	}
@@ -36,13 +36,9 @@
 	
 	.container {
 		width: 70%;
+		/* margin: 0 200px; */
 	}
 	
-	.calendar-icon {
-		font-size: 30px;
-	}
-	
-	/*  하...   */
 	header {
 		margin: 0 !important;
 	}
@@ -55,11 +51,15 @@
 		margin-top: 0px !important;
 	}
   
-   body {
+	body {
 	  font-family: 'Pretendard', sans-serif;
 	  margin: 40px;
 	  background-color: #fff;
 	  color: #333;
+	}
+	
+	.score-container {
+		margin: 0 180px;
 	}
 	
 	h1 {
@@ -69,44 +69,47 @@
 	  margin: 80px auto 50px auto;
 	}
 	
-    .section {
-	  width: 860px;
-	  margin: 0 auto 28px;
-	}
-	
-	.subject-row {
+	.section-row {
 	  display: flex;
 	  align-items: flex-start;
-	  margin-bottom: 20px;
-	  padding-bottom: 10px;
-	  border-bottom: 1px solid #ccc;
+	  margin-bottom: 45px;
+	  gap: 30px;
 	}
 	
-	.subject-row .subject-title {
-	  width: 120px;
-	  font-size: 16px;
+	.section-label {
+	  width: 100px;
+	  margin-left:30px;
 	  font-weight: 600;
-	  margin-top: 4px;
+	  font-size: 18px;
+	  padding-top: 5px;
+	  border-right: 1px solid #ccc;
 	  flex-shrink: 0;
 	}
 	
-    .checkbox-group {
-	    display: flex;
-	    flex-wrap: wrap;
-	    gap: 32px 40px;
-	    font-size: 18px;
-	    align-content: space-around;
-	    align-items: center;
-    }
-    
-    input[type="checkbox"] {
+	.checkbox-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 30px 50px;
+	  font-size: 16px;
+	  padding-left: 10px;
+	  margin-top: 6px;
+	}
+	
+	.checkbox-group label {
+	  display: inline-flex;
+	  align-items: center;
+	  width: 120px;
+	  white-space: nowrap;
+	}
+
+	input[type="checkbox"] {
+	  margin-right: 6px;
 	  width: 16px;
 	  height: 16px;
 	  vertical-align: middle;
-	  margin-right: 4px;
 	}
-	
-    .btn {
+
+	.btn {
 	  display: block;
 	  margin: 60px auto;
 	  padding: 10px 22px;
@@ -122,9 +125,8 @@
 	.btn:hover {
 	  background-color: #3E7AC8;
 	}
-	
-    
-    #exam-title {
+
+	#exam-title {
 	  margin-top: 80px;
 	  font-size: 28px;
 	  font-weight: 600;
@@ -136,17 +138,18 @@
 	  font-size: 18px;
 	  margin-bottom: 40px;
 	}
-    
-    #score-table {
+	
+	#score-table {
 	  margin: 60px auto;
 	  border-collapse: separate;  
 	  border-spacing: 0;           
 	  font-size: 20px;
-	  width: 1030px;
+	  width: 930px;
 	  background-color: #fff;
 	  border: 1px solid #d1d5db; 
 	  border-radius: 10px;    
 	  overflow: hidden;
+	  outline: none;
 	}
 	
 	#score-table th,
@@ -154,9 +157,9 @@
 	  border: 1px solid #d1d5db; 
 	  padding: 18px;
 	  text-align: center;
-	  height: 50px;
+	  width: 115px;
 	}
-	
+
 	.input-center {
 	  width: 150px;
 	  height: 34px;
@@ -173,7 +176,11 @@
 	  border-color: #2563eb;
 	}
 	
-    #modal {
+	#final-submit {
+	  margin-top: 28px;
+	}
+	
+	#modal {
 	  display: none;
 	  position: fixed;
 	  top: 0; left: 0;
@@ -200,6 +207,7 @@
 	  color: #fff;
 	  border-radius: 6px;
 	}
+
   </style>
 </head>
 
@@ -208,19 +216,19 @@
 <%@ include file="/views/include/header.jsp" %>
 
 <div class="flex-container">
-  <div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
-	<div class="container">
+<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+<div class="container">
 		<!-- D-Day 카드 표시 -->
 		<jsp:include page="/views/include/d-day.jsp" />
-		
+	
 		<div class="score-container">
-		  <h1>성적 입력</h1>
-		</div>
-		
+		<h1>성적 입력</h1>
+
+
 		<!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
-		<div class="section">
+		<div class="section-row">
+		  <div class="section-label">시험 분류</div>
 		  <div class="checkbox-group" id="exam-options">
-		  <h3>시험 분류</h3>
 		    <c:forEach var="month" items="${examOptions}">
 		      <c:choose>
 		        <c:when test="${month == autoExamMonth}">
@@ -241,75 +249,77 @@
 		    </c:forEach>
 		  </div>
 		</div>
-		
+
 		<!-- 필수 과목 (항상 체크/비활성) -->
-		<div class="section">
+		<div class="section-row">
+			<div class="section-label">필수 과목</div>
 		  <div class="checkbox-group">
-		  <h3>필수 과목</h3>
-		    <label><input type="checkbox" checked disabled> 국어</label>
-		    <label><input type="checkbox" checked disabled> 수학</label>
-		    <label><input type="checkbox" checked disabled> 영어</label>
-		    <label><input type="checkbox" checked disabled> 한국사</label>
+		      <label><input type="checkbox" checked disabled> 국어</label>
+		      <label><input type="checkbox" checked disabled> 수학</label>
+		      <label><input type="checkbox" checked disabled> 영어</label>
+		      <label><input type="checkbox" checked disabled> 한국사</label>
 		  </div>
 		</div>
 		
 		<!-- 선택 과목: JSP에서 직접 반복문으로 체크박스와 과목명 출력 -->
 		<!-- 사회탐구 -->
-		<div class="section">
+		<div class="section-row">
+			<div class="section-label">사회탐구</div>
 		  <div class="checkbox-group" id="social-subjects-group">
-		  <h3>사회탐구</h3>
-		    <c:forEach var="subject" items="${socialSubjects}">
-		      <label>
-		        <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
-		        <c:out value="${subject}"/>
-		      </label>
-		    </c:forEach>
+		      <c:forEach var="subject" items="${socialSubjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject social-subject" name="socialSubject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
 		  </div>
 		</div>
-		
+	
 		<!-- 과학탐구1 -->
-		<div class="section">
+		<div class="section-row">
+		  <div class="section-label">과학탐구1</div>
 		  <div class="checkbox-group" id="science1-subjects-group">
-		  <h3>과학탐구1</h3>
-		    <c:forEach var="subject" items="${science1Subjects}">
-		      <label>
-		        <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
-		        <c:out value="${subject}"/>
-		      </label>
-		    </c:forEach>
+		      <c:forEach var="subject" items="${science1Subjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject science-subject" name="science1Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
 		  </div>
 		</div>
-		
+	
 		<!-- 과학탐구2: 3학년 + (6,9,11월)에서만 표시 -->
-		<div class="section" id="science2-section">
+		<div class="section-row" id="science2-section">
+		  <div class="section-label">과학탐구2</div>
 		  <div class="checkbox-group">
-		  <h3>과학탐구2</h3>
-		    <c:forEach var="subject" items="${science2Subjects}">
-		      <label>
-		        <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
-		        <c:out value="${subject}"/>
-		      </label>
-		    </c:forEach>
+		      <c:forEach var="subject" items="${science2Subjects}">
+		        <label>
+		          <input type="checkbox" class="explore-subject science2-subject" name="science2Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
 		  </div>
 		</div>
-		
+	
 		<!-- 제2외국어: 3학년 + (6,9,11월)에서만 표시 -->
-		<div class="section" id="lang2-section">
+		<div class="section-row" id="lang2-section">
+		  <div class="section-label">제2외국어</div>
 		  <div class="checkbox-group">
-		  <h3>제2외국어</h3>
-		    <c:forEach var="subject" items="${lang2Subjects}">
-		      <label>
-		        <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
-		        <c:out value="${subject}"/>
-		      </label>
-		    </c:forEach>
+		      <c:forEach var="subject" items="${lang2Subjects}">
+		        <label>
+		          <input type="checkbox" class="lang2-subject" name="lang2Subject" value="${subject}">
+		          <c:out value="${subject}"/>
+		        </label>
+		      </c:forEach>
 		  </div>
 		</div>
-		
+	</div>
 		<button id="confirm-subjects" class="btn">선택완료</button>
 		
 		<!-- 선택 과목/점수 입력 영역 -->
 		<h2 id="exam-title"></h2>
+		
+		<!-- 선택된 과목 목록 표시 영역 -->
 		<div id="selected-subjects"></div>
 		
 		<table id="score-table">
@@ -325,7 +335,7 @@
 		  <tbody id="score-body"></tbody>
 		</table>
 		
-		<!-- 모달 -->
+		<!-- 모달창 -->
 		<div id="modal">
 		  <div class="modal-content">
 		    <p id="modal-message"></p>

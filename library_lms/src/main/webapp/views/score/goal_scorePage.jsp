@@ -32,19 +32,13 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
-  		/* column-gap: 40px; */
+  		column-gap: 40px;
 	}
 	
 	.container {
-		/* width: 70%; */
-		margin: 0 200px;
+		width: 70%;
 	}
 	
-	.calendar-icon {
-		font-size: 30px;
-	}
-	
-	/*  하...   */
 	header {
 		margin: 0 !important;
 	}
@@ -64,6 +58,10 @@
 	  color: #333;
 	}
 	
+	.score-container {
+		margin: 0 180px;
+	}
+	
 	h1 {
 	  font-size: 34px;
 	  font-weight: bold;
@@ -79,7 +77,8 @@
 	}
 	
 	.section-label {
-	  width: 120px;
+	  width: 100px;
+	  margin-left:30px;
 	  font-weight: 600;
 	  font-size: 18px;
 	  padding-top: 5px;
@@ -88,38 +87,21 @@
 	}
 	
 	.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px 50px;   /* 세로 간격 12px, 가로 간격 32px */
-  font-size: 16px;
-  padding-left: 10px;
-}
-
-.checkbox-group label {
-  display: inline-flex;
-  align-items: center;
-  width: 120px;      /* ✅ 열 너비 고정 */
-  white-space: nowrap;
-}
-
-
-	
-/* 	.subject-row {
 	  display: flex;
-	  align-items: flex-start;
-	  margin-bottom: 20px;
-	  padding-bottom: 10px;
-	  border-bottom: 1px solid #ccc;
+	  flex-wrap: wrap;
+	  gap: 30px 50px;   /* 세로 간격 12px, 가로 간격 32px */
+	  font-size: 16px;
+	  padding-left: 10px;
+	  margin-top: 6px;
 	}
 	
-	.subject-row .subject-title {
-	  width: 120px;
-	  font-size: 16px;
-	  font-weight: 600;
-	  margin-top: 4px;
-	  flex-shrink: 0;
-	} */
-	
+	.checkbox-group label {
+	  display: inline-flex;
+	  align-items: center;
+	  width: 120px;      /* ✅ 열 너비 고정 */
+	  white-space: nowrap;
+	}
+
 	input[type="checkbox"] {
 	  margin-right: 6px;
 	  width: 16px;
@@ -127,7 +109,6 @@
 	  vertical-align: middle;
 	}
 
-	
 	.btn {
 	  display: block;
 	  margin: 60px auto;
@@ -158,7 +139,6 @@
 	  margin-bottom: 40px;
 	}
 	
-	
 	#score-table {
 	  margin: 60px auto;
 	  border-collapse: separate;  
@@ -169,6 +149,7 @@
 	  border: 1px solid #d1d5db; 
 	  border-radius: 10px;    
 	  overflow: hidden;
+	  outline: none;
 	}
 	
 	#score-table th,
@@ -238,11 +219,11 @@
 <div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 <div class="container">
 	<!-- D-Day 카드 표시 -->
-<jsp:include page="/views/include/d-day.jsp" />
+	<jsp:include page="/views/include/d-day.jsp" />
 
-<div class="score-container">
-  <h1>목표 성적 설정</h1>
-</div>
+	<div class="score-container">
+	<h1>목표 성적 설정</h1>
+
 
 <!-- 시험 분류 (3월, 6월, 9월, 11월(수능)) -->
 <div class="section-row">
@@ -332,7 +313,7 @@
       </c:forEach>
   </div>
 </div>
-
+</div>
 <button id="confirm-subjects" class="btn">선택완료</button>
 
 <!-- 선택 과목/점수 입력 영역 -->
