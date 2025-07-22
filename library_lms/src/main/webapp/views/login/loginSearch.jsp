@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,6 +75,7 @@
           <input type="submit" value="아이디 찾기">
         </form>
         <p id="search_name_msg"></p>
+        <p id="result_container"></p>
       </c:if>
 
       <c:if test="${type == 'pw'}">
@@ -110,7 +112,7 @@
 						if(data.id === "no"){
 							$("#search_name_msg").text("일치하는 정보가 없습니다");
 						}else{
-							$("#search_name_msg").text("아이디 : "+data.id).css("color","green");
+							$("#result_container").text("아이디 : "+data.id).css("color","green");
 						}
 				}
 			});

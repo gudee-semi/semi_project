@@ -1,19 +1,94 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+.container_pw_search {
+      border: 1px solid #c5ccd2;
+      border-radius: 8px;
+      padding: 30px 40px;
+      background-color: #fff;
+      width: 400px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin: 200px auto 100px;
+	  box-sizing :border-box;
+    }
+
+    .insert_search_data form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="password"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    input[type="submit"] {
+      background-color: #D8E5F4;
+      color: black;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #205DAC;
+      color:white;
+    }
+
+    p {
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    #member_pw_msg{
+      color: red;
+      padding-left: 3px;
+    }
+
+    #result_container {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+
+
+</style>
 <body>
-<form id="change_pw">
-	<input type="password" id="member_pw" name="member_pw" placeholder="비밀번호"><br>
-	<input type="password" id="member_pw_check" placeholder="비밀번호 확인"><br>
-	<p id="member_pw_msg"></p>
-  <input type="submit" value="변경하기"/>
-</form>
+ <%@ include file="/views/include/header.jsp" %>
+<div class="container_pw_search">
+    <div class="insert_search_data">
+		<form id="change_pw">
+			<input type="password" id="member_pw" name="member_pw" placeholder="새로운 비밀번호">
+			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
+		  <input type="submit" value="변경하기"/>
+		</form>
+		<p id="member_pw_msg"></p>
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
 
 <script>
 const pwReg = /^[a-zA-Z0-9!@#$%^&*?]{6,12}$/;

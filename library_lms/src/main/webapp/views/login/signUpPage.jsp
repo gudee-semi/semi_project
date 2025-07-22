@@ -8,95 +8,267 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
-<form id="signUp" method="post" enctype="multipart/form-data" >
-	<!--아이디   -->
-	<input type="text" id="member_id" name="member_id" placeholder="아이디"><br>
-	<p id="member_id_msg"></p>
+<!--모달창 css -->
+<style>
+	p {
+      font-size: 13px;
+      margin-top: 8px;
+      margin-bottom : 0;
+    }
+	#schul_modal{
+		display:none;
+		position: fixed;
+		top:0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 9999;
+		justify-content: center;
+		align-items: center;
+	}
+	#schul_modal .modal_box {
+		background-color: white;
+		width: 400px;
+		border-radius: 10px;
+		padding: 20px;
+		box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+		position: relative;
+	}
+	/* 제목 영역 */
+	#modal_title {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: end;
+	}
 	
-	<!--비밀번호 -->
-	<input type="text" id="member_pw" name="member_pw" placeholder="비밀번호"><br>
-	<input type="text" id="member_pw_check" placeholder="비밀번호 확인"><br>
-	<p id="member_pw_msg"></p>
-	
-	<br>
-	<!-- 이름 -->
-	<input type="text" id="member_name" name="member_name" placeholder="이름"><br>
-	<p id="member_name_msg"></p>
-	
-	<!-- 전화번호 -->
-	<input type="text" id="member_phone" name="member_phone" placeholder="전화번호"><br>
-	<p id="member_phone_msg"></p>
-	
-	<!--주민번호 -->
-	<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호"><br>
-	<p id="member_rrn_msg"></p>
-	
-	<!--주소 검색  -->
-	<input type="button" id = "addressBtn" value="주소검색"><br>
-	<input type="text" id="member_address" name="member_address" placeholder="주소" readonly><br>
-	<input type="text" id="member_address_detail" name="member_address_detail" placeholder="상세주소">
-	<!--주소 모달창  -->
-	<div id="layer" style="display:none;background-color:white;position :absolute;overflow:hidden;
-	z-index:1;border:1px solid;width:500px;height:400px;left:20px;top:200px; ">
-		<div style="background-color:blue; position:relative; height:35px; z-index:2;">
-	
-		 <button type="button" id ="addressCloseBtn"style=" position :absolute; top:3px;
-		 right:3px; z-index:2;">닫기</button>
-	
-	
-	
-		</div>
-		<div id="addressWindow" style="width :100%; height : 100%;">
-		</div>
-	</div>
-	<p id= "member_address_msg"></p>
-	
-	
-	<!-- 학교 검색  -->
-	<input type="button" id = "member_schul_search" value="학교검색"><br>
-	<input type="text" id="member_schul" name="member_schul" placeholder="학교이름" readonly><br>
-	<p id = "member_schul_msg"></p>
-	
-	<!-- 학교 검색 모달 -->
-	<div id="schul_modal">
+	/* 닫기 버튼 */
+	#modal_close_btn {
+		background-color: #D8E5F4;
+		border: none;
+		font-size: 16px;
+		cursor: pointer;
+		color: #333;
+		width : 50px;
+		border-radius:5px;
 		
-		<div id = "modal_title">
-		
-			<button type= "button" id ="modal_close_btn">닫기</button>
-		
-		</div>
-		<div id = "modal_content">
-			<div id = "search_field"></div>
-				<input id = "schul_name" type="text" placeholder="학교이름 입력" > 
-				<button type= "button" id = "schul_search">검색</button>
-		</div>
-			<div id = "result_field">
-			    <ul>
-				</ul>
-			</div>
-	</div>
+	}
+	#modal_close_btn:hover{
+		background-color: #205DAC;
+		color:white;
+	}
 	
-	<!-- 학년 입력 -->
-	<select id ="member_grade" name="member_grade">
-		<option value="0">미지정</option>
-		<option value="1">1학년</option>
-		<option value="2">2학년</option>
-		<option value="3">3학년</option>
-	</select>
-	<p id ="member_grade_msg"></p>
-	<br>
+	/* 검색 필드 */
+	#modal_content {
+		margin-top: 10px;
+		display: flex;
+		gap: 10px;
+	}
 	
-	<!-- 프로필 이미지 첨부 -->
-	<input type="file" id = "member_profile" name = "member_profile">
-	<p id ="member_profile_msg"></p>
-	<img id="previewImg"width="200px" height="200px" hidden>
+	#schul_name {
+		flex: 1;
+		padding: 5px;
+		border-radius: 5px;
+		border : 1px solid #D8E5F4;
+		outline: none; 
+	}
+	#schul_name:focus{
+		border : 1px solid #205DAC;
+	}
+	#schul_search {
+		border-radius:5px;
+		border:none;
+		padding: 5px 10px;
+		cursor: pointer;
+		background-color: #D8E5F4;
+		color:black;
+	}
+	#schul_search:hover{
+		background-color: #205DAC;
+		color:white;
+	}
+	
+	/* 결과 필드 */
+	#result_field {
+		margin-top: 15px;
+		max-height: 200px;
+		overflow-y: auto;
+		border-top: 1px solid #ddd;
+		padding-top: 10px;
+	}
+	
+	#result_field ul {
+		list-style: none !important;
+		padding: 0;
+		margin: 0;
+	}
+	
+	#result_field ul li {
+		padding: 5px 10px;
+		border-bottom: 1px solid #eee;
+		cursor : pointer;
+	}
+	#result_field ul li:hover{
+	 	background-color: #D8E5F4;
+	}
+	.title_text{
+		color: #D8E5F4;
+		margin : 20px auto 30px;
+		font-size: 20px;
+	}
+	
+	/* 주소 모달 */
+	#layer{
+		display:none;
+		background-color:white;
+		position :absolute;
+		overflow:hidden;
+		z-index:1;
+		border:1px solid #888;
+		border-radius:5px;
+		width:500px;
+		height:400px;
+		left:20px;
+		top:200px;
+	}
+	#layer>div{
+		background-color:#D8E5F4; 
+		position:relative; 
+		height:35px; 
+		z-index:2;
+	}
+	#addressCloseBtn{
+		position :absolute; 
+		top:3px;
+		right:3px;
+		z-index:2;
+		background-color: white;
+		color: black;
+		border-radius: 5px;
+		border:none;
+		
+	}
+	#addressCloseBtn:hover{
+		background-color: #205DAC;
+		color: white;
+	}
+	.signup_title{
+		margin:0 auto;
+		font-size: 20px;
+		font-weight: 700;
+	}
+	.container_signup{
+		display:flex;
+		justify-content: center;
+		margin-top: 50px;
+		flex-direction: column;
+	}
+	.box_signup{
+		margin: 0 auto;
+		padding :50px;
+		
+	}
+	.box_signup input{
+	  padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      column-gap: 5px;
+	}
+	
+</style>
 
-	<!-- 독서실 정보 동의 -->
-	<input type="checkbox" id = "member_check" name ="member_check">독서실 정보 동의
-	<p id ="member_check_msg"></p>
-	<input type="submit" value="제출하기">
-</form>
+
+<body>
+<%@ include file ="/views/include/header.jsp" %>
+<div class="container_signup">
+	<p class="signup_title">회원가입</p>
+	<div class="box_signup">
+		<form id="signUp" method="post" enctype="multipart/form-data" >
+			<!--아이디   -->
+			<input type="text" id="member_id" name="member_id" placeholder="아이디">
+			<p id="member_id_msg"></p>
+			
+			<!--비밀번호 -->
+			<input type="password" id="member_pw" name="member_pw" placeholder="비밀번호">
+			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
+			<p id="member_pw_msg"></p>
+			
+			<br>
+			<!-- 이름 -->
+			<input type="text" id="member_name" name="member_name" placeholder="이름">
+			<p id="member_name_msg"></p>
+			
+			<!-- 전화번호 -->
+			<input type="text" id="member_phone" name="member_phone" placeholder="전화번호">
+			<p id="member_phone_msg"></p>
+			
+			<!--주민번호 -->
+			<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호">
+			<p id="member_rrn_msg"></p>
+			
+			<!--주소 검색  -->
+			<input type="button" id = "addressBtn" value="주소검색">
+			<input type="text" id="member_address" name="member_address" placeholder="주소" readonly>
+			<input type="text" id="member_address_detail" name="member_address_detail" placeholder="상세주소">
+			<!--주소 모달창  -->
+			<div id="layer">
+				<div>
+				 <button type="button" id ="addressCloseBtn" >닫기</button>
+				</div>
+				<div id="addressWindow" style="width :100%; height : 100%;">
+				</div>
+			</div>
+			<p id= "member_address_msg"></p>
+			
+			
+			<!-- 학교 검색  -->
+			<input type="button" id = "member_schul_search" value="학교검색">
+			<input type="text" id="member_schul" name="member_schul" placeholder="학교이름" readonly>
+			<p id = "member_schul_msg"></p>
+			
+			<!-- 학교 검색 모달 -->
+			<div id="schul_modal">
+				<div class ="modal_box">
+					<div id = "modal_title">
+						<button type= "button" id ="modal_close_btn">닫기</button>
+						<p class="title_text">학교 검색</p>
+				
+					</div>
+				<div id = "modal_content">
+					<div id = "search_field"></div>
+						<input id = "schul_name" type="text" placeholder="학교이름 입력" > 
+						<button type= "button" id = "schul_search">검색</button>
+					</div>
+					<div id = "result_field">
+					 
+					</div>
+				</div>
+			</div>
+			
+			<!-- 학년 입력 -->
+			<select id ="member_grade" name="member_grade">
+				<option value="0">미지정</option>
+				<option value="1">1학년</option>
+				<option value="2">2학년</option>
+				<option value="3">3학년</option>
+			</select>
+			<p id ="member_grade_msg"></p>
+			<br>
+			
+			<!-- 프로필 이미지 첨부 -->
+			<input type="file" id = "member_profile" name = "member_profile">
+			<p id ="member_profile_msg"></p>
+			<img id="previewImg"width="200px" height="200px" hidden>
+		
+			<!-- 독서실 정보 동의 -->
+			<input type="checkbox" id = "member_check" name ="member_check">독서실 정보 동의
+			<p id ="member_check_msg"></p>
+			<input type="submit" value="제출하기">
+		</form>
+	</div>
+</div>
 <script>
  	// 변수 설정, 정규식 설정
 	let idStatus =false;
@@ -298,6 +470,12 @@
 	</script>
 
 	<script>
+	$("#member_schul_search").on("click",function(){
+		  document.getElementById('schul_modal').style.display = 'flex';
+	})
+	$("#modal_close_btn").on("click",function(){
+		document.getElementById('schul_modal').style.display = 'none';
+	})
 	//서울시 학교 검색
 		$("#schul_search").on("click",function(){
 			
@@ -335,7 +513,7 @@
 							for(let i = 0 ; i <name.length; i++){
 								result+="<li class = 'schul_list'>"+name[i]+"</li>";
 							}
-							$("#result_field").html(result);
+							$("#result_field").html("<ul>" + result + "</ul>");
 						}	
 					},
 					error: function(){
