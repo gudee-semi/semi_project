@@ -29,7 +29,7 @@ public class QnaListAdminServlet extends HttpServlet {
 	    // 1. 검색 파라미터 받기 (category, keyword, searchType)
 	    String category = request.getParameter("category");
 	    String keyword = request.getParameter("keyword");
-	    String searchType = request.getParameter("searchType");	    
+	    String searchType = request.getParameter("searchType");
 
 	    // Service로 검색 조건 전달해서 결과 조회
 	    List<QnaReply> qnaAdminList = qnaAdminService.selectAll(category, keyword, searchType);

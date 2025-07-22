@@ -45,56 +45,48 @@
 	<!-- 게시글 목록 조회 -->
 	<select id="selectAll" resultMap="QnaAdminMapper">
 		SELECT
-		r.qna_reply_id,
-		r.qna_id,
-		r.reply_check,
-		r.content AS
-		reply_content,
-		r.reg_date AS reply_reg_date,
-		r.mod_date AS
-		reply_mod_date,
-		-- Qna(원글) 정보
-		q.qna_id AS qna_id,
-		q.category,
-		q.title,
-		q.content AS qna_content,
-		q.member_no AS memberNo,
-		q.reg_date AS
-		qna_reg_date,
-		q.mod_date AS qna_mod_date,
-		q.visibility,
-		q.view_count,
-		q.answer_status,
-		-- Member(작성자) 정보
-		m.member_id AS memberId,
-		m.member_name AS memberName
-		FROM qna_reply r
-		LEFT JOIN qna q ON r.qna_id
-		= q.qna_id
-		LEFT JOIN member m ON q.member_no = m.member_no
-		<where>
-			<if test="category != null and category != ''">
-				q.category = #{category}
-			</if>
-			<if
-				test="keyword != null and keyword != '' and searchType != null and searchType != ''">
-				<choose>
-					<when test="searchType == 'title'">
-						AND q.title LIKE CONCAT('%', #{keyword}, '%')
-					</when>
-					<when test="searchType == 'content'">
-						AND q.content LIKE CONCAT('%', #{keyword}, '%')
-					</when>
-					<when test="searchType == 'memberId'">
-						AND m.member_id LIKE CONCAT('%', #{keyword}, '%')
-					</when>
-					<when test="searchType == 'memberName'">
-						AND m.member_name LIKE CONCAT('%', #{keyword}, '%')
-					</when>
-				</choose>
-			</if>
-		</where>
-		ORDER BY r.qna_reply_id DESC
+  q.qna_id,
+  q.category,
+  q.title,
+  q.content AS qna_content,
+  q.member_no,
+  q.reg_date AS qna_reg_date,
+  q.mod_date AS qna_mod_date,
+  q.visibility,
+  q.view_count,
+  q.answer_status,
+  m.member_id AS memberId,
+  m.member_name AS memberName,
+  r.qna_reply_id,
+  r.reply_check,
+  r.content AS reply_content,
+  r.reg_date AS reply_reg_date,
+  r.mod_date AS reply_mod_date
+FROM qna q
+LEFT JOIN member m ON q.member_no = m.member_no
+LEFT JOIN qna_reply r ON q.qna_id = r.qna_id
+<where>
+  <if test="category != null and category != ''">
+    q.category = #{category}
+  </if>
+  <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+    <choose>
+      <when test="searchType == 'title'">
+        AND q.title LIKE CONCAT('%', #{keyword}, '%')
+      </when>
+      <when test="searchType == 'content'">
+        AND q.content LIKE CONCAT('%', #{keyword}, '%')
+      </when>
+      <when test="searchType == 'memberId'">
+        AND m.member_id LIKE CONCAT('%', #{keyword}, '%')
+      </when>
+      <when test="searchType == 'memberName'">
+        AND m.member_name LIKE CONCAT('%', #{keyword}, '%')
+      </when>
+    </choose>
+  </if>
+</where>
+ORDER BY q.qna_id DESC
 	</select>
 
 	<!-- 답글 목록 조회 -->
