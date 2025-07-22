@@ -27,6 +27,13 @@ button {
 
 </style>
 
+	<%@ include file="/views/include/header.jsp" %>
+
+	<div>
+	
+	
+	
+	
 	<!-- 사용가능 대수 계산 -->
 	<c:set var="usable" value="0" />
 
@@ -89,7 +96,10 @@ button {
 	<c:if test="${not btn}">
 		<button type="button" disabled>사용불가</button>
 	</c:if>
-
+	
+	</div>
+	
+		<%@ include file="/views/include/footer.jsp" %>
 
 	<script>
 		function confirmUse() {
