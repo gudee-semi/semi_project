@@ -2,7 +2,7 @@ package com.hy.controller.qna;
 
 import java.io.IOException;
 
-import com.hy.dao.qna.QnaAdminDao;
+import com.hy.dao.qna.QnaListAdminDao;
 import com.hy.service.qna.QnaAdminService;
 
 import jakarta.servlet.ServletException;
@@ -16,7 +16,7 @@ public class QnaReplyDeleteAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private QnaAdminService qnaAdminService = new QnaAdminService();
-	QnaAdminDao qnaAdminDao = new QnaAdminDao();
+	QnaListAdminDao qnaAdminDao = new QnaListAdminDao();
 
 	public QnaReplyDeleteAdminServlet() {
 		super();
