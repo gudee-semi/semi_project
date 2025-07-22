@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
 	body, header{
-		margin: 0 0 50px 0;
+		margin: 0;
 		padding: 0;
 		height: 100px;
 	}
@@ -26,7 +26,7 @@
 	<div class="headerBox">
 		<div class="headerImg">
 			<img src="/images/logo.png" style="width: 100%; height: 100%; object-fit: cover; margin-top: 8.5px;"
-			onclick="location.href='/'">
+			onclick="location.href='/main'">
 		</div>
 
 	</div>

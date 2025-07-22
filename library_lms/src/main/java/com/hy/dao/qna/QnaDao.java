@@ -37,7 +37,7 @@ public class QnaDao {
 	}
 	
 	public int updateAttach(SqlSession session, Attach attach) {
-		return session.update("com.hy.mapper.notice.QnaMapper.updateAttach", attach);
+		return session.update("com.hy.mapper.qna.QnaMapper.updateAttach", attach);
 	}
 	
 	public int deleteAttach(SqlSession session, Qna qna) {
@@ -82,5 +82,12 @@ public class QnaDao {
 	public int insertAttach(SqlSession session, Attach attach) {
 		int result = session.insert("com.hy.mapper.qna.QnaMapper.insertAttach", attach);
 		return result;
+	}
+
+	public List<Qna> selectQnaMain() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Qna> list = session.selectList("com.hy.mapper.qna.QnaMapper.selectQnaMain");
+		session.close();
+		return list;
 	}
 }

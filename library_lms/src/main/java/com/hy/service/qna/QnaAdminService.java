@@ -55,5 +55,4 @@ public class QnaAdminService{
     public List<Qna> selectQnaListPaging(Paging paging, String category, String searchType, String keyword) {
         return qnaListAdminDao.selectQnaListPaging(paging, category, searchType, keyword);
     }
-
 }

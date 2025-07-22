@@ -1,6 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, com.hy.dto.seat.FixedSeatMemberView" %>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <html>
 <head>
     <title>고정좌석 이용 회원</title>
@@ -43,21 +44,28 @@
             text-align: center;
         }
         .btn-change {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #1d4ed8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+             display: block;
+			  margin: 40px auto;
+			  padding: 10px 22px;
+			  border: none;
+			  background-color: #205DAC;
+			  color: #fff;
+			  border-radius: 6px;
+			  font-size: 15px;
+			  cursor: pointer;
+			  transition: 0.2s;
         }
+        .btn-change:hover {
+		  	  background-color: #3E7AC8;
+		}
     </style>
 </head>
 
 <body>
+<%@ include file="/views/include/header.jsp" %>
 <h2>고정좌석 이용 회원</h2>
 
-<!-- ✅ 여기에서 onsubmit으로 확인창 띄우기 -->
+<!-- ✅ 확인창 띄우는 form -->
 <form action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post"
       onsubmit="return confirm('정말 변경하시겠습니까?');">
 
@@ -108,7 +116,7 @@
     </div>
 </form>
 
-
+<!-- ✅ 중복 경고 메시지 alert -->
 <%
     List<String> seatUpdateWarnings = (List<String>) session.getAttribute("seatUpdateWarnings");
     if (seatUpdateWarnings != null && !seatUpdateWarnings.isEmpty()) {
@@ -125,5 +133,23 @@
     }
 %>
 
+<!-- ✅ 좌석 변경 성공 메시지 alert -->
+<%
+    Boolean seatUpdateSuccess = (Boolean) session.getAttribute("seatUpdateSuccess");
+    if (seatUpdateSuccess != null && seatUpdateSuccess) {
+%>
+<script>
+Swal.fire({
+	  title: "좌석 변경을 성공했습니다",
+	  icon: "success",
+	  draggable: true
+	});
+</script>
+<%
+        session.removeAttribute("seatUpdateSuccess");
+    }
+%>
+
+<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

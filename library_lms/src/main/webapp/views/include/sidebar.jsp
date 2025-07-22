@@ -164,7 +164,7 @@
 	  </div>
 	
 	  <div class="nav-item">
-	    <a href="<c:url value='/seat/view' />" class="<c:if test='${useStatus.status eq 0}'>disabled</c:if> seat">좌석</a>
+	    <a href="<c:url value='/seat/view' />" class="<c:if test='${useStatus.status eq 0 || loginMember.memberSeat == 1}'>disabled</c:if> seat">좌석</a>
 	  </div>
 	
 	  <div class="nav-item">
@@ -183,16 +183,24 @@
 	  </div>  
   </c:if>
   <c:if test="${ empty useStatus }">
-	  <div class="nav-item"><a href="<c:url value='#' />">회원목록</a></div>
+	  <div class="nav-item dropdown">
+  	   <a href="#">회원목록</a>
+	  	  <div class="dropdown-content">
+	  	  	<a href="<c:url value='/user/signup' />">회원 등록</a>
+		   	<a href="<c:url value='/user/delete' />">회원 목록</a>
+		   	<a href="<c:url value='/admin/member/delete' />">회원 계정 목록</a>
+	  	  </div>
+  	  </div>
 	  <div class="nav-item"><a href="<c:url value='/admin/abort' />">강제퇴실</a></div>
 	  <div class="nav-item"><a href="<c:url value='/admin/fixed-seat' />">좌석지정</a></div>
+	  <div class="nav-item"><a href="<c:url value='/admin/tablet' />">태블릿</a></div>
 	  <div class="nav-item"><a href="<c:url value='/qna/list/admin' />">질의응답 답변</a></div>
   	  <div class="nav-item"><a href="<c:url value='/notice/list' />">공지사항</a></div>
   
   </c:if>
 
   
-
+  <div class="nav-item"><a href="<c:url value='/weatherservlet' />">날씨</a></div>
 </div>
 
 
