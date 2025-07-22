@@ -164,7 +164,7 @@
 	  </div>
 	
 	  <div class="nav-item">
-	    <a href="<c:url value='/seat/view' />" class="<c:if test='${useStatus.status eq 0}'>disabled</c:if> seat">좌석</a>
+	    <a href="<c:url value='/seat/view' />" class="<c:if test='${useStatus.status eq 0 || loginMember.memberSeat == 1}'>disabled</c:if> seat">좌석</a>
 	  </div>
 	
 	  <div class="nav-item">

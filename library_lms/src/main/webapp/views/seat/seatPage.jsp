@@ -114,11 +114,8 @@
 			
 	}
 	.sidebars{
-		height: 100vh;
 		width: 250px;
-		background-color: red;
-		z-index: 99;
-		
+		height: 100vh;
 	}
 	
 	.totalBox{
@@ -140,7 +137,7 @@
 
   <div class="totalBox">
 	<div class="sidebars">
-
+	<%@ include file="/views/include/sidebar.jsp" %>
 	
 	
 	</div>
