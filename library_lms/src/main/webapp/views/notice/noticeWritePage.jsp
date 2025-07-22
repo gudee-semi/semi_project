@@ -11,7 +11,6 @@
 <style>
 	.container {
 		width : 70%;
-		margin : 0 auto;	
 	}
 	h1 {
 		margin-left: 20px;
@@ -26,7 +25,7 @@
 		background-color: white;
 	}
 	.category {
-		width: 75px;
+		width: 100px;
 	}
 	text {
 		font-size: 15px;
@@ -96,56 +95,86 @@
     	transition: .2s;
     	font-size: 16px;
 	}
+	
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+		column-gap: 150px;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
-	
-	<div class="container">
-		<h1>공지사항</h1>
-		
-		<form id="writeNoticeFrm">
-			<table class="detail-table">
-				<tr>
-					<th style="width: 15%">카테고리</th>
-					<td style="width: 35%">
-						<select class="category" name="category" id="category">
-					  		<option value=0>선택</option>
-						  	<option value='일반공지'>일반공지</option>
-						  	<option value='중요공지'>중요공지</option>
-						  	<option value='시설공지'>시설공지</option>
-						</select>
-					</td>
+	<div class="flex-container">
+		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+		<div class="container">
+			<h1>공지사항</h1>
+			
+			<form id="writeNoticeFrm">
+				<table class="detail-table">
+					<tr>
+						<th style="width: 15%">카테고리</th>
+						<td style="width: 35%">
+							<select class="category" name="category" id="category">
+						  		<option value=0>선택</option>
+							  	<option value='일반공지'>일반공지</option>
+							  	<option value='중요공지'>중요공지</option>
+							  	<option value='시설공지'>시설공지</option>
+							</select>
+						</td>
+						
+						<th style="width: 15%">작성자</th>
+						<td style="width: 35%">관리자</td>
+					</tr>
 					
-					<th style="width: 15%">작성자</th>
-					<td style="width: 35%">관리자</td>
-				</tr>
-				
-				<tr>
-				    <th>제목</th>	
-				    <td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="80" required></textarea></td>
-		    	</tr>
-		    	
-		    	<tr>
-			    	<th>내용</th>
-			    	<td colspan="3"><textarea class="input flexible" name="content" rows="15" cols="80" required></textarea></td>
-		    	</tr>
-		    	
-		    	<tr>
-					<th>파일첨부</th>
-					<td colspan="3"><input type="file" name="file"></td>
-			    </tr>
-			</table>
-			    
-		    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-			<button type="button" class="btn" id="noticeList">목록</button>
-			</div>
-		
-			<div style="display: flex; justify-content: center; margin-top: 20px;">
-			    <button type="submit" class="btn">등록</button>
-			</div>
-		</form>	
+					<tr>
+					    <th>제목</th>	
+					    <td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="80" required></textarea></td>
+			    	</tr>
+			    	
+			    	<tr>
+				    	<th>내용</th>
+				    	<td colspan="3"><textarea class="input flexible" name="content" rows="15" cols="80" required></textarea></td>
+			    	</tr>
+			    	
+			    	<tr>
+						<th>파일첨부</th>
+						<td colspan="3"><input type="file" name="file"></td>
+				    </tr>
+				</table>
+				    
+			    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+				<button type="button" class="btn" id="noticeList">목록</button>
+				</div>
+			
+				<div style="display: flex; justify-content: center; margin-top: 20px;">
+				    <button type="submit" class="btn">등록</button>
+				</div>
+			</form>	
+		</div>
 	</div>
 	
 	<script>

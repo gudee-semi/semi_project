@@ -161,6 +161,10 @@ public class NoticeService {
 		return noticeDao.updateViewCount(noticeId);
 	}
 
+	public List<Notice> selectNoticeMain() {
+		return noticeDao.selectNoticeMain();
+	}
+
 
 
 	

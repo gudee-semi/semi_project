@@ -53,7 +53,7 @@
 	input[type="text"]:focus,
 	select:focus,
 	textarea:focus {
-		border: 2px solid #205DAC;  /* 진한 파란색 */
+		border: 1px solid #205DAC;  /* 진한 파란색 */
 		box-shadow: 0 0 4px rgba(32, 93, 172, 0.3); /* 선택 시 부드러운 그림자 효과 */
 	}
 	.detail-table {
@@ -89,63 +89,92 @@
     	transition: .2s;
     	font-size: 16px;
 	}
+	
+	/*  하...   */
+	.sidebars {
+		width: 250px;
+		height: 1000px;
+	}
+	
+	.flex-container {
+		display: flex;
+		align-items: flex-start;
+	}
+	
+	.container {
+		width: 70%;
+	}
+	
+	header {
+		margin: 0 !important;
+	}
+	
+	h1 {
+		margin-top: 50px;
+	}
+	
+	footer {
+		margin-top: 0px !important;
+	}
 </style>
 
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
-	
-	<div class="container">
-		<h1>질의응답</h1>
-		
-		<form id="writeQnaFrm">
-			<table class="detail-table">
-				<tr>
-					<th style="width: 15%">카테고리</th>
-					<td style="width: 35%">
-						<select class="category" name="qnaCategory" id="qnaCategory">
-						  <option value=0>선택</option>
-						  <option value='시설'>시설</option>
-						  <option value='좌석'>좌석</option>
-						  <option value='환불'>환불</option>
-						  <option value='기타'>기타</option>
-						</select>
-					</td>
-					
-					<th style="width: 15%">공개여부</th>
-					<td style="width: 35%">
-						<select name="qnaVisibility" id="qnaVisibility">
-						  <option value=1>공개</option>
-						  <option value=0>비공개</option>
-						</select>
-					</td>
-				</tr>
-				
-				<tr>
-				    <th>제목</th>	
-				    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required></textarea></td>
-			    </tr>
-			    
-			    <tr>
-			    	<th>내용</th>
-			    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required></textarea></td>
-			    </tr>
-			    
-			    <tr>
-				    <th>파일첨부</th>
-				    <td colspan="3"><input type="file" name="qnaFile" ></td>
-			    </tr>
-			    
-			</table>
+	<div class="flex-container">
+		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
+		<div class="container">
+			<h1>질의응답</h1>
 			
-			<div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-				<button type="button" class="btn" id="qnaView">목록</button>
-			</div>
-		
-			<div style="display: flex; justify-content: center; margin-top: 20px;">
-			    <button type="submit" class="btn">등록</button>
-			</div>
-		</form>
+			<form id="writeQnaFrm">
+				<table class="detail-table">
+					<tr>
+						<th style="width: 15%">카테고리</th>
+						<td style="width: 35%">
+							<select class="category" name="qnaCategory" id="qnaCategory">
+							  <option value=0>선택</option>
+							  <option value='시설'>시설</option>
+							  <option value='좌석'>좌석</option>
+							  <option value='환불'>환불</option>
+							  <option value='기타'>기타</option>
+							</select>
+						</td>
+						
+						<th style="width: 15%">공개여부</th>
+						<td style="width: 35%">
+							<select name="qnaVisibility" id="qnaVisibility">
+							  <option value=1>공개</option>
+							  <option value=0>비공개</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+					    <th>제목</th>	
+					    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required></textarea></td>
+				    </tr>
+				    
+				    <tr>
+				    	<th>내용</th>
+				    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required></textarea></td>
+				    </tr>
+				    
+				    <tr>
+					    <th>파일첨부</th>
+					    <td colspan="3"><input type="file" name="qnaFile" ></td>
+				    </tr>
+				    
+				</table>
+				
+				<div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+					<button type="button" class="btn" id="qnaView">목록</button>
+				</div>
+			
+				<div style="display: flex; justify-content: center; margin-top: 20px;">
+				    <button type="submit" class="btn">등록</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	
 	<script>
