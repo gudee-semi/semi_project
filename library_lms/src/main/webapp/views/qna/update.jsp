@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>질의응답 수정</title>
+<title>질의응답 수정 페이지</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <style>
@@ -15,10 +15,10 @@
 	}
 	.container {
 		width : 70%;
-		margin : 0 auto;	
 	}
 	h1 {
 		margin-left: 20px;
+		margin-bottom: 50px;
 	}
 	select {
 		height: 36px;
@@ -116,7 +116,7 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
- 		column-gap: 0;
+ 		column-gap: 150px;
 	}
 	
 	.container {

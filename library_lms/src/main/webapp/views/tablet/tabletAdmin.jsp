@@ -23,7 +23,7 @@
 		text-overflow: ellipsis;
 	}
 	th {
-		border-bottom: 1px solid #666666;
+		border-bottom: 1px solid #CCCCCC;
 		background: #FAFAFA;
 	}
 	th:nth-child(1), td:nth-child(1) {
@@ -45,7 +45,7 @@
 		cursor: pointer;
 		height: 40px;
 		width: 90px;
-		margin-right: 10px;
+		margin-right: 25px;
 		transition: .2s;
 		font-size: 16px;
 	}
@@ -81,6 +81,7 @@
 	
 	h1 {
 		margin-top: 50px;
+		margin-bottom: 50px;
 		width: 100%;
 	}
 	

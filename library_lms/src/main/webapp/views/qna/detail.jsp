@@ -9,25 +9,17 @@
 <title>질의응답 상세 페이지</title>
 
 <style>
-	/* 항상 가장 먼저 */
-	html, body {
-		margin: 0;
-		padding: 0;
-		font-family: 'Arial', sans-serif; /* 선택사항 */
-		box-sizing: border-box;
-	}
 	.container {
 		width : 70%;
-		margin : 0 auto;	
 	}
 	h1 {
 		margin-left: 20px;
+		margin-bottom: 50px;
     }
 	.detail-table {
 		width: 100%;
 		border-collapse: collapse;
 		margin-bottom: 20px;
-		border: 1px solid #F5F5F5;
 	}
 	.detail-table th,
 	.detail-table td {
@@ -119,7 +111,7 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
- 		column-gap: 0;
+ 		column-gap: 150px;
 	}
 	
 	.container {

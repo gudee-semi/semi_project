@@ -33,13 +33,14 @@ footer {
 
 .weather-box {	
 	position: absolute;
-	top: 10px;
-	right: 40px;
+	top: 15px;
+	right: 35px;
 	display: flex;
+	font-size: 15px;
 }
 
 #icon {
-    translate: -10px -10px;
+    translate: 5px -10px;
 }
 </style>
 </head>
@@ -58,7 +59,7 @@ footer {
 			</div>
 	    <div>
 	      <div><span id="cityName"></span></div>
-				<div>온도 <span id="temperature"></span> ℃</div>
+				<div>기온 <span id="temperature"></span> ℃</div>
 
         <div>습도 <span id="humidity"></span> %</div>
 	    </div>
@@ -72,15 +73,30 @@ footer {
 	
 <script>
 $(document).ready(function() {
+	// 영어 도시명을 한글로 매핑
+    const cityNameMap = {
+        "Seoul": "서울",
+        "Busan": "부산",
+        "Incheon": "인천",
+        "Daegu": "대구",
+        "Gwangju": "광주",
+        "Daejeon": "대전",
+        "Ulsan": "울산"
+        // 필요 시 더 추가 가능
+    };
+	
     $.ajax({
         url: "/weatherservlet",
         method: "GET",
         dataType: "json",
         success: function(data) {
-            $("#cityName").text(data.cityName);
+        	 // cityName이 매핑되어 있으면 한글로, 아니면 원래 값으로 표시
+            const cityInKorean = cityNameMap[data.cityName] || data.cityName;
+        	
+            $("#cityName").text(cityInKorean);
             $("#weather").text(data.weather);
             $("#icon").attr("src", "https://openweathermap.org/img/wn/" + data.icon + "@2x.png");
-            $("#temperature").text(data.temperature);
+            $("#temperature").text(parseInt(data.temperature));
             $("#feelsLike").text(data.feelsLike);
             $("#humidity").text(data.humidity);
             $("#windSpeed").text(data.windSpeed);
