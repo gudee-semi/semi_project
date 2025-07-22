@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" 
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <style>
@@ -7,7 +7,6 @@
 		background-color: #333333;
 		height: 150px;
 		color: white;
-		margin-top: 50px;
 	}
 
 
