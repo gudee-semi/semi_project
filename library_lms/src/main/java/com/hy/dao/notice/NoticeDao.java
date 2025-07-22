@@ -71,4 +71,11 @@ public class NoticeDao {
 		return result;
 	}
 
+	public List<Notice> selectNoticeMain() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Notice> list = session.selectList("com.hy.mapper.notice.NoticeMapper.selectNoticeMain");
+		session.close();
+		return list;
+	}
+
 }

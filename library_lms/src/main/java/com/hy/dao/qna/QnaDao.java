@@ -83,4 +83,11 @@ public class QnaDao {
 		int result = session.insert("com.hy.mapper.qna.QnaMapper.insertAttach", attach);
 		return result;
 	}
+
+	public List<Qna> selectQnaMain() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Qna> list = session.selectList("com.hy.mapper.qna.QnaMapper.selectQnaMain");
+		session.close();
+		return list;
+	}
 }
