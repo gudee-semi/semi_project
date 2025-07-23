@@ -92,8 +92,8 @@
 
 .weather-box {
 	position: absolute;
-	top: 10px;
-	right: 12px;
+	top: 13px;
+	right: 40px;
 }
 
 .weather-wrapper {
@@ -116,7 +116,7 @@
 .weather-icon {
 	position: absolute;
 	top: 1px;
-	right: 90px;
+	right: 115px;
 	width: 80px;
 	height: 80px;
 }
@@ -130,8 +130,8 @@
 }
 .city-name {
 	position: absolute;
-	top: 63px;
-	right: 115px;
+	top: 61px;
+	right: 139px;
 	color: #fff;
 	font-size: 12px;
 }
@@ -177,7 +177,7 @@
 		
 	<div class="weather-box">
 		<div class="weather-wrapper">
-			<div class="weather-left" style="width: 65px; height: 55px;">
+			<div class="weather-left" style="width: 60px; height: 50px;">
 			</div>
 			<div class="weather-info">
 				<div>기온 <span id="temperature"></span> ℃</div>
