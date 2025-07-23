@@ -617,24 +617,10 @@
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
+							                		}).then(() => {
+							                            event.remove();
+							                            location.reload();										                			
 							                		});
-						                            event.remove();
-				                                    const date = dateToRearrange;
-				                                    const eventsToReAdd = [];
-			
-				                                    calendar.getEvents().forEach(e => {
-				                                        if (e.startStr.startsWith(date)) {
-				                                            eventsToReAdd.push({
-				                                                title: e.title,
-				                                                start: date,
-				                                                extendedProps: e.extendedProps
-				                                            });
-				                                            e.remove();
-				                                        }
-				                                    });
-			
-				                                    // 재정렬해서 다시 추가
-				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 						                        } else {
 								                	Swal.fire({
 								                		  title: " ",
