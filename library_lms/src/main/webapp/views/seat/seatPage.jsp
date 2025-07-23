@@ -10,7 +10,7 @@
 		background-color: #EFEFEF;
 		width: 787px;
 		height: 752px;
-		
+	
 	}
 	
 	.privateSeat {
@@ -101,6 +101,10 @@
 		margin-bottom: 70px;
 		margin-top: 250px;
 		position: relative;
+		
+		
+		display:flex;
+		flex-wrap: wrap;
 	}
 	.seatBox2{
 	
@@ -110,13 +114,14 @@
 		margin-left: 70px;
 			
 	}
-	.sidebars{
-		width: 250px;
-		height: 100vh;
-	}
+	
+	
 	
 	.totalBox{
 		display:flex;
+		flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 	
 	}
 	footer{
@@ -137,12 +142,11 @@
 	%>
 
   <div class="totalBox">
-	<div class="sidebars">
+	
 		<%@ include file="/views/include/sidebar.jsp" %>
-	</div>
 
 
-	<div class="seatBox" style="margin: 80px 400px 14px;">
+	<div class="seatBox" style="margin: 40px 100px 100px 200px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -286,7 +290,7 @@
 	
 	publicSeat.forEach(seatEl => {
 		seatEl.addEventListener('click', () => {
-
+			
 			// 이미 사용 중인 좌석이면 클릭 무시
 			if (seatEl.classList.contains('used')) {
 				Swal.fire({
@@ -443,6 +447,7 @@
 		  });
 		});
 
+	
 	
 	</script>
 	
