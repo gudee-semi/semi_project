@@ -279,7 +279,7 @@ $(document).ready(function () {
       data: JSON.stringify(requestPayload),
       xhrFields: { withCredentials: true },
       success: function (res) {
-        if (res.status === 'duplicate') return showSwal('이미 목표 성적을 입력하였습니다.');
+        if (res.status === 'duplicate') return showSwal('이미 성적을 입력하였습니다.');
         if (!res.success) return showSwal('입력 실패');
         showSwal('입력 완료');
         renderResultTable(subjectNames, scoreValues, gradeValues, percentageValues, rankValues);
