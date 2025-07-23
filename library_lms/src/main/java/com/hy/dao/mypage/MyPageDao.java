@@ -79,7 +79,7 @@ public class MyPageDao {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.selectOne("com.hy.mapper.mypage.MypageMapper.selectMyQnaCount", qna);
 		session.close();
-		return 0;
+		return result;
 	}
 
 	public List<Qna> selectMyQnaList(Qna qna) {

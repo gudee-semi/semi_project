@@ -27,6 +27,16 @@
 	  border-left: 1px solid #eee;
 	  border-right: 1px solid #eee;
 	}
+	
+	.fc-toolbar-title,
+	.fc-col-header-cell-cushion {
+		font-weight: normal;
+	}
+	
+	.fc-day-today .fc-col-header-cell-cushion {
+		font-weight: bold;
+		color: #205DAC;
+	}
 
 	.sidebars {
 		width: 300px;
@@ -55,9 +65,11 @@
 	/* modal... */
 	.todo-input-title,
 	.todo-update-title {
-	    width: 85%;
+	    width: 90%;
 	    height: 30px;
-	    margin-left: 20px;
+	    margin: 0 auto;
+	    display: block;
+	    box-sizing: border-box;
 	    padding-left: 10px;
 	    border: 1px solid #ccc;
 	    border-radius: 8px;
@@ -77,7 +89,9 @@
 	.todo-input-date,
 	.todo-update-date {
 	    height: 30px;
-	    margin-left: 20px;
+	    margin: 0 auto;
+	    display: block;
+	    box-sizing: border-box;
 	    padding-left: 10px;
 	    border: 1px solid #ccc;
 	    border-radius: 8px;
@@ -85,7 +99,7 @@
 	    font-size: 14px;
 	    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 	    outline: none;
-	    width: 85%;
+	    width: 90%;
 	}
 	
 	/* 포커스 시 효과 */
@@ -97,8 +111,10 @@
 	
 	.todo-input-detail,
 	.todo-update-detail {
-	    width: 85%;
-	    margin-left: 20px;
+	    width: 90%;
+	    margin: 0 auto;
+	    display: block;
+	    box-sizing: border-box;
 	    resize: none;
 	    border: 1px solid #ccc;
 	    border-radius: 8px;
@@ -113,9 +129,9 @@
 	.todo-input-add,
 	.todo-input-update,
 	.todo-input-delete {
-	    width: 89%;
-	    margin-left: 20px;
-	    margin-top: 20px;
+	    width: 90%;
+	    margin: 0 auto;
+	    display: block;
 	    color: white;
 	    background-color: #205DAC;
 	    border-color: transparent;
@@ -178,6 +194,38 @@
 	.nav-item {
 		padding: 5px;
 	}
+	
+	.time-cover {
+		position: absolute;
+	    top: 289px;
+	    left: 500px;
+	    width: 76px;
+	    height: 816px;
+	    background-color: #fff;
+	    z-index: 10;
+	    pointer-events: none;
+	}
+	
+	.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
+		margin-left: 77px;
+	}
+	
+	.fc-event-time {
+		display: none;
+	}	
+	
+	.fc-event-title.fc-sticky {
+		margin-top: 16px !important;
+		margin-left: 5px !important;
+		font-size: 17px !important;
+	}
+	
+	.flatpickr-day.selected.today {
+	  background: #4582EC !important;
+	  color: white !important;
+	  box-shadow: none !important;
+	  border: none !important;
+	}
 </style>
 </head>
 <body>
@@ -186,8 +234,8 @@
 		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>학습 플래너</h1>
-			<div id='calendar'></div>
-		
+			<div id='calendar' style="margin-left: 100px;"></div>
+			<div class="time-cover"></div>
 			<script>
 				let calendar;
 			
@@ -246,7 +294,7 @@
 				        headerToolbar: {
 				            left: 'title',
 				            center: '',
-				            right: 'today prev,next' // 다른 뷰 버튼 제거
+				            right: 'prev,next' // 다른 뷰 버튼 제거
 				        },
 				        locale: 'ko',
 				        editable: false,
@@ -277,11 +325,11 @@
 				            titleEl.style.fontWeight = 'bold';
 				            titleEl.style.fontSize = '14px';
 				            if (event.extendedProps.is_completed === 1) {
-				                el.style.border = '3px solid blue';
+				                el.style.border = '3px solid #205DAC';
 				                el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
-				                titleEl.style.color = 'blue';
+				                titleEl.style.color = '#205DAC';
 				                if (descriptionEl) {
-				                    descriptionEl.style.color = 'blue';
+				                    descriptionEl.style.color = '#205DAC';
 				                }
 				            } else if (event.extendedProps.is_completed === 0) {
 				                el.style.border = '3px solid grey';
@@ -313,11 +361,11 @@
 				                    success: (data) => {
 				                        // (1) is_completed UI 반영
 				                        if (isCompleted === 1) {
-				                            el.style.border = '3px solid blue';
+				                            el.style.border = '3px solid #205DAC';
 				                            el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
-				                            titleEl.style.color = 'blue';
+				                            titleEl.style.color = '#205DAC';
 				                            if (descriptionEl) {
-				                                descriptionEl.style.color = 'blue';
+				                                descriptionEl.style.color = '#205DAC';
 				                            }
 				                        } else {
 				                            el.style.border = '3px solid grey';
@@ -448,7 +496,8 @@
 				                            success: (data) => {
 				                                if (data.res_code == '200') {
 				        		                	Swal.fire({
-														title: "할 일 목록이 수정되었습니다.",
+														title: " ",
+														text: "할 일 목록이 수정되었습니다.",
 														icon: "success",
 														confirmButtonText: '확인',
 														confirmButtonColor: '#205DAC'
@@ -488,7 +537,8 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 				                                } else {
 				                                	Swal.fire({
-								                		  title: "할 일 목록 수정이 실패했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 수정이 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -508,6 +558,7 @@
 				                const deleteDate = event.startStr.split('T')[0];
 
 				                Swal.fire({
+				                  title: " ",
 				                  text: '정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
@@ -525,7 +576,8 @@
 						                    success: (data) => {
 						                        if (data.res_code == '200') {
 						                        	Swal.fire({
-								                		  title: "할 일 목록 삭제가 성공했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 성공했습니다.",
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -549,7 +601,8 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 						                        } else {
 								                	Swal.fire({
-								                		  title: "할 일 목록 삭제가 실패했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -679,6 +732,8 @@
 			  	const updateForm = document.querySelector('#todo-update');
 			  	const deleteForm = document.querySelector('#todo-delete');
 			  	readmeBtn1.addEventListener('click', () => {
+					const today = new Date().toISOString().split('T')[0];
+					document.querySelector('.todo-input-date').value = today;
 			  		readmePopUp1.style.display = 'flex';
 			  	});
 			  	readmeClose1.addEventListener('click', () => {
@@ -724,7 +779,8 @@
 				            success: (data) => {
 				                if (data.res_code == '200') {	                	
 				                	Swal.fire({
-				                		  title: "할 일 목록이 등록되었습니다.",
+				                		  title: " ",
+				                		  text: "할 일 목록이 등록되었습니다.",
 				                		  icon: "success",
 				                		  confirmButtonText: '확인',
 				                		  confirmButtonColor: '#205DAC'
@@ -767,7 +823,8 @@
 				                    });
 				                } else {
 				                	Swal.fire({
-				                		  title: "할 일 목록이 등록이 실패했습니다.",
+				                		  title: " ",
+				                		  text: "할 일 목록이 등록이 실패했습니다.",
 				                		  icon: "error",
 				                		  confirmButtonText: '확인',
 				                		  confirmButtonColor: '#205DAC'
@@ -832,6 +889,11 @@
 				function setCustomMessage(input, message) {
 				  input.setCustomValidity(message);
 				}
+			</script>
+			
+			<script>
+			  const today = new Date().toISOString().split('T')[0];
+			  document.getElementById('.todo-input-date').value = today;
 			</script>
 		
 		</div>

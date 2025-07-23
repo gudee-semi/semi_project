@@ -48,7 +48,7 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
 	        String safeContext = (context == null || context.equals("/") || context.equals("")) ? "" : context;
 
 	        // 로그인 관련 요청은 세션이 있기 전이기에 필터 제외
-	        if (uri.startsWith(safeContext + "/login")|| uri.equals(safeContext + "/")) {
+	        if (uri.startsWith(safeContext + "/login")|| uri.equals(safeContext + "/") || uri.equals(safeContext + "/main")) {
 	            chain.doFilter(request, response); // 로그인 관련 요청은 통과
 	            return;
 	        }

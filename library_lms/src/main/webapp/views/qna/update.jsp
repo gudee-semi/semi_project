@@ -8,7 +8,8 @@
 <meta charset="UTF-8">
 <title>질의응답 수정 페이지</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+<!-- SweetAlert2 CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 	.show {
 		display: none;
@@ -159,7 +160,7 @@
 							<th>카테고리</th>
 							<td>
 								<select name="qnaCategory" id="qnaCategory">
-								  <option value=0>--선택--</option>
+								  <option value=0>선택</option>
 								  <option value='시설'>시설</option>
 								  <option value='좌석'>좌석</option>
 								  <option value='환불'>환불</option>
@@ -201,13 +202,13 @@
 										    <button class="file-change" type="button">X</button><br>
 								    	</div>
 								    	<div class="file-reupload show">
-								    		<div><input type="file" name="qnaFile"></div>
+								    		<div><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></div>
 								    	</div>
 									</c:if>
 									<c:if test="${ empty attach }">
 										<input type="hidden" name="check" value="2" class="check">
 								    	<div class="file-reupload">
-								    		<div><input type="file" name="qnaFile"></div>
+								    		<div><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></div>
 								    	</div>
 									</c:if>	
 								</div>
@@ -239,7 +240,20 @@
 	
 		$('#updateQnaFrm').on('submit', (e) => {
 			e.preventDefault();
+			const category = $("#qnaCategory").val();
 			const formData = new FormData(document.getElementById('updateQnaFrm'));
+			
+			if (category == 0) {
+				Swal.fire({
+					icon: 'warning',
+					title: '카테고리 미선택',
+					text: '카테고리를 선택하세요.',
+					confirmButtonText: '확인',
+					confirmButtonColor: '#205DAC'
+				});
+				return;
+			}
+			
 			$.ajax({
 				url: '/qna/update',
 				type: 'post',
@@ -250,12 +264,15 @@
 				cache: false,
 				dataType: 'json',
 				success: (data) => {	
-					window.alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/qna/view";
-					} else {						
-						location.href = "<%= request.getContextPath() %>/qna/view";
-					}
+					 Swal.fire({
+					    icon: data.res_code == 200 ? 'success' : 'error',
+					    title: data.res_code == 200 ? '수정 완료' : '오류 발생',
+					    text: data.res_msg,
+					    confirmButtonText: '확인',
+				    	confirmButtonColor: '#205DAC'
+					  }).then(() => {
+					    location.href = "<%= request.getContextPath() %>/qna/view";
+					  });
 				}
 			});
 		});

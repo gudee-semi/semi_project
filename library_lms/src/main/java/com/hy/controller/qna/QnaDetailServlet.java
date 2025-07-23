@@ -43,12 +43,14 @@ public class QnaDetailServlet extends HttpServlet {
 		// 조회수 올리기
 		qnaService.updateViewCount(qnaId);
 		
-		// qnaReply replyCheck 값 1로 올리기(문의한사람이 확인했다는 표시)
+		// qnaReply replyCheck 값 0로 변경(문의한사람이 확인했다는 표시)
 		HttpSession session =request.getSession();
 		Member member =(Member)session.getAttribute("loginMember");
-		int memberNo=member.getMemberNo();
-		if(memberNo==qna.getMemberNo()) {
-		int result =mypageservice.updateReplyCheck(qnaId);
+		
+		int memberNo = member.getMemberNo();
+		
+		if (memberNo == qna.getMemberNo()) {
+			int result = mypageservice.updateReplyCheck(qnaId);
 		}
 	
 		request.setAttribute("qna", qna);

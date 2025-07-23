@@ -42,7 +42,7 @@
 		JOIN member M ON Q.member_no = M.member_no
 		<where>
 			<choose>
-				<when test='keywordIn == "구분"'>
+				<when test='keywordIn == "전체"'>
 					<if test='keyword != null and keyword != ""'>
 						title LIKE CONCAT('%',#{keyword},'%')
 					</if>
@@ -69,7 +69,7 @@
 		JOIN member M ON Q.member_no = M.member_no
  		<where>
 			<choose>
-				<when test='keywordIn == "구분"'>
+				<when test='keywordIn == "전체"'>
 					<if test='keyword != null and keyword != ""'>
 						title LIKE CONCAT('%',#{keyword},'%')
 					</if>
