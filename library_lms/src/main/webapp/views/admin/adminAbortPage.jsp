@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>태블릿 사용현황</title>
+<title>강제퇴실</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
 table {
@@ -79,6 +79,10 @@ footer {
 .btn:hover {
 	background-color: #3E7AC8;
 }
+
+input[type="checkbox"] {
+  accent-color: #205DAC;
+}
 </style>
 </head>
 <body>
@@ -131,7 +135,8 @@ footer {
 			if (arr.length > 0) {
 				Swal.fire({
 				  icon: "warning",
-			      title: '강제 퇴실 처리하시겠습니까?',
+			      title: ' ',
+			      text: '퇴실 처리하시겠습니까?',
 				  showCancelButton: true,
 				  confirmButtonText: "퇴실 처리",
 				  cancelButtonText: `취소`,
@@ -145,7 +150,15 @@ footer {
 							dataType: 'json',
 							success: (data) => {
 								if (data.res_code === '200') {
-									location.href = "<%= request.getContextPath() %>/admin/abort";
+									Swal.fire({
+						              title: " ",
+						              text: "퇴실 처리가 완료되었습니다.",
+						              icon: "success",
+						              confirmButtonText: '확인',
+						              confirmButtonColor: '#205DAC'
+						            }).then(() => {
+										location.href = "<%= request.getContextPath() %>/admin/abort";						            	
+						            })
 								}
 							}
 						});
