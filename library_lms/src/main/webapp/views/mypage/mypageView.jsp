@@ -1,88 +1,379 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title></title>
 </head>
+<style>
+	p {
+      font-size: 13px;
+      margin-top: 8px;
+      margin-bottom : 5px;
+    }
+    .update_box input:focus{
+    	border:1px solid #205DAC;
+    	outline:none;
+    }
+	#schul_modal{
+		display:none;
+		position: fixed;
+		top:200px;
+		background-color:white;
+		z-index: 9999;
+		margin : 50px auto;
+		border:none;
+	}
+	#schul_modal .modal_box {
+		background-color: white;
+		width: 400px;
+		border-radius: 10px;
+		padding: 20px;
+		box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+		position: relative;
+	}
+	/* 제목 영역 */
+	#modal_title {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: end;
+	}
+	
+	/* 닫기 버튼 */
+	#modal_close_btn {
+		background-color: #D8E5F4;
+		border: none;
+		font-size: 16px;
+		cursor: pointer;
+		color: #333;
+		width : 50px;
+		border-radius:5px;
+		transition: background-color 0.3s;
+		
+	}
+	#modal_close_btn:hover{
+		background-color: #205DAC;
+		color:white;
+	}
+	
+	/* 검색 필드 */
+	#modal_content {
+		margin-top: 10px;
+		display: flex;
+		gap: 10px;
+	}
+	
+	#schul_name {
+		flex: 1;
+		padding: 5px;
+		border-radius: 5px;
+		border : 1px solid #D8E5F4;
+		outline: none; 
+		transition: background-color 0.3s;
+		height:40px;
+	}
+	#schul_name:focus{
+		border : 1px solid #205DAC;
+	}
+	#schul_search {
+		border-radius:5px;
+		border:none;
+		padding: 5px 10px;
+		cursor: pointer;
+		background-color: #D8E5F4;
+		color:black;
+		transition: background-color 0.3s;
+		height:40px;
+	}
+	#schul_search:hover{
+		background-color: #205DAC;
+		color:white;
+	}
+	
+	/* 결과 필드 */
+	#result_field {
+		margin-top: 15px;
+		max-height: 200px;
+		overflow-y: auto;
+		border-top: 1px solid #ddd;
+		padding-top: 10px;
+	}
+	
+	#result_field ul {
+		list-style: none !important;
+		padding: 0;
+		margin: 0;
+	}
+	
+	#result_field ul li {
+		padding: 5px 10px;
+		border-bottom: 1px solid #eee;
+		cursor : pointer;
+		transition: background-color 0.3s;
+	}
+	#result_field ul li:hover{
+	 	background-color: #D8E5F4;
+	}
+	.title_text{
+		color: #205dac;
+		margin : 20px auto 30px;
+		font-size: 20px;
+	}
+	
+	/* 주소 모달 */
+	#layer{
+		display:none;
+		background-color:white;
+		position :absolute;
+		overflow:hidden;
+		z-index:30;
+		border:1px solid #888;
+		border-radius:5px;
+		width:500px;
+		height:400px;
+		margin :50px auto;
+		top:200px;
+		
+		
+		
+	}
+	#layer>div{
+		background-color:#D8E5F4; 
+		position:relative; 
+		height:35px; 
+		z-index:2;
+	}
+	#addressCloseBtn{
+		position :absolute; 
+		top:3px;
+		right:3px;
+		z-index:2;
+		background-color: white;
+		color: black;
+		border-radius: 5px;
+		border:none;
+		transition: background-color 0.3s;
+	}
+	#addressCloseBtn:hover{
+		background-color: #205DAC;
+		color: white;
+	}
+	.update_title{
+		margin:0 auto 30px;
+	}
+	
+	.container_box{
+	
+		padding-top : 100px;
+		display:flex;
+		justify-content: start;
+		flex-direction: column;
+		height:1200px;
+	}
+	.update_box{
+		position:relative;
+		margin: 0 auto;
+		padding :50px 50px 30px;
+		border-radius: 5px;
+		border:1px solid #ccc;
+	}
+	.update_box input{
+	  padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      column-gap: 5px;
+      width:200px;
+      height:50px;
+      box-sizing: border-box;
+	}
+	.update_box input[type="button"]{
+	  width:80px;
+	  height:50px;
+	  box-sizing:border-box;
+	  background-color: #D8E5F4;
+	  color: black;
+	  transition: background-color 0.3s;
+	  cursor:pointer;
+	}
+	.update_box input[type="button"]:hover{
+	  background-color: #205DAC;
+	  color:white;
+	}
+	.update_box input[type="submit"]{
+		position:relative;
+		right:-285px;
+	  background-color: #D8E5F4;
+	  color: black;
+	  transition: background-color 0.3s;
+	  cursor:pointer;
+	}
+	.update_box input[type="submit"]:hover{
+	  background-color: #205DAC;
+	  color:white;
+	}
+		#member_address{
+		width:400px;
+	}
+	#member_schul{
+		width:300px;
+	}
+	select {
+	  width: 200px;
+	  padding: 10px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  background-color: white;
+	  color: #333;
+	}
+	select:focus {
+	   border: 1px solid #205DAC !important;
+  	outline: none !important;
+	  
+	}
+	.file-label {
+	  display: inline-block;
+	  padding: 12px;
+	  background-color: #D8E5F4;
+	  color: black;
+	  border-radius: 5px;
+	  cursor: pointer;
+	  border: 1px solid #ccc;
+	  transition: background-color 0.3s;
+	  box-sizing:border-box;
+	  width:80px;
+	  height:50px;
+	  font-size: 14px;
+	}
+	
+	.file-label:hover {
+	  background-color: #205DAC;
+	  color: white;
+	}
+	
+	#file-name {
+	  margin-left: 10px;
+	  font-size: 14px;
+	  color: #555;
+	}
+	#member_address_detail{
+	margin-left: 85px;
+	}
+	.update_pw{
+		
+		display:flex;
+		flex-direction:column;
+		align-items: center;
+		border:1px solid #ccc;
+		padding:10px;
+		border-radius: 5px;
+		margin-bottom:20px;
+	}
+	.update_pw p:first-child{
+		font-size:20px;
+		font-weight:600;
+	}
+	.delete_box{
+		margin-top: 30px;
+	}
+	.delete_box input[type="submit"]{
+		background-color: #dc2626;
+		color: white;
+		cursor:pointer;
+		}
+	.delete_box input[type="submit"]:hover{
+		background-color: red;
+		color: white;
+		}
+</style>
 <body>
 
 <!--비밀번호 -->
-<form id="updateAccount">
-	<p>비밀번호 변경 </p>
-	<input type="text" id="member_pw" name="member_pw" placeholder="새로운 비밀번호 입력"><br>
-	<input type="text" id="member_pw_check" placeholder="비밀번호 확인"><br>
-	<p id="member_pw_msg"></p>
-	
-	<br>
-	
-	<!--주소 검색  -->
-	<input type="button" id = "addressBtn" value="주소검색"><br>
-	<input type="text" id="member_address" name="member_address" readonly><br>
-	<input type="text" id="member_address_detail" name="member_address_detail" >
-	<!--주소 모달창  -->
-	<div id="layer" style="display:none;background-color:white;position :absolute;overflow:hidden;
-	z-index:1;border:1px solid;width:500px;height:400px;left:20px;top:200px; ">
-		<div style="background-color:blue; position:relative; height:35px; z-index:2;">
-	
-		 <button type="button" id ="addressCloseBtn"style=" position :absolute; top:3px;
-		 right:3px; z-index:2;">닫기</button>
-	
-	
-	
-		</div>
-		<div id="addressWindow" style="width :100%; height : 100%;">
-		</div>
-	</div>
-	<p id= "member_address_msg"></p>
-	
-	<!-- 학교 검색  -->
-	<input type="button" id = "member_schul_search" value="학교검색"><br>
-	<input type="text" id="member_schul" name="member_schul" readonly><br>
-	<p id = "member_schul_msg">
-	
-	<!-- 학교 검색 모달 -->
-	<div id="schul_modal">
-		
-		<div id = "modal_title">
-		
-			<button type= "button" id ="modal_close_btn">닫기</button>
-		
-		</div>
-		<div id = "modal_content">
-			<div id = "search_field"></div>
-				<input id = "schul_name" type="text" placeholder="학교이름 입력" > 
-				<button type= "button" id = "schul_search">검색</button>
-		</div>
-			<div id = "result_field">
-			    <ul>
-				</ul>
+<%@ include file="/views/include/header.jsp" %>
+<div class="container_box">
+	<div class="sidesbar"><%@ include file="/views/include/sidebar.jsp" %></div>
+	<h1 class="update_title">개인정보 수정</h1>
+	<div class="update_box">
+		<form id="updateAccount">
+			<div class="update_pw">
+				<p>비밀번호 변경 </p>
+				<input type="password" id="member_pw" name="member_pw" placeholder="새로운 비밀번호 입력">
+				<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
+				<p id="member_pw_msg"></p>
 			</div>
+			
+			<!--주소 검색  -->
+			<input type="button" id = "addressBtn" value="주소검색">
+			<input type="text" id="member_address" name="member_address" readonly>
+			<p></p>
+			<input type="text" id="member_address_detail" name="member_address_detail" placeholder="상세주소">
+				<!--주소 모달창  -->
+			<div id="layer">
+				<div>
+				 <button type="button" id ="addressCloseBtn" >닫기</button>
+				</div>
+				<div id="addressWindow" style="width :100%; height : 100%;">
+				</div>
+			</div>
+			<p id= "member_address_msg"></p>
+			
+			<!-- 학교 검색  -->
+			<input type="button" id = "member_schul_search" value="학교검색">
+			<input type="text" id="member_schul" name="member_schul" readonly>
+			<p id = "member_schul_msg">
+			
+			<!-- 학교 검색 모달 -->
+			<div id="schul_modal">
+				<div class ="modal_box">
+					<div id = "modal_title">
+						<button type= "button" id ="modal_close_btn">닫기</button>
+						<p class="title_text">학교 검색</p>
+				
+					</div>
+				<div id = "modal_content">
+					<div id = "search_field"></div>
+						<input id = "schul_name" type="text" placeholder="학교이름 입력" > 
+						<button type= "button" id = "schul_search">검색</button>
+					</div>
+					<div id = "result_field">
+					 
+					</div>
+				</div>
+			</div>
+			<!-- 학년 입력 -->
+			<div class="schul_grade_select">
+				<span style="margin:0 13px 0 38px;">학년</span>
+				<select id ="member_grade" name="member_grade">
+				<option value="1">1학년</option>
+				<option value="2">2학년</option>
+				<option value="3">3학년</option>
+			</select>
+				<p></p>
+			</div>
+			
+			<!-- 프로필 이미지 첨부 -->
+			<label for="member_profile" class="file-label">파일선택</label>
+			<input type="file" id = "member_profile" name = "member_profile" hidden>
+			<span id="previewImg_msg">선택된 파일 없음</span>
+			<p id ="member_profile_msg"></p>
+			
+			<img id="previewImg"width="200px" height="200px" hidden>
+			<p></p>
+			<input type="submit" value="수정하기"/>
+			
+		</form>
+		<div class="delete_box">
+			<form id="deleteMember" action="/delete/member" method="get">
+				<input type="submit" value="계정삭제">
+			</form>
+		</div>
 	</div>
 	
-	<!-- 학년 입력 -->
-	<select id ="member_grade" name="member_grade">
-		<option value="1">1학년</option>
-		<option value="2">2학년</option>
-		<option value="3">3학년</option>
-	</select>
-	
-	<!-- 프로필 이미지 첨부 -->
-	<input type="file" id = "member_profile" name = "member_profile">
-	<p id= "previewImg_msg">
-	<p id ="member_profile_msg"></p>
-	<img id="previewImg"width="200px" height="200px" hidden>
-	
-	<input type="submit" value="수정하기"/>
-	
-</form>
-<form id="deleteMember" action="/delete/member" method="get">
-	<input type="submit" value="계정삭제">
-</form>
-<a href="<c:url value='/main/view'/>">나가기</a>
+</div>
+<%@ include file="/views/include/footer.jsp" %>
 	<script>
 		const memberNo = ${sessionScope.loginMember.memberNo};
 		const memberAccountAddress = '${sessionScope.loginMember.memberAddress}';
@@ -191,10 +482,17 @@
 	                
 	            }
 	        }).embed(document.getElementById('addressWindow'));
+	        element_layer.style.display = 'block';
 	});
 	</script>
 	
 	<script>
+	$("#member_schul_search").on("click",function(){
+		  document.getElementById('schul_modal').style.display = 'block';
+	})
+	$("#modal_close_btn").on("click",function(){
+		document.getElementById('schul_modal').style.display = 'none';
+	})
 	//서울시 학교 검색
 		$("#schul_search").on("click",function(){	
 			let schulName = $("#schul_name").val().trim();
@@ -252,7 +550,7 @@
 			memberSchul=text;
 			$("#member_schul_msg").text("");
 			schulStatus=true;
-			
+			document.getElementById('schul_modal').style.display = 'none';
 		})
 		
 			
@@ -262,7 +560,7 @@
 		$("#member_grade").on("change",function(){
 			memberGrade= $("#member_grade").val();
 			gradeStatus=true;
-	
+			
 		});
 	
 	</script>
@@ -271,9 +569,6 @@
 		//프로필 이미지
 	$("#member_profile").on("change",function(){
 		profileStatus=false;
-		$("#member_profile_msg").text("");
-		$("#previewImg").removeAttr("src").hide();
-		 $("#previewImg_msg").text("");
 		const file = this.files[0];
 		if(!file){
 			$("#member_profile_msg").text("파일을 선택해주세요").css('color','red');
@@ -282,6 +577,8 @@
 			$("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg ,png 파일만 첨부가능합니다)").css('color','red');
 			profileStatus=true;
 		}else{
+			$("#previewImg_msg").text(file.name);
+			$("#member_profile_msg").text("");
 			const reader = new FileReader();
 			reader.onload = function(e){
 				$("#previewImg").attr("src", e.target.result).show();
@@ -291,7 +588,7 @@
 		}
 	});
 	</script>
-	
+
 	
 	
 	<script>
@@ -317,11 +614,25 @@
 					dataType :"json",
 					success : function(data){
 						if(data.res_code==500){
-							alert(data.res_msg);
-							location.href ="<%=request.getContextPath()%>/mypage/view";
+							Swal.fire({
+								  title: "변경실패",
+								  text: "서버 오류입니다.",
+								  icon: "waring",
+								  confirmButtonColor: '#205DAC'
+								}).then(() => {
+									location.href ="<%=request.getContextPath()%>/mypage/view";
+								});
 						}else{
-							 alert(data.res_msg);
-							 location.href ="<%=request.getContextPath()%>/main/view";
+							Swal.fire({
+								  title: "변경성공",
+								  text: "개인 정보가 수정 되었습니다.",
+								  icon: "success",
+								  confirmButtonColor: '#205DAC'
+								}).then(() => {
+									location.href ="<%=request.getContextPath()%>/main/view";
+								});
+							 
+							 
 						}					
 					}
 					
@@ -338,12 +649,27 @@
 	<script>
 		$("#deleteMember").on("submit",function(e){
 			e.preventDefault();
-			 if (confirm("정말 계정을 삭제하시겠습니까?")) {
-			      this.submit(); 
-			      
-			    } else {
-			      alert("계정 삭제가 취소되었습니다.");
-			    }
+			const form =this;
+			Swal.fire({
+				  title: "계정 삭제",
+				  text: "정말로 계정을 삭제하시겠습니까?",
+				  icon: "warning",
+				  showCancelButton: true,
+				  confirmButtonColor: "#205DAC",
+				  cancelButtonColor: "#d33",
+				  confirmButtonText: "삭제",
+				  cancelButtonText: "취소"
+				}).then((result) => {
+				  if (result.isConfirmed) {
+				    Swal.fire({
+				      title: "삭제!",
+				      text: "삭제되었습니다!",
+				      icon: "success"
+				    }).then(()=>{
+				    form.submit(); 				    	
+				    })
+				  }
+				});
 		})
 	
 	</script>
