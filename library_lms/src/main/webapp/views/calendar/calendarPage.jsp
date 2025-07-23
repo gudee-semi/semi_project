@@ -198,8 +198,7 @@
 	.time-cover {
 		position: absolute;
 	    top: 289px;
-	    left: 500px;
-	    width: 76px;
+	    left: 0px;
 	    height: 816px;
 	    background-color: #fff;
 	    z-index: 10;
@@ -226,6 +225,7 @@
 	  box-shadow: none !important;
 	  border: none !important;
 	}
+	
 </style>
 </head>
 <body>
@@ -236,6 +236,41 @@
 			<h1>학습 플래너</h1>
 			<div id='calendar' style="margin-left: 100px;"></div>
 			<div class="time-cover"></div>
+			
+			<script>
+				function updateCoverWidth() {
+				  const cover = document.querySelector('.time-cover');
+				  const screenWidth = window.innerWidth;
+
+				  const baseScreen = 1350; // 기준 화면 너비
+				  const baseWidth = 576;   // 기준 커버 width
+
+				  let newWidth = baseWidth;
+
+				  if (screenWidth < baseScreen) {
+				    const diff = baseScreen - screenWidth;
+				    const shrinkRatio = 0.3; // ← 줄어드는 속도 조절 (0.5 = 2px 줄면 1px 줄어듦)
+
+				    newWidth = baseWidth - (diff * shrinkRatio);
+
+				    // 최소 너비 제한
+				    if (newWidth < 200) newWidth = 200;
+				  }
+
+				  cover.style.width = newWidth + 'px';
+				}
+
+				// 초기 실행
+				updateCoverWidth();
+				// 리사이즈 이벤트에 연결
+				window.addEventListener('resize', updateCoverWidth);
+				
+				
+			</script>
+			
+			
+			
+			
 			<script>
 				let calendar;
 			
@@ -300,6 +335,7 @@
 				        editable: false,
 				        selectable: true,
 				        allDaySlot: false,
+				        windowResize: false,
 				        scrollTime: 0,
 				        eventTimeFormat: {
 				            month: 'short',
@@ -559,7 +595,7 @@
 
 				                Swal.fire({
 				                  title: " ",
-				                  text: '정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
+				                  text: '[' + deleteDate + '] ' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
 			                	  cancelButtonText: `취소`,
@@ -893,7 +929,25 @@
 			
 			<script>
 			  const today = new Date().toISOString().split('T')[0];
-			  document.getElementById('.todo-input-date').value = today;
+			  document.querySelector('.todo-input-date').value = today;
+			</script>
+			
+			<script>
+			function responsiveLeft() {
+				  const baseWidth = 1920; // 기준 화면 너비
+				  const baseLeft = 500;   // 기준 left 값
+				  const cover = document.querySelector('.time-cover');
+
+				  if (cover) {
+				    const currentWidth = window.innerWidth;
+				    const ratio = currentWidth / baseWidth;
+				    const newLeft = baseLeft * ratio;
+				    cover.style.left = `${newLeft}px`;
+				  }
+				}
+
+				window.addEventListener('resize', responsiveLeft);
+				window.addEventListener('DOMContentLoaded', responsiveLeft);
 			</script>
 		
 		</div>
