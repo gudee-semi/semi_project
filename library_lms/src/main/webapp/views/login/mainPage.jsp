@@ -39,18 +39,18 @@
 	
 	.notice-section, .qna-section {
 		width: 35%;
-		height: 245px;
-		background-color: rgba(0, 0, 0, 0.6);
+		height: 235px;
+		background-color: rgba(0, 0, 0, 0.5);
 		padding: 20px;
 		color: white;
-		margin: 60px;
+		margin: 50px;
 	}
 	
 	.section-header {
 		display: flex;
 		justify-content: space-between;
 		border-bottom: 1px solid #fff;
-		margin: 5px 40px 20px 40px;
+		margin: 5px 40px 15px 40px;
 		
 	}
 	.section-header strong {
@@ -87,7 +87,7 @@
 	<div class="flex-container">
 		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 		<div class="container">
-			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 850px">
+			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 850px; background-size: cover;">
 			    <!-- 공지사항 -->
 			    <div class="notice-section">
 			        <div class="section-header">
