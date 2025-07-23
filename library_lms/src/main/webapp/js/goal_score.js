@@ -124,7 +124,10 @@ $(document).ready(function () {
       input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
     }
   });
-
+ 
+  
+  
+  
   // [G-2] 등급 유효성 검사
   $(document).on('blur', '.grade-input', function () {
     const input = $(this);
