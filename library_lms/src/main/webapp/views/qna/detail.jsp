@@ -13,9 +13,10 @@
 <style>
 	.container {
 		width : 70%;
+		margin-top: 50px;
 	}
 	h1 {
-		margin-left: 20px;
+		margin-left: 495px;
 		margin-bottom: 50px;
     }
 	.detail-table {
@@ -98,6 +99,9 @@
     	transition: .2s;
     	font-size: 16px;
 	}
+	.btn-common:hover {
+		background-color: #3E7AC8;
+	}
 	.center-btns,
 	.right-btn {
 		display: flex;
@@ -117,7 +121,7 @@
 	}
 	
 	.container {
-		width: 70%;
+		width: 60%;
 	}
 	
 	header {

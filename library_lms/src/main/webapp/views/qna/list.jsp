@@ -13,9 +13,10 @@
 <style>
 	.container {
 		width: 70%;
+		margin-top: 50px;
 	}
 	h1 {
-		margin-left: 20px;
+		margin-left: 495px;
     }
 	.search-row {
 		padding-left: 15px;

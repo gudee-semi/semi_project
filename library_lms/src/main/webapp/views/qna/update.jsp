@@ -16,6 +16,7 @@
 	}
 	.container {
 		width : 70%;
+		margin-top: 50px;
 	}
 	h1 {
 		margin-left: 20px;
@@ -107,7 +108,9 @@
 	.file-change:hover {
 		color: #d9534f; /* 빨간색 계열 hover 효과 */
 	}
-	
+	.btn:hover {
+		background-color: #3E7AC8;
+	}
 	/*  하...   */
 	.sidebars {
 		width: 250px;
@@ -266,8 +269,7 @@
 				success: (data) => {	
 					 Swal.fire({
 					    icon: data.res_code == 200 ? 'success' : 'error',
-					    title: data.res_code == 200 ? '수정 완료' : '오류 발생',
-					    text: data.res_msg,
+					    text: data.res_code == 200 ? data.res_msg : '오류 발생',
 					    confirmButtonText: '확인',
 				    	confirmButtonColor: '#205DAC'
 					  }).then(() => {

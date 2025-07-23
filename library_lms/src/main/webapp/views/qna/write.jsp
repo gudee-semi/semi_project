@@ -13,7 +13,7 @@
 <style>
 	.container {
 		width : 70%;
-		margin : 0 auto;	
+		margin-top: 50px;
 	}
 	h1 {
 		margin-left: 20px;
