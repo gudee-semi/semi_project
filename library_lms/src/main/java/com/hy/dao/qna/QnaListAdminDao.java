@@ -9,10 +9,13 @@ import org.apache.ibatis.session.SqlSession;
 import com.hy.common.sql.SqlSessionTemplate;
 import com.hy.common.vo.Paging;
 import com.hy.controller.tablet.MyBatisUtil;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaReply;
 
 public class QnaListAdminDao {
+	
+	SqlSession session;
 
 	// 전체 목록 조회
 	public List<QnaReply> selectAll(String category, String keyword, String searchType) {
@@ -146,5 +149,21 @@ public class QnaListAdminDao {
         int cnt = session.selectOne("com.hy.mapper.qna.QnaAdminMapper.countQna", param); // 변수에 담아야 함!
         session.close();
         return cnt;
+    }
+    
+    // 첨부파일
+    public Attach selectAttachByQnaId(int qnaId) {
+        // 1. SqlSession 열기
+        SqlSession session = SqlSessionTemplate.getSqlSession(true);
+        Attach attach = null;
+        try {
+            // 2. selectOne 실행
+            attach = session.selectOne("com.hy.mapper.qna.QnaAdminMapper.selectByQnaId", qnaId);
+        } finally {
+            // 3. 세션 닫기 (메모리/DB 커넥션 누수 방지)
+            session.close();
+        }
+        // 4. Attach 반환
+        return attach;
     }
 }
