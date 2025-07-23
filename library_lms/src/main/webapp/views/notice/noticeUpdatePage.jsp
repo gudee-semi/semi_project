@@ -137,6 +137,10 @@ footer {
 .nav-item {
 	padding: 5px;
 }
+
+.btn:hover {
+	background-color: #3E7AC8;
+}
 </style>
 
 </head>
@@ -145,7 +149,7 @@ footer {
 	<div class="flex-container">
 		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 		<div class="container">
-			<h1>게시글 수정</h1>
+			<h1>공지사항 수정</h1>
 			<div style="display: flex; justify-content: center; margin-top: 20px;">
 				<form id="updateNoticeFrm">
 					<table class="detail-table">
@@ -244,8 +248,7 @@ footer {
 				success: (data) => {	
 					if (data.res_code == 200) {
 						Swal.fire({
-			              title: " ",
-			              text: "공지사항이 수정되었습니다.",
+			              title: "게시글이 수정되었습니다",
 			              icon: "success",
 			              confirmButtonText: '확인',
 			              confirmButtonColor: '#205DAC'

@@ -225,8 +225,9 @@ footer {
 			e.preventDefault();
 			
 			Swal.fire({
-              title: " ",
-              text: '정말로 공지사항을 삭제하시겠습니까?',
+              title: '게시글을 삭제하시겠습니까?',
+              icon: 'warning',
+              text: '삭제한 게시글은 복구할 수 없습니다',
           	  showCancelButton: true,
           	  confirmButtonText: "삭제",
           	  cancelButtonText: `취소`,
@@ -245,8 +246,7 @@ footer {
     	                 success: (data) => {
     	 					if (data.res_code == 200) {
     	 						Swal.fire({
-   	 				              title: " ",
-   	 				              text: "공지사항이 삭제되었습니다.",
+   	 				              title: "게시글이 삭제되었습니다",
    	 				              icon: "success",
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
@@ -255,8 +255,7 @@ footer {
    	 				            })
     	 					} else {
     	 						Swal.fire({
-   	 				              title: " ",
-   	 				              text: "공지사항 삭제에 실패했습니다.",
+   	 				              title: "게시글 삭제에 실패했습니다",
    	 				              icon: "error",
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
