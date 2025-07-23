@@ -27,5 +27,10 @@ public class Qna extends Paging{
 	private String memberName;
 	private String keyword;
 	private String keywordIn;
-
+	
+	private Integer qnaAttachId;
+	private String attachOriName;
+	private String attachSaveName;
+	private String attachPath;
+	
 }

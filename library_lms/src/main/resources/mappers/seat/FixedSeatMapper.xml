@@ -48,5 +48,10 @@
 	
 	</insert>
 	
+	<select id="getSeatNoByMemberNo" parameterType="int" resultType="int">
+    SELECT seat_no FROM fixed_seat WHERE member_no = #{memberNo}
+	</select>
+	
+	
 	
 </mapper>

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>태블릿 사용현황</title>
+<title>강제퇴실</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
 table {
@@ -27,14 +27,14 @@ tr:last-child td {
 
 /*  하...   */
 .sidebars {
-	width: 250px;
+	width: 300px;
 	height: 1000px;
 }
 
 .flex-container {
 	display: flex;
 	align-items: flex-start;
- 		column-gap: 150px;
+ 	column-gap: 100px;
 }
 
 .container {
@@ -51,6 +51,37 @@ h1 {
 
 footer {
 	margin-top: 0px !important;
+}
+
+.nav-item {
+	padding: 5px;
+}
+
+.flex-input {
+	margin-top: 20px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.btn {
+	border: none;
+	background-color: #205DAC;
+	color: #fff;
+	border-radius: 6px;
+	cursor: pointer;
+	height: 40px;
+	width: 90px;
+	margin-right: 10px;
+	transition: .2s;
+	font-size: 16px;
+}
+
+.btn:hover {
+	background-color: #3E7AC8;
+}
+
+input[type="checkbox"] {
+  accent-color: #205DAC;
 }
 </style>
 </head>
@@ -85,7 +116,9 @@ footer {
 						    </c:forEach>
 					    </tbody>
 					</table>
-					<input type="submit" value="강제 퇴실">
+					<div class="flex-input">
+						<input type="submit" value="강제 퇴실" class="btn">
+					</div>
 				</form>
 			</c:if>
 		</div>
@@ -100,18 +133,37 @@ footer {
 				arr.push($(this).val());
 			});
 			if (arr.length > 0) {
-				$.ajax({
-					url: '/admin/abort',
-					type: 'post',
-					data: { list: arr },
-					dataType: 'json',
-					success: (data) => {
-						if (data.res_code === '200') {
-							window.alert(data.res_msg);
-							location.href = "<%= request.getContextPath() %>/admin/abort";
-						}
+				Swal.fire({
+				  icon: "warning",
+			      title: ' ',
+			      text: '퇴실 처리하시겠습니까?',
+				  showCancelButton: true,
+				  confirmButtonText: "퇴실 처리",
+				  cancelButtonText: `취소`,
+				  confirmButtonColor: '#205DAC'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url: '/admin/abort',
+							type: 'post',
+							data: { list: arr },
+							dataType: 'json',
+							success: (data) => {
+								if (data.res_code === '200') {
+									Swal.fire({
+						              title: " ",
+						              text: "퇴실 처리가 완료되었습니다.",
+						              icon: "success",
+						              confirmButtonText: '확인',
+						              confirmButtonColor: '#205DAC'
+						            }).then(() => {
+										location.href = "<%= request.getContextPath() %>/admin/abort";						            	
+						            })
+								}
+							}
+						});
 					}
-				});				
+				});			
 			}
 		});
 	</script>

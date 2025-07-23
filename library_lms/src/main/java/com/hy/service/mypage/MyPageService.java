@@ -66,9 +66,7 @@ public class MyPageService {
 	}
 
 	public int selectMyQnaCount(Qna qna) {
-		int result;
-		result = dao.selectMyQnaCount(qna);
-		return result;
+		return dao.selectMyQnaCount(qna);
 	}
 
 	public List<Qna> selectMyQnaList(Qna qna) {
