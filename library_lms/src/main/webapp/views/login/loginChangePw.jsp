@@ -1,19 +1,106 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+.container_pw_search {
+      border: 1px solid #c5ccd2;
+      border-radius: 5px;
+      padding: 30px 40px;
+      background-color: #fff;
+      width: 400px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin: 200px auto 100px;
+	  box-sizing :border-box;
+    }
+    .insert_search_data {
+ 	  margin:20px auto 0;
+   	  width:300px;
+      box-sizing: border-box;
+    }
+
+    .insert_search_data form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin:0;
+    }
+
+
+      input[type="password"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      background-color: #D8E5F4;
+      color: black;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #205DAC;
+      color:white;
+    }
+
+    p {
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    #member_pw_msg{
+      color: red;
+      padding-left: 3px;
+    }
+
+    #result_container {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+
+
+</style>
 <body>
-<form id="change_pw">
-	<input type="password" id="member_pw" name="member_pw" placeholder="비밀번호"><br>
-	<input type="password" id="member_pw_check" placeholder="비밀번호 확인"><br>
-	<p id="member_pw_msg"></p>
-  <input type="submit" value="변경하기"/>
-</form>
+ <%@ include file="/views/include/header.jsp" %>
+<div class="container_pw_search">
+    <div class="insert_search_data">
+		<form id="change_pw">
+			<input type="password" id="member_pw" name="member_pw" placeholder="새로운 비밀번호">
+			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
+			<p id="member_pw_msg"></p>
+		  <input type="submit" value="변경하기"/>
+		</form>
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
 
 <script>
 const pwReg = /^[a-zA-Z0-9!@#$%^&*?]{6,12}$/;
@@ -51,10 +138,21 @@ $("#change_pw").on("submit",function(e){
 			dataType : "json",
 			success : function(data){
 				if(data.res_code == "200"){
-					alert("비밀번호 변경 성공")
-					location.href ="<%=request.getContextPath()%>/login/view";
+					Swal.fire({
+						  title: "비밀번호 변경 성공",
+						  text: "새로운 비밀번호를 이용하세요!",
+						  icon: "success",
+						  confirmButtonColor: '#205DAC'
+						}).then(() => {
+							  location.href = "<%=request.getContextPath()%>/login/view";
+						});
 				}else{
-					alert("서버오류 발생");
+					Swal.fire({
+						  title: "비밀번호 변경 실패",
+						  text: "서버오류가 발생했습니다.",
+						  icon: "warning",
+						  confirmButtonColor: '#205DAC'
+						});
 				}
 			}
 		});

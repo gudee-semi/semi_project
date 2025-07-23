@@ -49,7 +49,7 @@ input {
 	padding : 5px;
 }
 .input_id{
-	margin-bottom : 12px;
+	margin-bottom : 15px;
 
 }
 .container_login { 
@@ -62,15 +62,18 @@ input {
 	margin : 200px auto 100px;
 	border : 1px solid #c5ccd2 ;
 	border-radius : 5px;
+	box-sizing:border-box;
 }
 .insert_login_data{
-	margin-top:50px;
+	margin:50px auto 0;
 	display:flex;
 	justify-content: center;
 	flex-direction: column;
+	box-sizing:border-box;
+	width:300px;
 }
 .login_btn{
-	margin:20px 0 20px;
+	margin:23px 0 20px;
 	width:300px;
 	height : 50px;
 	background-color: #D8E5F4;

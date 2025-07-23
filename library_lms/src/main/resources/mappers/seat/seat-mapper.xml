@@ -29,8 +29,7 @@
 	<update id="cancelSeat" parameterType="com.hy.dto.seat.Seat" >
 		UPDATE seat
 		SET member_no = null ,seat_status = 1
-		WHERE seat_id = #{seatId}
-		 AND member_no = #{memberNo}
+		WHERE member_no = #{memberNo}
 	</update>
 	
 	<select id="selectSeatByMember" parameterType="int" resultMap="seatResultMap">
