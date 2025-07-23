@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hy.common.vo.Paging;
 import com.hy.dao.qna.QnaListAdminDao;
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaReply;
 
@@ -58,4 +59,9 @@ public class QnaAdminService{
         return qnaListAdminDao.selectQnaListPaging(paging, category, searchType, keyword);
     }
     
+    // 첨부파일
+    public Attach getAttach(int qnaId) {
+        // DAO의 메소드 호출
+        return qnaListAdminDao.selectAttachByQnaId(qnaId);
+    }
 }

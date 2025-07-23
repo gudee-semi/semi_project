@@ -143,7 +143,7 @@ button {
 					<td>${t.category}</td>
 					<td style="text-align: left;">${t.title}</td>
 					<td>${t.memberName}</td>
-					<td>${t.modDate}</td>
+					<td>${t.regDate}</td>
 					<td>${t.viewCount}</td>
 				</tr>
 			</c:forEach>
