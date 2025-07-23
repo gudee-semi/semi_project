@@ -57,9 +57,10 @@ public class UserDelete extends HttpServlet {
 
 		user.setUserName(userName);
 		
-
-		int totalData = service.selectUserCount(user);
 		
+		int totalData = service.selectUserCount(user);
+		System.out.println("토탈 데이터"+ totalData);
+		System.err.println("현재페이지"+nowPage);
 		// 키워드 기준 2가지로 메소드 각각 만들기
 		user.setTotalData(totalData);	
 		// 게시글 목록 정보 조회

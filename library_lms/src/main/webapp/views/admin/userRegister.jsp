@@ -8,10 +8,17 @@
 </head>
 <style>
 .container_box{
+	padding-top : 100px;
 	display:flex;
+	flex-direction: column;
+	
 }
 .signup_box{
-	margin:0 auto;
+	margin:20px auto 0 ;
+	border : 1px solid #ccc;
+	padding : 50px;
+	border-radius: 5px;
+	
 }
 
  .signup_box input[type="text"] {
@@ -59,6 +66,9 @@ select {
   	outline: none !important;
 	  
 	}
+	.title_box{
+		margin:0 auto 30px;
+	}
 </style>
 <body>
 
@@ -68,8 +78,9 @@ select {
 		<div class= "sidesbar">
 			<%@ include file="/views/include/sidebar.jsp" %>
 		</div>
-		
+				<h2 class="title_box">회원 등록</h2>
 		<div class="signup_box">
+		
 			<form id="signUp">
 				
 				<!-- 이름 -->
@@ -163,10 +174,21 @@ select {
 						dataType :"json",
 						success : function(data){
 							if(data.res_code==500){
-								alert(data.res_msg);
+								Swal.fire({
+									  title: "회원등록 실패",
+									  text: "서버 오류 입니다.",
+									  icon: "warning",
+									  confirmButtonColor: '#205DAC'
+									});
 							}else{
-								 alert(data.res_msg);
-								 location.href ="<%=request.getContextPath()%>/login/view";
+								Swal.fire({
+									  title: "회원등록 성공",
+									  text: "회원 계정을 등록 하였습니다.",
+									  icon: "success",
+									  confirmButtonColor: '#205DAC'
+									}).then(() => {
+										  location.href = "<%=request.getContextPath()%>/main";
+									});
 							}					
 						}
 						
