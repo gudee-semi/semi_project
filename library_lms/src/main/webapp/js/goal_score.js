@@ -260,16 +260,16 @@ $(document).ready(function () {
 	    xhrFields: { withCredentials: true },
 	    success: function (res) {
 	      if (!res.success) {
-	        if (res.reason === 'duplicate') return showSwal('이미 목표 성적을 입력하였습니다.');
-	        return showSwal('입력실패');
+	        if (res.reason === 'duplicate') return showSwal('이미 목표 성적을 입력하였습니다.', "error");
+	        return showSwal('입력실패', "error");
 	      }
-	      showSwal('입력완료');
+	      showSwal('입력완료', "success");
 	      renderResultTable(subjectNames, scoreValues, gradeValues);
 	      $('.score-input, .grade-input').hide();
 	      $('#final-submit').hide();
 	    },
 	    error: function () {
-	      showSwal('서버 오류로 저장에 실패했습니다.');
+	      showSwal('서버 오류로 저장에 실패했습니다.', "error");
 	    }
 	  });
 	});
@@ -278,21 +278,30 @@ $(document).ready(function () {
 	function renderResultTable(subs, scores, grades) {
 	  let html = '';
 	  for (let i = 0; i < subs.length; i++) {
-	    html += `<tr><td>${subs[i]}</td><td>${scores[i]}</td><td>${grades[i]}</td></tr>`;
+	    html += `
+		<tr>
+		  <td>${subs[i]}</td>
+		  <td>${scores[i]}</td>
+		  <td>${grades[i]}</td>
+		  </tr>
+		  `;
 	  }
 	  $('#score-body').html(html);
 	}
 
 	// ✅ Swal 기반 알림 함수 (공통 사용)
-	function showSwal(msg, callback) {
+	// 디폴트 알림창 : 경고
+	function showSwal(msg, icon = "warning", callback) {
 	  return Swal.fire({
-	    title: " ",
-	    text: msg,
-	    confirmButtonColor: "#205DAC"
-	  }).then(() => {
+		  text: msg,
+		  confirmButtonColor: "#205DAC",
+		  icon: icon,
+		  confirmButtonText: '확인'
+		}).then(() => {
 	    if (typeof callback === 'function') {
 	      callback();
 	    }
 	  });
 	}
+	
 	});

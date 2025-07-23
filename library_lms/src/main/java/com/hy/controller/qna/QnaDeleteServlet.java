@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
 
 import com.hy.service.qna.QnaService;
 
@@ -19,19 +22,27 @@ public class QnaDeleteServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
-		int result = qnaService.deleteQna(qnaId);
-		
-		if(result > 0) {
-			response.sendRedirect("/qna/view");
-		} else {
-			response.sendRedirect("/qna/detail");
-		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
+		int qnaId = Integer.parseInt(request.getParameter("no"));
+		
+		int result = qnaService.deleteQna(qnaId);
+		
+		JSONObject obj = new JSONObject();
+		
+		if (result > 0) {
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_code", "500");			
+		}
+		
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 		
 	}
 

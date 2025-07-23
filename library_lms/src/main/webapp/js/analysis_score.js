@@ -5,7 +5,7 @@ $(document).ready(function () {
   const msg = params.get("msg") ? decodeURIComponent(params.get("msg")) : "";
 
   if (deleteResult === "success") {
-    showSwal("삭제 완료").then(() => {
+    showSwal("삭제 완료", "success").then(() => {
       window.location.href = "/analysis_scorePage/view";
     });
     return;
@@ -163,7 +163,7 @@ $(document).ready(function () {
     const selectedExamTypeId = $('input[name="exam"]:checked').val();
 
     if (!memberNo || !selectedExamTypeId) {
-      return showSwal("시험 분류를 선택해 주세요.");
+      return showSwal("시험 분류를 선택해 주세요.", "warning");
     }
 
     $.ajax({
@@ -174,7 +174,7 @@ $(document).ready(function () {
         examTypeId: selectedExamTypeId
       },
       success: function () {
-        showSwal("삭제 완료").then(() => {
+        showSwal("삭제 완료", "success").then(() => {
           window.location.href = "/analysis_scorePage/view";
         });
       },
@@ -186,11 +186,13 @@ $(document).ready(function () {
   });
 
   // ✅ [J] Swal 기반 알림 함수 (공통 사용)
-  function showSwal(msg) {
+  // 디폴트 알림창 : 실패
+  function showSwal(msg, icon = "error", callback) {
     return Swal.fire({
-      title: " ",
       text: msg,
-      confirmButtonColor: "#205DAC"
+      confirmButtonColor: "#205DAC",
+	  icon: icon,
+	  confirmButtonText: '확인'
     });
   }
 });

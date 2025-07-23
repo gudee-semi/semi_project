@@ -50,7 +50,7 @@
 		display: flex;
 		justify-content: space-between;
 		border-bottom: 1px solid #fff;
-		margin: 5px 40px 15px 40px;
+		margin: 5px 40px 10px 40px;
 		
 	}
 	.section-header strong {
@@ -82,7 +82,7 @@
 
 .background-image span {
 	color: #ffffff;
-	font-size: 20px;
+	font-size: 18px;
 	opacity: 1;
 }
 
@@ -91,49 +91,49 @@
 }
 
 .weather-box {
-  position: absolute;
-  top: 10px;
-  right: 12px;
+	position: absolute;
+	top: 14px;
+	right: 40px;
 }
 
 .weather-wrapper {
-  display: flex;
-  align-items: center;
-  border: 2px solid white;
-  border-radius: 20px;
-  padding: 10px 10px;
-  background-color: rgba(0, 0, 0, 0.05);
-  color: white;
+	display: flex;
+	align-items: center;
+	border: 2px solid white;
+	border-radius: 20px;
+	padding: 8px 8px;
+	background-color: rgba(0, 0, 0, 0.05);
+	color: white;
 }
 
 .weather-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 10px;
 }
 
 .weather-icon {
-  position: absolute;
-  top: 1px;
-  right: 90px;
-  width: 80px;
-  height: 80px;
+	position: absolute;
+	top: 1px;
+	right: 115px;
+	width: 80px;
+	height: 80px;
 }
 
 .weather-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 14px;
-  gap: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 14px;
+	gap: 5px;
 }
 .city-name {
-  position: absolute;
-  top: 63px;
-  right: 115px;
-  color: #fff;
-  font-size: 12px;
+	position: absolute;
+	top: 61px;
+	right: 139px;
+	color: #fff;
+	font-size: 12px;
 }
 </style>
 
@@ -178,7 +178,7 @@
 		
 		<div class="weather-box">
   <div class="weather-wrapper">
-    <div class="weather-left" style="width: 65px; height: 55px;">
+    <div class="weather-left" style="width: 60px; height: 50px;">
     </div>
     <div class="weather-info">
       <div>기온 <span id="temperature"></span> ℃</div>
