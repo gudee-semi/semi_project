@@ -162,7 +162,7 @@
 				    
 				    <tr>
 					    <th>파일첨부</th>
-					    <td colspan="3"><input type="file" name="qnaFile" ></td>
+					    <td colspan="3"><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></td>
 				    </tr>
 				    
 				</table>

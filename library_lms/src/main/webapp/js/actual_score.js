@@ -279,15 +279,15 @@ $(document).ready(function () {
       data: JSON.stringify(requestPayload),
       xhrFields: { withCredentials: true },
       success: function (res) {
-        if (res.status === 'duplicate') return showSwal('이미 목표 성적을 입력하였습니다.');
-        if (!res.success) return showSwal('입력 실패');
-        showSwal('입력 완료');
+        if (res.status === 'duplicate') return showSwal('이미 성적을 입력하였습니다.', "error");
+        if (!res.success) return showSwal('입력 실패', "error");
+        showSwal('입력 완료', "success");
         renderResultTable(subjectNames, scoreValues, gradeValues, percentageValues, rankValues);
         $('.score-input, .grade-input').hide();
         $('#final-submit').hide();
       },
       error: function () {
-        showSwal('서버 오류로 저장에 실패했습니다.');
+        showSwal('서버 오류로 저장에 실패했습니다.', "error");
       }
     });
   });
@@ -310,12 +310,13 @@ $(document).ready(function () {
   }
 
   // [J] Swal 기반 알림 함수 (공통 사용)
-  function showSwal(msg, callback) {
+  // 디폴트 알림창 : 경고
+  function showSwal(msg, icon = "warning", callback) {
     return Swal.fire({
-      title: " ",
       text: msg,
+      confirmButtonColor: "#205DAC",
+	  icon: icon,
       confirmButtonText: '확인',
-      confirmButtonColor: "#205DAC"
     }).then(() => {
       if (typeof callback === 'function') callback();
     });
