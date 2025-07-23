@@ -7,7 +7,6 @@
 <title>공지사항</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
 <style>
 .container {
 	width : 70%;
@@ -96,6 +95,10 @@ textarea:focus {
    	font-size: 16px;
 }
 
+.btn:hover {
+	background-color: #3E7AC8;
+}
+
 /*  하...   */
 .sidebars {
 	width: 300px;
@@ -128,7 +131,6 @@ footer {
 	padding: 5px;
 }
 </style>
-
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>

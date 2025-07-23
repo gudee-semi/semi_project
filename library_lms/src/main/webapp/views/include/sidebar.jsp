@@ -47,7 +47,7 @@
 
 .nav-item {
 	margin-bottom: 10px;
-	margin-left: 30px;
+	/* margin-left: 30px; */
 }
 
 .nav-item > a {
@@ -70,13 +70,17 @@
 }
 
 .dropdown-content {
-	display: none;
 	margin-top: 5px;
 	padding-left: 10px;
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition: max-height 0.4s ease, opacity 0.4s ease;
 }
 
 .dropdown:hover .dropdown-content {
-	display: block;
+	max-height: 500px; /* 충분히 큰 값으로 설정 */
+	opacity: 1;
 }
 
 .dropdown-content a {

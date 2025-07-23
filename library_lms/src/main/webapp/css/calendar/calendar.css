@@ -121,12 +121,12 @@ body h1 {
 
 /* --------------------- 체크 박스 --------------------- */
 input[type="checkbox"] {
-	accent-color: blue;
+	accent-color: #205DAC;
 }
 
 /* --------------------- 날짜 배경 --------------------- */
 .fc-day-today {
-	background-color: rgba(32, 93, 172, 0.1) !important;
+	background-color: rgba(32, 93, 172, 0.05) !important;
 }
 
 
