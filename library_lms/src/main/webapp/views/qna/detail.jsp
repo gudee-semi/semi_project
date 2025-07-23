@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>질의응답 상세 페이지</title>
+<!-- SweetAlert2 CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 	.container {
@@ -178,14 +180,15 @@
 				<c:forEach var="r" items="${replyList }">
 					<table class="detail-table" style="margin-top: 20px">
 						<tr>
-							<th style="width: 15%">작성일</th>
-							<td style="width: 35%">${fn:replace(r.modDate, 'T', ' ')}</td>
-							<th style="width: 15%">작성자</th>
-							<td style="width: 35%">관리자</td>
+							<th colspan="2">관리자 답변</th>
 						</tr>
 						<tr>
 							<th style="height: 120px">답변내용</th>
-							<td colspan="3">${r.content }</td>
+							<td>${r.content }</td>
+						</tr>
+						<tr>
+							<th style="height: 20px">작성일자</th>
+							<td style="height: 20px">${fn:replace(r.modDate, 'T', ' ')}</td>
 						</tr>
 					</table>
 				</c:forEach>
@@ -205,9 +208,9 @@
 							<button class="btn-common">수정</button>
 						</form>
 					</c:if>
-						<form action="<c:url value='/qna/delete'/>" method="get" onsubmit="return confirmDelete();">
+						<form id="deleteForm" action="<c:url value='/qna/delete'/>" method="get">
 							<input type="hidden" name="no" value="${qna.qnaId}"/>
-							<button class="btn-common">삭제</button>
+							<button type="button" class="btn-common" id="deleteBtn" style="margin-bottom: 10px">삭제</button>
 						</form>		
 				</c:if>
 			</div>
@@ -215,11 +218,23 @@
 	</div>
 		
 	<script>
-		// 삭제 전에 사용자에게 확인 메시지를 띄우는 함수
-		function confirmDelete() {
-			// confirm 창을 띄우고 결과를 반환
-			return confirm("삭제하시겠습니까?");
-		}
+	// 삭제 버튼 클릭 시 SweetAlert 알림창
+	document.getElementById("deleteBtn").addEventListener("click", function(e) {
+		Swal.fire({
+			title: '삭제하시겠습니까?',
+			text: "삭제된 내용은 복구할 수 없습니다.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#205DAC',
+			cancelButtonColor: '#EFEFEF',
+			confirmButtonText: '삭제',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				document.getElementById("deleteForm").submit();
+			}
+		});
+	});
 	</script>
 	
 	<%@ include file="/views/include/footer.jsp" %>

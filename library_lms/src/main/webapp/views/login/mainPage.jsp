@@ -45,7 +45,28 @@ footer {
 .link:hover {
 	text-decoration: underline;
 }
+
+.weather-box {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+}
+
+.weather-wrapper {
+	display: flex;
+	align-items: center;
+	border: 2px solid white;
+	border-radius: 20px;
+	padding: 10px 15px;
+	color: #F5F5F5;
+}
+
+.weather-info {
+	margin-left: 10px;
+	font-size: 14px;
+}
 </style>
+
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
@@ -83,6 +104,58 @@ footer {
 			    
 			</div>
 		</div>
+		
+		
+		<div class="weather-box">
+			<div class="weather-wrapper">
+        		<img id="icon" alt="날씨 아이콘" style="width: 50px; height: 50px;">
+       			<div class="weather-info">
+	      			<div><span id="cityName"></span></div>
+					<div style="font-size: 16px">기온 <span id="temperature"></span> ℃</div>
+        			<div style="font-size: 16px">습도 <span id="humidity"></span> %</div>
+				</div>
+    		</div>
+		</div>
+		
+	<script>
+		$(document).ready(function() {
+			// 영어 도시명을 한글로 매핑
+		    const cityNameMap = {
+		        "Seoul": "서울",
+		        "Busan": "부산",
+		        "Incheon": "인천",
+		        "Daegu": "대구",
+		        "Gwangju": "광주",
+		        "Daejeon": "대전",
+		        "Ulsan": "울산"
+		        // 필요 시 더 추가 가능
+		    };
+			
+		    $.ajax({
+		        url: "/weatherservlet",
+		        method: "GET",
+		        dataType: "json",
+		        success: function(data) {
+		        	 // cityName이 매핑되어 있으면 한글로, 아니면 원래 값으로 표시
+		            const cityInKorean = cityNameMap[data.cityName] || data.cityName;
+		        	
+		            $("#cityName").text(cityInKorean);
+		            $("#weather").text(data.weather);
+		            $("#icon").attr("src", "https://openweathermap.org/img/wn/" + data.icon + "@2x.png");
+		            $("#temperature").text(parseInt(data.temperature));
+		            $("#feelsLike").text(data.feelsLike);
+		            $("#humidity").text(data.humidity);
+		            $("#windSpeed").text(data.windSpeed);
+		        },
+		        error: function() {
+		            $(".weather-box").text("날씨 정보를 불러올 수 없습니다.");
+		        }
+		    });
+		});
+	</script>
+		
+		
+        
 	</div>
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
