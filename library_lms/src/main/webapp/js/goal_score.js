@@ -117,7 +117,7 @@ $(document).ready(function () {
       const msg = isRestricted
         ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
         : "원점수는 0 이상 100 이하의 숫자로 입력하세요.";
-      return showSwal(msg, () => {
+      return showSwal(msg, "warning", () => {
         input.val('').focus();
       });
     } else {
@@ -134,7 +134,7 @@ $(document).ready(function () {
     if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
       input.css('border', '1px solid #dc2626');
       invalidInput = input;
-      return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", () => {
+      return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", "warning", () => {
         input.val('').focus();
       });
     } else {
@@ -243,6 +243,7 @@ $(document).ready(function () {
 	    scoreValues.push(scoreRaw);
 	    gradeValues.push(gradeRaw);
 	  });
+	  
 
 	  if (emptyFound) return showSwal('입력하지 않은 항목이 있습니다.');
 
