@@ -8,7 +8,8 @@
 <meta charset="UTF-8">
 <title>질의응답 작성</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+<!-- SweetAlert2 CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 	.container {
 		width : 70%;
@@ -184,17 +185,20 @@
 		
 		$("#writeQnaFrm").submit(function(e){
 			e.preventDefault();
-			console.log("1: 동작");
 			const category = $("#qnaCategory").val();
 			const form = document.getElementById("writeQnaFrm");
 			const formData = new FormData(form);
 			// 유효성 검사
-			console.log("2: 동작");
 			if (category == 0) {
-				alert("카테고리를 선택하세요.");
+				Swal.fire({
+					icon: 'warning',
+					title: '카테고리 미선택',
+					text: '카테고리를 선택하세요.',
+					confirmButtonText: '확인',
+					confirmButtonColor: '#205DAC'
+				});
 				return;
 			}
-			console.log("3: 동작");
 			$.ajax({
 				url : "/qna/write",
 				type : "post",
@@ -205,13 +209,26 @@
 				cache : false,
 				dataType : "json",
 				success : function(data){
-					alert(data.res_msg);
-					if(data.res_code == 200){
-						location.href = "<%=request.getContextPath() %>/qna/view";
-					}
+					Swal.fire({
+						icon: data.res_code == 200 ? 'success' : 'error',
+						title: data.res_code == 200 ? '등록 완료' : '등록 실패',
+						text: data.res_msg,
+						confirmButtonText: '확인',
+						confirmButtonColor: '#205DAC'
+					}).then(() => {
+						if(data.res_code == 200){
+							location.href = "<%=request.getContextPath() %>/qna/view";
+						}
+					});
 				},
  				error : function() {
- 					alert("요청 실패!");
+ 					Swal.fire({
+ 						icon: 'error',
+ 						title: '요청 실패',
+ 						text: '서버와의 통신 중 오류가 발생했습니다.',
+ 						confirmButtonText: '확인',
+ 						confirmButtonColor: '#205DAC'
+ 					});
  				}
 			});
 		});

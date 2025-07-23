@@ -8,6 +8,8 @@
 <title>공지사항</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<!-- SweetAlert2 CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 /* 항상 가장 먼저 */
 html, body {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,13 +94,18 @@ button {
 				</c:choose></th>
 		</tr>
 		<tr>
-			<th>첨부파일</th>
-			<th>
-				<%--             <c:if test="${not empty qna.fileName}">
-                <a href="/upload/${qna.fileName}" download>${qna.fileName}</a>
-            </c:if> --%>
-			</th>
-		</tr>
+        <th>첨부파일</th>
+        <th>
+            <c:if test="${not empty attach.qnaAttachId}">
+                <img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>" style="max-width:100%;height:auto;" alt="첨부 이미지">
+                <br>
+                ${attach.oriName}
+            </c:if>
+            <c:if test="${empty attach.qnaAttachId}">
+                첨부파일 없음
+            </c:if>
+        </th>
+    </tr>
 		<tr>
 			<th>내용</th>
 			<th>${qna.content}</th>
@@ -120,7 +126,7 @@ button {
 			<tr>
 				<td>관리자</td>
 				<td>${r.content}</td>
-				<td>${r.regDate}</td>
+				<td>${fn:replace(r.modDate, 'T', ' ')}</td>
 
 			</tr>
 		</c:forEach>

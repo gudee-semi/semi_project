@@ -3,6 +3,7 @@ package com.hy.controller.qna;
 import java.io.IOException;
 import java.util.List;
 
+import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaReply;
 import com.hy.service.qna.QnaAdminService;
@@ -16,10 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/qna/detail/admin")
 public class QnaDetailAdminServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private QnaAdminService qnaAdminService = new QnaAdminService();
-	private QnaService qnaService = new QnaService();
+	private static final long serialVersionUID = 1L;	
+
+    private QnaService   qnaService      = new QnaService();      
+    private QnaAdminService qnaAdminService = new QnaAdminService(); // 답글·조회수용
 
     public QnaDetailAdminServlet() {
         super();
@@ -30,6 +31,7 @@ public class QnaDetailAdminServlet extends HttpServlet {
 		
 		// QnA ID 파라미터 받기
 		String qnaId = request.getParameter("qnaId");
+		
 
 		// 파라미터가 없거나 빈 값이면 메인 페이지로 이동 (에러 처리)
 		if (qnaId == null || qnaId.isEmpty()) {
@@ -41,7 +43,10 @@ public class QnaDetailAdminServlet extends HttpServlet {
 		int qnaNo = Integer.parseInt(qnaId);
 
 		// QnA 상세 데이터 조회 (Service/DAO 호출)
-		Qna qna = qnaService.selectQnaOne(qnaNo);
+		Qna qna = qnaService.selectQnaOne(qnaNo);		
+		
+		// 파일첨부
+		Attach attach = qnaAdminService.getAttach(qnaNo);
 		
 		// 조회수 증가
 	    qnaAdminService.incrementViewCount(qnaNo);
@@ -52,10 +57,10 @@ public class QnaDetailAdminServlet extends HttpServlet {
 		// JSP에서 사용할 데이터 저장 (request 영역)
 		request.setAttribute("qna", qna);
 		request.setAttribute("replyList", replyList);
+		request.setAttribute("attach", attach);
 
 		// 관리자용 QnA 상세 JSP로 포워드
-		request.getRequestDispatcher("/views/qna/qnaDetailAdmin.jsp").forward(request, response);
-                
+		request.getRequestDispatcher("/views/qna/qnaDetailAdmin.jsp").forward(request, response);                
 	
 	}
 
