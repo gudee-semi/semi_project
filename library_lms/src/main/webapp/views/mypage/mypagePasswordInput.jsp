@@ -11,7 +11,7 @@
 		display:flex;
 	}
 	.search_pw_box{
-		margin : 200px auto;
+		margin : 200px auto 300px;
 		border : 1px solid #ccc;
 		padding: 50px;
 		border-radius:5px;
@@ -30,6 +30,7 @@
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		box-sizing: border-box;
+		padding-left : 12px;
 	}
 	.search_pw_box input[type="password"]{
 		width:300px;
@@ -37,8 +38,8 @@
 		
 	}
 	.search_pw_box input[type="password"]:focus{
-		border-color:#205DAC;
-		
+		border-color:#205DAC !important;
+		outline: none;
 	}
 	.search_pw_box input[type="submit"]{
 		box-sizing: border-box;
@@ -48,6 +49,7 @@
 		cursor:pointer;
 		color:black;
 		transition: background-color 0.3s;
+		padding :2px;
 	}
 	.search_pw_box input[type="submit"]:hover{
 		background-color: #205DAC;
@@ -66,19 +68,20 @@
 		
 		<div class="search_pw_box">
 			<form id = "search_pw">
-				<label for="search_pw">비밀번호를 입력하세요</label>
+				<label for="input_pw">비밀번호를 입력하세요</label>
 				<input type= "password" id= "input_pw" name = "input_pw">
 				<p id= "search_pw_msg"></p>
 				<input type= "submit" value= "입력">
 			</form>
 		</div>
 	</div>
+	<%@ include file ="/views/include/footer.jsp" %>
 <script >
 	$("#search_pw").on("submit",function(e){
 		e.preventDefault();
 		const memberPw = $("#input_pw").val().trim();
 		if(memberPw==""){
-			$("#search_pw_msg").text("비밀번를 입력하세요 ").css('color','red');
+			$("#search_pw_msg").text("비밀번호를 입력하세요 ").css('color','red');
 			return;
 		}
 			

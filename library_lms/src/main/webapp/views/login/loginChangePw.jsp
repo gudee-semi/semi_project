@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
  <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
@@ -139,10 +138,21 @@ $("#change_pw").on("submit",function(e){
 			dataType : "json",
 			success : function(data){
 				if(data.res_code == "200"){
-					alert("비밀번호 변경 성공")
-					location.href ="<%=request.getContextPath()%>/login/view";
+					Swal.fire({
+						  title: "비밀번호 변경 성공",
+						  text: "새로운 비밀번호를 이용하세요!",
+						  icon: "success",
+						  confirmButtonColor: '#205DAC'
+						}).then(() => {
+							  location.href = "<%=request.getContextPath()%>/login/view";
+						});
 				}else{
-					alert("서버오류 발생");
+					Swal.fire({
+						  title: "비밀번호 변경 실패",
+						  text: "서버오류가 발생했습니다.",
+						  icon: "warning",
+						  confirmButtonColor: '#205DAC'
+						});
 				}
 			}
 		});

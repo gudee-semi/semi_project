@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,357 +9,381 @@
 </head>
 <!--모달창 css -->
 <style>
+p {
+	font-size: 13px;
+	margin-top: 8px;
+	margin-bottom: 5px;
+}
 
-	p {
-      font-size: 13px;
-      margin-top: 8px;
-      margin-bottom : 5px;
-    }
-    .box_signup input:focus{
-    	border:1px solid #205DAC;
-    	outline:none;
-    }
-	#schul_modal{
-		display:none;
-		position: fixed;
-		top:200px;
-		background-color:white;
-		z-index: 9999;
-		margin : 50px auto;
-		border:none;
-	}
-	#schul_modal .modal_box {
-		background-color: white;
-		width: 400px;
-		border-radius: 10px;
-		padding: 20px;
-		box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-		position: relative;
-	}
-	/* 제목 영역 */
-	#modal_title {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: end;
-	}
+.box_signup input:focus {
+	border: 1px solid #205DAC;
+	outline: none;
+}
+
+#schul_modal {
+	display: none;
+	position: fixed;
+	top: 200px;
+	background-color: white;
+	z-index: 9999;
+	margin: 50px auto;
+	border: none;
+}
+
+#schul_modal .modal_box {
+	background-color: white;
+	width: 400px;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	position: relative;
+}
+/* 제목 영역 */
+#modal_title {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: end;
+}
+
+/* 닫기 버튼 */
+#modal_close_btn {
+	background-color: #D8E5F4;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	color: #333;
+	width: 50px;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+}
+
+#modal_close_btn:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+/* 검색 필드 */
+#modal_content {
+	margin-top: 10px;
+	display: flex;
+	gap: 10px;
+}
+
+#schul_name {
+	flex: 1;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid #D8E5F4;
+	outline: none;
+	transition: background-color 0.3s;
+	height: 40px;
+}
+
+#schul_name:focus {
+	border: 1px solid #205DAC;
+}
+
+#schul_search {
+	border-radius: 5px;
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
+	background-color: #D8E5F4;
+	color: black;
+	transition: background-color 0.3s;
+	height: 40px;
+}
+
+#schul_search:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+/* 결과 필드 */
+#result_field {
+	margin-top: 15px;
+	max-height: 200px;
+	overflow-y: auto;
+	border-top: 1px solid #ddd;
+	padding-top: 10px;
+}
+
+#result_field ul {
+	list-style: none !important;
+	padding: 0;
+	margin: 0;
+}
+
+#result_field ul li {
+	padding: 5px 10px;
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+#result_field ul li:hover {
+	background-color: #D8E5F4;
+}
+
+.title_text {
+	color: #205dac;
+	margin: 20px auto 30px;
+	font-size: 20px;
+}
+
+/* 주소 모달 */
+#layer {
+	display: none;
+	background-color: white;
+	position: absolute;
+	overflow: hidden;
+	z-index: 30;
+	border: 1px solid #888;
+	border-radius: 5px;
+	width: 500px;
+	height: 400px;
+	margin: 50px auto;
+	top: 200px;
+}
+
+#layer>div {
+	background-color: #D8E5F4;
+	position: relative;
+	height: 35px;
+	z-index: 2;
+}
+
+#addressCloseBtn {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	z-index: 2;
+	background-color: white;
+	color: black;
+	border-radius: 5px;
+	border: none;
+	transition: background-color 0.3s;
+}
+
+#addressCloseBtn:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+.signup_title {
+	margin: 0 auto 30px;
 	
-	/* 닫기 버튼 */
-	#modal_close_btn {
-		background-color: #D8E5F4;
-		border: none;
-		font-size: 16px;
-		cursor: pointer;
-		color: #333;
-		width : 50px;
-		border-radius:5px;
-		transition: background-color 0.3s;
-		
-	}
-	#modal_close_btn:hover{
-		background-color: #205DAC;
-		color:white;
-	}
-	
-	/* 검색 필드 */
-	#modal_content {
-		margin-top: 10px;
-		display: flex;
-		gap: 10px;
-	}
-	
-	#schul_name {
-		flex: 1;
-		padding: 5px;
-		border-radius: 5px;
-		border : 1px solid #D8E5F4;
-		outline: none; 
-		transition: background-color 0.3s;
-		height:40px;
-	}
-	#schul_name:focus{
-		border : 1px solid #205DAC;
-	}
-	#schul_search {
-		border-radius:5px;
-		border:none;
-		padding: 5px 10px;
-		cursor: pointer;
-		background-color: #D8E5F4;
-		color:black;
-		transition: background-color 0.3s;
-		height:40px;
-	}
-	#schul_search:hover{
-		background-color: #205DAC;
-		color:white;
-	}
-	
-	/* 결과 필드 */
-	#result_field {
-		margin-top: 15px;
-		max-height: 200px;
-		overflow-y: auto;
-		border-top: 1px solid #ddd;
-		padding-top: 10px;
-	}
-	
-	#result_field ul {
-		list-style: none !important;
-		padding: 0;
-		margin: 0;
-	}
-	
-	#result_field ul li {
-		padding: 5px 10px;
-		border-bottom: 1px solid #eee;
-		cursor : pointer;
-		transition: background-color 0.3s;
-	}
-	#result_field ul li:hover{
-	 	background-color: #D8E5F4;
-	}
-	.title_text{
-		color: #205dac;
-		margin : 20px auto 30px;
-		font-size: 20px;
-	}
-	
-	/* 주소 모달 */
-	#layer{
-		display:none;
-		background-color:white;
-		position :absolute;
-		overflow:hidden;
-		z-index:30;
-		border:1px solid #888;
-		border-radius:5px;
-		width:500px;
-		height:400px;
-		margin :50px auto;
-		top:200px;
-		
-		
-		
-	}
-	#layer>div{
-		background-color:#D8E5F4; 
-		position:relative; 
-		height:35px; 
-		z-index:2;
-	}
-	#addressCloseBtn{
-		position :absolute; 
-		top:3px;
-		right:3px;
-		z-index:2;
-		background-color: white;
-		color: black;
-		border-radius: 5px;
-		border:none;
-		transition: background-color 0.3s;
-	}
-	#addressCloseBtn:hover{
-		background-color: #205DAC;
-		color: white;
-	}
-	.signup_title{
-		margin:0 auto 30px;
-		font-size: 40px;
-		font-weight: 700;
-	}
-	.container_signup{
-		padding-top : 100px;
-		display:flex;
-		justify-content: start;
-		flex-direction: column;
-		height:1200px;
-	}
-	.box_signup{
-		position:relative;
-		margin: 0 auto;
-		padding :50px 50px 30px;
-		border-radius: 5px;
-		border:1px solid #ccc;
-	}
-	.box_signup input{
-	  padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-      column-gap: 5px;
-      width:200px;
-      height:50px;
-      box-sizing: border-box;
-	}
-	.box_signup input[type="button"]{
-	  width:80px;
-	  height:50px;
-	  box-sizing:border-box;
-	  background-color: #D8E5F4;
-	  color: black;
-	  transition: background-color 0.3s;
-	}
-	.box_signup input[type="button"]:hover{
-	  background-color: #205DAC;
-	  color:white;
-	}
-	.box_signup input[type="submit"]{
-		position:relative;
-		right:-285px;
-	  background-color: #D8E5F4;
-	  color: black;
-	  transition: background-color 0.3s;
-	  cursor:pointer;
-	}
-	.box_signup input[type="submit"]:hover{
-	  background-color: #205DAC;
-	  color:white;
-	}
-	#member_address{
-		width:400px;
-	}
-	#member_schul{
-		width:300px;
-	}
-	select {
-	  width: 200px;
-	  padding: 10px;
-	  font-size: 14px;
-	  border: 1px solid #ccc;
-	  border-radius: 5px;
-	  background-color: white;
-	  color: #333;
-	}
-	select:focus {
-	   border: 1px solid #205DAC !important;
-  	outline: none !important;
-	  
-	}
-	.box_signup input[type="file"]{
-		
-	}
-	
-	.file-label {
-	  display: inline-block;
-	  padding: 12px;
-	  background-color: #D8E5F4;
-	  color: black;
-	  border-radius: 5px;
-	  cursor: pointer;
-	  border: 1px solid #ccc;
-	  transition: background-color 0.3s;
-	  box-sizing:border-box;
-	  width:80px;
-	  height:50px;
-	  font-size: 14px;
-	}
-	
-	.file-label:hover {
-	  background-color: #205DAC;
-	  color: white;
-	}
-	
-	#file-name {
-	  margin-left: 10px;
-	  font-size: 14px;
-	  color: #555;
-	}
-	
+}
+
+.container_signup {
+	padding-top: 100px;
+	display: flex;
+	justify-content: start;
+	flex-direction: column;
+	height: 1200px;
+}
+
+.box_signup {
+	position: relative;
+	margin: 0 auto;
+	padding: 50px 50px 30px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+
+.box_signup input {
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
+	column-gap: 5px;
+	width: 200px;
+	height: 50px;
+	box-sizing: border-box;
+}
+
+.box_signup input[type="button"] {
+	width: 80px;
+	height: 50px;
+	box-sizing: border-box;
+	background-color: #D8E5F4;
+	color: black;
+	transition: background-color 0.3s;
+	cursor:pointer;
+}
+
+.box_signup input[type="button"]:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+.box_signup input[type="submit"] {
+	position: relative;
+	right: -285px;
+	background-color: #D8E5F4;
+	color: black;
+	transition: background-color 0.3s;
+	cursor: pointer;
+}
+
+.box_signup input[type="submit"]:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+#member_address {
+	width: 400px;
+}
+
+#member_schul {
+	width: 300px;
+}
+
+select {
+	width: 200px;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+	color: #333;
+}
+
+select:focus {
+	border: 1px solid #205DAC !important;
+	outline: none !important;
+}
+
+.file-label {
+	display: inline-block;
+	padding: 12px;
+	background-color: #D8E5F4;
+	color: black;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	transition: background-color 0.3s;
+	box-sizing: border-box;
+	width: 80px;
+	height: 50px;
+	font-size: 14px;
+}
+
+.file-label:hover {
+	background-color: #205DAC;
+	color: white;
+}
+
+#file-name {
+	margin-left: 10px;
+	font-size: 14px;
+	color: #555;
+}
+
+#member_address_detail {
+	margin-left: 85px;
+}
+
 </style>
 
 
 <body>
-<%@ include file ="/views/include/header.jsp" %>
-<div class="container_signup">
-	<p class="signup_title">회원가입</p>
-	<div class="box_signup">
-		<form id="signUp" method="post" enctype="multipart/form-data" >
-			<!--아이디   -->
-			<input type="text" id="member_id" name="member_id" placeholder="아이디">
-			<p id="member_id_msg"></p>
-			
-			<!--비밀번호 -->
-			<input type="password" id="member_pw" name="member_pw" placeholder="비밀번호">
-			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
-			<p id="member_pw_msg"></p>
-			
-			<!-- 이름 -->
-			<input type="text" id="member_name" name="member_name" placeholder="이름">
-			<p id="member_name_msg"></p>
-			
-			<!-- 전화번호 -->
-			<input type="text" id="member_phone" name="member_phone" placeholder="전화번호">
-			<p id="member_phone_msg"></p>
-			
-			<!--주민번호 -->
-			<input type="password" id="member_rrn" name="member_rrn" placeholder="주민번호">
-			<p id="member_rrn_msg"></p>
-			
-			<!--주소 검색  -->
-			<input type="button" id = "addressBtn" value="주소검색">
-			<input type="text" id="member_address" name="member_address" placeholder="주소" readonly>
-			<p></p>
-			<input type="text" id="member_address_detail" name="member_address_detail" placeholder="상세주소">
-			<!--주소 모달창  -->
-			<div id="layer">
-				<div>
-				 <button type="button" id ="addressCloseBtn" >닫기</button>
-				</div>
-				<div id="addressWindow" style="width :100%; height : 100%;">
-				</div>
-			</div>
-			<p id= "member_address_msg"></p>
-			
-			
-			<!-- 학교 검색  -->
-			<input type="button" id = "member_schul_search" value="학교검색">
-			<input type="text" id="member_schul" name="member_schul" placeholder="학교이름" readonly>
-			<p id = "member_schul_msg"></p>
-			
-			<!-- 학교 검색 모달 -->
-			<div id="schul_modal">
-				<div class ="modal_box">
-					<div id = "modal_title">
-						<button type= "button" id ="modal_close_btn">닫기</button>
-						<p class="title_text">학교 검색</p>
-				
+	<%@ include file="/views/include/header.jsp"%>
+	<div class="container_signup">
+		<h1 class="signup_title">회원가입</h1>
+		<div class="box_signup">
+			<form id="signUp" method="post" enctype="multipart/form-data">
+				<!--아이디   -->
+				<input type="text" id="member_id" name="member_id" placeholder="아이디">
+				<p id="member_id_msg"></p>
+
+				<!--비밀번호 -->
+				<input type="password" id="member_pw" name="member_pw"
+					placeholder="비밀번호"> <input type="password"
+					id="member_pw_check" placeholder="비밀번호 확인">
+				<p id="member_pw_msg"></p>
+
+				<!-- 이름 -->
+				<input type="text" id="member_name" name="member_name"
+					placeholder="이름">
+				<p id="member_name_msg"></p>
+
+				<!-- 전화번호 -->
+				<input type="text" id="member_phone" name="member_phone"
+					placeholder="전화번호">
+				<p id="member_phone_msg"></p>
+
+				<!--주민번호 -->
+				<input type="password" id="member_rrn" name="member_rrn"
+					placeholder="주민번호">
+				<p id="member_rrn_msg"></p>
+
+				<!--주소 검색  -->
+				<input type="button" id="addressBtn" value="주소검색"> <input
+					type="text" id="member_address" name="member_address"
+					placeholder="주소" readonly>
+				<p></p>
+				<input type="text" id="member_address_detail"
+					name="member_address_detail" placeholder="상세주소">
+				<!--주소 모달창  -->
+				<div id="layer">
+					<div>
+						<button type="button" id="addressCloseBtn">닫기</button>
 					</div>
-				<div id = "modal_content">
-					<div id = "search_field"></div>
-						<input id = "schul_name" type="text" placeholder="학교이름 입력" > 
-						<button type= "button" id = "schul_search">검색</button>
-					</div>
-					<div id = "result_field">
-					 
+					<div id="addressWindow" style="width: 100%; height: 100%;"></div>
+				</div>
+				<p id="member_address_msg"></p>
+
+
+				<!-- 학교 검색  -->
+				<input type="button" id="member_schul_search" value="학교검색">
+				<input type="text" id="member_schul" name="member_schul"
+					placeholder="학교이름" readonly>
+				<p id="member_schul_msg"></p>
+
+				<!-- 학교 검색 모달 -->
+				<div id="schul_modal">
+					<div class="modal_box">
+						<div id="modal_title">
+							<button type="button" id="modal_close_btn">닫기</button>
+							<p class="title_text">학교 검색</p>
+
+						</div>
+						<div id="modal_content">
+							<div id="search_field"></div>
+							<input id="schul_name" type="text" placeholder="학교이름 입력">
+							<button type="button" id="schul_search">검색</button>
+						</div>
+						<div id="result_field"></div>
 					</div>
 				</div>
-			</div>
-			
-			<!-- 학년 입력 -->
-			<div class="schul_grade_select">
-				<span style="margin-right : 20px;">학년</span>
-				<select id ="member_grade" name="member_grade">
-					<option value="0">미지정</option>
-					<option value="1">1학년</option>
-					<option value="2">2학년</option>
-					<option value="3">3학년</option>
-				</select>
-				<p id ="member_grade_msg"></p>
-			</div>
-			
-			<!-- 프로필 이미지 첨부 -->
-			<label for="member_profile" class="file-label">파일선택</label>
-			<span id="file-name">선택된 파일 없음</span>
-			<input type="file" id = "member_profile" name = "member_profile" hidden>
-			<p id ="member_profile_msg"></p>
-			<img id="previewImg"width="200px" height="200px" hidden>
-			<p></p>
-			<input type="submit" value="제출하기">
-		</form>
+
+				<!-- 학년 입력 -->
+				<div class="schul_grade_select">
+					<span style="margin:0 13px 0 38px;">학년</span> <select
+						id="member_grade" name="member_grade">
+						<option value="0">미지정</option>
+						<option value="1">1학년</option>
+						<option value="2">2학년</option>
+						<option value="3">3학년</option>
+					</select>
+					<p id="member_grade_msg"></p>
+				</div>
+
+				<!-- 프로필 이미지 첨부 -->
+				<label for="member_profile" class="file-label">파일선택</label> <span
+					id="file-name">선택된 파일 없음</span> <input type="file"
+					id="member_profile" name="member_profile" hidden>
+				<p id="member_profile_msg"></p>
+
+				<img id="previewImg" width="200px" height="200px" hidden>
+				<p></p>
+				<input type="submit" value="제출하기">
+			</form>
+		</div>
 	</div>
-</div>
-<script>
+	<script>
  	// 변수 설정, 정규식 설정
 	let idStatus =false;
 	let pwStatus =false;
@@ -389,7 +412,7 @@
 	let memberGrade=0;
 	let memberProfile="";
 </script>
-<script>
+	<script>
 	
 	// 아이디 값이 비어있는지 , 유효한 값인지 ,입력한 값이 중복인지 체크
 	$("#member_id").on("input blur",function(){
@@ -504,7 +527,8 @@
 		}
 	});
 	</script>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script
+		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	//주소찾기
 	
@@ -635,7 +659,7 @@
 		
 			
 	</script>
-	<script >
+	<script>
 		//학년 선택
 		$("#member_grade").on("change",function(){
 			memberGrade= $("#member_grade").val();
@@ -648,7 +672,7 @@
 		});
 	
 	</script>
-	
+
 	<script>
 		//프로필 이미지
 	$("#member_profile").on("change",function(){
@@ -675,7 +699,7 @@
 		
 	});
 	</script>
-	
+
 	<script>
 	 $("#signUp").submit(function(e){
 		e.preventDefault();
@@ -723,10 +747,21 @@
 					dataType :"json",
 					success : function(data){
 						if(data.res_code==500){
-							alert(data.res_msg);
+							Swal.fire({
+								  title: "회원가입 실패",
+								  text: "등록된 회원이 아닙니다.",
+								  icon: "warning",
+								  confirmButtonColor: '#205DAC'
+								});
 						}else{
-							 alert(data.res_msg);
-							 location.href ="<%=request.getContextPath()%>/login/view";
+							Swal.fire({
+								  title: "회원가입 성공",
+								  text: "계정 등록을 축하합니다.!",
+								  icon: "success",
+								  confirmButtonColor: '#205DAC'
+								}).then(() => {
+									  location.href = "<%=request.getContextPath()%>/login/view";
+								});
 						}					
 					}
 					
@@ -735,8 +770,8 @@
 	});
 	
 	</script>
-	
-	
+
+
 
 </body>
 </html>
