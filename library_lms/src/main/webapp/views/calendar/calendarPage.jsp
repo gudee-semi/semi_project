@@ -27,6 +27,16 @@
 	  border-left: 1px solid #eee;
 	  border-right: 1px solid #eee;
 	}
+	
+	.fc-toolbar-title,
+	.fc-col-header-cell-cushion {
+		font-weight: normal;
+	}
+	
+	.fc-day-today .fc-col-header-cell-cushion {
+		font-weight: bold;
+		color: #205DAC;
+	}
 
 	.sidebars {
 		width: 300px;
@@ -277,11 +287,11 @@
 				            titleEl.style.fontWeight = 'bold';
 				            titleEl.style.fontSize = '14px';
 				            if (event.extendedProps.is_completed === 1) {
-				                el.style.border = '3px solid blue';
+				                el.style.border = '3px solid #205DAC';
 				                el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
-				                titleEl.style.color = 'blue';
+				                titleEl.style.color = '#205DAC';
 				                if (descriptionEl) {
-				                    descriptionEl.style.color = 'blue';
+				                    descriptionEl.style.color = '#205DAC';
 				                }
 				            } else if (event.extendedProps.is_completed === 0) {
 				                el.style.border = '3px solid grey';
@@ -313,11 +323,11 @@
 				                    success: (data) => {
 				                        // (1) is_completed UI 반영
 				                        if (isCompleted === 1) {
-				                            el.style.border = '3px solid blue';
+				                            el.style.border = '3px solid #205DAC';
 				                            el.style.backgroundColor = 'rgba(209, 224, 255, 0.15)';
-				                            titleEl.style.color = 'blue';
+				                            titleEl.style.color = '#205DAC';
 				                            if (descriptionEl) {
-				                                descriptionEl.style.color = 'blue';
+				                                descriptionEl.style.color = '#205DAC';
 				                            }
 				                        } else {
 				                            el.style.border = '3px solid grey';
@@ -448,7 +458,8 @@
 				                            success: (data) => {
 				                                if (data.res_code == '200') {
 				        		                	Swal.fire({
-														title: "할 일 목록이 수정되었습니다.",
+														title: " ",
+														text: "할 일 목록이 수정되었습니다.",
 														icon: "success",
 														confirmButtonText: '확인',
 														confirmButtonColor: '#205DAC'
@@ -488,7 +499,8 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 				                                } else {
 				                                	Swal.fire({
-								                		  title: "할 일 목록 수정이 실패했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 수정이 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -508,6 +520,7 @@
 				                const deleteDate = event.startStr.split('T')[0];
 
 				                Swal.fire({
+				                  title: " ",
 				                  text: '정말로 [' + deleteDate + ']' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
@@ -525,7 +538,8 @@
 						                    success: (data) => {
 						                        if (data.res_code == '200') {
 						                        	Swal.fire({
-								                		  title: "할 일 목록 삭제가 성공했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 성공했습니다.",
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -549,7 +563,8 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 						                        } else {
 								                	Swal.fire({
-								                		  title: "할 일 목록 삭제가 실패했습니다.",
+								                		  title: " ",
+								                		  text: "할 일 목록 삭제가 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
@@ -724,7 +739,8 @@
 				            success: (data) => {
 				                if (data.res_code == '200') {	                	
 				                	Swal.fire({
-				                		  title: "할 일 목록이 등록되었습니다.",
+				                		  title: " ",
+				                		  text: "할 일 목록이 등록되었습니다.",
 				                		  icon: "success",
 				                		  confirmButtonText: '확인',
 				                		  confirmButtonColor: '#205DAC'
@@ -767,7 +783,8 @@
 				                    });
 				                } else {
 				                	Swal.fire({
-				                		  title: "할 일 목록이 등록이 실패했습니다.",
+				                		  title: " ",
+				                		  text: "할 일 목록이 등록이 실패했습니다.",
 				                		  icon: "error",
 				                		  confirmButtonText: '확인',
 				                		  confirmButtonColor: '#205DAC'

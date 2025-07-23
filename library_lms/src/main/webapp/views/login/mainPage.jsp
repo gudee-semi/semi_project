@@ -73,7 +73,7 @@ footer {
 	<div class="flex-container">
 		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 		<div class="container">
-			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 945px">
+			<div class="background-image" style="background-image: url('<%= request.getContextPath() %>/images/wallpaper.gif'); background-repeat: no-repeat; height: 945px; background-size: cover;">
 			    <!-- 공지사항 -->
 			    <div style="width: 50%; height: 230px; background-color: rgba(0, 0, 0, 0.6); padding: 20px; color: white;">
 			        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fff; margin-bottom: 10px;">
