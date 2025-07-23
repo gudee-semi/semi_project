@@ -1,7 +1,10 @@
 package com.hy.controller.tablet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import org.json.simple.JSONObject;
 
 import com.hy.dto.tablet.Tablet;
 import com.hy.dto.tablet.TabletLog;
@@ -35,7 +38,7 @@ public class TabletAdminServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String[] penaltyMemberInfos = request.getParameterValues("penalty");
+		String[] penaltyMemberInfos = request.getParameterValues("penalty[]");
 		int result = 0;
 		
 		
@@ -57,15 +60,17 @@ public class TabletAdminServlet extends HttpServlet {
 		    System.out.println("선택된 항목이 없습니다.");
 		}
 		
-		request.setAttribute("msg", "반납처리 후, 해당 사용자에게 패널티를 적용하였습니다.");
-		request.setAttribute("path", "/admin/tablet");
+		JSONObject obj = new JSONObject();
 		
-		if(result < 1) {
-			request.setAttribute("msg", "처리 중 오류가 발생했습니다.");
-			request.setAttribute("path", "/admin/tablet");
+		if (result > 0) {
+			obj.put("res_code", "200");
+		} else {
+			obj.put("res_code", "500");			
 		}
 		
-		request.getRequestDispatcher("/views/qna/result.jsp").forward(request, response);
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(obj);
 	}
 
 }
