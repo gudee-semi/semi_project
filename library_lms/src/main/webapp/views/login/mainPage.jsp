@@ -11,7 +11,7 @@
 	
 	.sidebars {
 		width: 300px;
-		height: 100vh;
+		height: 850px;
 	}
 	
 	.flex-container {
