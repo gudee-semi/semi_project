@@ -104,53 +104,51 @@ $(document).ready(function () {
 
   // [G-1] 원점수 유효성 검사
   $(document).on('blur', '.score-input', function () {
-    const input = $(this);
-    const sub = input.data('subject');
-    const val = input.val().trim();
-    const v = parseInt(val);
+     const input = $(this);
+     const sub = input.data('subject');
+     const val = input.val().trim();
+     const v = parseInt(val);
 
-    const isRestricted =
-      sub === "한국사" ||
-      socialSubjects.includes(sub) ||
-      science1Subjects.includes(sub) ||
-      science2Subjects.includes(sub) ||
-      lang2Subjects.includes(sub);
+     const isRestricted =
+       sub === "한국사" ||
+       socialSubjects.includes(sub) ||
+       science1Subjects.includes(sub) ||
+       science2Subjects.includes(sub) ||
+       lang2Subjects.includes(sub);
 
-    const min = 0;
-    const max = isRestricted ? 50 : 100;
+     const min = 0;
+     const max = isRestricted ? 50 : 100;
 
-    if (val === '') return input.css('border', '');
-    if (isNaN(v) || v < min || v > max) {
-      input.css('border', '1px solid #dc2626');
-      return showSwal(
-        isRestricted
-          ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
-          : "원점수는 0 이상 100 이하의 숫자로 입력하세요.",
-        () => {
-          input.val('').focus();
-        }
-      );
-    } else {
-      input.css('border', '');
-    }
-  });
+     if (val !== '' && (isNaN(v) || v < min || v > max)) {
+       input.css('border', '1px solid #dc2626');
+       invalidInput = input;
+       const msg = isRestricted
+         ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
+         : "원점수는 0 이상 100 이하의 숫자로 입력하세요.";
+       return showSwal(msg, "warning", () => {
+         input.val('').focus();
+       });
+     } else {
+       input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
+     }
+   });
 
   // [G-2] 등급 유효성 검사
   $(document).on('blur', '.grade-input', function () {
-    const input = $(this);
-    const val = input.val().trim();
-    const v = parseInt(val);
+      const input = $(this);
+      const val = input.val().trim();
+      const v = parseInt(val);
 
-    if (val === '') return input.css('border', '');
-    if (isNaN(v) || v < 1 || v > 9) {
-      input.css('border', '1px solid #dc2626');
-      return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", () => {
-        input.val('').focus();
-      });
-    } else {
-      input.css('border', '');
-    }
-  });
+      if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
+        input.css('border', '1px solid #dc2626');
+        invalidInput = input;
+        return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", "warning", () => {
+          input.val('').focus();
+        });
+      } else {
+        input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
+      }
+    });
 
   // [G-3] 백분위 유효성 검사
   $(document).on('blur', '.percent-input', function () {
@@ -161,7 +159,7 @@ $(document).ready(function () {
     if (val === '') return input.css('border', '');
     if (isNaN(v) || v < 0 || v > 100) {
       input.css('border', '1px solid #dc2626');
-      return showSwal("백분위는 0 이상 100 이하의 숫자로 입력하세요.", () => {
+      return showSwal("백분위는 0 이상 100 이하의 숫자로 입력하세요.", "warning", () => {
         input.val('').focus();
       });
     } else {
@@ -178,7 +176,7 @@ $(document).ready(function () {
     const match = val.match(/^(\d+)\/(\d+)$/);
     if (!match) {
       input.css('border', '1px solid #dc2626');
-      return showSwal("석차는 (본인등수/전체 인원수) 형식으로 입력하세요.", () => {
+      return showSwal("석차는 (본인등수/전체 인원수) 형식으로 입력하세요.", "warning", () => {
         input.val('').focus();
       });
     }
@@ -188,7 +186,7 @@ $(document).ready(function () {
 
     if (myRank < 1 || total < 1 || myRank > total) {
       input.css('border', '1px solid #dc2626');
-      return showSwal("본인 등수는 전체 인원수보다 작거나 같아야 하며 1 이상이어야 합니다.", () => {
+      return showSwal("본인 등수는 전체 인원수보다 작거나 같아야 하며 1 이상이어야 합니다.", "Warning", () => {
         input.val('').focus();
       });
     } else {
