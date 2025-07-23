@@ -6,28 +6,89 @@
 <meta charset="UTF-8">
 <title></title>
 </head>
+<style>
+.container_box{
+	display:flex;
+}
+.signup_box{
+	margin:0 auto;
+}
+
+ .signup_box input[type="text"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
+    }
+
+ .signup_box input[type="submit"] {
+      background-color: #D8E5F4;
+      color: black;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
+    }
+    
+.signup_box input[type="submit"]:hover {
+      background-color: #205DAC;
+      color:white;
+    }
+ .signup_box input:focus{
+    	border:1px solid #205DAC;
+    	outline:none;
+    }
+select {
+	  width: 200px;
+	  padding: 10px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  background-color: white;
+	  color: #333;
+	}
+	select:focus {
+	   border: 1px solid #205DAC !important;
+  	outline: none !important;
+	  
+	}
+</style>
 <body>
 
 	<%@ include file="/views/include/header.jsp" %>
-	<%@ include file="/views/include/sidebar.jsp" %>
-	<form id="signUp">
-		
-		<!-- 이름 -->
-		<input type="text" id="member_name" name="member_name" placeholder="이름"><br>
-		<p id="member_name_msg"></p>
-		<!--주민번호 -->
-		<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호"><br>
-		<p id="member_rrn_msg"></p>
-		<!-- 학년 입력 -->
-		<select id ="member_seat" name="member_seat">
-			<option value="0">공용좌석</option>
-			<option value="1">지정좌석</option>
-		</select>
-		<p id ="member_seat_msg"></p>
-		<br>
-		<input type="submit" value="등록">
-	</form>
+	<div class="container_box">
 	
+		<div class= "sidesbar">
+			<%@ include file="/views/include/sidebar.jsp" %>
+		</div>
+		
+		<div class="signup_box">
+			<form id="signUp">
+				
+				<!-- 이름 -->
+				<input type="text" id="member_name" name="member_name" placeholder="이름">
+				<p id="member_name_msg"></p>
+				<!--주민번호 -->
+				<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호">
+				<p id="member_rrn_msg"></p>
+				<!-- 학년 입력 -->
+				<select id ="member_seat" name="member_seat">
+					<option value="0">공용좌석</option>
+					<option value="1">지정좌석</option>
+				</select>
+				<p id ="member_seat_msg"></p>
+			
+				<input type="submit" value="등록">
+			</form>
+		</div>
+	</div>
 	<script>
 	//이름 입력받기
 	let nameStatus = false;
