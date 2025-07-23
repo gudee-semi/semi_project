@@ -50,7 +50,7 @@
 		display: flex;
 		justify-content: space-between;
 		border-bottom: 1px solid #fff;
-		margin: 5px 40px 15px 40px;
+		margin: 5px 40px 10px 40px;
 		
 	}
 	.section-header strong {
@@ -82,7 +82,7 @@
 
 .background-image span {
 	color: #ffffff;
-	font-size: 20px;
+	font-size: 18px;
 	opacity: 1;
 }
 
