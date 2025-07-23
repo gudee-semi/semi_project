@@ -10,6 +10,7 @@ import com.hy.dao.seat.SeatDao;
 import com.hy.dto.seat.Seat;
 import com.hy.dto.seat.SeatLog;
 import com.hy.mapper.seat.SeatLogMapper;
+import com.hy.mapper.seat.SeatMapper;
 
 public class SeatService {
 	
@@ -84,6 +85,12 @@ public class SeatService {
 	public int insertFix(int memberNo) {
 		return dao.insertFix(memberNo);
 	}
-
+	
+	public void updateSeat(int seatId, Integer memberNo, int seatStatus) {
+        try (SqlSession session = MyBatisUtil.getSqlSession(true)) {
+            SeatMapper mapper = session.getMapper(SeatMapper.class);
+            mapper.updateSeatStatus(seatId, memberNo, seatStatus);
+        }
+    }
 	
 }

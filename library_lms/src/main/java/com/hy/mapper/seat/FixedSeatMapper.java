@@ -14,5 +14,7 @@ public interface FixedSeatMapper {
     boolean isSeatNoUsedByOthers(@Param("seatNo") int seatNo, @Param("memberNo") int memberNo);
 
     int insertFix(int memberNo);
+	Integer getSeatNoByMemberNo(int memberNo);
+	
 }
 

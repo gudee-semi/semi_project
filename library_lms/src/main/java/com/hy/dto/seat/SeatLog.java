@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class SeatLog {
 	private int seatLogId;
     private int memberNo;
-    private int seatNo;
+    private Integer seatNo;
     private LocalDateTime nowTime;
     private int state;
 }
