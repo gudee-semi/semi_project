@@ -248,7 +248,7 @@ footer {
 				success: (data) => {	
 					if (data.res_code == 200) {
 						Swal.fire({
-			              title: "게시글이 수정되었습니다",
+			              text: "성공적으로 수정되었습니다.",
 			              icon: "success",
 			              confirmButtonText: '확인',
 			              confirmButtonColor: '#205DAC'
@@ -257,7 +257,6 @@ footer {
 			            });
 					} else {						
 						Swal.fire({
-			              title: " ",
 			              text: "공지사항 수정에 실패했습니다.",
 			              icon: "error",
 			              confirmButtonText: '확인',

@@ -269,9 +269,6 @@
 	<!-- 선택 과목/점수 입력 영역 -->
 	<h2 id="exam-title"> </h2>
 	
-	<!-- 선택된 과목 목록 표시 영역 -->
-	<div id="selected-subjects"></div>
-	
 	<!-- 성적 테이블을 삽입할 위치 -->
 	<div id="score-table-wrapper"></div>
 	
