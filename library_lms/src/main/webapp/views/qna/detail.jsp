@@ -205,12 +205,12 @@
 					<c:if test ="${qna.answerStatus eq '0'}">
 						<form action="<c:url value='/qna/update'/>" method="get">
 							<input type="hidden" name="no" value="${qna.qnaId}"/>
-							<button class="btn-common">수정</button>
+							<button class="btn-common" style="margin-bottom: 10px">수정</button>
 						</form>
 					</c:if>
-						<form id="deleteForm" action="<c:url value='/qna/delete'/>" method="get">
-							<input type="hidden" name="no" value="${qna.qnaId}"/>
-							<button type="button" class="btn-common" id="deleteBtn" style="margin-bottom: 10px">삭제</button>
+						<form id="deleteForm">
+							<input type="hidden" class="deleteId" name="no" value="${qna.qnaId}"/>
+							<button type="submit" class="btn-common" id="deleteBtn" style="margin-bottom: 10px">삭제</button>
 						</form>		
 				</c:if>
 			</div>
@@ -218,23 +218,55 @@
 	</div>
 		
 	<script>
-	// 삭제 버튼 클릭 시 SweetAlert 알림창
-	document.getElementById("deleteBtn").addEventListener("click", function(e) {
-		Swal.fire({
-			title: '삭제하시겠습니까?',
-			text: "삭제된 내용은 복구할 수 없습니다.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#205DAC',
-			cancelButtonColor: '#EFEFEF',
-			confirmButtonText: '삭제',
-			cancelButtonText: '취소'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				document.getElementById("deleteForm").submit();
-			}
+		$("#deleteForm").on('submit', (e) => {
+			e.preventDefault();
+			
+			Swal.fire({
+              title: '게시글을 삭제하시겠습니까?',
+              text: "삭제된 내용은 복구할 수 없습니다.",
+              icon: 'warning',
+          	  showCancelButton: true,
+          	  confirmButtonText: "삭제",
+          	  cancelButtonText: "취소",
+          	  confirmButtonColor: '#205DAC'
+          	}).then((result) => {
+          		if (result.isConfirmed) {
+        			const qnaId = $('.deleteId').val();
+    				
+    				$.ajax({
+    					 url: '/qna/delete',
+    	                 type: 'post',
+    	                 data: {
+    	                	 no: qnaId
+    	                 },
+    	                 dataType: 'json',
+    	                 success: (data) => {
+    	 					if (data.res_code == 200) {
+    	 						Swal.fire({
+   	 				              title: " ",
+   	 				              text: "게시글이 삭제되었습니다.",
+   	 				              icon: "success",
+   	 				              confirmButtonText: '확인',
+   	 				              confirmButtonColor: '#205DAC'
+   	 				            }).then(() => {   	 				            	
+	    	 						location.href = "<%= request.getContextPath() %>/qna/view";
+   	 				            })
+    	 					} else {
+    	 						Swal.fire({
+   	 				              title: " ",
+   	 				              text: "게시글 삭제를 실패했습니다.",
+   	 				              icon: "error",
+   	 				              confirmButtonText: '확인',
+   	 				              confirmButtonColor: '#205DAC'
+   	 				            }).then(() => {   	 				            	
+	    	 						location.href = "<%= request.getContextPath() %>/qna/view";
+   	 				            });
+    	 					}
+    	                 }
+    				});
+          		}
+          	});
 		});
-	});
 	</script>
 	
 	<%@ include file="/views/include/footer.jsp" %>

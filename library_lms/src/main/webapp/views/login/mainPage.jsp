@@ -47,49 +47,49 @@ footer {
 }
 
 .weather-box {
-  position: absolute;
-  top: 10px;
-  right: 12px;
+	position: absolute;
+	top: 10px;
+	right: 12px;
 }
 
 .weather-wrapper {
-  display: flex;
-  align-items: center;
-  border: 2px solid white;
-  border-radius: 20px;
-  padding: 10px 10px;
-  background-color: rgba(0, 0, 0, 0.05);
-  color: white;
+	display: flex;
+	align-items: center;
+	border: 2px solid white;
+	border-radius: 20px;
+	padding: 10px 10px;
+	background-color: rgba(0, 0, 0, 0.05);
+	color: white;
 }
 
 .weather-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 10px;
 }
 
 .weather-icon {
-  position: absolute;
-  top: 1px;
-  right: 90px;
-  width: 80px;
-  height: 80px;
+	position: absolute;
+	top: 1px;
+	right: 90px;
+	width: 80px;
+	height: 80px;
 }
 
 .weather-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 14px;
-  gap: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 14px;
+	gap: 5px;
 }
 .city-name {
-  position: absolute;
-  top: 63px;
-  right: 115px;
-  color: #fff;
-  font-size: 12px;
+	position: absolute;
+	top: 63px;
+	right: 115px;
+	color: #fff;
+	font-size: 12px;
 }
 </style>
 
@@ -131,20 +131,20 @@ footer {
 			</div>
 		</div>
 		
-		
-		<div class="weather-box">
-  <div class="weather-wrapper">
-    <div class="weather-left" style="width: 65px; height: 55px;">
-    </div>
-    <div class="weather-info">
-      <div>기온 <span id="temperature"></span> ℃</div>
-      <div>습도 <span id="humidity"></span> %</div>
-    </div>
-  </div>
-</div>
-      <img class="weather-icon" id="icon" alt="날씨 아이콘">
-      <div class="city-name" id="cityName"></div>
-		
+	<div class="weather-box">
+		<div class="weather-wrapper">
+			<div class="weather-left" style="width: 65px; height: 55px;">
+			</div>
+			<div class="weather-info">
+				<div>기온 <span id="temperature"></span> ℃</div>
+				<div>습도 <span id="humidity"></span> %</div>
+			</div>
+		</div>
+	</div>
+	
+	<img class="weather-icon" id="icon" alt="날씨 아이콘">
+	<div class="city-name" id="cityName"></div>
+
 	<script>
 		$(document).ready(function() {
 			// 영어 도시명을 한글로 매핑
