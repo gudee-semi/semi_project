@@ -130,7 +130,6 @@
 	#selected-subjects {
 	  text-align: center;
 	  font-size: 18px;
-	  margin-bottom: 40px;
 	}
     
     #score-table {
@@ -239,8 +238,7 @@
 	<!-- 선택 과목/점수 입력 영역 -->
 	<h2 id="exam-title"></h2>
 	
-	<!-- 선택된 과목 목록 표시 영역 -->
-	<div id="selected-subjects"></div>
+
 	
 	<!-- 삭제하기 버튼 -->
 	<div style="text-align: center;">

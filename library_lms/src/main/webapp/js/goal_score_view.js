@@ -40,6 +40,7 @@ $(document).ready(function () {
     }
   });
 
+
   // [B] 시험 선택 시 목표 성적 조회
   examCheckboxes.change(function () {
     examCheckboxes.not(this).prop('checked', false);
@@ -53,7 +54,7 @@ $(document).ready(function () {
       $('#delete-submit').hide();
       return;
     }
-
+	
     const examTypeId = parseInt($(this).val());
 
     $.ajax({
