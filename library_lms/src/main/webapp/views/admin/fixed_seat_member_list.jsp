@@ -30,10 +30,6 @@
 			background: #fafafa;
         }
         
-        tr:last-child td {
-			border-bottom: none;
-		}
-        
         select {
             padding: 5px;
         }
