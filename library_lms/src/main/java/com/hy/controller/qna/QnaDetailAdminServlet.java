@@ -31,6 +31,7 @@ public class QnaDetailAdminServlet extends HttpServlet {
 		
 		// QnA ID 파라미터 받기
 		String qnaId = request.getParameter("qnaId");
+		
 
 		// 파라미터가 없거나 빈 값이면 메인 페이지로 이동 (에러 처리)
 		if (qnaId == null || qnaId.isEmpty()) {
