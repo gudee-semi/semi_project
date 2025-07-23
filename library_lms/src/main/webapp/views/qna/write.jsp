@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <!-- SweetAlert2 CDN 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 	.container {
 		width : 70%;
@@ -100,6 +101,7 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
+		column-gap: 150px;
 	}
 	
 	.container {
@@ -112,6 +114,7 @@
 	
 	h1 {
 		margin-top: 50px;
+		margin-bottom: 50px;
 	}
 	
 	footer {
@@ -211,8 +214,7 @@
 				success : function(data){
 					Swal.fire({
 						icon: data.res_code == 200 ? 'success' : 'error',
-						title: data.res_code == 200 ? '등록 완료' : '등록 실패',
-						text: data.res_msg,
+						text: data.res_code == 200 ? data.res_msg : '등록 실패',
 						confirmButtonText: '확인',
 						confirmButtonColor: '#205DAC'
 					}).then(() => {

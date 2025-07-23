@@ -16,7 +16,7 @@
 		margin-top: 50px;
 	}
 	h1 {
-		margin-left: 495px;
+		margin-left: 20px;
     }
 	.search-row {
 		padding-left: 15px;

@@ -10,6 +10,7 @@
 <style>
 	.container {
 		width: 70%;
+		margin-top: 50px;
 	}
 	h1 {
 		margin-left: 20px;
@@ -177,13 +178,11 @@
 	footer {
 		margin-top: 0px !important;
 	}
-	
-	
-	
 	.new_reply{
-    	
     	display: inline-block;
     	color : Green;
+    	font-size: 14px;
+    	font-weight: 600;
     }
 </style>
 

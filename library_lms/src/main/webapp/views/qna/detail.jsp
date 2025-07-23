@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,27 +12,28 @@
 
 <style>
 	.container {
-		width : 70%;
-		margin-top: 50px;
+		width: 70%;
 	}
+	
 	h1 {
-		margin-left: 495px;
-		margin-bottom: 50px;
-    }
+		margin-left: 20px;
+	}
+	
 	.detail-table {
 		width: 100%;
 		border-collapse: collapse;
 		margin-bottom: 20px;
 	}
-	.detail-table th,
-	.detail-table td {
+	
+	.detail-table th, .detail-table td {
 		border: 1px solid #ddd;
 		padding: 10px 12px;
 		vertical-align: middle;
 		white-space: nowrap; /* 줄바꿈 방지 */
-		overflow: hidden;    /* 넘치는 텍스트 숨김 */
+		overflow: hidden; /* 넘치는 텍스트 숨김 */
 		text-overflow: ellipsis; /* ... 처리 */
 	}
+	
 	.detail-table th {
 		background-color: #F5F5F5;
 		width: 120px;
@@ -40,9 +41,11 @@
 		font-weight: normal;
 		vertical-align: middle;
 	}
+	
 	.content {
 		height: 250px;
 	}
+	
 	.content-cell {
 		vertical-align: top !important;
 		white-space: normal !important; /* 줄바꿈 허용 */
@@ -58,12 +61,14 @@
 		cursor: pointer;
 		color: #fff;
 	}
+	
 	td img {
 		max-width: 100%;
 		height: auto;
 		display: block;
 		margin-top: 10px;
 	}
+	
 	.btn-wrapper {
 		display: flex;
 		justify-content: space-between;
@@ -71,39 +76,40 @@
 		width: 100%;
 		margin-top: 30px;
 	}
-
+	
 	/* 가운데 버튼 그룹 */
 	.center-btns {
 		display: flex;
 		justify-content: center;
 		margin-top: 15px;
 	}
-
+	
 	/* 오른쪽 버튼 */
 	.right-btn {
 		display: flex;
 		justify-content: flex-end;
 		margin-top: 20px;
 	}
-
+	
 	/* 공통 버튼 스타일 */
 	.btn-common {
 		border: none;
-    	background-color: #205DAC;
-   	    color: #fff;
-    	border-radius: 6px;
-    	cursor: pointer;
-    	height: 40px;
-    	width: 90px;
-    	margin-right: 10px;
-    	transition: .2s;
-    	font-size: 16px;
+		background-color: #205DAC;
+		color: #fff;
+		border-radius: 6px;
+		cursor: pointer;
+		height: 40px;
+		width: 90px;
+		margin-right: 10px;
+		transition: .2s;
+		font-size: 16px;
 	}
+	
 	.btn-common:hover {
 		background-color: #3E7AC8;
 	}
-	.center-btns,
-	.right-btn {
+	
+	.center-btns, .right-btn {
 		display: flex;
 		align-items: center;
 		gap: 0;
@@ -117,11 +123,12 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
- 		column-gap: 150px;
+		column-gap: 150px;
 	}
 	
 	.container {
-		width: 60%;
+		width: 70%;
+		margin-top: 50px;
 	}
 	
 	header {
@@ -130,6 +137,7 @@
 	
 	h1 {
 		margin-top: 50px;
+		margin-bottom: 50px;
 	}
 	
 	footer {
@@ -141,7 +149,8 @@
 <body>
 	<%@include file="/views/include/header.jsp"%>
 	<div class="flex-container">
-		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
+		<div class="sidebars"><jsp:include
+				page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>질의응답</h1>
 			<table class="detail-table">
@@ -167,60 +176,62 @@
 					<th class="content">내용</th>
 					<td class="content-cell" colspan="3">${qna.content }</td>
 				</tr>
-				
+
 				<c:if test="${not empty attach }">
 					<tr>
 						<th>첨부파일</th>
-						<td colspan="3">
-					    	<a href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
+						<td colspan="3"><a
+							href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
 							<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
 						</td>
 					</tr>
 				</c:if>
 			</table>
-			
+
 			<c:if test="${not empty replyList }">
-			<hr style="border: none; border-top: 1.5px dashed #ddd;">
+				<hr style="border: none; border-top: 1.5px dashed #ddd;">
 				<c:forEach var="r" items="${replyList }">
 					<table class="detail-table" style="margin-top: 20px">
 						<tr>
 							<th colspan="2">관리자 답변</th>
 						</tr>
 						<tr>
-							<th style="height: 120px">답변내용</th>
-							<td>${r.content }</td>
+							<th style="height: 20px; width: 15%">작성일자</th>
+							<td style="height: 20px">${fn:replace(r.modDate, 'T', ' ')}</td>
 						</tr>
 						<tr>
-							<th style="height: 20px">작성일자</th>
-							<td style="height: 20px">${fn:replace(r.modDate, 'T', ' ')}</td>
+							<th style="height: 120px">답변내용</th>
+							<td>${r.content }</td>
 						</tr>
 					</table>
 				</c:forEach>
 			</c:if>
-				
+
 			<div class="right-btn">
 				<form action="<c:url value='/qna/view'/>" method="get">
 					<button class="btn-common">목록</button>
 				</form>
 			</div>
-			
+
 			<div class="center-btns">
-				<c:if test ="${qna.memberId eq loginMember.memberId}">
-					<c:if test ="${qna.answerStatus eq '0'}">
+				<c:if test="${qna.memberId eq loginMember.memberId}">
+					<c:if test="${qna.answerStatus eq '0'}">
 						<form action="<c:url value='/qna/update'/>" method="get">
-							<input type="hidden" name="no" value="${qna.qnaId}"/>
+							<input type="hidden" name="no" value="${qna.qnaId}" />
 							<button class="btn-common" style="margin-bottom: 10px">수정</button>
 						</form>
 					</c:if>
-						<form id="deleteForm">
-							<input type="hidden" class="deleteId" name="no" value="${qna.qnaId}"/>
-							<button type="submit" class="btn-common" id="deleteBtn" style="margin-bottom: 10px">삭제</button>
-						</form>		
+					<form id="deleteForm">
+						<input type="hidden" class="deleteId" name="no"
+							value="${qna.qnaId}" />
+						<button type="submit" class="btn-common" id="deleteBtn"
+							style="margin-bottom: 10px">삭제</button>
+					</form>
 				</c:if>
 			</div>
 		</div>
 	</div>
-		
+
 	<script>
 		$("#deleteForm").on('submit', (e) => {
 			e.preventDefault();
@@ -248,12 +259,12 @@
     	 					if (data.res_code == 200) {
     	 						Swal.fire({
    	 				              title: " ",
-   	 				              text: "게시글이 삭제되었습니다.",
+   	 				              text: "성공적으로 삭제되었습니다.",
    	 				              icon: "success",
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
    	 				            }).then(() => {   	 				            	
-	    	 						location.href = "<%= request.getContextPath() %>/qna/view";
+	    	 						location.href = "<%=request.getContextPath()%>/qna/view";
    	 				            })
     	 					} else {
     	 						Swal.fire({
@@ -263,7 +274,7 @@
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
    	 				            }).then(() => {   	 				            	
-	    	 						location.href = "<%= request.getContextPath() %>/qna/view";
+	    	 						location.href = "<%=request.getContextPath()%>/qna/view";
    	 				            });
     	 					}
     	                 }
@@ -272,7 +283,7 @@
           	});
 		});
 	</script>
-	
-	<%@ include file="/views/include/footer.jsp" %>
+
+	<%@ include file="/views/include/footer.jsp"%>
 </body>
 </html>

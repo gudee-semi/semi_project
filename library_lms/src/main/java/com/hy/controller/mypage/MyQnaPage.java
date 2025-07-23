@@ -73,6 +73,7 @@ public class MyQnaPage extends HttpServlet {
 		
 		request.setAttribute("paging", qna);
 		request.setAttribute("qnaList", qnaList);
+		System.out.println(qnaList);
 		request.setAttribute("qnaReply", qnaReply);
 		request.getRequestDispatcher("/views/mypage/myQnaView.jsp").forward(request, response);
 	}

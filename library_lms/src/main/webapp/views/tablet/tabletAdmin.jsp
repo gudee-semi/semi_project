@@ -98,7 +98,7 @@
 		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>태블릿 사용현황</h1>
-			<form action="/admin/tablet" method="post">
+			<form class="tabletReturnFrm">
 				<table style="border-collapse: collapse; width: 100%">
 					<thead>
 						<tr>
@@ -137,6 +137,37 @@
 			</form>
 		</div>
 	</div>
+	
+	<script>
+	$(".tabletReturnFrm").on('submit', (e) => {
+		e.preventDefault();
+		let arr = [];
+		$('input[name="penalty"]:checked').each(function() {
+			arr.push($(this).val());
+		});
+		
+		$.ajax({
+			url: '/admin/tablet',
+			type: 'post',
+			data: { penalty: arr },
+			dataType: 'json',
+			success: (data) => {
+				if (data.res_code === '200') {
+					Swal.fire({
+		              text: "반납 처리가 완료되었습니다.",
+		              icon: "success",
+		              confirmButtonText: '확인',
+		              confirmButtonColor: '#205DAC'
+		            }).then(() => {
+						location.href = "<%= request.getContextPath() %>/admin/tablet";						            	
+		            })
+				}
+			}
+		});
+	});
+	
+	</script>
+	
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
