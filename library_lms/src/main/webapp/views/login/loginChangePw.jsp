@@ -11,7 +11,7 @@
 <style>
 .container_pw_search {
       border: 1px solid #c5ccd2;
-      border-radius: 8px;
+      border-radius: 5px;
       padding: 30px 40px;
       background-color: #fff;
       width: 400px;
@@ -19,18 +19,28 @@
       margin: 200px auto 100px;
 	  box-sizing :border-box;
     }
+    .insert_search_data {
+ 	  margin:20px auto 0;
+   	  width:300px;
+      box-sizing: border-box;
+    }
 
     .insert_search_data form {
       display: flex;
       flex-direction: column;
       gap: 15px;
+      margin:0;
     }
 
-    input[type="password"] {
+
+      input[type="password"] {
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 14px;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
     }
 
     input[type="submit"] {
@@ -41,8 +51,11 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
     }
-
+    
     input[type="submit"]:hover {
       background-color: #205DAC;
       color:white;
@@ -74,9 +87,9 @@
 		<form id="change_pw">
 			<input type="password" id="member_pw" name="member_pw" placeholder="새로운 비밀번호">
 			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
+			<p id="member_pw_msg"></p>
 		  <input type="submit" value="변경하기"/>
 		</form>
-		<p id="member_pw_msg"></p>
   </div>
   </div>
 

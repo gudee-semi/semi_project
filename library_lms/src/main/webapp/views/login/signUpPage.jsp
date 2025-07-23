@@ -10,22 +10,24 @@
 </head>
 <!--모달창 css -->
 <style>
+
 	p {
       font-size: 13px;
       margin-top: 8px;
-      margin-bottom : 0;
+      margin-bottom : 5px;
+    }
+    .box_signup input:focus{
+    	border:1px solid #205DAC;
+    	outline:none;
     }
 	#schul_modal{
 		display:none;
 		position: fixed;
-		top:0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
+		top:200px;
+		background-color:white;
 		z-index: 9999;
-		justify-content: center;
-		align-items: center;
+		margin : 50px auto;
+		border:none;
 	}
 	#schul_modal .modal_box {
 		background-color: white;
@@ -52,6 +54,7 @@
 		color: #333;
 		width : 50px;
 		border-radius:5px;
+		transition: background-color 0.3s;
 		
 	}
 	#modal_close_btn:hover{
@@ -72,6 +75,8 @@
 		border-radius: 5px;
 		border : 1px solid #D8E5F4;
 		outline: none; 
+		transition: background-color 0.3s;
+		height:40px;
 	}
 	#schul_name:focus{
 		border : 1px solid #205DAC;
@@ -83,6 +88,8 @@
 		cursor: pointer;
 		background-color: #D8E5F4;
 		color:black;
+		transition: background-color 0.3s;
+		height:40px;
 	}
 	#schul_search:hover{
 		background-color: #205DAC;
@@ -108,12 +115,13 @@
 		padding: 5px 10px;
 		border-bottom: 1px solid #eee;
 		cursor : pointer;
+		transition: background-color 0.3s;
 	}
 	#result_field ul li:hover{
 	 	background-color: #D8E5F4;
 	}
 	.title_text{
-		color: #D8E5F4;
+		color: #205dac;
 		margin : 20px auto 30px;
 		font-size: 20px;
 	}
@@ -124,13 +132,16 @@
 		background-color:white;
 		position :absolute;
 		overflow:hidden;
-		z-index:1;
+		z-index:30;
 		border:1px solid #888;
 		border-radius:5px;
 		width:500px;
 		height:400px;
-		left:20px;
+		margin :50px auto;
 		top:200px;
+		
+		
+		
 	}
 	#layer>div{
 		background-color:#D8E5F4; 
@@ -147,27 +158,30 @@
 		color: black;
 		border-radius: 5px;
 		border:none;
-		
+		transition: background-color 0.3s;
 	}
 	#addressCloseBtn:hover{
 		background-color: #205DAC;
 		color: white;
 	}
 	.signup_title{
-		margin:0 auto;
-		font-size: 20px;
+		margin:0 auto 30px;
+		font-size: 40px;
 		font-weight: 700;
 	}
 	.container_signup{
+		padding-top : 100px;
 		display:flex;
-		justify-content: center;
-		margin-top: 50px;
+		justify-content: start;
 		flex-direction: column;
+		height:1200px;
 	}
 	.box_signup{
+		position:relative;
 		margin: 0 auto;
-		padding :50px;
-		
+		padding :50px 50px 30px;
+		border-radius: 5px;
+		border:1px solid #ccc;
 	}
 	.box_signup input{
 	  padding: 12px;
@@ -175,6 +189,82 @@
       border-radius: 5px;
       font-size: 14px;
       column-gap: 5px;
+      width:200px;
+      height:50px;
+      box-sizing: border-box;
+	}
+	.box_signup input[type="button"]{
+	  width:80px;
+	  height:50px;
+	  box-sizing:border-box;
+	  background-color: #D8E5F4;
+	  color: black;
+	  transition: background-color 0.3s;
+	}
+	.box_signup input[type="button"]:hover{
+	  background-color: #205DAC;
+	  color:white;
+	}
+	.box_signup input[type="submit"]{
+		position:relative;
+		right:-285px;
+	  background-color: #D8E5F4;
+	  color: black;
+	  transition: background-color 0.3s;
+	  cursor:pointer;
+	}
+	.box_signup input[type="submit"]:hover{
+	  background-color: #205DAC;
+	  color:white;
+	}
+	#member_address{
+		width:400px;
+	}
+	#member_schul{
+		width:300px;
+	}
+	select {
+	  width: 200px;
+	  padding: 10px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  background-color: white;
+	  color: #333;
+	}
+	select:focus {
+	   border: 1px solid #205DAC !important;
+  	outline: none !important;
+	  
+	}
+	.box_signup input[type="file"]{
+		
+	}
+	
+	.file-label {
+	  display: inline-block;
+	  padding: 12px;
+	  background-color: #D8E5F4;
+	  color: black;
+	  border-radius: 5px;
+	  cursor: pointer;
+	  border: 1px solid #ccc;
+	  transition: background-color 0.3s;
+	  box-sizing:border-box;
+	  width:80px;
+	  height:50px;
+	  font-size: 14px;
+	}
+	
+	.file-label:hover {
+	  background-color: #205DAC;
+	  color: white;
+	}
+	
+	#file-name {
+	  margin-left: 10px;
+	  font-size: 14px;
+	  color: #555;
 	}
 	
 </style>
@@ -195,7 +285,6 @@
 			<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
 			<p id="member_pw_msg"></p>
 			
-			<br>
 			<!-- 이름 -->
 			<input type="text" id="member_name" name="member_name" placeholder="이름">
 			<p id="member_name_msg"></p>
@@ -205,12 +294,13 @@
 			<p id="member_phone_msg"></p>
 			
 			<!--주민번호 -->
-			<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호">
+			<input type="password" id="member_rrn" name="member_rrn" placeholder="주민번호">
 			<p id="member_rrn_msg"></p>
 			
 			<!--주소 검색  -->
 			<input type="button" id = "addressBtn" value="주소검색">
 			<input type="text" id="member_address" name="member_address" placeholder="주소" readonly>
+			<p></p>
 			<input type="text" id="member_address_detail" name="member_address_detail" placeholder="상세주소">
 			<!--주소 모달창  -->
 			<div id="layer">
@@ -248,23 +338,24 @@
 			</div>
 			
 			<!-- 학년 입력 -->
-			<select id ="member_grade" name="member_grade">
-				<option value="0">미지정</option>
-				<option value="1">1학년</option>
-				<option value="2">2학년</option>
-				<option value="3">3학년</option>
-			</select>
-			<p id ="member_grade_msg"></p>
-			<br>
+			<div class="schul_grade_select">
+				<span style="margin-right : 20px;">학년</span>
+				<select id ="member_grade" name="member_grade">
+					<option value="0">미지정</option>
+					<option value="1">1학년</option>
+					<option value="2">2학년</option>
+					<option value="3">3학년</option>
+				</select>
+				<p id ="member_grade_msg"></p>
+			</div>
 			
 			<!-- 프로필 이미지 첨부 -->
-			<input type="file" id = "member_profile" name = "member_profile">
+			<label for="member_profile" class="file-label">파일선택</label>
+			<span id="file-name">선택된 파일 없음</span>
+			<input type="file" id = "member_profile" name = "member_profile" hidden>
 			<p id ="member_profile_msg"></p>
 			<img id="previewImg"width="200px" height="200px" hidden>
-		
-			<!-- 독서실 정보 동의 -->
-			<input type="checkbox" id = "member_check" name ="member_check">독서실 정보 동의
-			<p id ="member_check_msg"></p>
+			<p></p>
 			<input type="submit" value="제출하기">
 		</form>
 	</div>
@@ -280,7 +371,6 @@
 	let schulStatus= false;
 	let gradeStatus= false;
 	let profileStatus = false;
-	let checkStatus= false;
 	const idReg = /^[a-zA-Z0-9]{6,12}$/;
 	const pwReg = /^[a-zA-Z0-9!@#$%^&*?]{6,12}$/;
 	const rrnReg = /^[0-9]{13}$/;
@@ -471,7 +561,7 @@
 
 	<script>
 	$("#member_schul_search").on("click",function(){
-		  document.getElementById('schul_modal').style.display = 'flex';
+		  document.getElementById('schul_modal').style.display = 'block';
 	})
 	$("#modal_close_btn").on("click",function(){
 		document.getElementById('schul_modal').style.display = 'none';
@@ -538,6 +628,8 @@
 			memberSchul=text;
 			$("#member_schul_msg").text("");
 			schulStatus=true;
+			document.getElementById('schul_modal').style.display = 'none';
+		
 			
 		})
 		
@@ -568,8 +660,10 @@
 			$("#member_profile_msg").text("파일을 선택해주세요").css('color','red');
 		}else if(!imgReg.test(memberProfile=file.name)){
 			$("#member_profile").val("");
+			$("#file-name").text("선택된 파일 없음");
 			$("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg ,png 파일만 첨부가능합니다)").css('color','red');
 		}else{
+			$("#file-name").text(file.name);
 			const reader = new FileReader();
 			reader.onload = function(e){
 				$("#previewImg").attr("src", e.target.result).show();
@@ -580,18 +674,6 @@
 		}
 		
 	});
-	</script>
-	<script >
-		//정보동의 값
-		$("#member_check").on("change",function(){
-			checkStatus=$(this).is(":checked");
-			if(checkStatus){
-				$("#member_check_msg").text("");
-			}else{
-				$("#member_check_msg").text("약관에 동의해주세요").css('color','red');
-			}
-		});
-	
 	</script>
 	
 	<script>
@@ -622,14 +704,12 @@
 		}	
 		if(!memberProfile || memberProfile ===""){
 			$("#member_profile_msg").text("프로필 이미지는 필수 정보 입니다.").css('color','red');
-		}if(!checkStatus){
-			$("#member_check_msg").text("약관에 동의해주세요").css('color','red');
 		}
 		
 		
 		//모든 유효성 검사가 완료 되었을 시
 		if(idStatus && pwStatus && nameStatus && phoneStatus &&rrnStatus && addressStatus && schulStatus && gradeStatus &&
-			profileStatus && checkStatus){
+			profileStatus){
 				const form = $("#signUp")[0];
 				const formData = new FormData(form);
 				$.ajax({
