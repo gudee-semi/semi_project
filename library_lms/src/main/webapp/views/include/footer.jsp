@@ -32,7 +32,7 @@
 		display: inline-block;
 		vertical-align: top;
 		margin-right: 5px;
-		font-size: 24px !important;
+		font-size: 20px !important;
 	}
 	
 	span.footer-detail {
@@ -47,7 +47,7 @@
 				<img alt="대체 텍스트" src="/images/logo_invert.png" style="width: 100%; height: 100%; object-fit: cover;">
 			</div>
 			<div class="informationBox" style="margin-top:30px;">
-			<div style="display: flex;">
+			<div style="display: flex; font-size: 15px;">
 				<div class="information">
 					<span class="material-symbols-outlined icon-footer">location_on</span>
 					<span class="footer-detail">서울특별시 금천구 가산디지털2로 95 KM타워 3층 305호</span>
