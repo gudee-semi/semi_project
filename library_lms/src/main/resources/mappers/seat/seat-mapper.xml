@@ -8,6 +8,12 @@
 		<result property="seatStatus" column="seat_status"/>
 	</resultMap>
 	
+	<update id="updateSeatStatus">
+    UPDATE seat
+    SET member_no = #{memberNo},
+        seat_status = #{seatStatus}
+    WHERE seat_id = #{seatId}
+	</update>
 	
 	<select id="selectAllSeat" resultMap="seatResultMap">
 		SELECT *
