@@ -11,10 +11,47 @@
 		display:flex;
 	}
 	.search_pw_box{
-		margin : 300px auto;
+		margin : 200px auto;
 		border : 1px solid #ccc;
 		padding: 50px;
 		border-radius:5px;
+	}
+	#search_pw{
+		display:flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+	}
+	.search_pw_box label{
+		line-height: 50px;
+		margin-bottom : 10px;
+	}
+	.search_pw_box input{
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		box-sizing: border-box;
+	}
+	.search_pw_box input[type="password"]{
+		width:300px;
+		height:50px;
+		
+	}
+	.search_pw_box input[type="password"]:focus{
+		border-color:#205DAC;
+		
+	}
+	.search_pw_box input[type="submit"]{
+		box-sizing: border-box;
+		width:70px;
+		height:50px;
+		background-color: #D8E5F4;
+		cursor:pointer;
+		color:black;
+		transition: background-color 0.3s;
+	}
+	.search_pw_box input[type="submit"]:hover{
+		background-color: #205DAC;
+		color:white;
 	}
 	
 
