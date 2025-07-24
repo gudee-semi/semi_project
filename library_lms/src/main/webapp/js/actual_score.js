@@ -200,7 +200,7 @@ $(document).ready(function () {
 		  const num = Number(val);
 		  if (isNaN(num) || num < 0 || num > 100) {
 		    input.css('border', '1px solid #dc2626');
-		    return showSwal("백분위는 0~100 사이여야 합니다.", "warning", () => {
+		    return showSwal("백분위는 0 이상 100 이하의 정수여야 합니다.", "warning", () => {
 		      input.val('').focus();
 		    });
 		  }
