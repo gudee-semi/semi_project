@@ -255,13 +255,13 @@ $(document).ready(function () {
 	    } else {
 	      if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 100) {
 	        scoreInput.css('border', '1px solid #dc2626');
-	        return showSwal('원점수는 0 이상 100 이하의 숫자로 입력하세요.');
+	        return showSwal('원점수는 0 이상 100 이하의 정수로 입력하세요.');
 	      }
 	    }
 
 	    if (isNaN(gradeVal) || gradeVal < 1 || gradeVal > 9) {
 	      gradeInput.css('border', '1px solid #dc2626');
-	      return showSwal('등급은 1 이상 9 이하의 숫자로 입력하세요.');
+	      return showSwal('등급은 1 이상 9 이하의 정수로 입력하세요.');
 	    }
 
 	    data.push({

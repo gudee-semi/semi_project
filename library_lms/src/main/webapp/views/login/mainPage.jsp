@@ -97,6 +97,8 @@
 }
 
 .weather-wrapper {
+	width: 141px;
+	height: 54px;
 	display: flex;
 	align-items: center;
 	border: 2px solid white;
@@ -115,25 +117,28 @@
 
 .weather-icon {
 	position: absolute;
-	top: 1px;
-	right: 115px;
+	top: 3px;
+	right: 121px;
 	width: 80px;
 	height: 80px;
 }
 
-.weather-info {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	font-size: 14px;
-	gap: 5px;
-}
 .city-name {
 	position: absolute;
-	top: 61px;
-	right: 139px;
+	top: 62px;
+	right: 144px;
 	color: #fff;
 	font-size: 12px;
+}
+.weather-info {
+	position: absolute;
+	top: 27px;
+	right: 60px;
+	color: #fff;
+	font-size: 14px;
+	display: flex;
+  flex-direction: column;
+  gap: 5px; /* 원하는 간격(px, rem 등) */
 }
 </style>
 
@@ -177,17 +182,19 @@
 		
 		
 		<div class="weather-box">
-  <div class="weather-wrapper">
-    <div class="weather-left" style="width: 60px; height: 50px;">
-    </div>
-    <div class="weather-info">
-      <div>기온 <span id="temperature"></span> ℃</div>
-      <div>습도 <span id="humidity"></span> %</div>
-    </div>
-  </div>
-</div>
-      <img class="weather-icon" id="icon" alt="날씨 아이콘">
-      <div class="city-name" id="cityName"></div>
+		  <div class="weather-wrapper">
+		    <div class="weather-left">
+		    </div>
+		  </div>
+		</div>
+		
+		<img class="weather-icon" id="icon" src="/images/weather_default.png" alt="날씨 아이콘">
+		<div class="city-name" id="cityName"></div>
+		
+		<div class="weather-info">
+		  <div>기온 <span id="temperature"></span> ℃</div>
+		  <div>습도 <span id="humidity"></span> %</div>
+		</div>
 		
 	<script>
 		$(document).ready(function() {
