@@ -10,7 +10,7 @@
 		background-color: #EFEFEF;
 		width: 787px;
 		height: 752px;
-		
+	
 	}
 	
 	.privateSeat {
@@ -101,6 +101,10 @@
 		margin-bottom: 70px;
 		margin-top: 250px;
 		position: relative;
+		
+		
+		display:flex;
+		flex-wrap: wrap;
 	}
 	.seatBox2{
 	
@@ -110,13 +114,12 @@
 		margin-left: 70px;
 			
 	}
-	.sidebars{
-		width: 250px;
-		height: 100vh;
-	}
-	
+
 	.totalBox{
 		display:flex;
+		flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 	
 	}
 	footer{
@@ -137,12 +140,11 @@
 	%>
 
   <div class="totalBox">
-	<div class="sidebars">
+	
 		<%@ include file="/views/include/sidebar.jsp" %>
-	</div>
 
 
-	<div class="seatBox" style="margin: 80px 400px 14px;">
+	<div class="seatBox" style="margin: 40px 100px 100px 200px;">
 		<div class="seatBox2">
 		
 		<div class="privateSeatBox">
@@ -286,14 +288,13 @@
 	
 	publicSeat.forEach(seatEl => {
 		seatEl.addEventListener('click', () => {
-
+			
 			// 이미 사용 중인 좌석이면 클릭 무시
 			if (seatEl.classList.contains('used')) {
 				Swal.fire({
 					  icon: "error",
 					  title: "이미 사용중인 좌석입니다",
-					  text: "Something went wrong!",
-					  
+					  confirmButtonColor:'#205DAC'
 					});
 				return;
 			}
@@ -317,8 +318,7 @@
 		if(!selectedSeat) return; 
 		
 		Swal.fire({
-		    title: '이 좌석으로 하시겠습니까?',
-		    text: '좌석이 설정됩니다.',
+		    text: '이 좌석으로 하시겠습니까?',
 		    icon: 'question',
 		    showCancelButton: true,
 		    confirmButtonText: '네',
@@ -340,7 +340,11 @@
 		        dataType: 'json',
 		        success: (data) => {
 		          console.log(data.res_msg);
-		          Swal.fire('성공!', '좌석이 설정되었습니다.', 'success');
+		          Swal.fire({
+		        	  text:'성공',
+		        	  icon:'success',
+		        	  confirmButtonColor: '#205DAC'
+		          });
 		        }
 		      });
 
@@ -356,8 +360,7 @@
 		if(!selectedSeat) return; 
 		
 		Swal.fire({
-		    title: '좌석을 변경하시겠습니까?',
-		    text: '기존 좌석이 해제되고 새 좌석이 설정됩니다.',
+		    text: '좌석을 변경하시겠습니까?',
 		    icon: 'warning',
 		    showCancelButton: true,
 		    confirmButtonText: '네',
@@ -385,7 +388,12 @@
 		            changeButton.disabled = true;
 		            cancelButton.disabled = false;
 
-		            Swal.fire('변경 완료!', '좌석이 변경되었습니다.', 'success');
+		            
+		            Swal.fire({
+			        	  text:'변경 완료!',
+			        	  icon:'success',
+			        	  confirmButtonColor: '#205DAC'
+			          });
 		          } else {
 		            Swal.fire('실패', '좌석 변경 실패: ' + data.res_msg, 'error');
 		          }
@@ -406,8 +414,7 @@
 		  }
 
 		  Swal.fire({
-		    title: '좌석을 취소하시겠습니까?',
-		    text: '현재 사용 중인 좌석이 해제됩니다.',
+		    text: '좌석을 취소하시겠습니까?',
 		    icon: 'warning',
 		    showCancelButton: true,
 		    confirmButtonText: '네',
@@ -424,7 +431,11 @@
 		        dataType: 'json',
 		        success: (data) => {
 		          console.log(data.res_msg);
-		          Swal.fire('취소 완료', '좌석이 해제되었습니다.', 'success');
+		          Swal.fire({
+		        	  text:'취소 완료',
+		        	  icon:'success',
+		        	  confirmButtonColor:'#205DAC'
+		          });
 		        }
 		      });
 
@@ -443,6 +454,7 @@
 		  });
 		});
 
+	
 	
 	</script>
 	

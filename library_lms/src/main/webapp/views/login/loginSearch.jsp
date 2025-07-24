@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +18,11 @@
       margin: 200px auto 100px;
 	  box-sizing :border-box;
     }
+ 	.insert_search_data {
+ 	  margin:20px auto 0;
+   	  width:300px;
+      box-sizing: border-box;
+    }
 
     .insert_search_data form {
       display: flex;
@@ -29,6 +35,9 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 14px;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
     }
 
     input[type="submit"] {
@@ -39,6 +48,10 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
+      width:300px;
+      height:50px;
+      box-sizing: border-box;
+      margin-top:0;
     }
 
     input[type="submit"]:hover {
@@ -56,11 +69,11 @@
       color: red;
       padding-left: 3px;
     }
-
+ 
     #result_container {
       margin-top: 15px;
       text-align: center;
-      font-size: 14px;
+      font-size: 20px;
     }
   </style>
 <body>
@@ -71,18 +84,19 @@
         <form id="search_id">
           <input type="text" id="search_name" name="search_name" placeholder="이름">
           <input type="text" id="search_phone" name="search_phone" placeholder="전화번호">
+        <p id="search_name_msg"></p>
           <input type="submit" value="아이디 찾기">
         </form>
-        <p id="search_name_msg"></p>
+        <p id="result_container"></p>
       </c:if>
 
       <c:if test="${type == 'pw'}">
         <form id="search_pw">
           <input type="text" id="search_id" name="search_id" placeholder="아이디">
           <input type="text" id="search_phone" name="search_phone" placeholder="전화번호">
+        <p id="search_id_msg"></p>
           <input type="submit" value="비밀번호 찾기">
         </form>
-        <p id="search_id_msg"></p>
       </c:if>
     </div>
   </div>
@@ -110,7 +124,8 @@
 						if(data.id === "no"){
 							$("#search_name_msg").text("일치하는 정보가 없습니다");
 						}else{
-							$("#search_name_msg").text("아이디 : "+data.id).css("color","green");
+							$("#result_container").text("아이디 : "+data.id).css("color","green");
+							$("#search_name_msg").text("");
 						}
 				}
 			});

@@ -15,6 +15,7 @@
 	width: 50vw;
 	margin: 0 auto;
 	text-align: center;
+	padding: 5px;
 }
 
 .inputtype-text {
@@ -58,9 +59,26 @@ button {
 .button:hover {
 	background-color: #3E7AC8;
 }
+
+.qnaadmin {
+	display:inline-block;
+     padding:10px 25px;
+     background:#205DAC;
+     color:white;
+     border-radius:7px;
+     font-size:16px;
+     text-decoration:none;
+     font-weight:bold;
+     box-shadow:0 2px 8px rgba(32,93,172,0.07);
+     transition:background 0.2s;
+}
+
 </style>
 
-	<h3>QnA 상세</h3>
+	<jsp:include page="/views/include/header.jsp" />
+
+	<h2><a href="${pageContext.request.contextPath}/qna/list/admin" class="qnaadmin" onmouseover="this.style.background='#3E7AC8';"
+   onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a></h2>
 	<table class="center" style="border-collapse: collapse;">
 		<tr>
 			<th>No</th>
@@ -94,18 +112,16 @@ button {
 				</c:choose></th>
 		</tr>
 		<tr>
-        <th>첨부파일</th>
-        <th>
-            <c:if test="${not empty attach.qnaAttachId}">
-                <img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>" style="max-width:100%;height:auto;" alt="첨부 이미지">
-                <br>
+			<th>첨부파일</th>
+			<th><c:if test="${not empty attach.qnaAttachId}">
+					<img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>"
+						style="max-width: 100%; height: auto;" alt="첨부 이미지">
+					<br>
                 ${attach.oriName}
-            </c:if>
-            <c:if test="${empty attach.qnaAttachId}">
+            </c:if> <c:if test="${empty attach.qnaAttachId}">
                 첨부파일 없음
-            </c:if>
-        </th>
-    </tr>
+            </c:if></th>
+		</tr>
 		<tr>
 			<th>내용</th>
 			<th>${qna.content}</th>
@@ -114,8 +130,8 @@ button {
 
 
 
-	<!-- 댓글 리스트 영역 -->
-	<h3>댓글</h3>
+	<!-- 답글 리스트 영역 -->
+	<h3>답글</h3>
 	<table class="center" style="border-collapse: collapse;">
 		<tr>
 			<th>작성자</th>
@@ -132,25 +148,25 @@ button {
 		</c:forEach>
 		<c:if test="${empty replyList}">
 			<tr>
-				<td colspan="3">아직 댓글이 없습니다.</td>
+				<td colspan="3">아직 답글이 없습니다.</td>
 			</tr>
 		</c:if>
 	</table>
 
-	<!-- 댓글 작성 폼 -->
+	<!-- 답글 작성 폼 -->
 	<h3>답글 남기기</h3>
 	<form class="center" action="/qna/reply/admin/insert" method="post">
 		<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
 		<textarea class="center" name="content" rows="3" cols="60" required
-			placeholder="댓글을 입력하세요"></textarea>
+			placeholder="답글을 입력하세요"></textarea>
 		<br>
-		<button class="center" type="submit">댓글 등록</button>
+		<button class="center" type="submit">답글 등록</button>
 	</form>
 
 	<c:forEach var="reply" items="${replyList}">
-		<!-- 댓글 내용 -->
 		<div class="center">
-			<b>수정 목록 : </b>
+			<b>답글&nbsp;&nbsp;</b>
+			<!-- 수정 폼(수정 버튼 포함) -->
 			<form
 				action="${pageContext.request.contextPath}/qna/reply/admin/update"
 				method="post" style="display: inline;">
@@ -160,15 +176,11 @@ button {
 					value="${reply.content}" />
 				<button type="submit">수정</button>
 			</form>
-		</div>
-	</c:forEach>
 
-	<c:forEach var="reply" items="${replyList}">
-		<div class="center">
-			<b>삭제 목록 : </b> ${reply.content}
+			<!-- 삭제 폼(삭제 버튼 포함, 바로 옆에) -->
 			<form
 				action="${pageContext.request.contextPath}/qna/reply/admin/delete"
-				method="post" style="display: inline;">
+				method="post" style="display: inline; margin-left: 8px;">
 				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
 				<input type="hidden" name="qnaId" value="${reply.qnaId}" />
 				<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
@@ -176,6 +188,6 @@ button {
 		</div>
 	</c:forEach>
 
-
+	<jsp:include page="/views/include/footer.jsp" />
 </body>
 </html>

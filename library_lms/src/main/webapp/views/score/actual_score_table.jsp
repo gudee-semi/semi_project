@@ -7,6 +7,13 @@
 %>
 
 <h2 style="text-align: center; font-size: 27px;"><%= currentYear %>년 ${scores['0'].examTypeName}월 모의고사</h2>
+	<!-- 선택된 과목 목록 표시 영역 -->
+	<div id="selected-subjects" style="height: 50px">
+		<c:forEach items="${scores}" var="g" varStatus="st">
+		    <span style="font-weight : 400">${g.subjectName}</span>
+		    <c:if test="${!st.last}">  |  </c:if>
+		</c:forEach>
+	</div>
 
 
 <div>
