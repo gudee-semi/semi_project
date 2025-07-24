@@ -83,6 +83,10 @@ footer {
 input[type="checkbox"] {
   accent-color: #205DAC;
 }
+
+.selectAllContainer {
+	margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -94,30 +98,40 @@ input[type="checkbox"] {
 			<c:if test="${ empty list }">
 				<div>현재 독서실을 이용중인 회원이 없습니다.</div>
 			</c:if>
-			<c:if test="${ not empty list }">			
+			<c:if test="${ not empty list }">
+				<div class="selectAllContainer">
+					<label for="selectAll">전체 선택</label>
+					<input type="checkbox" id="selectAll">			
+				</div>
 				<form id="memberAbortFrm">
 					<table style="border-collapse: collapse; width: 100%">
 						<thead>
 							<tr>
-								<th style="width: 10%">사용자 번호</th>
-								<th style="width: 40%">사용자</th>
-								<th style="width: 40%">상태</th>
+								<th style="width: 10%">No</th>
+								<th style="width: 10%">학년</th>
+								<th style="width: 30%">학교</th>
+								<th style="width: 20%">이름</th>
+								<th style="width: 10%">상태</th>
 								<th style="width: 10%">퇴실 조치</th>
+								<th style="width: 10%">페널티 부여</th>
 							</tr>
 						</thead>			
 					    <tbody>
-						    <c:forEach var="member" items="${ list }">
+						    <c:forEach var="member" items="${ list }" varStatus="status">
 						    	<tr>
-						    		<td>${ member.memberNo }</td>
+						    		<td>${ status.index + 1 }</td>
+						    		<td>${ member.memberGrade }</td>
+						    		<td>${ member.memberSchool }</td>
 						    		<td>${ member.memberName }</td>
 						    		<td>${ member.statusDisplay }</td>
 						    		<td><input type="checkbox" name="memberId" value="${ member.memberNo }"></td>
+						    		<td><input type="checkbox" name="memberPenaltyId" value="${ member.memberNo }"></td>
 						    	</tr>
 						    </c:forEach>
 					    </tbody>
 					</table>
 					<div class="flex-input">
-						<input type="submit" value="강제 퇴실" class="btn">
+						<input type="submit" value="퇴실 조치" class="btn">
 					</div>
 				</form>
 			</c:if>
@@ -129,16 +143,38 @@ input[type="checkbox"] {
 		$('#memberAbortFrm').on('submit', (e) => {
 			e.preventDefault();
 			let arr = [];
+			let arrPen = [];
 			$('input[name="memberId"]:checked').each(function() {
 				arr.push($(this).val());
 			});
+			$('input[name="memberPenaltyId"]:checked').each(function() {
+				arrPen.push($(this).val());
+			});
+			for (const itemPen of arrPen) {
+				let counter = 0;
+				for (const item of arr) {
+					if (itemPen !== item) {
+						counter++;
+					}
+				}
+				if (counter === arr.length) {
+					Swal.fire({
+						  icon: "error",
+					      text: '퇴실 처리가 안된 회원은 페널티를 부여할 수 없습니다.',
+					      confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+						}).then(() => {
+							return;
+						})
+				}
+			}
 			if (arr.length > 0) {
 				Swal.fire({
 				  icon: "warning",
 			      title: ' ',
-			      text: '퇴실 처리하시겠습니까?',
+			      text: '퇴실 조치를 하시겠습니까?',
 				  showCancelButton: true,
-				  confirmButtonText: "퇴실 처리",
+				  confirmButtonText: "퇴실 조치",
 				  cancelButtonText: `취소`,
 				  confirmButtonColor: '#205DAC'
 				}).then((result) => {
@@ -146,13 +182,16 @@ input[type="checkbox"] {
 						$.ajax({
 							url: '/admin/abort',
 							type: 'post',
-							data: { list: arr },
+							data: { 
+								list: arr,
+								listPen: arrPen
+							},
 							dataType: 'json',
 							success: (data) => {
 								if (data.res_code === '200') {
 									Swal.fire({
 						              title: " ",
-						              text: "퇴실 처리가 완료되었습니다.",
+						              text: "퇴실 조치가 완료되었습니다.",
 						              icon: "success",
 						              confirmButtonText: '확인',
 						              confirmButtonColor: '#205DAC'
@@ -166,6 +205,15 @@ input[type="checkbox"] {
 				});			
 			}
 		});
+	</script>
+	<script>
+		let chkList = $('input[name="memberId"]');
+		$("#selectAll").click(function() {
+			if ($(this).is(":checked")){
+				chkList.prop("checked", true);
+			} else
+				chkList.prop("checked", false);
+			});
 	</script>
 </body>
 </html>

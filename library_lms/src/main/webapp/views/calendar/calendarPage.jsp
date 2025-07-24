@@ -64,7 +64,8 @@
 	
 	/* modal... */
 	.todo-input-title,
-	.todo-update-title {
+	.todo-update-title,
+	.todo-detail-title {
 	    width: 90%;
 	    height: 30px;
 	    margin: 0 auto;
@@ -87,7 +88,8 @@
 	}
 	
 	.todo-input-date,
-	.todo-update-date {
+	.todo-update-date,
+	.todo-detail-date {
 	    height: 30px;
 	    margin: 0 auto;
 	    display: block;
@@ -110,7 +112,8 @@
 	}
 	
 	.todo-input-detail,
-	.todo-update-detail {
+	.todo-update-detail,
+	.todo-detail-detail {
 	    width: 90%;
 	    margin: 0 auto;
 	    display: block;
@@ -164,7 +167,8 @@
 	    box-shadow: 0 4px 12px rgba(102, 175, 233, 0.4);
 	}
 	
-	.edit-btn {
+	.edit-btn,
+	.detail-btn {
 		border-color: transparent;
     	background-color: #205DAC;
     	color: white;
@@ -176,6 +180,20 @@
 	    border-color: transparent;
     	border-radius: 3px;
     	cursor: pointer;
+	}
+	
+	.my-div::-webkit-scrollbar {
+	  width: 8px; /* 세로 스크롤바 너비 */
+	}
+	
+	.my-div::-webkit-scrollbar-thumb {
+	  background-color: #ccc;  /* 스크롤 손잡이 색 */
+	  border-radius: 4px;
+	}
+	
+	.my-div::-webkit-scrollbar-track {
+	  background-color: transparent;  /* 스크롤바 배경 */
+	  border-radius: 4px;
 	}
 	
 	/*  하...   */
@@ -216,14 +234,27 @@
 	.fc-event-title.fc-sticky {
 		margin-top: 16px !important;
 		margin-left: 5px !important;
-		font-size: 17px !important;
+		font-size: 16px !important;
 	}
 	
-	.flatpickr-day.selected.today {
-	  background: #4582EC !important;
-	  color: white !important;
-	  box-shadow: none !important;
-	  border: none !important;
+	.flatpickr-day.selected.attendance {
+		background: #4582EC !important;
+		color: white !important;
+		border-radius: 50% !important;
+		border-color: #4582EC !important;
+		z-index: 2;
+	}
+	
+	.flatpickr-day.selected.today.attendance {
+		background: #4582EC !important;
+		color: white !important;
+		border-radius: 50% !important;
+		border-color: #4582EC !important;
+		z-index: 2;
+	}
+	
+	.flatpickr-day.today {
+    	border-color: transparent !important;
 	}
 	
 </style>
@@ -435,9 +466,12 @@
 				            // 설명 추가
 				            if (info.event.extendedProps.description) {
 				                var descriptionEl = document.createElement('div');
+				                descriptionEl.className = 'my-div';
 				                descriptionEl.innerText = info.event.extendedProps.description;
 				                descriptionEl.style.fontSize = '0.7em';
 				                descriptionEl.style.marginTop = '4px';
+				                descriptionEl.style.maxHeight = '90px';
+				                descriptionEl.style.overflowY = "auto";
 			
 				                // FullCalendar가 만들어준 카드에 추가
 				                info.el.querySelector('.fc-event-title').appendChild(descriptionEl);
@@ -455,8 +489,11 @@
 				            // 1. HTML 먼저 만듦 (style 없음)
 				            const popup = $(`
 					        	    <div class="event-popup">
-					        	    <button class="edit-btn">수정</button>
-					        	    <button class="delete-btn">삭제</button>
+					        	    <button class="detail-btn">상세</button>
+					        	    <br>
+					        	    <button class="edit-btn" style="margin-top: 5px;">수정</button>
+					        	    <br>
+					        	    <button class="delete-btn" style="margin-top: 5px;">삭제</button>
 					        	    </div>
 					        	`);
 			
@@ -532,7 +569,6 @@
 				                            success: (data) => {
 				                                if (data.res_code == '200') {
 				        		                	Swal.fire({
-														title: " ",
 														text: "할 일 목록이 수정되었습니다.",
 														icon: "success",
 														confirmButtonText: '확인',
@@ -573,7 +609,6 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 				                                } else {
 				                                	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 수정이 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
@@ -586,6 +621,20 @@
 				                });
 				                popup.remove();
 				            });
+				            
+				            popup.find('.detail-btn').on('click', () => {
+				                readmePopUp4.style.display = 'flex';
+			
+				                const editTitle = event.title;
+				                const editDate = event.startStr.split('T')[0];
+				                const editDetail = event.extendedProps.description;
+			
+				                $('.todo-detail-title').val(editTitle);
+				                $('.todo-detail-date').val(editDate);
+				                $('.todo-detail-detail').val(editDetail);
+				                
+				                popup.remove();
+				            });
 			
 				            popup.find('.delete-btn').on('click', () => {
 				            	popup.remove();
@@ -594,7 +643,7 @@
 				                const deleteDate = event.startStr.split('T')[0];
 
 				                Swal.fire({
-				                  title: " ",
+				                  icon: "warning",
 				                  text: '[' + deleteDate + '] ' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
@@ -612,32 +661,16 @@
 						                    success: (data) => {
 						                        if (data.res_code == '200') {
 						                        	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 삭제가 성공했습니다.",
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
 								                		  confirmButtonColor: '#205DAC'
+							                		}).then(() => {
+							                            event.remove();
+							                            location.reload();										                			
 							                		});
-						                            event.remove();
-				                                    const date = dateToRearrange;
-				                                    const eventsToReAdd = [];
-			
-				                                    calendar.getEvents().forEach(e => {
-				                                        if (e.startStr.startsWith(date)) {
-				                                            eventsToReAdd.push({
-				                                                title: e.title,
-				                                                start: date,
-				                                                extendedProps: e.extendedProps
-				                                            });
-				                                            e.remove();
-				                                        }
-				                                    });
-			
-				                                    // 재정렬해서 다시 추가
-				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 						                        } else {
 								                	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 삭제가 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
@@ -652,6 +685,8 @@
 				         
 				            	
 				            });
+				            
+				            
 				        }
 			
 				    });
@@ -693,7 +728,7 @@
 			  });
 			</script>
 			
-			<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" />
+			<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" readonly="readonly" />
 		
 		    <div class="modal modal-1">
 		    	<div class="modal-content">
@@ -756,14 +791,36 @@
 		    	</div>
 		  	</div>
 		  	
+			<div class="modal modal-4">
+		    	<div class="modal-content">
+		      		<div class="modal-header font-en">
+		      			<span></span>
+		        		<span class="material-symbols-outlined btn-add-close">close</span>
+		      		</div>
+		     		 <div class="modal-body">
+		        		<p>할 일 목록</p>
+		        		<input type="text" class="todo-detail-title" readonly="readonly">
+		        		<br>
+		        		<p>날짜</p>
+		        		<input type="date" class="todo-detail-date" readonly="readonly">
+		        		<br>
+		        		<p>상세 내용</p>
+		        		<textarea rows="10" cols="20" class="todo-detail-detail" readonly="readonly"></textarea>
+		      		</div>
+		    	</div>
+		  	</div>
+		  	
+		  	
 		  	<script>
 			  	const readmeBtn1 = document.querySelector('.btn-add');
 			  	const readmePopUp1 = document.querySelector('.modal.modal-1');
 			  	const readmePopUp2 = document.querySelector('.modal.modal-2');
-			  	const readmePopUp3 = document.querySelector('.modal.modal-3')
+			  	const readmePopUp3 = document.querySelector('.modal.modal-3');
+			  	const readmePopUp4 = document.querySelector('.modal.modal-4');
 			  	const readmeClose1 = document.querySelector('.modal.modal-1 .btn-add-close');
 			  	const readmeClose2 = document.querySelector('.modal.modal-2 .btn-add-close');
 			  	const readmeClose3 = document.querySelector('.modal.modal-3 .btn-add-close');
+			  	const readmeClose4 = document.querySelector('.modal.modal-4 .btn-add-close');
 			  	const todoForm = document.querySelector('#todo-input');
 			  	const updateForm = document.querySelector('#todo-update');
 			  	const deleteForm = document.querySelector('#todo-delete');
@@ -783,6 +840,9 @@
 			  	});
 			  	readmeClose3.addEventListener('click', () => {
 			  		readmePopUp3.style.display = 'none';
+			  	});
+			  	readmeClose4.addEventListener('click', () => {
+			  		readmePopUp4.style.display = 'none';
 			  	});
 			  	todoForm.addEventListener('submit', () => {
 			  		readmePopUp1.style.display = 'none';
@@ -815,7 +875,6 @@
 				            success: (data) => {
 				                if (data.res_code == '200') {	                	
 				                	Swal.fire({
-				                		  title: " ",
 				                		  text: "할 일 목록이 등록되었습니다.",
 				                		  icon: "success",
 				                		  confirmButtonText: '확인',
@@ -859,7 +918,6 @@
 				                    });
 				                } else {
 				                	Swal.fire({
-				                		  title: " ",
 				                		  text: "할 일 목록이 등록이 실패했습니다.",
 				                		  icon: "error",
 				                		  confirmButtonText: '확인',
@@ -880,10 +938,10 @@
 			
 			
 				const fp = flatpickr("#calendarPop", {
-				    clickOpens: true,
+				    clickOpens: false,
 				    allowInput: false,
 				    closeOnSelect: false,
-				    defaultDate: new Date(),
+				    defaultDate: null,
 				    locale: 'ko',
 				    onDayCreate: function (dObj, dStr, fp, dayElem) {
 				        const date = dayElem.dateObj.toLocaleDateString('sv-SE');

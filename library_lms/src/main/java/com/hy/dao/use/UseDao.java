@@ -53,10 +53,25 @@ public class UseDao {
 		return result;
 	}
 
-	public int abortMember(int memberNo) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+//	public int abortMember(int memberNo) {
+//		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+//		int result = session.update("com.hy.mapper.use.UseMapper.abortMember", memberNo);
+//		session.close();
+//		return result;
+//	}
+
+	public int abortMember(SqlSession session, int memberNo) {
 		int result = session.update("com.hy.mapper.use.UseMapper.abortMember", memberNo);
-		session.close();
+		return result;
+	}
+
+	public int insertUseLogAbort(SqlSession session, UseLog param) {
+		int result = session.insert("com.hy.mapper.use.UseMapper.insertUseLog", param);
+		return result;
+	}
+
+	public int insertMemberPen(SqlSession session, int memberNoPen) {
+		int result = session.update("com.hy.mapper.use.UseMapper.insertMemberPen", memberNoPen);
 		return result;
 	}
 

@@ -1,192 +1,209 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>QnA 관리자 페이지</title>
 </head>
-<body>
 
-	<style>
-.center {
-	width: 50vw;
-	margin: 0 auto;
-	text-align: center;
-	padding: 5px;
+<style>
+h2 {
+	margin-left: 20px;
+	margin-bottom: 50px;
 }
 
-.inputtype-text {
+.detail-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.detail-table th, .detail-table td {
+	border: 1px solid #ddd;
+	padding: 10px 12px;
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.detail-table th {
+	background-color: #F5F5F5;
+	width: 120px;
+	text-align: center;
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.content {
+	height: 250px;
+}
+
+.content-cell {
+	vertical-align: top !important;
+	white-space: normal !important;
+}
+
+.sidebars {
+	width: 300px;
+	height: 1000px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+	column-gap: 200px;
+}
+
+.container {
+	width: 80%;
+}
+
+hr {
+	border: none;
+	border-top: 1.5px dashed #ddd;
+	width: 70%;
+	margin: 20px 0px 20px 0px;
+}
+
+.detail-table {
 	width: 70%;
 }
 
-h3 {
-	text-align: center;
+.reply-textarea {
+	width: 70%;
+	resize: none;
 }
 
-table {
-	border-collapse: collapse;
+.inputtype-text {
+	width: 60%;
 }
 
-th, td {
-	border: none;
-	border-bottom: 1px solid #CCCCCC;
-	padding: 8px 12px;
-	text-align: center;
+.reply {
+	margin-bottom: 20px;
 }
-
-th {
-	border-bottom: 2px solid #666666;
-	background: #FAFAFA;
-}
-
-tr:last-child td {
-	border-bottom: none;
-}
-
-button {
-	border: none;
-	background-color: #205DAC;
-	color: #fff;
-	border-radius: 6px;
-	font-size: 15px;
-	cursor: pointer;
-	transition: 0.2s;
-}
-
-.button:hover {
-	background-color: #3E7AC8;
-}
-
-.qnaadmin {
-	display:inline-block;
-     padding:10px 25px;
-     background:#205DAC;
-     color:white;
-     border-radius:7px;
-     font-size:16px;
-     text-decoration:none;
-     font-weight:bold;
-     box-shadow:0 2px 8px rgba(32,93,172,0.07);
-     transition:background 0.2s;
-}
-
 </style>
 
+<body>
 	<jsp:include page="/views/include/header.jsp" />
 
-	<h2><a href="${pageContext.request.contextPath}/qna/list/admin" class="qnaadmin" onmouseover="this.style.background='#3E7AC8';"
-   onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a></h2>
-	<table class="center" style="border-collapse: collapse;">
-		<tr>
-			<th>No</th>
-			<th>${qna.qnaId}</th>
-		</tr>
-		<tr>
-			<th>분류</th>
-			<th>${qna.category}</th>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<th>${qna.title}</th>
-		</tr>
-		<tr>
-			<th>작성자</th>
-			<th>${qna.memberName}</th>
-		</tr>
-		<tr>
-			<th>조회수</th>
-			<th>${qna.viewCount}</th>
-		</tr>
-		<tr>
-			<th>등록일</th>
-			<th>${qna.regDate}</th>
-		</tr>
-		<tr>
-			<th>공개여부</th>
-			<th><c:choose>
-					<c:when test="${qna.visibility eq 1}">공개</c:when>
-					<c:otherwise>비공개</c:otherwise>
-				</c:choose></th>
-		</tr>
-		<tr>
-			<th>첨부파일</th>
-			<th><c:if test="${not empty attach.qnaAttachId}">
-					<img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>"
-						style="max-width: 100%; height: auto;" alt="첨부 이미지">
+	<div class="flex-container">
+		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp"%></div>
+		<div class="container">
+
+			<!-- QnA 상세 정보 영역 -->
+			<h2>
+				<a href="${pageContext.request.contextPath}/qna/list/admin" class="qnaadmin" onmouseover="this.style.background='#3E7AC8';" onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a>
+			</h2>
+			<table class="detail-table">
+				<tr>
+					<th style="width: 15%">No</th>
+					<td style="width: 35%">${qna.qnaId}</td>
+					<th style="width: 15%">작성일</th>
+					<td style="width: 35%">${qna.regDate}</td>
+				</tr>
+				<tr>
+					<th>카테고리</th>
+					<td>${qna.category}</td>
+					<th>작성자</th>
+					<td>${qna.memberName}</td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td>${qna.title}</td>
+					<th>공개여부</th>
+					<td>${qna.visibility == 0 ? '비공개' : '공개'}</td>
+				</tr>
+				<tr>
+					<th class="content">내용</th>
+					<td class="content-cell" colspan="3">${qna.content}</td>
+				</tr>
+				<c:if test="${not empty attach}">
+					<tr>
+						<th>첨부파일</th>
+						<td colspan="3"><c:if test="${not empty attach.qnaAttachId}">
+								<img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>" style="max-width: 100%; height: auto;" alt="첨부 이미지">
+								<br>
+          ${attach.oriName}
+        </c:if> <c:if test="${empty attach.qnaAttachId}">
+          첨부파일 없음
+        </c:if></td>
+					</tr>
+				</c:if>
+			</table>
+
+			<!-- 관리자 답변 -->
+			<hr>
+			<h3>관리자 답변</h3>
+			<c:forEach var="reply" items="${replyList}">
+
+				<table class="detail-table" style="margin-top: 20px">
+					<tr>
+						<th colspan="2">관리자 답변</th>
+					</tr>
+					<tr>
+						<th style="height: 120px">답변내용</th>
+						<td>${reply.content}</td>
+					</tr>
+					<tr>
+						<th>작성일자</th>
+						<td>${fn:replace(reply.modDate, 'T', ' ')}</td>
+					</tr>
+				</table>
+			</c:forEach>
+			<c:if test="${empty replyList}">
+				<table class="detail-table" style="margin-top: 20px">
+					<tr>
+						<td colspan="2">아직 답변이 없습니다.</td>
+					</tr>
+				</table>
+			</c:if>
+
+			<!-- 답변 등록 폼 -->
+			<hr>
+			<h3>답변 남기기</h3>
+
+			<c:if test="${empty replyList}">
+				<form class="center" action="/qna/reply/admin/insert" method="post">
+					<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
+					<textarea class="center" name="content" rows="3" cols="60" required placeholder="답글을 입력하세요"></textarea>
 					<br>
-                ${attach.oriName}
-            </c:if> <c:if test="${empty attach.qnaAttachId}">
-                첨부파일 없음
-            </c:if></th>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<th>${qna.content}</th>
-		</tr>
-	</table>
+					<button class="center" type="submit">답글 등록</button>
+				</form>
+			</c:if>
 
 
+			<!-- 답변 수정/삭제 폼 리스트 -->
+			<hr>
+			<h3>답변 수정 및 삭제</h3>
 
-	<!-- 답글 리스트 영역 -->
-	<h3>답글</h3>
-	<table class="center" style="border-collapse: collapse;">
-		<tr>
-			<th>작성자</th>
-			<th>내용</th>
-			<th>작성일</th>
-		</tr>
-		<c:forEach var="r" items="${replyList}">
-			<tr>
-				<td>관리자</td>
-				<td>${r.content}</td>
-				<td>${fn:replace(r.modDate, 'T', ' ')}</td>
+			<c:forEach var="reply" items="${replyList}">
+				<div class="reply">
+					<b>답변&nbsp;&nbsp;</b>
 
-			</tr>
-		</c:forEach>
-		<c:if test="${empty replyList}">
-			<tr>
-				<td colspan="3">아직 답글이 없습니다.</td>
-			</tr>
-		</c:if>
-	</table>
+					<!-- 수정 폼 -->
+					<form action="${pageContext.request.contextPath}/qna/reply/admin/update" method="post" style="display: inline;">
+						<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
+						<input type="hidden" name="qnaId" value="${reply.qnaId}" />
+						<input type="text" class="inputtype-text" name="content" value="${reply.content}" />
+						<button type="submit">수정</button>
+					</form>
 
-	<!-- 답글 작성 폼 -->
-	<h3>답글 남기기</h3>
-	<form class="center" action="/qna/reply/admin/insert" method="post">
-		<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
-		<textarea class="center" name="content" rows="3" cols="60" required
-			placeholder="답글을 입력하세요"></textarea>
-		<br>
-		<button class="center" type="submit">답글 등록</button>
-	</form>
+					<!-- 삭제 폼 -->
+					<form action="${pageContext.request.contextPath}/qna/reply/admin/delete" method="post" style="display: inline; margin-left: 8px;">
+						<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
+						<input type="hidden" name="qnaId" value="${reply.qnaId}" />
+						<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+					</form>
+				</div>
+			</c:forEach>
 
-	<c:forEach var="reply" items="${replyList}">
-		<div class="center">
-			<b>답글&nbsp;&nbsp;</b>
-			<!-- 수정 폼(수정 버튼 포함) -->
-			<form
-				action="${pageContext.request.contextPath}/qna/reply/admin/update"
-				method="post" style="display: inline;">
-				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
-				<input type="hidden" name="qnaId" value="${reply.qnaId}" /> <input
-					type="text" class="inputtype-text" name="content"
-					value="${reply.content}" />
-				<button type="submit">수정</button>
-			</form>
-
-			<!-- 삭제 폼(삭제 버튼 포함, 바로 옆에) -->
-			<form
-				action="${pageContext.request.contextPath}/qna/reply/admin/delete"
-				method="post" style="display: inline; margin-left: 8px;">
-				<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
-				<input type="hidden" name="qnaId" value="${reply.qnaId}" />
-				<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-			</form>
 		</div>
-	</c:forEach>
+	</div>
+
+
+
 
 	<jsp:include page="/views/include/footer.jsp" />
 </body>
