@@ -83,6 +83,10 @@ footer {
 input[type="checkbox"] {
   accent-color: #205DAC;
 }
+
+.selectAllContainer {
+	margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -94,7 +98,11 @@ input[type="checkbox"] {
 			<c:if test="${ empty list }">
 				<div>현재 독서실을 이용중인 회원이 없습니다.</div>
 			</c:if>
-			<c:if test="${ not empty list }">			
+			<c:if test="${ not empty list }">
+				<div class="selectAllContainer">
+					<label for="selectAll">전체 선택</label>
+					<input type="checkbox" id="selectAll">			
+				</div>
 				<form id="memberAbortFrm">
 					<table style="border-collapse: collapse; width: 100%">
 						<thead>
@@ -166,6 +174,15 @@ input[type="checkbox"] {
 				});			
 			}
 		});
+	</script>
+	<script>
+		let chkList = $('input[name="memberId"]');
+		$("#selectAll").click(function() {
+			if ($(this).is(":checked")){
+				chkList.prop("checked", true);
+			} else
+				chkList.prop("checked", false);
+			});
 	</script>
 </body>
 </html>

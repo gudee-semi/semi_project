@@ -237,11 +237,24 @@
 		font-size: 16px !important;
 	}
 	
-	.flatpickr-day.selected.today {
-	  background: #4582EC !important;
-	  color: white !important;
-	  box-shadow: none !important;
-	  border: none !important;
+	.flatpickr-day.selected.attendance {
+		background: #4582EC !important;
+		color: white !important;
+		border-radius: 50% !important;
+		border-color: #4582EC !important;
+		z-index: 2;
+	}
+	
+	.flatpickr-day.selected.today.attendance {
+		background: #4582EC !important;
+		color: white !important;
+		border-radius: 50% !important;
+		border-color: #4582EC !important;
+		z-index: 2;
+	}
+	
+	.flatpickr-day.today {
+    	border-color: transparent !important;
 	}
 	
 </style>
@@ -719,7 +732,7 @@
 			  });
 			</script>
 			
-			<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" />
+			<input type="text" id="calendarPop" style="opacity: 0; position: absolute;" readonly="readonly" />
 		
 		    <div class="modal modal-1">
 		    	<div class="modal-content">
@@ -931,10 +944,10 @@
 			
 			
 				const fp = flatpickr("#calendarPop", {
-				    clickOpens: true,
+				    clickOpens: false,
 				    allowInput: false,
 				    closeOnSelect: false,
-				    defaultDate: new Date(),
+				    defaultDate: null,
 				    locale: 'ko',
 				    onDayCreate: function (dObj, dStr, fp, dayElem) {
 				        const date = dayElem.dateObj.toLocaleDateString('sv-SE');
