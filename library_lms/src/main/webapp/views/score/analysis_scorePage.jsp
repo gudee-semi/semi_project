@@ -43,7 +43,6 @@
 		font-size: 30px;
 	}
 	
-	/*  하...   */
 	header {
 		margin: 0 !important;
 	}
@@ -131,7 +130,8 @@
     } */
     
 	#score-table {
-     margin: 60px auto;
+	  table-layout: fixed; 
+      margin: 60px auto;
 	  border-collapse: separate;  
 	  border-spacing: 0;           
 	  font-size: 20px;
@@ -170,13 +170,13 @@
 	  display: flex;
       justify-content: center;
       margin-top: 95px;
-      column-gap: 190px;
+      column-gap: 170px;
       margin-bottom: 130px;
 	}
 	
 	#scoreComparisonChart {
-	  width: 500px; 
-	  height: 500px; 
+	  width: 460px; 
+	  height: 480px; 
 	  margin-top: 80px;
 	}
 	

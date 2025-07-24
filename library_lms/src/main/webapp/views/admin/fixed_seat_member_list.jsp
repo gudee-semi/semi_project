@@ -10,12 +10,15 @@
             font-family: "Noto Sans KR", sans-serif;
         }
         .h2 {
-       	    margin: 100px 0px 50px 0px;
+        	margin-top: 200px;
             text-align: center;
+            transform: translate(-40px,-40px);
         }
-        
+        .box {
+        	transform: translate(150px,-80px);
+        }
         table {
-            width: 100%;
+            width: 70%;
             margin: 10px auto;
             border-collapse: collapse;
         }
@@ -36,14 +39,13 @@
         }
         .btn-container {
         	margin-top: 200px;
-			display: flex;
-			justify-content: flex-end;
+        	margin-left: 1200px;
         	margin-bottom: 400px;
             text-align: center;
         }
         .btn-change {
-              display: block;
-              width: 130px;
+             display: block;
+			  margin: 40px auto;
 			  padding: 10px 22px;
 			  border: none;
 			  background-color: #205DAC;
@@ -59,33 +61,12 @@
 		.flex{
 			display:flex;
 		}
-		
-		.sidebars {
-			width: 300px;
-			height: 1000px;
-		}
-		
-		.flex-container {
-			display: flex;
-			align-items: flex-start;
-			column-gap: 100px;
-		}
-		
-		.box {
-			width: 70%;
-		}
-		
-		.nav-item {
-			padding: 5px;
-		}
     </style>
 </head>
 
 <body>
 <%@ include file="/views/include/header.jsp" %>
-사이드바 인클루드
-<div class="flex-container">
-<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
+<%@ include file="/views/include/sidebar.jsp" %>
 <div class="box">
 <h2 class="h2">고정좌석 이용 회원</h2>
 
@@ -141,7 +122,6 @@
     </div>
 </form>
 </div>	
-</div>
 
 <!-- ✅ 중복 경고 메시지 alert -->
 <%
