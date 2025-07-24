@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
@@ -94,12 +93,8 @@ body>form {
 	transform: translate(380px, 0);
 }
 
-.material-symbols-outlined {
-	width: 40px;
-	height: 22px;
-	background-color: blue;
-	color: white;
-	transform: translate(2px, 3px);
+.search-icon {
+	transform: translate(5px, -3px);
 }
 </style>
 
@@ -115,38 +110,31 @@ body>form {
 
 
 			<%-- 검색 영역 --%>
-			<form action="${pageContext.request.contextPath}/qna/list/admin"
-				method="get" class="search">
+			<form action="${pageContext.request.contextPath}/qna/list/admin" method="get" class="search">
 
 				<%-- 카테고리 셀렉트 --%>
 				<select name="category">
 					<option value="">전체</option>
-					<option value="시설"
-						<c:if test="${param.category == '시설'}">selected</c:if>>시설</option>
-					<option value="좌석"
-						<c:if test="${param.category == '좌석'}">selected</c:if>>좌석</option>
-					<option value="환불"
-						<c:if test="${param.category == '환불'}">selected</c:if>>환불</option>
-					<option value="기타"
-						<c:if test="${param.category == '기타'}">selected</c:if>>기타</option>
+					<option value="시설" <c:if test="${param.category == '시설'}">selected</c:if>>시설</option>
+					<option value="좌석" <c:if test="${param.category == '좌석'}">selected</c:if>>좌석</option>
+					<option value="환불" <c:if test="${param.category == '환불'}">selected</c:if>>환불</option>
+					<option value="기타" <c:if test="${param.category == '기타'}">selected</c:if>>기타</option>
 				</select>
 
 				<%-- 검색 타입 셀렉트 --%>
 				<select name="searchType">
-					<option value="title"
-						<c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
-					<option value="content"
-						<c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
-					<option value="memberName"
-						<c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
+					<option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
+					<option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
+					<option value="memberName" <c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
 				</select>
 
 				<%-- 키워드 입력창 --%>
-				<input type="text" name="keyword" value="${param.keyword}"
-					placeholder="검색어 입력" />
+				<input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력" />
 
 				<%-- 검색 버튼 --%>
-				<button type="submit" style="display: inline">검색</button>
+				<button type="submit" class="search-icon" style="display: inline">
+					<span class="material-symbols-outlined">search</span>
+				</button>
 
 			</form>
 
@@ -164,8 +152,7 @@ body>form {
 				</thead>
 				<tbody>
 					<c:forEach var="t" items="${qnaAdminList}">
-						<tr style="cursor: pointer;"
-							onclick="location.href='${pageContext.request.contextPath}/qna/detail/admin?qnaId=${t.qnaId}'">
+						<tr style="cursor: pointer;" onclick="location.href='${pageContext.request.contextPath}/qna/detail/admin?qnaId=${t.qnaId}'">
 							<td>${t.qnaId}</td>
 							<td>${t.category}</td>
 							<td style="text-align: left;">${t.title}</td>
@@ -183,44 +170,37 @@ body>form {
 					<div class="paging-pages">
 						<c:choose>
 							<c:when test="${ paging.prev }">
-								<a
-									href="<c:url value='/qna/list/admin?page=${ paging.pageBarStart - 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
+								<a href="<c:url value='/qna/list/admin?page=${ paging.pageBarStart - 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
 									<span class="material-symbols-outlined">chevron_left</span>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a class="disableddd"> <span
-									class="material-symbols-outlined">chevron_left</span>
+								<a class="disableddd">
+									<span class="material-symbols-outlined">chevron_left</span>
 								</a>
 							</c:otherwise>
 						</c:choose>
 
-						<c:forEach var="i" begin="${ paging.pageBarStart }"
-							end="${ paging.pageBarEnd }">
+						<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
 							<c:choose>
 								<c:when test="${ i eq paging.nowPage }">
-									<a
-										href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />"
-										class="current-page">${ i }</a>
+									<a href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />" class="current-page">${ i }</a>
 								</c:when>
 								<c:otherwise>
-									<a
-										href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
-										${ i }</a>
+									<a href="<c:url value='/qna/list/admin?page=${ i }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />"> ${ i }</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
 						<c:choose>
 							<c:when test="${ paging.next }">
-								<a
-									href="<c:url value='/qna/list/admin?page=${ paging.pageBarEnd + 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
+								<a href="<c:url value='/qna/list/admin?page=${ paging.pageBarEnd + 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
 									<span class="material-symbols-outlined">chevron_right</span>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a class="disableddd"> <span
-									class="material-symbols-outlined">chevron_right</span>
+								<a class="disableddd">
+									<span class="material-symbols-outlined">chevron_right</span>
 								</a>
 							</c:otherwise>
 						</c:choose>

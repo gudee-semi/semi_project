@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
@@ -90,15 +89,12 @@ hr {
 	<jsp:include page="/views/include/header.jsp" />
 
 	<div class="flex-container">
-		<div class="sidebars"><%@ include
-				file="/views/include/sidebar.jsp"%></div>
+		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp"%></div>
 		<div class="container">
 
 			<!-- QnA 상세 정보 영역 -->
 			<h2>
-				<a href="${pageContext.request.contextPath}/qna/list/admin"
-					class="qnaadmin" onmouseover="this.style.background='#3E7AC8';"
-					onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a>
+				<a href="${pageContext.request.contextPath}/qna/list/admin" class="qnaadmin" onmouseover="this.style.background='#3E7AC8';" onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a>
 			</h2>
 			<table class="detail-table">
 				<tr>
@@ -127,8 +123,7 @@ hr {
 					<tr>
 						<th>첨부파일</th>
 						<td colspan="3"><c:if test="${not empty attach.qnaAttachId}">
-								<img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>"
-									style="max-width: 100%; height: auto;" alt="첨부 이미지">
+								<img src="<c:url value='/filePath?no=${attach.qnaAttachId}'/>" style="max-width: 100%; height: auto;" alt="첨부 이미지">
 								<br>
           ${attach.oriName}
         </c:if> <c:if test="${empty attach.qnaAttachId}">
@@ -168,7 +163,7 @@ hr {
 			<!-- 답변 등록 폼 -->
 			<hr>
 			<h3>답변 남기기</h3>
-			
+
 			<c:if test="${empty replyList}">
 				<form class="center" action="/qna/reply/admin/insert" method="post">
 					<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
@@ -182,25 +177,21 @@ hr {
 			<!-- 답변 수정/삭제 폼 리스트 -->
 			<hr>
 			<h3>답변 수정 및 삭제</h3>
-			
+
 			<c:forEach var="reply" items="${replyList}">
 				<div class="reply">
 					<b>답변&nbsp;&nbsp;</b>
+
 					<!-- 수정 폼 -->
-					<form
-						action="${pageContext.request.contextPath}/qna/reply/admin/update"
-						method="post" style="display: inline;">
+					<form action="${pageContext.request.contextPath}/qna/reply/admin/update" method="post" style="display: inline;">
 						<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
-						<input type="hidden" name="qnaId" value="${reply.qnaId}" /> <input
-							type="text" class="inputtype-text" name="content"
-							value="${reply.content}" />
+						<input type="hidden" name="qnaId" value="${reply.qnaId}" />
+						<input type="text" class="inputtype-text" name="content" value="${reply.content}" />
 						<button type="submit">수정</button>
 					</form>
-					
+
 					<!-- 삭제 폼 -->
-					<form
-						action="${pageContext.request.contextPath}/qna/reply/admin/delete"
-						method="post" style="display: inline; margin-left: 8px;">
+					<form action="${pageContext.request.contextPath}/qna/reply/admin/delete" method="post" style="display: inline; margin-left: 8px;">
 						<input type="hidden" name="qnaReplyId" value="${reply.qnaReplyId}" />
 						<input type="hidden" name="qnaId" value="${reply.qnaId}" />
 						<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
