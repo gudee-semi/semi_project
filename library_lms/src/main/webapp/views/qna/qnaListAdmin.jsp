@@ -93,6 +93,14 @@ button {
 body>form {
 	transform: translate(380px, 0);
 }
+
+.material-symbols-outlined {
+	width: 40px;
+	height: 22px;
+	background-color: blue;
+	color: white;
+	transform: translate(2px, 3px);
+}
 </style>
 
 	<jsp:include page="/views/include/header.jsp" />
@@ -105,9 +113,12 @@ body>form {
 		<div>
 			<h2>QnA 관리자 페이지</h2>
 
-			<%-- 1. 검색 영역 --%>
+
+			<%-- 검색 영역 --%>
 			<form action="${pageContext.request.contextPath}/qna/list/admin"
 				method="get" class="search">
+
+				<%-- 카테고리 셀렉트 --%>
 				<select name="category">
 					<option value="">전체</option>
 					<option value="시설"
@@ -118,17 +129,25 @@ body>form {
 						<c:if test="${param.category == '환불'}">selected</c:if>>환불</option>
 					<option value="기타"
 						<c:if test="${param.category == '기타'}">selected</c:if>>기타</option>
-				</select> <select name="searchType">
+				</select>
+
+				<%-- 검색 타입 셀렉트 --%>
+				<select name="searchType">
 					<option value="title"
 						<c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
 					<option value="content"
 						<c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
 					<option value="memberName"
 						<c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
-				</select> <input type="text" name="keyword" value="${param.keyword}"
-					placeholder="검색어 입력">
+				</select>
 
+				<%-- 키워드 입력창 --%>
+				<input type="text" name="keyword" value="${param.keyword}"
+					placeholder="검색어 입력" />
+
+				<%-- 검색 버튼 --%>
 				<button type="submit" style="display: inline">검색</button>
+
 			</form>
 
 			<!-- 리스트 영역 -->

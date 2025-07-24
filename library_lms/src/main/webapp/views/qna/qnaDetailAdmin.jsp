@@ -24,9 +24,9 @@ h2 {
 	border: 1px solid #ddd;
 	padding: 10px 12px;
 	vertical-align: middle;
-	white-space: nowrap; /* 줄바꿈 방지 */
-	overflow: hidden; /* 넘치는 텍스트 숨김 */
-	text-overflow: ellipsis; /* ... 처리 */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .detail-table th {
@@ -165,16 +165,14 @@ hr {
 				</table>
 			</c:if>
 
-			<hr>
 			<!-- 답변 등록 폼 -->
+			<hr>
 			<h3>답변 남기기</h3>
-			<%-- 답변 등록 폼: 답변이 없을 때만 노출 --%>
+			
 			<c:if test="${empty replyList}">
 				<form class="center" action="/qna/reply/admin/insert" method="post">
-					<input class="center" type="hidden" name="qnaId"
-						value="${qna.qnaId}" />
-					<textarea class="center" name="content" rows="3" cols="60" required
-						placeholder="답글을 입력하세요"></textarea>
+					<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
+					<textarea class="center" name="content" rows="3" cols="60" required placeholder="답글을 입력하세요"></textarea>
 					<br>
 					<button class="center" type="submit">답글 등록</button>
 				</form>
@@ -184,6 +182,7 @@ hr {
 			<!-- 답변 수정/삭제 폼 리스트 -->
 			<hr>
 			<h3>답변 수정 및 삭제</h3>
+			
 			<c:forEach var="reply" items="${replyList}">
 				<div class="reply">
 					<b>답변&nbsp;&nbsp;</b>
@@ -197,6 +196,7 @@ hr {
 							value="${reply.content}" />
 						<button type="submit">수정</button>
 					</form>
+					
 					<!-- 삭제 폼 -->
 					<form
 						action="${pageContext.request.contextPath}/qna/reply/admin/delete"
