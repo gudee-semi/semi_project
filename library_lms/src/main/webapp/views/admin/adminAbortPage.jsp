@@ -108,9 +108,10 @@ input[type="checkbox"] {
 						<thead>
 							<tr>
 								<th style="width: 10%">사용자 번호</th>
-								<th style="width: 40%">사용자</th>
-								<th style="width: 40%">상태</th>
+								<th style="width: 35%">사용자</th>
+								<th style="width: 35%">상태</th>
 								<th style="width: 10%">퇴실 조치</th>
+								<th style="width: 10%">페널티 부여</th>
 							</tr>
 						</thead>			
 					    <tbody>
@@ -120,12 +121,13 @@ input[type="checkbox"] {
 						    		<td>${ member.memberName }</td>
 						    		<td>${ member.statusDisplay }</td>
 						    		<td><input type="checkbox" name="memberId" value="${ member.memberNo }"></td>
+						    		<td><input type="checkbox" name="memberPenaltyId" value="${ member.memberNo }"></td>
 						    	</tr>
 						    </c:forEach>
 					    </tbody>
 					</table>
 					<div class="flex-input">
-						<input type="submit" value="강제 퇴실" class="btn">
+						<input type="submit" value="퇴실 조치" class="btn">
 					</div>
 				</form>
 			</c:if>
@@ -137,16 +139,38 @@ input[type="checkbox"] {
 		$('#memberAbortFrm').on('submit', (e) => {
 			e.preventDefault();
 			let arr = [];
+			let arrPen = [];
 			$('input[name="memberId"]:checked').each(function() {
 				arr.push($(this).val());
 			});
+			$('input[name="memberPenaltyId"]:checked').each(function() {
+				arrPen.push($(this).val());
+			});
+			for (const itemPen of arrPen) {
+				let counter = 0;
+				for (const item of arr) {
+					if (itemPen !== item) {
+						counter++;
+					}
+				}
+				if (counter === arr.length) {
+					Swal.fire({
+						  icon: "error",
+					      text: '퇴실 처리가 안된 회원은 페널티를 부여할 수 없습니다.',
+					      confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+						}).then(() => {
+							return;
+						})
+				}
+			}
 			if (arr.length > 0) {
 				Swal.fire({
 				  icon: "warning",
 			      title: ' ',
-			      text: '퇴실 처리하시겠습니까?',
+			      text: '퇴실 조치를 하시겠습니까?',
 				  showCancelButton: true,
-				  confirmButtonText: "퇴실 처리",
+				  confirmButtonText: "퇴실 조치",
 				  cancelButtonText: `취소`,
 				  confirmButtonColor: '#205DAC'
 				}).then((result) => {
@@ -154,13 +178,16 @@ input[type="checkbox"] {
 						$.ajax({
 							url: '/admin/abort',
 							type: 'post',
-							data: { list: arr },
+							data: { 
+								list: arr,
+								listPen: arrPen
+							},
 							dataType: 'json',
 							success: (data) => {
 								if (data.res_code === '200') {
 									Swal.fire({
 						              title: " ",
-						              text: "퇴실 처리가 완료되었습니다.",
+						              text: "퇴실 조치가 완료되었습니다.",
 						              icon: "success",
 						              confirmButtonText: '확인',
 						              confirmButtonColor: '#205DAC'
