@@ -44,15 +44,29 @@ body>div>div.container>div:nth-child(1)>img {
 	font-size: 28px;
 	font-weight: 400;
 }
+
+.side {
+	width: 300px;
+	height: 1000px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+}
+
+.container {
+	width: 70%;
+}
 </style>
 
 	<%@ include file="/views/include/header.jsp"%>
 
+	<div class="sidebars"><%@ include file="/views/include/sidebar.jsp"%></div>
 	<div class="flex-container">
-		<div class="sidebars"><%@ include file="/views/include/sidebar.jsp"%>
-		</div>
+		<div class="side"></div>
 		<div class="container">
-			<div>
+			<div style="text-align: center;">
 				<img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/6302.png" alt="태블릿" />
 			</div>
 
@@ -117,7 +131,6 @@ body>div>div.container>div:nth-child(1)>img {
 			</div>
 
 		</div>
-
 
 	</div>
 
