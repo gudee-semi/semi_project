@@ -20,8 +20,11 @@
 	border-radius: 5px;
 	
 }
+.signup_box p{
+ font-size: 13px;
+}
 
- .signup_box input[type="text"] {
+ .signup_box input[type="text"] ,.signup_box input[type="password"]{
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -87,7 +90,7 @@ select {
 				<input type="text" id="member_name" name="member_name" placeholder="이름">
 				<p id="member_name_msg"></p>
 				<!--주민번호 -->
-				<input type="text" id="member_rrn" name="member_rrn" placeholder="주민번호">
+				<input type="password" id="member_rrn" name="member_rrn" placeholder="주민번호">
 				<p id="member_rrn_msg"></p>
 				<!-- 학년 입력 -->
 				<select id ="member_seat" name="member_seat">

@@ -9,13 +9,17 @@
         body {
             font-family: "Noto Sans KR", sans-serif;
         }
-        h2 {
+        .h2 {
         	margin-top: 200px;
             text-align: center;
+            transform: translate(-40px,-40px);
+        }
+        .box {
+        	transform: translate(150px,-80px);
         }
         table {
-            width: 90%;
-            margin: 30px auto;
+            width: 70%;
+            margin: 10px auto;
             border-collapse: collapse;
         }
         th, td {
@@ -29,10 +33,6 @@
 	        border-bottom: 2px solid #666666;
 			background: #fafafa;
         }
-        
-        tr:last-child td {
-			border-bottom: none;
-		}
         
         select {
             padding: 5px;
@@ -58,12 +58,19 @@
         .btn-change:hover {
 		  	  background-color: #3E7AC8;
 		}
+		.flex{
+			display:flex;
+		}
     </style>
 </head>
 
 <body>
 <%@ include file="/views/include/header.jsp" %>
-<h2>고정좌석 이용 회원</h2>
+<%@ include file="/views/include/sidebar.jsp" %>
+<div class="box">
+<h2 class="h2">고정좌석 이용 회원</h2>
+
+
 
 <!-- ✅ 확인창 띄우는 form -->
 <form id="seatForm" action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
@@ -114,6 +121,7 @@
         <button type="submit" class="btn-change">변경하기</button>
     </div>
 </form>
+</div>	
 
 <!-- ✅ 중복 경고 메시지 alert -->
 <%
@@ -127,8 +135,8 @@
 <script>
 Swal.fire({
     icon: "error",
-    title: "중복된 좌석이 있습니다",
     html: `<%= warningMessage.toString().replaceAll("\\\\n", "<br>") %>`,
+    confirmButtonColor:'#205DAC',
     footer: "각 회원의 좌석이 겹치지 않도록 다시 선택해주세요."
 });
 </script>
@@ -146,7 +154,8 @@ Swal.fire({
 Swal.fire({
 	  title: "좌석 변경을 성공했습니다",
 	  icon: "success",
-	  draggable: true
+	  draggable: true,
+	  confirmButtonColor:'#205DAC'
 	});
 </script>
 <%
@@ -158,8 +167,7 @@ document.querySelector('.btn-change').addEventListener('click', function (event)
     event.preventDefault(); // 기본 제출 막기
 
     Swal.fire({
-        title: '변경하시겠습니까?',
-        text: "해당 변경 사항을 저장합니다.",
+        text: "변경하시겠습니까?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#205DAC',

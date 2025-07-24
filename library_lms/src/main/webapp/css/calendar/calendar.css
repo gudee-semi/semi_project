@@ -162,7 +162,7 @@ thead .fc-scroller {
 .flatpickr-calendar {
 	position: fixed !important;
 	top: 50% !important;
-	left: 70% !important;
+	left: 50% !important;
 	transform: translate(-50%, -50%) !important;
 	z-index: 9999 !important;
 	box-shadow: 0 4px 20px rgba(0,0,0,0.2);

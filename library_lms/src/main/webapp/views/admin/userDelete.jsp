@@ -174,9 +174,10 @@ footer {
 						</thead>
 				
 						<tbody>
+							<c:set var="rowNum" value="${paging.limitPageNo}"/>
 							<c:forEach var="q" items="${userList}" varStatus="t">
 								<tr>
-									<td>${t.count}</td>
+									<td>${rowNum+t.count}</td>
 									<td>${q.userName }</td>
 									<td>${q.userRrn }</td>
 									<td>${q.userSeat==1 ? "지정좌석": "공용좌석"}</td>

@@ -173,9 +173,10 @@ footer {
 					</thead>
 			
 					<tbody>
+						<c:set var="rowNum" value="${paging.limitPageNo}"/>
 						<c:forEach var="q" items="${memberList}" varStatus="t">
 							<tr>
-								<td>${t.count}</td>
+								<td>${rowNum+t.count}</td>
 								<td>${q.memberGrade }</td>
 								<td>${q.memberSchool }</td>
 								<td>${q.memberName }</td>
