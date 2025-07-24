@@ -64,7 +64,8 @@
 	
 	/* modal... */
 	.todo-input-title,
-	.todo-update-title {
+	.todo-update-title,
+	.todo-detail-title {
 	    width: 90%;
 	    height: 30px;
 	    margin: 0 auto;
@@ -87,7 +88,8 @@
 	}
 	
 	.todo-input-date,
-	.todo-update-date {
+	.todo-update-date,
+	.todo-detail-date {
 	    height: 30px;
 	    margin: 0 auto;
 	    display: block;
@@ -110,7 +112,8 @@
 	}
 	
 	.todo-input-detail,
-	.todo-update-detail {
+	.todo-update-detail,
+	.todo-detail-detail {
 	    width: 90%;
 	    margin: 0 auto;
 	    display: block;
@@ -164,7 +167,8 @@
 	    box-shadow: 0 4px 12px rgba(102, 175, 233, 0.4);
 	}
 	
-	.edit-btn {
+	.edit-btn,
+	.detail-btn {
 		border-color: transparent;
     	background-color: #205DAC;
     	color: white;
@@ -176,6 +180,20 @@
 	    border-color: transparent;
     	border-radius: 3px;
     	cursor: pointer;
+	}
+	
+	.my-div::-webkit-scrollbar {
+	  width: 8px; /* 세로 스크롤바 너비 */
+	}
+	
+	.my-div::-webkit-scrollbar-thumb {
+	  background-color: #ccc;  /* 스크롤 손잡이 색 */
+	  border-radius: 4px;
+	}
+	
+	.my-div::-webkit-scrollbar-track {
+	  background-color: transparent;  /* 스크롤바 배경 */
+	  border-radius: 4px;
 	}
 	
 	/*  하...   */
@@ -216,7 +234,7 @@
 	.fc-event-title.fc-sticky {
 		margin-top: 16px !important;
 		margin-left: 5px !important;
-		font-size: 17px !important;
+		font-size: 16px !important;
 	}
 	
 	.flatpickr-day.selected.today {
@@ -435,9 +453,12 @@
 				            // 설명 추가
 				            if (info.event.extendedProps.description) {
 				                var descriptionEl = document.createElement('div');
+				                descriptionEl.className = 'my-div';
 				                descriptionEl.innerText = info.event.extendedProps.description;
 				                descriptionEl.style.fontSize = '0.7em';
 				                descriptionEl.style.marginTop = '4px';
+				                descriptionEl.style.maxHeight = '90px';
+				                descriptionEl.style.overflowY = "auto";
 			
 				                // FullCalendar가 만들어준 카드에 추가
 				                info.el.querySelector('.fc-event-title').appendChild(descriptionEl);
@@ -455,8 +476,11 @@
 				            // 1. HTML 먼저 만듦 (style 없음)
 				            const popup = $(`
 					        	    <div class="event-popup">
-					        	    <button class="edit-btn">수정</button>
-					        	    <button class="delete-btn">삭제</button>
+					        	    <button class="detail-btn">상세</button>
+					        	    <br>
+					        	    <button class="edit-btn" style="margin-top: 5px;">수정</button>
+					        	    <br>
+					        	    <button class="delete-btn" style="margin-top: 5px;">삭제</button>
 					        	    </div>
 					        	`);
 			
@@ -586,6 +610,20 @@
 				                });
 				                popup.remove();
 				            });
+				            
+				            popup.find('.detail-btn').on('click', () => {
+				                readmePopUp4.style.display = 'flex';
+			
+				                const editTitle = event.title;
+				                const editDate = event.startStr.split('T')[0];
+				                const editDetail = event.extendedProps.description;
+			
+				                $('.todo-detail-title').val(editTitle);
+				                $('.todo-detail-date').val(editDate);
+				                $('.todo-detail-detail').val(editDetail);
+				                
+				                popup.remove();
+				            });
 			
 				            popup.find('.delete-btn').on('click', () => {
 				            	popup.remove();
@@ -638,6 +676,8 @@
 				         
 				            	
 				            });
+				            
+				            
 				        }
 			
 				    });
@@ -742,14 +782,36 @@
 		    	</div>
 		  	</div>
 		  	
+			<div class="modal modal-4">
+		    	<div class="modal-content">
+		      		<div class="modal-header font-en">
+		      			<span></span>
+		        		<span class="material-symbols-outlined btn-add-close">close</span>
+		      		</div>
+		     		 <div class="modal-body">
+		        		<p>할 일 목록</p>
+		        		<input type="text" class="todo-detail-title" readonly="readonly">
+		        		<br>
+		        		<p>날짜</p>
+		        		<input type="date" class="todo-detail-date" readonly="readonly">
+		        		<br>
+		        		<p>상세 내용</p>
+		        		<textarea rows="10" cols="20" class="todo-detail-detail" readonly="readonly"></textarea>
+		      		</div>
+		    	</div>
+		  	</div>
+		  	
+		  	
 		  	<script>
 			  	const readmeBtn1 = document.querySelector('.btn-add');
 			  	const readmePopUp1 = document.querySelector('.modal.modal-1');
 			  	const readmePopUp2 = document.querySelector('.modal.modal-2');
-			  	const readmePopUp3 = document.querySelector('.modal.modal-3')
+			  	const readmePopUp3 = document.querySelector('.modal.modal-3');
+			  	const readmePopUp4 = document.querySelector('.modal.modal-4');
 			  	const readmeClose1 = document.querySelector('.modal.modal-1 .btn-add-close');
 			  	const readmeClose2 = document.querySelector('.modal.modal-2 .btn-add-close');
 			  	const readmeClose3 = document.querySelector('.modal.modal-3 .btn-add-close');
+			  	const readmeClose4 = document.querySelector('.modal.modal-4 .btn-add-close');
 			  	const todoForm = document.querySelector('#todo-input');
 			  	const updateForm = document.querySelector('#todo-update');
 			  	const deleteForm = document.querySelector('#todo-delete');
@@ -769,6 +831,9 @@
 			  	});
 			  	readmeClose3.addEventListener('click', () => {
 			  		readmePopUp3.style.display = 'none';
+			  	});
+			  	readmeClose4.addEventListener('click', () => {
+			  		readmePopUp4.style.display = 'none';
 			  	});
 			  	todoForm.addEventListener('submit', () => {
 			  		readmePopUp1.style.display = 'none';

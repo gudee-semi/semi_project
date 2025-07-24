@@ -164,8 +164,8 @@ footer {
 				    	<tr>
 							<th>카테고리</th>
 							<td>
-								<select name="category" id="category">
-							  		<option value=0>--선택--</option>
+								<select name="category" id="category" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
+							  		<option value=''>선택</option>
 								  	<option value='일반공지'>일반공지</option>
 								  	<option value='중요공지'>중요공지</option>
 								  	<option value='시설공지'>시설공지</option>
@@ -178,12 +178,12 @@ footer {
 						
 						<tr>
 							<th>제목</th>	
-							<td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="100" required>${ notice.title }</textarea></td>
+							<td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="100" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ notice.title }</textarea></td>
 					    </tr>
 				    	
 				    	<tr>
 					    	<th>내용</th>	
-					    	<td colspan="3"><textarea class="input flexible" name="content" rows="16" cols="100" required>${ notice.content }</textarea></td>
+					    	<td colspan="3"><textarea class="input flexible" name="content" rows="16" cols="100" required oninvalid="setCustomMessage(this, '내용은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ notice.content }</textarea></td>
 					    </tr>
 					    
 					    <tr>
@@ -269,7 +269,11 @@ footer {
 			});
 		});
 	</script>
-	
+	<script>
+		function setCustomMessage(input, message) {
+		  input.setCustomValidity(message);
+		}
+	</script>
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
