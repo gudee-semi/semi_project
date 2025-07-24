@@ -2,13 +2,14 @@ $(document).ready(function () {
   const examCheckboxes = $('input[name="exam"]');
   let availableCount = 0;
   let invalidInput = null;
-
+  
+  // 
   const socialSubjects = ["경제", "사회문화", "법과정치", "윤리와 사상", "세계지리", "한국지리", "세계사", "동아시아사", "생활과 윤리"];
   const science1Subjects = ["물리1", "화학1", "생명과학1", "지구과학1"];
   const science2Subjects = ["물리학2", "화학2", "생명과학2", "지구과학2"];
   const lang2Subjects = ["독일어", "프랑스어", "스페인어", "중국어", "일본어", "러시아어", "아랍어", "베트남어", "한문"];
 
-  // [A] 시험 체크박스 활성화
+  // [1] 시험 체크박스 활성화
   examCheckboxes.each(function () {
     const examMonth = parseInt($(this).val(), 10);
     if (examMonth === 11) {
@@ -32,7 +33,7 @@ $(document).ready(function () {
     `);
   }
 
-  // [C] 시험 선택
+  // [2] 시험 선택
   examCheckboxes.change(function () {
     examCheckboxes.not(this).prop('checked', false);
     $('#exam-title').hide().text('');
@@ -42,6 +43,7 @@ $(document).ready(function () {
     $('#final-submit').hide();
     $('.explore-subject, .lang2-subject').prop('checked', false);
 
+	// 3학년 6월, 9월, 11월 시험인 경우 과학탐구2, 제2외국어 과목 출력
     const val = $(this).val();
     if (studentGrade === 3 && ['6', '9', '11'].includes(val)) {
       $('#science2-section, #lang2-section').show();
@@ -51,7 +53,7 @@ $(document).ready(function () {
     }
   }).trigger('change');
 
-  // [D] 탐구 과목 2개 제한
+  // [3] 탐구 과목 2개 제한
   $('.explore-subject').change(function () {
     if ($('.explore-subject:checked').length > 2) {
       $(this).prop('checked', false);
@@ -59,7 +61,7 @@ $(document).ready(function () {
     }
   });
 
-  // [E] 제2외국어 1개 제한
+  // [4] 제2외국어 1개 제한
   $('.lang2-subject').change(function () {
     if ($('.lang2-subject:checked').length > 1) {
       $(this).prop('checked', false);
@@ -67,11 +69,12 @@ $(document).ready(function () {
     }
   });
 
-  // [F] 선택완료 → 입력창 생성
+  // [5] 선택완료 → 입력창 생성
   $('#confirm-subjects').click(function () {
     const examMonth = $('.exam-type:checked').val();
     if (!examMonth) return showSwal("시험 분류를 선택해주세요.");
 
+	// 국어, 수학, 영어, 한국사 과목은 필수로 선택
     const selected = ['국어', '수학', '영어', '한국사'];
     $('.explore-subject:checked, .lang2-subject:checked').each(function () {
       selected.push($(this).val());
@@ -94,13 +97,13 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  // [G-1] 원점수 유효성 검사
+  // [6-1] 원점수 유효성 검사
   $(document).on('blur', '.score-input', function () {
     const input = $(this);
     const sub = input.data('subject');
     const val = input.val().trim();
-    const v = parseInt(val);
 
+	// 한국사, 사회탐구, 과학탐구, 제2외국어의 원점수는 0~50 사이의 정수로 제한
     const isRestricted =
       sub === "한국사" ||
       socialSubjects.includes(sub) ||
@@ -108,39 +111,67 @@ $(document).ready(function () {
       science2Subjects.includes(sub) ||
       lang2Subjects.includes(sub);
 
-    const min = 0;
-    const max = isRestricted ? 50 : 100;
+	  // [추가] 정수만 허용하는 정규식
+	    // 0~100 정수(00, 000, 소수점, 음수 불가)
+	    const regexNormal = /^(0|[1-9][0-9]?|100)$/;
+	    // 0~50 정수(00, 000, 소수점, 음수 불가)
+	    const regexRestricted = /^(0|[1-9]|[1-4][0-9]|50)$/;
 
-    if (val !== '' && (isNaN(v) || v < min || v > max)) {
+	    // 입력값이 있으면 검사
+	    if (val !== '') {
+	      let valid = false;
+
+	      if (isRestricted) {
+	        // [한국사/탐구/제2외국어] 0~50 정수만 허용
+	        valid = regexRestricted.test(val);
+	      } else {
+	        // [그 외 과목] 0~100 정수만 허용
+	        valid = regexNormal.test(val);
+	      }
+
+    if (!valid) {
       input.css('border', '1px solid #dc2626');
       invalidInput = input;
       const msg = isRestricted
-        ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
-        : "원점수는 0 이상 100 이하의 숫자로 입력하세요.";
+        ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 정수로 입력하세요."
+        : "원점수는 0 이상 100 이하의 정수로 입력하세요.";
       return showSwal(msg, "warning", () => {
-        input.val('').focus();
-      });
-    } else {
-      input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
-    }
-  });
+		input.val('').focus(); // 잘못 입력시 값 비우고 포커스
+		      });
+		    } else {
+		      input.css('border', ''); // 유효 입력시 테두리 제거
+		    }
+		  } else {
+		    // 값이 없으면 테두리 제거(기존 유지)
+		    input.css('border', '');
+		  }
+		});
 
-  // [G-2] 등급 유효성 검사
-  $(document).on('blur', '.grade-input', function () {
-    const input = $(this);
-    const val = input.val().trim();
-    const v = parseInt(val);
+  
+	// [G-2] 등급 유효성 검사 (1~9 정수만, 소수점/00/01/09 등 불가)
+	$(document).on('blur', '.grade-input', function () {	
+	  const input = $(this);
+	  const val = input.val().trim();
 
-    if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
-      input.css('border', '1px solid #dc2626');
-      invalidInput = input;
-      return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", "warning", () => {
-        input.val('').focus();
-      });
-    } else {
-      input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
-    }
-  });
+	  // [추가] 1~9만 허용 (1,2,...9), 01, 09, 000, 1.0 등 불가
+	  const regexGrade = /^[1-9]$/;
+
+	  if (val !== '') {
+	    if (!regexGrade.test(val)) {
+	      input.css('border', '1px solid #dc2626');
+		  invalidInput = input;
+		return showSwal("등급은 1 이상 9 이하의 정수로 입력하세요.", "warning", () => {
+		    input.val('').focus();
+		});
+		} else {
+		     input.css('border', ''); // ✅ 유효 입력시 테두리 제거
+		  }
+	  } else {
+		    // 값이 없으면 테두리 제거(기존 로직)
+		    input.css('border', '');
+		 }
+	});
+
   
   
   

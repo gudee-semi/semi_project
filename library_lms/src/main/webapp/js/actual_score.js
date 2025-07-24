@@ -102,70 +102,125 @@ $(document).ready(function () {
     $('#final-submit').show();
   });
 
-  // [G-1] 원점수 유효성 검사
-  $(document).on('blur', '.score-input', function () {
-     const input = $(this);
-     const sub = input.data('subject');
-     const val = input.val().trim();
-     const v = parseInt(val);
-
-     const isRestricted =
-       sub === "한국사" ||
-       socialSubjects.includes(sub) ||
-       science1Subjects.includes(sub) ||
-       science2Subjects.includes(sub) ||
-       lang2Subjects.includes(sub);
-
-     const min = 0;
-     const max = isRestricted ? 50 : 100;
-
-     if (val !== '' && (isNaN(v) || v < min || v > max)) {
-       input.css('border', '1px solid #dc2626');
-       invalidInput = input;
-       const msg = isRestricted
-         ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 숫자로 입력하세요."
-         : "원점수는 0 이상 100 이하의 숫자로 입력하세요.";
-       return showSwal(msg, "warning", () => {
-         input.val('').focus();
-       });
-     } else {
-       input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
-     }
-   });
-
-  // [G-2] 등급 유효성 검사
-  $(document).on('blur', '.grade-input', function () {
+  // [6-1] 원점수 유효성 검사
+    $(document).on('blur', '.score-input', function () {
       const input = $(this);
+      const sub = input.data('subject');
       const val = input.val().trim();
-      const v = parseInt(val);
 
-      if (val !== '' && (isNaN(v) || v < 1 || v > 9)) {
+  	// 한국사, 사회탐구, 과학탐구, 제2외국어의 원점수는 0~50 사이의 정수로 제한
+      const isRestricted =
+        sub === "한국사" ||
+        socialSubjects.includes(sub) ||
+        science1Subjects.includes(sub) ||
+        science2Subjects.includes(sub) ||
+        lang2Subjects.includes(sub);
+
+  	  // [추가] 정수만 허용하는 정규식
+  	    // 0~100 정수(00, 000, 소수점, 음수 불가)
+  	    const regexNormal = /^(0|[1-9][0-9]?|100)$/;
+  	    // 0~50 정수(00, 000, 소수점, 음수 불가)
+  	    const regexRestricted = /^(0|[1-9]|[1-4][0-9]|50)$/;
+
+  	    // 입력값이 있으면 검사
+  	    if (val !== '') {
+  	      let valid = false;
+
+  	      if (isRestricted) {
+  	        // [한국사/탐구/제2외국어] 0~50 정수만 허용
+  	        valid = regexRestricted.test(val);
+  	      } else {
+  	        // [그 외 과목] 0~100 정수만 허용
+  	        valid = regexNormal.test(val);
+  	      }
+
+      if (!valid) {
         input.css('border', '1px solid #dc2626');
         invalidInput = input;
-        return showSwal("등급은 1 이상 9 이하의 숫자로 입력하세요.", "warning", () => {
-          input.val('').focus();
-        });
-      } else {
-        input.css('border', ''); // ✅ 유효한 입력 → 테두리 제거
-      }
-    });
+        const msg = isRestricted
+          ? "한국사/탐구/선택과목 원점수는 0 이상 50 이하의 정수로 입력하세요."
+          : "원점수는 0 이상 100 이하의 정수로 입력하세요.";
+        return showSwal(msg, "warning", () => {
+  		input.val('').focus(); // 잘못 입력시 값 비우고 포커스
+  		      });
+  		    } else {
+  		      input.css('border', ''); // 유효 입력시 테두리 제거
+  		    }
+  		  } else {
+  		    // 값이 없으면 테두리 제거(기존 유지)
+  		    input.css('border', '');
+  		  }
+  		});
+	// [G-2] 등급 유효성 검사 (1~9 정수만, 소수점/00/01/09 등 불가)
+		$(document).on('blur', '.grade-input', function () {	
+		  const input = $(this);
+		  const val = input.val().trim();
 
-  // [G-3] 백분위 유효성 검사
-  $(document).on('blur', '.percent-input', function () {
-    const input = $(this);
-    const val = input.val().trim();
-    const v = parseInt(val);
+		  // [추가] 1~9만 허용 (1,2,...9), 01, 09, 000, 1.0 등 불가
+		  const regexGrade = /^[1-9]$/;
 
-    if (val === '') return input.css('border', '');
-    if (isNaN(v) || v < 0 || v > 100) {
-      input.css('border', '1px solid #dc2626');
-      return showSwal("백분위는 0 이상 100 이하의 숫자로 입력하세요.", "warning", () => {
-        input.val('').focus();
-      });
-    } else {
-      input.css('border', '');
-    }
-  });
+		  if (val !== '') {
+		    if (!regexGrade.test(val)) {
+		      input.css('border', '1px solid #dc2626');
+			  invalidInput = input;
+			return showSwal("등급은 1 이상 9 이하의 정수로 입력하세요.", "warning", () => {
+			    input.val('').focus();
+			});
+			} else {
+			     input.css('border', ''); // ✅ 유효 입력시 테두리 제거
+			  }
+		  } else {
+			    // 값이 없으면 테두리 제거(기존 로직)
+			    input.css('border', '');
+			 }
+		});
+
+		// [G-3] 백분위 유효성 검사 (0~100, 소수 둘째자리까지, 선행 0/소수점 3자리 이상 불가)
+		$(document).on('blur', '.percent-input', function () {
+		  const input = $(this);
+		  const val = input.val().trim();
+
+		  // [추가] 0, 1~99, 100 (정수), 0.01~99.99, 100.0~100.00 (소수점 둘째자리까지)
+		  // - 0, 1~99, 100  (정수, 선행0 불가)
+		  // - 0.xx, 1.xx~99.xx, 100.0~100.00 (소수 둘째자리까지, 선행0불가)
+		  // - 00, 01, 1.000, 0.000 등 모두 불가
+		  const regexPercent = /^(0|100|[1-9][0-9]?)(\.\d{1,2})?$/;
+
+		  if (val === '') return input.css('border', '');
+
+		  // 정규식 통과 + 소수점 둘째자리까지 확인
+		  if (!regexPercent.test(val)) {
+		    input.css('border', '1px solid #dc2626');
+		    return showSwal("백분위는 0 DLTKD 100 이하의 정수, 소수 둘째자리까지만 입력하세요.", "warning", () => {
+		      input.val('').focus();
+		    });
+		  }
+
+		  // [추가] 범위 체크(0~100, 100.01~ 등 방지)
+		  const num = Number(val);
+		  if (isNaN(num) || num < 0 || num > 100) {
+		    input.css('border', '1px solid #dc2626');
+		    return showSwal("백분위는 0~100 사이여야 합니다.", "warning", () => {
+		      input.val('').focus();
+		    });
+		  }
+
+		  // [추가] 0.00, 100.000 등 소수점 셋째자리 이상 차단
+		  if (val.includes('.')) {
+		    const decimal = val.split('.')[1];
+		    if (decimal && decimal.length > 2) {
+		      input.css('border', '1px solid #dc2626');
+		      return showSwal("소수점 둘째자리까지만 입력하세요.", "warning", () => {
+		        input.val('').focus();
+		      });
+		    }
+		  }
+
+		  // 통과: 테두리 제거
+		  input.css('border', '');
+		});
+
+
 
   // [G-4] 석차 유효성 검사
   $(document).on('blur', '.rank-input', function () {
