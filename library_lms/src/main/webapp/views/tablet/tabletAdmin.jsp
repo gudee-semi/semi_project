@@ -74,6 +74,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center; /* 중앙 정렬 */
+		margin-top: 50px;
 	}
 	header {
 		margin: 0 !important;
@@ -104,7 +105,7 @@
 						<tr>
 							<th>태블릿 No</th>
 							<th>사용자</th>
-							<th></th>
+							<th>반납할 태블릿</th>
 						</tr>
 					</thead>
 					

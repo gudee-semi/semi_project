@@ -93,7 +93,7 @@
 			,Q.category
 			,Q.title 
 			,Q.content 
-			,DATE_FORMAT(Q.reg_date, '%Y-%m-%d') AS reg_date
+			,Q.reg_date
 			,DATE_FORMAT(Q.mod_date, '%Y-%m-%d') AS mod_date 
 			,Q.visibility
 			,Q.view_count
