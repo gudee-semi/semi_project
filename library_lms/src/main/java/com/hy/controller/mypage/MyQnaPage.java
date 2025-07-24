@@ -71,6 +71,7 @@ public class MyQnaPage extends HttpServlet {
 		
 		
 		
+		request.setAttribute("totalData", totalData);
 		request.setAttribute("paging", qna);
 		request.setAttribute("qnaList", qnaList);
 		request.setAttribute("qnaReply", qnaReply);

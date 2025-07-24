@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>질의응답 상세 페이지</title>
+<title>나의 문의내역 상세 페이지</title>
 <!-- SweetAlert2 CDN 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -179,7 +179,7 @@
 
 				<c:if test="${not empty attach }">
 					<tr>
-						<th>첨부 파일</th>
+						<th>첨부파일</th>
 						<td colspan="3"><a
 							href="<c:url value='/fileDownload?no=${attach.qnaAttachId }'/>">${attach.oriName}</a><br>
 							<img src="<c:url value='/filePath?no=${attach.qnaAttachId }'/>"><br>
@@ -208,7 +208,7 @@
 			</c:if>
 
 			<div class="right-btn">
-				<form action="<c:url value='/qna/view'/>" method="get">
+				<form action="<c:url value='/myqna/view'/>" method="get">
 					<button class="btn-common">목록</button>
 				</form>
 			</div>
@@ -264,7 +264,7 @@
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
    	 				            }).then(() => {   	 				            	
-	    	 						location.href = "<%=request.getContextPath()%>/qna/view";
+	    	 						location.href = "<%=request.getContextPath()%>/myqna/view";
    	 				            })
     	 					} else {
     	 						Swal.fire({
@@ -274,7 +274,7 @@
    	 				              confirmButtonText: '확인',
    	 				              confirmButtonColor: '#205DAC'
    	 				            }).then(() => {   	 				            	
-	    	 						location.href = "<%=request.getContextPath()%>/qna/view";
+	    	 						location.href = "<%=request.getContextPath()%>/myqna/view";
    	 				            });
     	 					}
     	                 }
