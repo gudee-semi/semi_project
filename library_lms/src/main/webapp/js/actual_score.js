@@ -191,7 +191,7 @@ $(document).ready(function () {
 		  // 정규식 통과 + 소수점 둘째자리까지 확인
 		  if (!regexPercent.test(val)) {
 		    input.css('border', '1px solid #dc2626');
-		    return showSwal("백분위는 0 DLTKD 100 이하의 정수, 소수 둘째자리까지만 입력하세요.", "warning", () => {
+		    return showSwal("백분위는 0 이상 100 이하의 정수, 소수 둘째자리까지만 입력하세요.", "warning", () => {
 		      input.val('').focus();
 		    });
 		  }
@@ -241,7 +241,7 @@ $(document).ready(function () {
 
     if (myRank < 1 || total < 1 || myRank > total) {
       input.css('border', '1px solid #dc2626');
-      return showSwal("본인 등수는 전체 인원수보다 작거나 같아야 하며 1 이상이어야 합니다.", "Warning", () => {
+      return showSwal("본인 등수는 전체 인원수보다 작거나 같아야 하며 1 이상이어야 합니다.", "warning", () => {
         input.val('').focus();
       });
     } else {
