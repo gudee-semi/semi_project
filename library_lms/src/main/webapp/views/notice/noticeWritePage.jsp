@@ -144,8 +144,8 @@ footer {
 					<tr>
 						<th style="width: 15%">카테고리</th>
 						<td style="width: 35%">
-							<select class="category" name="category" id="category">
-						  		<option value=0>선택</option>
+							<select class="category" name="category" id="category" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
+						  		<option value=''>선택</option>
 							  	<option value='일반공지'>일반공지</option>
 							  	<option value='중요공지'>중요공지</option>
 							  	<option value='시설공지'>시설공지</option>
@@ -158,17 +158,17 @@ footer {
 					
 					<tr>
 					    <th>제목</th>	
-					    <td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="80" required></textarea></td>
+					    <td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="80" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')"></textarea></td>
 			    	</tr>
 			    	
 			    	<tr>
 				    	<th>내용</th>
-				    	<td colspan="3"><textarea class="input flexible" name="content" rows="15" cols="80" required></textarea></td>
+				    	<td colspan="3"><textarea class="input flexible" name="content" rows="15" cols="80" required oninvalid="setCustomMessage(this, '내용은 필수항목입니다.')" oninput="setCustomMessage(this, '')"></textarea></td>
 			    	</tr>
 			    	
 			    	<tr>
-						<th>파일첨부</th>
-						<td colspan="3"><input type="file" name="file"></td>
+						<th>첨부 파일</th>
+						<td colspan="3"><input type="file" name="file" accept=".jpg, .jpeg, .png"></td>
 				    </tr>
 				</table>
 				    
@@ -223,6 +223,11 @@ footer {
 				}
 			});
 		});
+	</script>
+	<script>
+		function setCustomMessage(input, message) {
+		  input.setCustomValidity(message);
+		}
 	</script>
 	<%@ include file="/views/include/footer.jsp" %>
 </body>

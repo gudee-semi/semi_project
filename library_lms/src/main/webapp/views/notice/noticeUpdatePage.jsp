@@ -163,9 +163,9 @@ footer {
 				    	
 				    	<tr>
 							<th>카테고리</th>
-							<td>
-								<select name="category" id="category">
-							  		<option value=0>--선택--</option>
+							<td colspan="3">
+								<select name="category" id="category" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
+							  		<option value=''>선택</option>
 								  	<option value='일반공지'>일반공지</option>
 								  	<option value='중요공지'>중요공지</option>
 								  	<option value='시설공지'>시설공지</option>
@@ -178,16 +178,16 @@ footer {
 						
 						<tr>
 							<th>제목</th>	
-							<td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="100" required>${ notice.title }</textarea></td>
+							<td colspan="3"><textarea class="input flexible" name="title" rows="1" cols="100" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ notice.title }</textarea></td>
 					    </tr>
 				    	
 				    	<tr>
 					    	<th>내용</th>	
-					    	<td colspan="3"><textarea class="input flexible" name="content" rows="16" cols="100" required>${ notice.content }</textarea></td>
+					    	<td colspan="3"><textarea class="input flexible" name="content" rows="16" cols="100" required oninvalid="setCustomMessage(this, '내용은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ notice.content }</textarea></td>
 					    </tr>
 					    
 					    <tr>
-							<th style="height: 36px;">파일 첨부</th>
+							<th style="height: 36px;">첨부 파일</th>
 						    <td colspan="3">
 						    	<div class="file-wrapper">
 							   	    <c:if test="${ not empty attach }">
@@ -196,13 +196,13 @@ footer {
 										    <button class="file-change" type="button">X</button><br>
 								    	</div>
 								    	<div class="file-reupload show">
-								    		<div><input type="file" name="file"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .jpeg, .png"></div>
 								    	</div>
 									</c:if>
 									<c:if test="${ empty attach }">
 										<input type="hidden" name="check" value="2" class="check">
 								    	<div class="file-reupload">
-								    		<div><input type="file" name="file"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .jpeg, .png"></div>
 								    	</div>
 									</c:if>
 							    </div>
@@ -269,7 +269,11 @@ footer {
 			});
 		});
 	</script>
-	
+	<script>
+		function setCustomMessage(input, message) {
+		  input.setCustomValidity(message);
+		}
+	</script>
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>

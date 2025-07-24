@@ -47,6 +47,7 @@
 	
 	.nav-item {
 		margin-bottom: 10px;
+		padding: 5px;
 		/* margin-left: 30px; */
 	}
 	
