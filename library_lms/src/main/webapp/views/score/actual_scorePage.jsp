@@ -107,6 +107,7 @@
 	  width: 16px;
 	  height: 16px;
 	  vertical-align: middle;
+	  accent-color: #205DAC;
 	}
 
 	.btn {

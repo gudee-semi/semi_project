@@ -90,6 +90,7 @@
 	  height: 16px;
 	  vertical-align: middle;
 	  margin-right: 4px;
+	  accent-color: #205DAC;
 	}
      
     .exam-type { 
