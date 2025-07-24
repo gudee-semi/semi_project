@@ -5,12 +5,12 @@ $(document).ready(function () {
   const msg = params.get("msg") ? decodeURIComponent(params.get("msg")) : "";
 
   if (deleteResult === "success") {
-    showSwal("삭제 완료", "success").then(() => {
+    showSwal("삭제완료", "success").then(() => {
       window.location.href = "/goal_score_view/view";
     });
     return;
   } else if (deleteResult === "fail") {
-    showSwal(msg || "삭제하지 못했습니다.");
+    showSwal(msg || "삭제실패");
   }
 
   // [2] 세션에서 값 가져오기
@@ -93,12 +93,12 @@ $(document).ready(function () {
         examTypeId: selectedExamTypeId
       },
       success: function () {
-        showSwal("삭제 완료", "success").then(() => {
+        showSwal("삭제완료", "success").then(() => {
           window.location.href = "/goal_score_view/view";
         });
       },
       error: function (xhr) {
-        const errMsg = xhr.responseText || "삭제하지 못했습니다.";
+        const errMsg = xhr.responseText || "삭제실패";
         showSwal(errMsg);
       }
     });

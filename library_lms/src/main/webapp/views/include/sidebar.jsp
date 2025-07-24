@@ -3,152 +3,153 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-.sidebar {
-	position: fixed;
-	top: 100px;
-	left: 0;
-	width: 300px;
-	height: calc(100vh - 0px);
-	background-color: #ffffff;
-	color: #000;
-	padding: 20px;
-	font-family: sans-serif;
-	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-	box-sizing: border-box;
-	z-index: 1000;
-	overflow-y: none;
-}
-
-.sidebar .profile {
-	text-align: center;
-	margin-bottom: 20px;
-	margin-top: 20px;
-}
-
-.sidebar .profile img {
-	width: 95px;
-	height: 100px;
-	border-radius: 50%;
-	object-fit: cover;
-	margin-bottom: 5px;
-}
-
-.sidebar h2 {
-	text-align: center;
-	margin-bottom: 15px;
-	font-size: 18px;
-}
-
-.divider {
-	height: 1px;
-	background-color: #ddd;
-	margin: 15px 0;
-}
-
-.nav-item {
-	margin-bottom: 10px;
-	/* margin-left: 30px; */
-}
-
-.nav-item > a {
-	color: #000;
-	text-decoration: none;
-	display: block;
-	padding: 10px;
-	border-radius: 6px;
-	transition: all 0.2s ease-in-out;
-}
-
-.nav-item > a:hover {
-	background-color: rgba(182, 208, 226, 0.5);
-	/* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); */
-	/* background-color: f0f0f0; */
-}
-
-.dropdown {
-	position: relative;
-}
-
-.dropdown-content {
-	margin-top: 5px;
-	padding-left: 10px;
-	max-height: 0;
-	opacity: 0;
-	overflow: hidden;
-	transition: max-height 0.4s ease, opacity 0.4s ease;
-}
-
-.dropdown:hover .dropdown-content {
-	max-height: 500px; /* 충분히 큰 값으로 설정 */
-	opacity: 1;
-}
-
-.dropdown-content a {
-	background-color: #fff;
-	color: #000;
-	padding: 8px;
-	display: block;
-	margin: 3px 0;
-	border-radius: 4px;
-	font-size: 13px;
-	transition: background-color 0.2s ease-in-out;
-	text-decoration: none;
-}
-
-.dropdown-content a:hover {
-	background-color: rgba(182, 208, 226, 0.5);
-}
-
-.disabled {
-	pointer-events: none;
-	opacity: 0.3;
-}
- 
-.check-buttons input[type="submit"] {
-	cursor: pointer;
-	transition: background-color 0.2s;
-}
-
-.check-buttons input[type="submit"]:hover:not(:disabled) {
-	background-color: #3E7AC8;
-}
- 
-.status-text {
-	font-size: 13px;
-}
- 
-.check-in-btn,
-.temp-btn,
-.temp-out-btn {
-	WIDTH: 80PX;
-	border-color: transparent;
-	border-radius: 6px;
-	height: 30px;
-	background-color: #205DAC;
-	color: white;
- }
- 
-.check-out-btn {
-	WIDTH: 80PX;
-	border-color: transparent;
-	border-radius: 6px;
-	height: 30px;
-	background-color: #dc2626;
-	color: white;
- }
- 
-.check-out-btn {
-   WIDTH: 80PX;
-   border-color: transparent;
-   border-radius: 6px;
-   height: 30px;
-   background-color: #dc2626;
-   color: white;
- }
- 
-.check-buttons input[type="submit"].check-out-btn:hover:not(:disabled) {
-	background-color: red;
-}
+	.sidebar {
+		position: fixed;
+		top: 100px;
+		left: 0;
+		width: 300px;
+		height: calc(100vh - 0px);
+		background-color: #ffffff;
+		color: #000;
+		padding: 20px;
+		font-family: sans-serif;
+		box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+		box-sizing: border-box;
+		z-index: 1000;
+		overflow-y: none;
+	}
+	
+	.sidebar .profile {
+		text-align: center;
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+	
+	.sidebar .profile img {
+		width: 95px;
+		height: 100px;
+		border-radius: 50%;
+		object-fit: cover;
+		margin-bottom: 5px;
+	}
+	
+	.sidebar h2 {
+		text-align: center;
+		margin-bottom: 15px;
+		font-size: 18px;
+	}
+	
+	.divider {
+		height: 1px;
+		background-color: #ddd;
+		margin: 15px 0;
+	}
+	
+	.nav-item {
+		margin-bottom: 10px;
+		padding: 5px;
+		/* margin-left: 30px; */
+	}
+	
+	.nav-item > a {
+		color: #000;
+		text-decoration: none;
+		display: block;
+		padding: 10px;
+		border-radius: 6px;
+		transition: all 0.2s ease-in-out;
+	}
+	
+	.nav-item > a:hover {
+		background-color: rgba(182, 208, 226, 0.5);
+		/* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); */
+		/* background-color: f0f0f0; */
+	}
+	
+	.dropdown {
+		position: relative;
+	}
+	
+	.dropdown-content {
+		margin-top: 5px;
+		padding-left: 10px;
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		transition: max-height 0.4s ease, opacity 0.4s ease;
+	}
+	
+	.dropdown:hover .dropdown-content {
+		max-height: 500px; /* 충분히 큰 값으로 설정 */
+		opacity: 1;
+	}
+	
+	.dropdown-content a {
+		background-color: #fff;
+		color: #000;
+		padding: 8px;
+		display: block;
+		margin: 3px 0;
+		border-radius: 4px;
+		font-size: 13px;
+		transition: background-color 0.2s ease-in-out;
+		text-decoration: none;
+	}
+	
+	.dropdown-content a:hover {
+		background-color: rgba(182, 208, 226, 0.5);
+	}
+	
+	.disabled {
+		pointer-events: none;
+		opacity: 0.3;
+	}
+	 
+	.check-buttons input[type="submit"] {
+		cursor: pointer;
+		transition: background-color 0.2s;
+	}
+	
+	.check-buttons input[type="submit"]:hover:not(:disabled) {
+		background-color: #3E7AC8;
+	}
+	 
+	.status-text {
+		font-size: 13px;
+	}
+	 
+	.check-in-btn,
+	.temp-btn,
+	.temp-out-btn {
+		WIDTH: 80PX;
+		border-color: transparent;
+		border-radius: 6px;
+		height: 30px;
+		background-color: #205DAC;
+		color: white;
+	 }
+	 
+	.check-out-btn {
+		WIDTH: 80PX;
+		border-color: transparent;
+		border-radius: 6px;
+		height: 30px;
+		background-color: #dc2626;
+		color: white;
+	 }
+	 
+	.check-out-btn {
+	   WIDTH: 80PX;
+	   border-color: transparent;
+	   border-radius: 6px;
+	   height: 30px;
+	   background-color: #dc2626;
+	   color: white;
+	 }
+	 
+	.check-buttons input[type="submit"].check-out-btn:hover:not(:disabled) {
+		background-color: red;
+	}
 </style>
 
 <div class="sidebar">
@@ -218,7 +219,7 @@
         <a href="<c:url value='/goal_score/view' />">목표 성적 입력</a>
         <a href="<c:url value='/goal_score_view/view' />">목표 성적 조회</a>
         <a href="<c:url value='/actual_scorePage/view' />">성적 입력</a>
-        <a href="<c:url value='/analysis_scorePage/view' />">성적 분석</a>
+        <a href="<c:url value='/analysis_scorePage/view' />">성적 조회 및 분석</a>
       </div>
     </div>
 
@@ -282,7 +283,7 @@
 	  e.preventDefault();
 
 	  Swal.fire({
-	    title: ' ',
+	    icon: 'question',
 	    text: '입실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "입실",
@@ -304,7 +305,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "입실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -323,7 +324,7 @@
 	  e.preventDefault();
 	  
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '재입실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "재입실",
@@ -345,7 +346,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "재입실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -364,7 +365,7 @@
 	  e.preventDefault();
 	  
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '퇴실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "퇴실",
@@ -385,7 +386,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "퇴실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -403,7 +404,7 @@
 	$('#check-out-temp').on('submit', (e) => {
 	  e.preventDefault();
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '외출하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "외출",
@@ -425,7 +426,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "외출 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',

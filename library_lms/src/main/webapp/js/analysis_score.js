@@ -5,12 +5,12 @@ $(document).ready(function () {
   const msg = params.get("msg") ? decodeURIComponent(params.get("msg")) : "";
 
   if (deleteResult === "success") {
-    showSwal("삭제 완료", "success").then(() => {
+    showSwal("삭제완료", "success").then(() => {
       window.location.href = "/analysis_scorePage/view";
     });
     return;
   } else if (deleteResult === "fail") {
-    showSwal(msg || "삭제하지 못했습니다");
+    showSwal(msg || "삭제실패");
   }
 
   // [2] 세션에서 값 추출
@@ -150,10 +150,10 @@ $(document).ready(function () {
 
             $('#delete-btn').prop('disabled', false);
           },
-          error: () => showSwal("차트 데이터 불러오기 실패")
+          error: () => showSwal("차트 데이터를 불러오는데 실패했습니다.")
         });
       },
-      error: () => showSwal("성적표 데이터 불러오기 실패")
+      error: () => showSwal("성적표 데이터를 불러오는데 실패했습니다.")
     });
   });
 
@@ -174,12 +174,12 @@ $(document).ready(function () {
         examTypeId: selectedExamTypeId
       },
       success: function () {
-        showSwal("삭제 완료", "success").then(() => {
+        showSwal("삭제완료", "success").then(() => {
           window.location.href = "/analysis_scorePage/view";
         });
       },
       error: function (xhr) {
-        const msg = xhr.responseText || "삭제하지 못했습니다.";
+        const msg = xhr.responseText || "삭제실패";
         showSwal(msg);
       }
     });

@@ -8,11 +8,10 @@
 <title>질의응답 목록 페이지</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
 <style>
 	.container {
 		width: 70%;
+		margin-top: 50px;
 	}
 	h1 {
 		margin-left: 20px;
@@ -201,7 +200,7 @@
 						</select>
 						
 						<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
-						<button type="submit" class="btn search">검색</button>
+						<button type="submit" class="btn search"><span class="material-symbols-outlined">search</span></button>
 						
 					</form>
 				</div>

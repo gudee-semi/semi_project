@@ -45,16 +45,19 @@ public class AdminAbortServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String[] memberNoArr = request.getParameterValues("list[]");
-		int result = 1;
-		for (String s : memberNoArr) {
-			int memberNo = Integer.parseInt(s);
-			if (result > 0) {
-				result = service.abortMember(memberNo);
-				if (result > 0) {
-					result = service.insertUseLog(memberNo, 0);
-				}
-			}
-		}
+		String[] memberNoPenArr = request.getParameterValues("listPen[]");
+		int result = service.abortMemberWithPenalty(memberNoArr, memberNoPenArr);
+		
+		
+//		for (String s : memberNoArr) {
+//			int memberNo = Integer.parseInt(s);
+//			if (result > 0) {
+//				result = service.abortMember(memberNo);
+//				if (result > 0) {
+//					result = service.insertUseLog(memberNo, 0);
+//				}
+//			}
+//		}
 		
 		JSONObject obj = new JSONObject();
 		

@@ -98,7 +98,8 @@
 		background-color: transparent;
 		border: none;
 		color: #888;
-		font-size: 15px;
+		font-size: 20px;
+		font-weight: 600;
 		cursor: pointer;
 		margin-left: 8px;
 		transition: color 0.2s ease;
@@ -122,6 +123,7 @@
 	
 	.container {
 		width: 70%;
+		margin-top: 50px;
 	}
 	
 	header {
@@ -159,8 +161,8 @@
 						<tr>
 							<th>카테고리</th>
 							<td>
-								<select name="qnaCategory" id="qnaCategory">
-								  <option value=0>선택</option>
+								<select name="qnaCategory" id="qnaCategory" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
+								  <option value=''>선택</option>
 								  <option value='시설'>시설</option>
 								  <option value='좌석'>좌석</option>
 								  <option value='환불'>환불</option>
@@ -184,22 +186,22 @@
 						
 						<tr>
 						    <th>제목</th>	
-						    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required>${ qna.title }</textarea></td>
+						    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ qna.title }</textarea></td>
 					    </tr>
 				    	
 						<tr>
 					    	<th name="qnaContent" id="qnaContent">내용</th>
-					    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required>${ qna.content }</textarea></td>
+					    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required oninvalid="setCustomMessage(this, '내용은 필수항목입니다.')" oninput="setCustomMessage(this, '')">${ qna.content }</textarea></td>
 					    </tr>
 				    
 						<tr>
-							<th style="height: 36px;">파일 첨부</th>
+							<th style="height: 36px;">첨부 파일</th>
 						    <td colspan="3">
 						    	<div class="file-wrapper">
 								    <c:if test="${ not empty attach }">
 								    	<div class="file-now" >
 										    <a href="<c:url value='/fileDownload?id=${ qna.qnaId }' />">${ attach.oriName }</a>
-										    <button class="file-change" type="button">X</button><br>
+										    <button class="file-change" type="button">x</button><br>
 								    	</div>
 								    	<div class="file-reupload show">
 								    		<div><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></div>
@@ -242,18 +244,7 @@
 			e.preventDefault();
 			const category = $("#qnaCategory").val();
 			const formData = new FormData(document.getElementById('updateQnaFrm'));
-			
-			if (category == 0) {
-				Swal.fire({
-					icon: 'warning',
-					title: '카테고리 미선택',
-					text: '카테고리를 선택하세요.',
-					confirmButtonText: '확인',
-					confirmButtonColor: '#205DAC'
-				});
-				return;
-			}
-			
+						
 			$.ajax({
 				url: '/qna/update',
 				type: 'post',
@@ -266,8 +257,7 @@
 				success: (data) => {	
 					 Swal.fire({
 					    icon: data.res_code == 200 ? 'success' : 'error',
-					    title: data.res_code == 200 ? '수정 완료' : '오류 발생',
-					    text: data.res_msg,
+					    text: data.res_code == 200 ? data.res_msg : data.res_msg,
 					    confirmButtonText: '확인',
 				    	confirmButtonColor: '#205DAC'
 					  }).then(() => {
@@ -276,6 +266,12 @@
 				}
 			});
 		});
+	</script>
+	
+	<script>
+		function setCustomMessage(input, message) {
+		  input.setCustomValidity(message);
+		}
 	</script>
 		
 	<%@ include file="/views/include/footer.jsp" %>
