@@ -569,7 +569,6 @@
 				                            success: (data) => {
 				                                if (data.res_code == '200') {
 				        		                	Swal.fire({
-														title: " ",
 														text: "할 일 목록이 수정되었습니다.",
 														icon: "success",
 														confirmButtonText: '확인',
@@ -610,7 +609,6 @@
 				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
 				                                } else {
 				                                	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 수정이 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
@@ -645,7 +643,7 @@
 				                const deleteDate = event.startStr.split('T')[0];
 
 				                Swal.fire({
-				                  title: " ",
+				                  icon: "warning",
 				                  text: '[' + deleteDate + '] ' + deleteTitle + ' 을(를) 삭제하시겠습니까?',
 			                	  showCancelButton: true,
 			                	  confirmButtonText: "삭제",
@@ -663,7 +661,6 @@
 						                    success: (data) => {
 						                        if (data.res_code == '200') {
 						                        	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 삭제가 성공했습니다.",
 								                		  icon: "success",
 								                		  confirmButtonText: '확인',
@@ -674,7 +671,6 @@
 							                		});
 						                        } else {
 								                	Swal.fire({
-								                		  title: " ",
 								                		  text: "할 일 목록 삭제가 실패했습니다.",
 								                		  icon: "error",
 								                		  confirmButtonText: '확인',
@@ -879,7 +875,6 @@
 				            success: (data) => {
 				                if (data.res_code == '200') {	                	
 				                	Swal.fire({
-				                		  title: " ",
 				                		  text: "할 일 목록이 등록되었습니다.",
 				                		  icon: "success",
 				                		  confirmButtonText: '확인',
@@ -923,7 +918,6 @@
 				                    });
 				                } else {
 				                	Swal.fire({
-				                		  title: " ",
 				                		  text: "할 일 목록이 등록이 실패했습니다.",
 				                		  icon: "error",
 				                		  confirmButtonText: '확인',
