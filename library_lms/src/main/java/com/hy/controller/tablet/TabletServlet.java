@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpSession;
 public class TabletServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
 	private TabletService tabletService = new TabletService();
 
 	public TabletServlet() {
@@ -30,22 +29,10 @@ public class TabletServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+	    // 로그인된 회원 정보 꺼내기
+	    Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 
-		// (1) 존재하는 세션만 가져옴. 없으면 null
-		HttpSession session = request.getSession(false);
-		if (session == null) { // 세션 자체가 없으면
-			response.sendRedirect(request.getContextPath() + "/login/view");
-			return;
-		}
-
-		// (2) 세션에 저장된 로그인 객체 확인
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		if (loginMember == null) { // 로그인 정보가 없으면
-			response.sendRedirect(request.getContextPath() + "/login/view");
-			return;
-		}
-
-		// (3) 로그인 회원번호 꺼내기
+		// 로그인 회원번호 꺼내기
 		int memberNo = loginMember.getMemberNo();
 
 		// 태블릿 목록 조회
@@ -74,7 +61,7 @@ public class TabletServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-	    
+
 	}
 
 }
