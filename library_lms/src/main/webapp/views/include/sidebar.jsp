@@ -248,7 +248,8 @@
   
   <c:if test="${ empty useStatus }">
     <div class="nav-item dropdown">
-      <a href="#">회원목록</a>
+      <a href="#">회원목록<span class="material-symbols-outlined"
+          style="vertical-align: middle;">arrow_drop_down</span></a>
       <div class="dropdown-content">
         <a href="<c:url value='/user/signup' />">회원 등록</a>
         <a href="<c:url value='/user/delete' />">회원 목록</a>
