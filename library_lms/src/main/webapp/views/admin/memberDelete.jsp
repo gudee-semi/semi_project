@@ -74,9 +74,8 @@ td.title {
 	background-color: #3E7AC8;
 }
 .btn_delete {
+	
 	margin-top:20px;
-	position:relative;
-	left:980px;
 	background-color:#dc2626;
 	transition: 0.2s;
 }
@@ -141,7 +140,11 @@ header {
 footer {
 	margin-top: 100px !important;
 }
-
+.button-right {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+}
 </style>
 <body>
 	<%@ include file="/views/include/header.jsp"%>
@@ -164,7 +167,7 @@ footer {
 							<th style="width: 20%">학교</th>
 							<th style="width: 20%">이름</th>
 							<th style="width: 5%">패널티</th>
-							<th style="width: 10%">좌석 지정 여부</th>
+							<th style="width: 10%">좌석 종류</th>
 							<th style="width: 5%"></th>
 						</tr>
 					</thead>
@@ -177,14 +180,16 @@ footer {
 								<td>${q.memberSchool }</td>
 								<td>${q.memberName }</td>
 								<td>${q.memberPenalty }</td>
-								<td>${q.memberSeat==1 ? x: "공용좌석"}</td>
+								<td>${q.memberSeat==1 ? '지정좌석': "공용좌석"}</td>
 								<td><input type="checkbox" name="deleteMemberNo" value="${q.memberNo}"></td>
 							</tr>
 						</c:forEach>
 			
 					</tbody>
 				</table>
-				<button type="submit" class="btn btn_delete">삭제하기</button>
+				<div class="button-right">
+					<button type="submit" class="btn btn_delete">삭제하기</button>
+				</div>
 			</form>
 			<script>
 			$(document).ready(function() {

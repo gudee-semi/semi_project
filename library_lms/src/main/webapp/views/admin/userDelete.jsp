@@ -75,8 +75,6 @@ td.title {
 }
 .btn_delete {
 	margin-top:20px;
-	position:relative;
-	left:980px;
 	background-color:#dc2626;
 	transition: 0.2s;
 }
@@ -143,7 +141,11 @@ footer {
 	margin-top: 100px !important;
 }
 
-
+.button-right {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+}
 </style>
 <body>
 	<%@ include file="/views/include/header.jsp"%>
@@ -184,7 +186,9 @@ footer {
 				
 						</tbody>
 					</table>
-					<button type="submit" class="btn btn_delete" >삭제하기</button>
+					<div class="button-right">
+					<button type="submit" class="btn btn_delete">삭제하기</button>
+				</div>
 				</form>
 				<script>
 				$("#delete_user").on("submit", function(e) {
