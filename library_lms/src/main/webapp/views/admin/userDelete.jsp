@@ -74,10 +74,10 @@ td.title {
 	background-color: #3E7AC8;
 }
 .btn_delete {
-	position:absolute;
+	margin-top:20px;
+	position:relative;
+	left:980px;
 	background-color:#dc2626;
-	bottom :-10px; 
-	right:20px;
 	transition: 0.2s;
 }
 .btn_delete:hover{
@@ -187,16 +187,70 @@ footer {
 					<button type="submit" class="btn btn_delete" >삭제하기</button>
 				</form>
 				<script>
-					$("#delete_user").on("submit",function(e){
-						e.preventDefault();
-						  if ($("input[name='deleteUserNo']:checked").length === 0) {
-						      alert("삭제할 항목을 하나 이상 선택하세요.");
-						      return;
-						    }
-						if(confirm("정말 삭제하시겠습니까?")){
-							 this.submit();
-						}
-					})
+				$("#delete_user").on("submit", function(e) {
+					  e.preventDefault();
+
+					  const selectedUsers = $("input[name='deleteUserNo']:checked").map(function() {
+					    return $(this).val();
+					  }).get();
+
+					  if (selectedUsers.length === 0) {
+					    Swal.fire({
+					      text: "삭제할 항목을 하나 이상 선택하세요.",
+					      icon: "warning",
+					      confirmButtonColor: '#205DAC'
+					    });
+					    return;
+					  }
+
+					  Swal.fire({
+					    title: "계정 삭제",
+					    text: "정말로 계정을 삭제하시겠습니까?",
+					    icon: "warning",
+					    showCancelButton: true,
+					    confirmButtonColor: "#205DAC",
+					    cancelButtonColor: "#d33",
+					    confirmButtonText: "삭제",
+					    cancelButtonText: "취소"
+					  }).then((result) => {
+					    if (result.isConfirmed) {
+					      $.ajax({
+					        url: $(this).attr("action"),
+					        type: "POST",
+					        traditional: true,
+					        data: { deleteUserNo: selectedUsers },
+					        dataType: "json",
+					        success: function(response) {
+					          if (response.deleteResult > 0) {
+					            Swal.fire({
+					              title: "삭제 성공",
+					              text: "회원 정보가 삭제되었습니다.",
+					              icon: "success",
+					              confirmButtonColor: '#205DAC'
+					            }).then(() => {
+					              location.href = "<%=request.getContextPath()%>/user/delete";
+					            });
+					          } else {
+					            Swal.fire({
+					              title: "삭제 실패",
+					              text: "서버 오류입니다.",
+					              icon: "warning",
+					              confirmButtonColor: '#205DAC'
+					            });
+					          }
+					        },
+					        error: function() {
+					          Swal.fire({
+					            title: "요청 실패",
+					            text: "서버와 통신할 수 없습니다.",
+					            icon: "error",
+					            confirmButtonColor: '#205DAC'
+					          });
+					        }
+					      });
+					    }
+					  });
+					});
 				</script>
 			
 				<c:if test="${not empty userList }">
@@ -249,12 +303,6 @@ footer {
 			</c:if>
 	</div>
 </div>
-<c:if test="${deleteResult > 0}">
-	<script>
-		alert("성공");
-		location.href = "${pageContext.request.contextPath}/user/delete";
-	</script>	
-</c:if>
 
 
 	<%@ include file="/views/include/footer.jsp"%>

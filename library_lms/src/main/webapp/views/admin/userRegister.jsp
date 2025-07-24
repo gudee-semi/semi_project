@@ -105,7 +105,7 @@ select {
 	let nameStatus = false;
 	let rrnStatus = false;
 	const nameReg = /^[가-힣]{2,20}$/;
-	const rrnReg = /^[0-9]{13}$/;
+	const rrnReg = /^\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[1-4]\d{6}$/;
 	let memberName="";
 	let memberRrn="";
 	
@@ -132,7 +132,7 @@ select {
 		if(memberRrn === ""){
 			$("#member_rrn_msg").text("주민등록번호를 입력해주세요.").css('color','red');
 		}else if (!rrnReg.test(memberRrn)){
-			$("#member_rrn_msg").text("13자리의 주민번호를 입력해주세요").css('color','red');
+			$("#member_rrn_msg").text("주민등록번호 형식이 잘못되었습니다.(13자리의 숫자)").css('color','red');
 		}
 		else{
 			$.ajax({

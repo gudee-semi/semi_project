@@ -157,7 +157,7 @@
       <img src="/images/admin.jpg" alt="프로필 이미지">
     </c:if>
     <c:if test="${ not empty useStatus }">
-      <img src="/images/test.jpg" alt="프로필 이미지">
+      <img id ="profileImg"width="200px" height="200px" alt="프로필 이미지" hidden>
     </c:if>
     <h2>${loginMember.memberName}</h2>
     <c:if test="${ useStatus.status eq 0 }">
@@ -278,6 +278,19 @@
 <c:set var="memberNo" value="${ loginMember.memberNo }"/>
 		
 <script>
+	$(document).ready(function(){
+		const memberNo = ${sessionScope.loginMember.memberNo};
+		 $.ajax({
+				url : "/file/DealWith?memberNo="+memberNo,
+				type : "get",
+				dataType : "json",
+				success : function(data){
+						$("#profileImg").attr("src",'/profile/filePath?filePath='+data.path).show();
+						
+				}
+		 });
+	});
+	
 	$('#check-in').on('submit', (e) => {
 	  e.preventDefault();
 

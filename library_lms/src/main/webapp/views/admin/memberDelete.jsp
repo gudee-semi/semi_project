@@ -74,10 +74,10 @@ td.title {
 	background-color: #3E7AC8;
 }
 .btn_delete {
-	position:absolute;
+	margin-top:20px;
+	position:relative;
+	left:980px;
 	background-color:#dc2626;
-	bottom :-10px; 
-	right:20px;
 	transition: 0.2s;
 }
 .btn_delete:hover{
@@ -164,7 +164,7 @@ footer {
 							<th style="width: 20%">학교</th>
 							<th style="width: 20%">이름</th>
 							<th style="width: 5%">패널티</th>
-							<th style="width: 5%">좌석 지정 여부</th>
+							<th style="width: 10%">좌석 지정 여부</th>
 							<th style="width: 5%"></th>
 						</tr>
 					</thead>
@@ -187,16 +187,72 @@ footer {
 				<button type="submit" class="btn btn_delete">삭제하기</button>
 			</form>
 			<script>
-				$("#delete_member").on("submit",function(e){
-					e.preventDefault();
-					  if ($("input[name='deleteMemberNo']:checked").length === 0) {
-					      alert("삭제할 항목을 하나 이상 선택하세요.");
-					      return;
-					    }
-					if(confirm("정말 삭제하시겠습니까?")){
-						 this.submit();
-					}
-				})
+			$(document).ready(function() {
+				  $("#delete_member").on("submit", function(e) {
+				    e.preventDefault();
+
+				    const selectedMembers = $("input[name='deleteMemberNo']:checked").map(function() {
+				      return $(this).val();
+				    }).get();
+
+				    if (selectedMembers.length === 0) {
+				      Swal.fire({
+				        text: "삭제할 항목을 하나 이상 선택하세요.",
+				        icon: "warning",
+				        confirmButtonColor: '#205DAC'
+				      });
+				      return;
+				    }
+
+				    Swal.fire({
+				      title: "계정 삭제",
+				      text: "정말로 계정을 삭제하시겠습니까?",
+				      icon: "warning",
+				      showCancelButton: true,
+				      confirmButtonColor: "#205DAC",
+				      cancelButtonColor: "#d33",
+				      confirmButtonText: "삭제",
+				      cancelButtonText: "취소"
+				    }).then((result) => {
+				      if (result.isConfirmed) {
+				        $.ajax({
+				          url: $(this).attr("action"),
+				          type: "POST",
+				          traditional: true,
+				          data: { deleteMemberNo: selectedMembers },
+				          dataType: "json",
+				          success: function(response) {
+				            if (response.deleteResult > 0) {
+				              Swal.fire({
+				                title: "삭제 성공",
+				                text: "회원 계정이 삭제되었습니다.",
+				                icon: "success",
+				                confirmButtonColor: '#205DAC'
+				              }).then(() => {
+				                location.href = "<%=request.getContextPath()%>/admin/member/delete";
+				              });
+				            } else {
+				              Swal.fire({
+				                title: "삭제 실패",
+				                text: "서버 오류입니다.",
+				                icon: "warning",
+				                confirmButtonColor: '#205DAC'
+				              });
+				            }
+				          },
+				          error: function() {
+				            Swal.fire({
+				              title: "요청 실패",
+				              text: "서버와 통신할 수 없습니다.",
+				              icon: "error",
+				              confirmButtonColor: '#205DAC'
+				            });
+				          }
+				        });
+				      }
+				    });
+				  });
+				});
 			</script>
 
 			<c:if test="${not empty memberList }">
@@ -250,8 +306,14 @@ footer {
 	</div>
 	<c:if test="${deleteResult > 0}">
 		<script>
-			alert("성공");
-			location.href = "${pageContext.request.contextPath}/admin/member/delete";
+			Swal.fire({
+				  title: "삭제성공",
+				  text: "회원 계정이 삭제 되었습니다.",
+				  icon: "success",
+				  confirmButtonColor: '#205DAC'
+				}).then(() => {
+					location.href ="<%=request.getContextPath()%>/admin/member/delete";
+				});
 		</script>	
 	</c:if>
 	<%@ include file="/views/include/footer.jsp"%>
