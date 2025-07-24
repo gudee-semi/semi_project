@@ -22,4 +22,6 @@ public interface UseMapper {
 	
 	int abortMember(int memberNo);
 	
+	int insertMemberPen(int memberNoPen);
+	
 }

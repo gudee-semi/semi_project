@@ -14,13 +14,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/tablet/return")
 public class TabletReturnServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	TabletService tabletService = new TabletService();
 
-    public TabletReturnServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public TabletReturnServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -28,24 +28,24 @@ public class TabletReturnServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-        if (loginMember == null) {
-            response.sendRedirect(request.getContextPath() + "/login/view");
-            return;
-        }
-        
-        int memberNo = loginMember.getMemberNo();
-        int tabletId = Integer.parseInt(request.getParameter("tabletId"));
 
-        // 태블릿 반납 처리
-        tabletService.returnTablet(tabletId, memberNo);
+		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+		if (loginMember == null) {
+			response.sendRedirect(request.getContextPath() + "/login/view");
+			return;
+		}
 
-        // 로그 남기기 (0: 반납/사용 가능)
-        tabletService.insertTabletLog(tabletId, memberNo, 0);
+		int memberNo = loginMember.getMemberNo();
+		int tabletId = Integer.parseInt(request.getParameter("tabletId"));
 
-        response.sendRedirect(request.getContextPath() + "/tablet/view");
-            
+		// 태블릿 반납 처리
+		tabletService.returnTablet(tabletId, memberNo);
+
+		// 로그 남기기 (0: 반납/사용 가능)
+		tabletService.insertTabletLog(tabletId, memberNo, 0);
+
+		response.sendRedirect(request.getContextPath() + "/tablet/view");
+
 	}
 
 }
