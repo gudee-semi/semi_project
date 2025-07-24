@@ -10,10 +10,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <!-- SweetAlert2 CDN 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 	.container {
 		width : 70%;
-		margin : 0 auto;	
+		margin-top: 50px;
 	}
 	h1 {
 		margin-left: 20px;
@@ -100,6 +101,7 @@
 	.flex-container {
 		display: flex;
 		align-items: flex-start;
+		column-gap: 150px;
 	}
 	
 	.container {
@@ -112,6 +114,7 @@
 	
 	h1 {
 		margin-top: 50px;
+		margin-bottom: 50px;
 	}
 	
 	footer {
@@ -125,15 +128,15 @@
 	<div class="flex-container">
 		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
-			<h1>질의응답</h1>
+			<h1>질의응답 작성</h1>
 			
 			<form id="writeQnaFrm">
 				<table class="detail-table">
 					<tr>
 						<th style="width: 15%">카테고리</th>
 						<td style="width: 35%">
-							<select class="category" name="qnaCategory" id="qnaCategory">
-							  <option value=0>선택</option>
+							<select class="category" name="qnaCategory" id="qnaCategory" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
+							  <option value=''>선택</option>
 							  <option value='시설'>시설</option>
 							  <option value='좌석'>좌석</option>
 							  <option value='환불'>환불</option>
@@ -152,16 +155,16 @@
 					
 					<tr>
 					    <th>제목</th>	
-					    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required></textarea></td>
+					    <td colspan="3"><textarea class="input flexible" name="qnaTitle" rows="1" cols="100" required oninvalid="setCustomMessage(this, '제목은 필수항목입니다.')" oninput="setCustomMessage(this, '')"></textarea></td>
 				    </tr>
 				    
 				    <tr>
 				    	<th>내용</th>
-				    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required></textarea></td>
+				    	<td colspan="3"><textarea class="input flexible" name="qnaContent" rows="16" cols="100" required oninvalid="setCustomMessage(this, '내용은 필수항목입니다.')" oninput="setCustomMessage(this, '')"></textarea></td>
 				    </tr>
 				    
 				    <tr>
-					    <th>파일첨부</th>
+					    <th>첨부 파일</th>
 					    <td colspan="3"><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></td>
 				    </tr>
 				    
@@ -188,17 +191,7 @@
 			const category = $("#qnaCategory").val();
 			const form = document.getElementById("writeQnaFrm");
 			const formData = new FormData(form);
-			// 유효성 검사
-			if (category == 0) {
-				Swal.fire({
-					icon: 'warning',
-					title: '카테고리 미선택',
-					text: '카테고리를 선택하세요.',
-					confirmButtonText: '확인',
-					confirmButtonColor: '#205DAC'
-				});
-				return;
-			}
+			
 			$.ajax({
 				url : "/qna/write",
 				type : "post",
@@ -211,8 +204,7 @@
 				success : function(data){
 					Swal.fire({
 						icon: data.res_code == 200 ? 'success' : 'error',
-						title: data.res_code == 200 ? '등록 완료' : '등록 실패',
-						text: data.res_msg,
+						text: data.res_code == 200 ? data.res_msg : '등록 실패',
 						confirmButtonText: '확인',
 						confirmButtonColor: '#205DAC'
 					}).then(() => {
@@ -233,6 +225,13 @@
 			});
 		});
 	</script>
+	
+	<script>
+		function setCustomMessage(input, message) {
+		  input.setCustomValidity(message);
+		}
+	</script>
+	
 	<%@ include file="/views/include/footer.jsp" %>
 </body>
 </html>
