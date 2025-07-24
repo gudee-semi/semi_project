@@ -282,7 +282,7 @@
 	  e.preventDefault();
 
 	  Swal.fire({
-	    title: ' ',
+	    icon: 'question',
 	    text: '입실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "입실",
@@ -304,7 +304,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "입실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -323,7 +323,7 @@
 	  e.preventDefault();
 	  
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '재입실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "재입실",
@@ -345,7 +345,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "재입실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -364,7 +364,7 @@
 	  e.preventDefault();
 	  
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '퇴실하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "퇴실",
@@ -385,7 +385,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "퇴실 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
@@ -403,7 +403,7 @@
 	$('#check-out-temp').on('submit', (e) => {
 	  e.preventDefault();
 	  Swal.fire({
-	    title: ' ',
+		icon: 'question',
 	    text: '외출하시겠습니까?',
 	    showCancelButton: true,
 	    confirmButtonText: "외출",
@@ -425,7 +425,7 @@
 	        success: (data) => {
 	          if (data.res_code == 200) {
 	            Swal.fire({
-	              title: " ",
+	              icon: 'success',
 	              text: "외출 처리되었습니다.",
 	              icon: "success",
 	              confirmButtonText: '확인',
