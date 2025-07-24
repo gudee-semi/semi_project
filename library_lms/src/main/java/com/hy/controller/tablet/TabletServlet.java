@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpSession;
 public class TabletServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
 	private TabletService tabletService = new TabletService();
 
 	public TabletServlet() {
@@ -29,7 +28,6 @@ public class TabletServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 
 		// (1) 존재하는 세션만 가져옴. 없으면 null
 		HttpSession session = request.getSession(false);
@@ -74,7 +72,7 @@ public class TabletServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-	    
+
 	}
 
 }
