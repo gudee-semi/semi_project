@@ -163,7 +163,7 @@ footer {
 				    	
 				    	<tr>
 							<th>카테고리</th>
-							<td>
+							<td colspan="3">
 								<select name="category" id="category" required oninvalid="setCustomMessage(this, '카테고리를 선택해주세요.')" oninput="setCustomMessage(this, '')">
 							  		<option value=''>선택</option>
 								  	<option value='일반공지'>일반공지</option>
@@ -187,7 +187,7 @@ footer {
 					    </tr>
 					    
 					    <tr>
-							<th style="height: 36px;">파일 첨부</th>
+							<th style="height: 36px;">첨부 파일</th>
 						    <td colspan="3">
 						    	<div class="file-wrapper">
 							   	    <c:if test="${ not empty attach }">

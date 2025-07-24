@@ -204,8 +204,7 @@ footer {
 						</select>
 						
 						<input type="text" name="keyword" placeholder=" 검색어를 입력해주세요." value="${paging.keyword }">
-						<button type="submit" class="btn search">검색</button>
-						<!-- <input type="submit" value="검색"> -->
+						<button type="submit" class="btn search"><span class="material-symbols-outlined">search</span></button>
 					</form>
 				</div>
 			</div>

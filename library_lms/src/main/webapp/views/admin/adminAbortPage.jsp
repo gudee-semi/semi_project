@@ -107,17 +107,21 @@ input[type="checkbox"] {
 					<table style="border-collapse: collapse; width: 100%">
 						<thead>
 							<tr>
-								<th style="width: 10%">사용자 번호</th>
-								<th style="width: 35%">사용자</th>
-								<th style="width: 35%">상태</th>
+								<th style="width: 10%">No</th>
+								<th style="width: 10%">학년</th>
+								<th style="width: 30%">학교</th>
+								<th style="width: 20%">이름</th>
+								<th style="width: 10%">상태</th>
 								<th style="width: 10%">퇴실 조치</th>
 								<th style="width: 10%">페널티 부여</th>
 							</tr>
 						</thead>			
 					    <tbody>
-						    <c:forEach var="member" items="${ list }">
+						    <c:forEach var="member" items="${ list }" varStatus="status">
 						    	<tr>
-						    		<td>${ member.memberNo }</td>
+						    		<td>${ status.index + 1 }</td>
+						    		<td>${ member.memberGrade }</td>
+						    		<td>${ member.memberSchool }</td>
 						    		<td>${ member.memberName }</td>
 						    		<td>${ member.statusDisplay }</td>
 						    		<td><input type="checkbox" name="memberId" value="${ member.memberNo }"></td>

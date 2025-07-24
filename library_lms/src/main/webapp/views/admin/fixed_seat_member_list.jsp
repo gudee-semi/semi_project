@@ -75,6 +75,9 @@
 			width: 70%;
 		}
 		
+		.nav-item {
+			padding: 5px;
+		}
     </style>
 </head>
 

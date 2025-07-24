@@ -14,5 +14,7 @@ public class Use {
 	
 	// custom
 	private String memberName;
+	private String memberGrade;
+	private String memberSchool;
 	private String statusDisplay;
 }

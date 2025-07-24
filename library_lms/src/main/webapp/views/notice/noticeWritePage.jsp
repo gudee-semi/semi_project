@@ -167,7 +167,7 @@ footer {
 			    	</tr>
 			    	
 			    	<tr>
-						<th>파일첨부</th>
+						<th>첨부 파일</th>
 						<td colspan="3"><input type="file" name="file" accept=".jpg, .jpeg, .png"></td>
 				    </tr>
 				</table>
