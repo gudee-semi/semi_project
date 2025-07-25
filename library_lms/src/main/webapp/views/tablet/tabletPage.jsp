@@ -19,6 +19,7 @@ body>div>div.container>div:nth-child(1)>img {
 
 .container {
 	margin: 0 auto;
+	translate: -150px 0;
 }
 
 .submit-btn {
@@ -34,7 +35,7 @@ body>div>div.container>div:nth-child(1)>img {
 	cursor: pointer;
 	transition: 0.2s;
 	cursor: pointer;
-	transform: translate(0, 120px);
+	translate: 0 120px;
 }
 
 .submit-btn:hover {
@@ -53,7 +54,7 @@ body>div>div.container>div:nth-child(1)>img {
 
 .useform {
 	background-color: #D8E5F4;
-	padding: 0px 40px;
+	padding: 5px 40px;
 	border-radius: 5px;
 	display: block;
 	font-weight: bold;
@@ -63,7 +64,7 @@ body>div>div.container>div:nth-child(1)>img {
 
 .returnform {
 	background-color: #D8E5F4;
-	padding: 0px 40px;
+	padding: 5px 40px;
 	border-radius: 5px;
 	display: block;
 	font-weight: bold;
@@ -80,10 +81,6 @@ body>div>div.container>div:nth-child(1)>img {
 	display: flex;
 	align-items: flex-start;
 }
-
-.container {
-	width: 70%;
-}
 </style>
 
 	<%@ include file="/views/include/header.jsp"%>
@@ -96,7 +93,7 @@ body>div>div.container>div:nth-child(1)>img {
 				<img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/6302.png" alt="태블릿" />
 			</div>
 
-			<div style="text-align: center; transform: translate(0, -370px);">
+			<div style="text-align: center; transform: translate(0, -340px);">
 				<!-- 사용가능 대수 계산 -->
 				<c:set var="usable" value="0" />
 
