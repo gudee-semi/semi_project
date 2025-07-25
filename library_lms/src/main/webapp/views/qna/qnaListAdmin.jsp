@@ -56,7 +56,7 @@ button {
 
 .search {
 	text-align: center;
-	padding: 10px;
+	padding: 30px;
 }
 
 .paging-pages {
@@ -70,8 +70,6 @@ button {
 	text-align: center;
 	margin-left: 5px;
 	margin-right: 5px;
-	margin-top: 50px;
-	margin-bottom: 50px;
 	text-decoration: none;
 	color: black;
 }
@@ -98,6 +96,26 @@ body>form {
 .search-icon {
 	transform: translate(5px, -3px);
 }
+
+.paging-pages {
+	padding: 30px;
+}
+
+.sidebars {
+	width: 300px;
+	height: 770px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+	column-gap: 200px;
+}
+
+.container {
+	width: 80%;
+}
+
 </style>
 
 	<jsp:include page="/views/include/header.jsp" />
@@ -169,7 +187,7 @@ body>form {
 			<!-- 페이징 영역 -->
 			<div class="paging-pages">
 				<c:if test="${ not empty qnaAdminList }">
-					<div class="paging-pages">
+					<div>
 						<c:choose>
 							<c:when test="${ paging.prev }">
 								<a href="<c:url value='/qna/list/admin?page=${ paging.pageBarStart - 1 }&category=${ category }&searchType=${ searchType }&keyword=${ keyword }' />">
