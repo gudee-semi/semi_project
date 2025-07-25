@@ -196,13 +196,13 @@ footer {
 										    <button class="file-change" type="button">X</button><br>
 								    	</div>
 								    	<div class="file-reupload show">
-								    		<div><input type="file" name="file" accept=".jpg, .jpeg, .png"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .png"></div>
 								    	</div>
 									</c:if>
 									<c:if test="${ empty attach }">
 										<input type="hidden" name="check" value="2" class="check">
 								    	<div class="file-reupload">
-								    		<div><input type="file" name="file" accept=".jpg, .jpeg, .png"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .png"></div>
 								    	</div>
 									</c:if>
 							    </div>
