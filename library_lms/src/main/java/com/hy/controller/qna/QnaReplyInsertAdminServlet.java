@@ -38,7 +38,7 @@ public class QnaReplyInsertAdminServlet extends HttpServlet {
 
 	    // 2. 파라미터가 없거나 빈 값이면 메인 페이지로 이동
 	    if (qnaId == null || qnaId.isEmpty() || content == null || content.isEmpty()) {
-	        response.sendRedirect("/");
+	        response.sendRedirect("/qna/detail/admin");
 	        return;
 	    }
 
