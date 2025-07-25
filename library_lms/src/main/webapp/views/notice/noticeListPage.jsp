@@ -13,7 +13,7 @@
 	width: 70%;
 }
 h1 {
-	margin-left: 20px;
+	margin :0 auto;
    }
 .search-row {
 	padding-left: 15px;

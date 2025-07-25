@@ -57,6 +57,7 @@ public class UpdateMember extends HttpServlet {
 	    String memberAddress = request.getParameter("member_address");
 	    String memberSchul = request.getParameter("member_schul");
 	    String memberGrade = request.getParameter("member_grade");
+	    String memberPhone = request.getParameter("member_phone");
 	    
 	    JSONObject obj = new JSONObject();
 	   
@@ -74,6 +75,9 @@ public class UpdateMember extends HttpServlet {
 		}
 		if(memberGrade != null && !memberGrade.equals("")) {
 			member.setMemberGrade(Integer.parseInt(memberGrade));
+		}
+		if(memberPhone !=null && !memberPhone.equals("")) {
+			member.setMemberPhone(memberPhone);
 		}
 	    File uploadDir = ProfileAttachService.getUploadDirectory();
 	    ProfileAttach attach = ProfileAttachService.handleUploadFile(request, uploadDir);

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import com.hy.dto.Member;
 import com.hy.dto.login.ProfileAttach;
 import com.hy.dto.login.User;
@@ -75,6 +77,7 @@ public class AdminMemberDelete extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String[] deleteMemberNo = request.getParameterValues("deleteMemberNo");
 		int result=0;
+		JSONObject obj = new JSONObject();
 		if (deleteMemberNo != null) {
 		    for (String memberNoStr : deleteMemberNo) {
 		        int memberNo = Integer.parseInt(memberNoStr);
@@ -90,10 +93,9 @@ public class AdminMemberDelete extends HttpServlet {
 		  
 		    }
 		}
-		if(result>0) {
-			request.setAttribute("deleteResult", result);
-		}
-		request.getRequestDispatcher("/views/admin/memberDelete.jsp").forward(request, response);
+		obj.put("deleteResult", result);
+		response.setContentType("application/json;charset=utf-8");
+		response.getWriter().print(obj);
 	}
 
 }

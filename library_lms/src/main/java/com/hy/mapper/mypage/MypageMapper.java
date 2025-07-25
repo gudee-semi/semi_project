@@ -21,5 +21,5 @@ public interface MypageMapper {
 	 List<Qna> selectMyQnaList(Qna qna);
 	 List<QnaReply> selectMyQnaReplyList(int memberNo);
 	 int updateReplyCheck(int qnaId);
-	 
+	 int updateMemberPhone(Member param);
 }
