@@ -174,7 +174,8 @@
 				</tr>
 				<tr>
 					<th class="content">내용</th>
-					<td class="content-cell" colspan="3">${qna.content }</td>
+					<% pageContext.setAttribute("newLine", "\n"); %>
+					<td class="content-cell" colspan="3">${fn:replace(qna.content, newLine,"<br>")}</td>
 				</tr>
 
 				<c:if test="${not empty attach }">
