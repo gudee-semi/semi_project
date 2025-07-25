@@ -45,7 +45,6 @@ public class ActualScoreDeleteServlet extends HttpServlet {
             return;
         }
 
-        System.out.println(result);
         
         
         if (result > 0) {
