@@ -294,7 +294,7 @@
 <!--비밀번호 -->
 <%@ include file="/views/include/header.jsp" %>
 <div class="container_box">
-	<div class="sidesbar"><%@ include file="/views/include/sidebar.jsp" %></div>
+	<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 	<h1 class="update_title">개인정보 수정</h1>
 	<div class="update_box">
 		<form id="updateAccount">

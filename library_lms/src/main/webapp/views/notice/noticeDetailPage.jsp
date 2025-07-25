@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -181,8 +182,9 @@ footer {
 					<td colspan="3">${ notice.title }</td>
 				</tr>
 				<tr>
+					<% pageContext.setAttribute("newLine", "\n"); %>
 					<th class="content">내용</th>
-					<td class="content-cell" colspan="3">${ notice.content }</td>
+					<td class="content-cell" colspan="3">${fn:replace(notice.content, newLine,"<br>")}</td>
 				</tr>
 				
 				<c:if test="${ not empty attach }">
