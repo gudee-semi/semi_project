@@ -68,12 +68,14 @@ public class UseService {
 				}
 				
 				if (result > 0) {
-					for (String p : memberNoPenArr) {
-						int memberNoPen = Integer.parseInt(p);
-						if (memberNoPen == memberNo) {
-							result = dao.insertMemberPen(session, memberNoPen);
-							if (result == 0) break; 
-						}
+					if (memberNoPenArr != null) {
+						for (String p : memberNoPenArr) {
+							int memberNoPen = Integer.parseInt(p);
+							if (memberNoPen == memberNo) {
+								result = dao.insertMemberPen(session, memberNoPen);
+								if (result == 0) break; 
+							}
+						}						
 					}
 				}
 				if (result > 0) continue;

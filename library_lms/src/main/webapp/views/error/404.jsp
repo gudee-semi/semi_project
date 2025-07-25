@@ -60,11 +60,10 @@
 </head>
 <body>
     <div class="error-container">
-        <h1 class="error-code">403</h1>
-        <div class="error-message">접근이 거부되었습니다</div>
+        <h1 class="error-code">404</h1>
+        <div class="error-message">페이지가 존재하지 않습니다.</div>
         <div class="error-description">
-            죄송합니다. 이 페이지에 접근할 수 있는 권한이 없습니다.<br>
-            로그인 상태 또는 권한을 다시 확인해주세요.
+            죄송합니다. 페이지가 삭제되었거나 존재하지 않습니다.
         </div>
         <a href="/main" class="back-button">홈으로 돌아가기</a>
     </div>
