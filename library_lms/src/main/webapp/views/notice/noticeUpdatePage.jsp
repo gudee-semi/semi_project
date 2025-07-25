@@ -196,16 +196,17 @@ footer {
 										    <button class="file-change" type="button">X</button><br>
 								    	</div>
 								    	<div class="file-reupload show">
-								    		<div><input type="file" name="file" accept=".jpg, .png"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .png" class="file"></div>
 								    	</div>
 									</c:if>
 									<c:if test="${ empty attach }">
 										<input type="hidden" name="check" value="2" class="check">
 								    	<div class="file-reupload">
-								    		<div><input type="file" name="file" accept=".jpg, .png"></div>
+								    		<div><input type="file" name="file" accept=".jpg, .png" class="file"></div>
 								    	</div>
 									</c:if>
 							    </div>
+							    <span style="font-size: 13px; color: #888;">※ 첨부 가능 파일: JPG, PNG 형식만 업로드 가능합니다.</span>
 							</td>	    
 						</tr>
 					</table>
@@ -230,6 +231,26 @@ footer {
 			$('.file-now').addClass("show");
 			$('.check').val('1');
 		})
+	</script>
+	
+	<script>
+		const allowedExtensions = ['jpg', 'png'];
+		const fileInput = document.querySelector('.file');
+		fileInput.addEventListener('change', () => {
+		    const file = fileInput.files[0];
+		     if (!file) return; // 파일 없을 때 방지
+		    const extension = file.name.split('.').pop().toLowerCase();
+		    if (!allowedExtensions.includes(extension)) {
+		        Swal.fire({
+		            icon: 'error',
+		            title: '잘못된 파일 형식',
+		            text: '허용되지 않은 확장자입니다. (jpg, png만 가능)',
+		            confirmButtonColor: '#205DAC',
+		            confirmButtonText: '확인'
+		        });
+		        fileInput.value = ''; // 선택 초기화
+		    }
+		});
 	</script>
 	
 	<script>
