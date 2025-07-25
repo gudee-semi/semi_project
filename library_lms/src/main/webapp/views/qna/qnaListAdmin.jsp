@@ -70,6 +70,8 @@ button {
 	text-align: center;
 	margin-left: 5px;
 	margin-right: 5px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 	text-decoration: none;
 	color: black;
 }

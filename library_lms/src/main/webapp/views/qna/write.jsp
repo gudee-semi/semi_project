@@ -165,7 +165,7 @@
 				    
 				    <tr>
 					    <th>첨부 파일</th>
-					    <td colspan="3"><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></td>
+					    <td colspan="3"><input type="file" name="qnaFile" id="file" accept=".jpg, .jpeg, .png"></td>
 				    </tr>
 				    
 				</table>
@@ -182,6 +182,19 @@
 	</div>
 	
 	<script>
+		const allowedExtensions = ['jpg', 'jpeg', 'png'];
+		const fileInput = document.querySelector('#file');
+	
+		fileInput.addEventListener('change', () => {
+		    const file = fileInput.files[0];
+		    const extension = file.name.split('.').pop().toLowerCase();
+	
+		    if (!allowedExtensions.includes(extension)) {
+		        alert('허용되지 않은 확장자입니다.');
+		        fileInput.value = ''; // 선택 초기화
+		    }
+		});
+	
 		$("#qnaView").click(function() {
 		    window.location.href = "/qna/view";
 		});
