@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, com.hy.dto.seat.FixedSeatMemberView" %>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>고정좌석 이용 회원</title>
