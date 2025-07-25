@@ -2,6 +2,12 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
@@ -126,24 +132,31 @@
 	margin-top: 0 !important;
 	
 	}
+	.check-buttons{
+	
+		height:30px;
+	}
+	.profile{
+		height:184.94px;
+	}
+	.logout-text{
+		height:24px;
+	}
 </style>
-
+</head>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-<%@ include file="/views/include/header.jsp" %>
 
 <body>
+<%@ include file="/views/include/header.jsp" %>
 	
 	<% 
 		List<Seat> list = (List<Seat>)request.getAttribute("list");
 	%>
 
   <div class="totalBox">
-	
 		<%@ include file="/views/include/sidebar.jsp" %>
-
-
 	<div class="seatBox" style="margin: 40px 100px 100px 200px;">
 		<div class="seatBox2">
 		
@@ -460,3 +473,4 @@
 	
 	
 </body>
+</html>
