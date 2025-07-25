@@ -8,11 +8,6 @@
 </head>
 
 <style>
-h2 {
-	margin-left: 20px;
-	margin-bottom: 50px;
-}
-
 .detail-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -47,7 +42,7 @@ h2 {
 
 .sidebars {
 	width: 300px;
-	height: 1000px;
+	height: 1100px;
 }
 
 .flex-container {
@@ -83,6 +78,10 @@ hr {
 .reply {
 	margin-bottom: 20px;
 }
+
+.qnaadmin {
+	padding: 0 0 20px 0;
+}
 </style>
 
 <body>
@@ -93,8 +92,8 @@ hr {
 		<div class="container">
 
 			<!-- QnA 상세 정보 영역 -->
-			<h2>
-				<a href="${pageContext.request.contextPath}/qna/list/admin" class="qnaadmin" onmouseover="this.style.background='#3E7AC8';" onmouseout="this.style.background='#205DAC';">QnA 관리자 페이지</a>
+			<h2 class="qnaadmin">
+				<a href="${pageContext.request.contextPath}/qna/list/admin" style="color: #6666aa; text-decoration: none;">QnA 관리자 페이지로 이동</a>
 			</h2>
 			<table class="detail-table">
 				<tr>
