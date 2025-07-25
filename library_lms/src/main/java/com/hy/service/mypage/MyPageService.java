@@ -31,6 +31,9 @@ public class MyPageService {
 			if(member.getMemberGrade()!=0) {
 				success &= dao.updateMemberGrade(member)>0;
 				}
+			if(member.getMemberPhone() !=null) {
+				success &= dao.updateMemberPhone(member)>0;
+			}
 			if(attach != null ) {
 				boolean at=false;
 				//원래 attach정보 저장
@@ -58,8 +61,11 @@ public class MyPageService {
 
 	public int deleteMember(int memberNo) {
 		int result = 0;
-		if(dao.deleteMemberAvatar(memberNo)>0 && dao.deleteMember(memberNo)>0) {
+		if(dao.deleteMember(memberNo)>0) {
 			result=1;
+		}
+		if(result==1) {
+			dao.deleteMemberAvatar(memberNo);
 		}
 		
 		return result;

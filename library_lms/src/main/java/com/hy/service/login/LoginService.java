@@ -12,16 +12,16 @@ public class LoginService {
 		member.setMemberPw(memberPw);
 		return dao.selectMember(member);
 	}
-	public Member searchId(String memberName, String memberPhone) {
+	public Member searchId(String memberName, String memberRrn) {
 		Member member = new Member();
 		member.setMemberName(memberName);
-		member.setMemberPhone(memberPhone);
+		member.setMemberRrn(memberRrn);
 		return dao.searchId(member);
 	}
-	public Member searchPw(String memberId, String memberPhone) {
+	public Member searchPw(String memberId, String memberRrn) {
 		Member member = new Member();
 		member.setMemberId(memberId);
-		member.setMemberPhone(memberPhone);
+		member.setMemberRrn(memberRrn);
 		return dao.searchPw(member);
 		
 	}

@@ -165,7 +165,11 @@
 				    
 				    <tr>
 					    <th>첨부 파일</th>
-					    <td colspan="3"><input type="file" name="qnaFile" accept=".jpg, .jpeg, .png"></td>
+					    <td colspan="3"><input type="file" name="qnaFile" id="file" accept=".jpg, .png"><br>
+					        <span style="font-size: 13px; color: #888;">
+					            ※ 첨부 가능 파일: JPG, PNG 형식만 업로드 가능합니다.
+					        </span>
+					    </td>
 				    </tr>
 				    
 				</table>
@@ -202,25 +206,34 @@
 				cache : false,
 				dataType : "json",
 				success : function(data){
-					Swal.fire({
-						icon: data.res_code == 200 ? 'success' : 'error',
-						text: data.res_code == 200 ? data.res_msg : '등록 실패',
-						confirmButtonText: '확인',
-						confirmButtonColor: '#205DAC'
-					}).then(() => {
-						if(data.res_code == 200){
-							location.href = "<%=request.getContextPath() %>/qna/view";
-						}
-					});
-				},
- 				error : function() {
- 					Swal.fire({
- 						icon: 'error',
- 						title: '요청 실패',
- 						text: '서버와의 통신 중 오류가 발생했습니다.',
- 						confirmButtonText: '확인',
- 						confirmButtonColor: '#205DAC'
- 					});
+					if (data.res_code == 200) {
+						Swal.fire({
+			              text: "게시글이 등록되었습니다.",
+			              icon: "success",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {
+							location.href = "<%= request.getContextPath() %>/qna/view";			            	
+			            });
+					} else if (data.res_code == 500) {
+						Swal.fire({
+			              text: "게시글 등록에 실패했습니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/qna/view";
+			            });
+					} else {
+						Swal.fire({
+			              text: "허용되지 않은 확장자입니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/qna/write";
+			            });
+					}
  				}
 			});
 		});

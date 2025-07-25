@@ -45,14 +45,14 @@ public class LoginSearch extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String memberName=request.getParameter("memberName");
-		String memberPhone = request.getParameter("memberPhone");
+		String memberRrn = request.getParameter("member_rrn");
 		String memberId = request.getParameter("memberId");
 		JSONObject obj = new JSONObject();
 		
 		if(memberName != null ) {
 			//아이디 찾기
 		
-			Member member = service.searchId(memberName,memberPhone);
+			Member member = service.searchId(memberName,memberRrn);
 			if(member ==null) {
 		
 				obj.put("id", "no");
@@ -61,7 +61,7 @@ public class LoginSearch extends HttpServlet {
 			}
 		}else {
 			//비밀번호 찾기
-			 Member member = service.searchPw(memberId,memberPhone);
+			 Member member = service.searchPw(memberId,memberRrn);
 			 if(member == null) {
 				 //비밀번호 불일치
 				 obj.put("pw","no");
