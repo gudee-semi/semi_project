@@ -24,7 +24,7 @@
 	</select>
 	
 	<select id="getUseStatus" resultType="com.hy.dto.use.Use">
-		SELECT use_status_id AS useStatusId ,u.member_no AS memberNo ,status AS status, member_name AS memberName
+		SELECT use_status_id AS useStatusId ,u.member_no AS memberNo ,status AS status ,member_name AS memberName ,member_grade AS memberGrade ,member_school AS memberSchool
 		FROM use_status u JOIN member m on u.member_no = m.member_no
 		WHERE status = 1 OR status = 2
 	</select>
@@ -49,5 +49,10 @@
 	<update id="abortMember" parameterType="_int">
 		UPDATE use_status SET status = 0
 		WHERE member_no = #{memberNo}
+	</update>
+	
+	<update id="insertMemberPen" parameterType="_int">
+		UPDATE member SET member_penalty = member_penalty + 1 
+		WHERE member_no = #{memberNoPen}
 	</update>
 </mapper>

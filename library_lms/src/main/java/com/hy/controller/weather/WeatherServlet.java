@@ -29,7 +29,7 @@ public class WeatherServlet extends HttpServlet {
 		// 1. 도시명과 API 키 지정
         String city = request.getParameter("city");
         if (city == null || city.trim().isEmpty()) city = "Seoul";
-        String apiKey = "a5734c7567afe401a5c7d6ee351aacec"; // 본인 API 키
+        String apiKey = "36754930324ec0dcf8ae1a9a82ab0be7"; // 본인 API 키
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city
                 + "&appid=" + apiKey
                 + "&units=metric"

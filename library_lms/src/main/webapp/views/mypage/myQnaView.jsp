@@ -10,10 +10,8 @@
 <style>
 	.container {
 		width: 70%;
+		margin-top: 50px;
 	}
-	h1 {
-		margin-left: 20px;
-    }
 	.search-row {
 		padding-left: 15px;
 		display: flex;
@@ -21,8 +19,10 @@
 		align-items: center;
 	}
 	.total-count {
+		display: block;
 		font-size: 16px;
-		margin-left: 5px;
+		margin-left: 20px;
+		margin-bottom: 10px;
 	}
 	.searchBox form {
 		display: flex;
@@ -170,20 +170,19 @@
 	}
 	
 	h1 {
+		margin-left: 20px;
 		margin-top: 50px;
-		margin-bottom: 50px;
+		margin-bottom: 32px;
 	}
 	
 	footer {
 		margin-top: 0px !important;
 	}
-	
-	
-	
 	.new_reply{
-    	
     	display: inline-block;
     	color : Green;
+    	font-size: 14px;
+    	font-weight: 600;
     }
 </style>
 
@@ -195,6 +194,7 @@
 		<div class="sidebars"><jsp:include page="/views/include/sidebar.jsp" /></div>
 		<div class="container">
 			<h1>나의 문의 내역</h1>
+			<div class="total-count">총 ${totalData } 건</div>
 			<table class="center" style="border-collapse: collapse; width: 100%">
 				<thead>
 					<tr>
@@ -208,11 +208,11 @@
 				</thead>
 				
 				<tbody>
-					<c:set var="i" value="0"/>
+					<c:set var="i" value="${paging.totalData - (paging.numPerPage * (paging.nowPage - 1))}"/>
 					<c:forEach var="q" items="${qnaList }">
-					<tr class="row" onclick="location.href='<c:url value="/qna/detail?no=${q.qnaId }"/>'">
-						<c:set var="i" value="${i + 1}" />
+					<tr class="row" onclick="location.href='<c:url value="/myqna/detail?no=${q.qnaId }&myQnaNo=${i }"/>'">
 						<td>${i}</td>
+						<c:set var="i" value="${i - 1}" />
 						<td>${q.category }</td>
 						
 						<td style="text-align: left">

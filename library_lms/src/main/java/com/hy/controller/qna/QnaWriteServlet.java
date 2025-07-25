@@ -81,7 +81,7 @@ public class QnaWriteServlet extends HttpServlet {
 		
 		if(result > 0) {
 			obj.put("res_code", "200");
-			obj.put("res_msg", "게시글 등록이 성공적으로 진행되었습니다.");
+			obj.put("res_msg", "게시글이 등록되었습니다.");
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_msg", "게시글 등록중 오류가 발생했습니다.");

@@ -187,7 +187,7 @@ footer {
 				
 				<c:if test="${ not empty attach }">
 					<tr>
-						<th>첨부파일</th>
+						<th>첨부 파일</th>
 						<td colspan="3">
 					    	<a href="<c:url value='/notice/fileDownload?id=${ notice.noticeId }' />">${ attach.oriName }</a><br>						
 					    	<img src="<c:url value='/notice/filePath?id=${ notice.noticeId }'/>"><br>

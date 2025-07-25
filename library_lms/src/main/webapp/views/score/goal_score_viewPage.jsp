@@ -46,7 +46,6 @@
 		font-size: 30px;
 	}
 	
-	/*  하...   */
 	header {
 		margin: 0 !important;
 	}
@@ -114,6 +113,7 @@
     }
      
     th, td { 
+      width: 110px;
       border: 1px solid #d1d5db; 
       padding: 10px 18px; 
       height: 58px;
@@ -134,6 +134,7 @@
 	}
     
     #score-table {
+    table-layout: fixed; 
      margin: 60px auto;
 	  border-collapse: separate;  
 	  border-spacing: 0;           
