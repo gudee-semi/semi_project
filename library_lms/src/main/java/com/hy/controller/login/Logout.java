@@ -47,7 +47,7 @@ public class Logout extends HttpServlet {
 		out.println("  confirmButtonText: '확인',");
 		out.println("  confirmButtonColor: '#205DAC'");
 		out.println("}).then(() => {");
-		out.println("  location.href = '" + request.getContextPath() + "/login/view';");
+		out.println("  location.replace('" + request.getContextPath() + "/login/view');");
 		out.println("});");
 		out.println("</script>");
 		out.println("</body></html>");

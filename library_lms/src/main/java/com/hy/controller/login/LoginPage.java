@@ -41,7 +41,7 @@ public class LoginPage extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		RequestDispatcher view;
 		if(session.getAttribute("loginMember")!=null) {
-			 view = request.getRequestDispatcher("/views/login/mainPage.jsp");
+			 view = request.getRequestDispatcher("/main");
 		}else {
 			
 			 view = request.getRequestDispatcher("/views/login/loginPage.jsp");
