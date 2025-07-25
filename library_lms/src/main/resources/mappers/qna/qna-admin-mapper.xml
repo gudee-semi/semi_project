@@ -163,9 +163,9 @@
 		1, NOW())
 	</insert>
 
-	<update id="updateAnswerStatusZero" parameterType="int">
+	<update id="updateAnswerStatusOne" parameterType="int">
 		UPDATE qna SET
-		answer_status = 0 WHERE qna_id = #{qnaId}
+		answer_status = 1 WHERE qna_id = #{qnaId}
 	</update>
 
 	<update id="updateReply" parameterType="com.hy.dto.qna.QnaReply">
@@ -180,9 +180,9 @@
 		WHERE qna_reply_id = #{value}
 	</delete>
 
-	<update id="updateAnswerStatusOne" parameterType="int">
+	<update id="updateAnswerStatusZero" parameterType="int">
 		UPDATE qna SET
-		answer_status = 1 WHERE qna_id = #{qnaId}
+		answer_status = 0 WHERE qna_id = #{qnaId}
 	</update>
 
 	<update id="incrementViewCount" parameterType="int">
