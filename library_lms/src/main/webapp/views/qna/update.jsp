@@ -255,14 +255,25 @@
 				cache: false,
 				dataType: 'json',
 				success: (data) => {	
-					 Swal.fire({
-					    icon: data.res_code == 200 ? 'success' : 'error',
-					    text: data.res_code == 200 ? data.res_msg : data.res_msg,
-					    confirmButtonText: '확인',
-				    	confirmButtonColor: '#205DAC'
-					  }).then(() => {
-					    location.href = "<%= request.getContextPath() %>/qna/view";
-					  });
+					if (data.res_code == 200) {
+						Swal.fire({
+			              text: "성공적으로 수정되었습니다.",
+			              icon: "success",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {
+							location.href = "<%= request.getContextPath() %>/qna/view";			            	
+			            });
+					} else {						
+						Swal.fire({
+			              text: "질의응답 수정에 실패했습니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/qna/view";
+			            });
+					}
 				}
 			});
 		});
