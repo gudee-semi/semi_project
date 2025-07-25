@@ -184,24 +184,6 @@ footer {
 	</div>
 	
 	<script>
-		const allowedExtensions = ['jpg', 'png'];
-		const fileInput = document.querySelector('#file');
-	
-		fileInput.addEventListener('change', () => {
-		    const file = fileInput.files[0];
-		    const extension = file.name.split('.').pop().toLowerCase();
-	
-		    if (!allowedExtensions.includes(extension)) {
-		    	Swal.fire({
-					icon: data.res_code == 200 ? 'success' : 'error',
-					text: data.res_code == 200 ? data.res_msg : '등록 실패',
-					confirmButtonText: '확인',
-					confirmButtonColor: '#205DAC'
-				})
-		        fileInput.value = ''; // 선택 초기화
-		    }
-		});
-		
 		$("#noticeList").click(function() {
 		    window.location.href = "/notice/list";
 		});
