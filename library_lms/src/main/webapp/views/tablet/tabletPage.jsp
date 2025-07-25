@@ -84,20 +84,6 @@ body>div>div.container>div:nth-child(1)>img {
 .container {
 	width: 70%;
 }
-
-.side {
-	width: 300px;
-	height: 1000px;
-}
-
-.flex-container {
-	display: flex;
-	align-items: flex-start;
-}
-
-.container {
-	width: 70%;
-}
 </style>
 
 	<%@ include file="/views/include/header.jsp"%>
