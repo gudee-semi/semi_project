@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.json.simple.JSONObject;
 
 import com.hy.dto.notice.Notice;
@@ -64,16 +65,23 @@ public class NoticeWriteServlet extends HttpServlet {
 		File uploadDir = NoticeAttachService.getUploadDirectory();
 		NoticeAttach attach = NoticeAttachService.handleUploadFile(request, uploadDir);
 		
-		int result = noticeService.createNoticeWithAttach(notice, attach);
+		int loc = attach.getOriName().lastIndexOf(".");
+		String ext = attach.getOriName().substring(loc + 1);
+		
+		int result = -1;
+		
+		if (ext.equals("png") || ext.equals("jpg")) {
+			result = noticeService.createNoticeWithAttach(notice, attach);		
+		}
 		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
-			obj.put("res_msg", "공지사항 등록이 성공적으로 완료되었습니다.");
 			obj.put("res_code", "200");
-		} else {
-			obj.put("res_msg", "공지사항 등록이 실패했습니다.");
+		} else if (result == 0) {
 			obj.put("res_code", "500");			
+		} else {
+			obj.put("res_code", "999");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");
