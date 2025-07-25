@@ -168,7 +168,7 @@ footer {
 			    	
 			    	<tr>
 						<th>첨부 파일</th>
-						<td colspan="3"><input type="file" name="file" accept=".jpg, .jpeg, .png"></td>
+						<td colspan="3"><input type="file" name="file" accept=".jpg, .png"></td>
 				    </tr>
 				</table>
 				    
@@ -210,7 +210,7 @@ footer {
 			            }).then(() => {
 							location.href = "<%= request.getContextPath() %>/notice/list";			            	
 			            });
-					} else {
+					} else if (data.res_code == 500) {
 						Swal.fire({
 			              text: "게시글 등록에 실패했습니다.",
 			              icon: "error",
@@ -218,6 +218,15 @@ footer {
 			              confirmButtonColor: '#205DAC'
 			            }).then(() => {	            	
 							location.href = "<%= request.getContextPath() %>/notice/list";
+			            });
+					} else {
+						Swal.fire({
+			              text: "허용되지 않은 확장자입니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/notice/write";
 			            });
 					}
 				}

@@ -48,17 +48,6 @@ public class AdminAbortServlet extends HttpServlet {
 		String[] memberNoPenArr = request.getParameterValues("listPen[]");
 		int result = service.abortMemberWithPenalty(memberNoArr, memberNoPenArr);
 		
-		
-//		for (String s : memberNoArr) {
-//			int memberNo = Integer.parseInt(s);
-//			if (result > 0) {
-//				result = service.abortMember(memberNo);
-//				if (result > 0) {
-//					result = service.insertUseLog(memberNo, 0);
-//				}
-//			}
-//		}
-		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {

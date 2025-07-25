@@ -489,9 +489,7 @@
 				            // 1. HTML 먼저 만듦 (style 없음)
 				            const popup = $(`
 					        	    <div class="event-popup">
-					        	    <button class="detail-btn">상세</button>
-					        	    <br>
-					        	    <button class="edit-btn" style="margin-top: 5px;">수정</button>
+					        	    <button class="edit-btn">수정</button>
 					        	    <br>
 					        	    <button class="delete-btn" style="margin-top: 5px;">삭제</button>
 					        	    </div>
@@ -541,98 +539,68 @@
 				                    const todoDate = $('.todo-update-date').val();
 				                    const todoDetail = $('.todo-update-detail').val();
 			
-				                    if (!todoTitle) {
-				        				Swal.fire({
-				        					title: "제목은 필수 항목입니다.",
-				        					icon: "error",
-				        					confirmButtonText: '확인',
-				        					confirmButtonColor: '#205DAC'
-				        				});
-				                    } else if (!todoDate) {
-				        				Swal.fire({
-				        					title: "날짜는 필수 항목입니다.",
-				        					icon: "error",
-				        					confirmButtonText: '확인',
-				        					confirmButtonColor: '#205DAC'
-				        				});
-				                    } else {
-				                        $.ajax({
-				                            url: '/calendar/update',
-				                            type: 'post',
-				                            data: {
-				                                todoTitle: todoTitle,
-				                                todoDate: todoDate,
-				                                todoDetail: todoDetail,
-				                                plannerId: plannerId
-				                            },
-				                            dataType: 'json',
-				                            success: (data) => {
-				                                if (data.res_code == '200') {
-				        		                	Swal.fire({
-														text: "할 일 목록이 수정되었습니다.",
-														icon: "success",
-														confirmButtonText: '확인',
-														confirmButtonColor: '#205DAC'
-				      	                			});
-				        		                	
-				                                    event.remove();
-			
-				                                    // 새로 만든 todo 객체로 스마트하게 다시 추가
-				                                    const newTodo = {
-				                                        title: todoTitle,
-				                                        start: todoDate,
-				                                        extendedProps: {
-				                                            planner_id: plannerId,
-				                                            description: todoDetail,
-				                                            is_completed: event.extendedProps.is_completed
-				                                        }
-				                                    };
-				                                    event.remove();
-			
-				                                    addSmartEvent(newTodo); // 우리가 만든 시간 배치 함수로 등록
-			
-				                                    const date = dateToRearrange;
-				                                    const eventsToReAdd = [];
-			
-				                                    calendar.getEvents().forEach(e => {
-				                                        if (e.startStr.startsWith(date)) {
-				                                            eventsToReAdd.push({
-				                                                title: e.title,
-				                                                start: date,
-				                                                extendedProps: e.extendedProps
-				                                            });
-				                                            e.remove();
-				                                        }
-				                                    });
-			
-				                                    // 재정렬해서 다시 추가
-				                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
-				                                } else {
-				                                	Swal.fire({
-								                		  text: "할 일 목록 수정이 실패했습니다.",
-								                		  icon: "error",
-								                		  confirmButtonText: '확인',
-								                		  confirmButtonColor: '#205DAC'
-							                		});
-				                                }
-				                            }
-				                        })
-				                    }
+			                        $.ajax({
+			                            url: '/calendar/update',
+			                            type: 'post',
+			                            data: {
+			                                todoTitle: todoTitle,
+			                                todoDate: todoDate,
+			                                todoDetail: todoDetail,
+			                                plannerId: plannerId
+			                            },
+			                            dataType: 'json',
+			                            success: (data) => {
+			                                if (data.res_code == '200') {
+			        		                	Swal.fire({
+													text: "할 일 목록이 수정되었습니다.",
+													icon: "success",
+													confirmButtonText: '확인',
+													confirmButtonColor: '#205DAC'
+			      	                			});
+			        		                	
+			                                    event.remove();
+		
+			                                    // 새로 만든 todo 객체로 스마트하게 다시 추가
+			                                    const newTodo = {
+			                                        title: todoTitle,
+			                                        start: todoDate,
+			                                        extendedProps: {
+			                                            planner_id: plannerId,
+			                                            description: todoDetail,
+			                                            is_completed: event.extendedProps.is_completed
+			                                        }
+			                                    };
+			                                    event.remove();
+		
+			                                    addSmartEvent(newTodo); // 우리가 만든 시간 배치 함수로 등록
+		
+			                                    const date = dateToRearrange;
+			                                    const eventsToReAdd = [];
+		
+			                                    calendar.getEvents().forEach(e => {
+			                                        if (e.startStr.startsWith(date)) {
+			                                            eventsToReAdd.push({
+			                                                title: e.title,
+			                                                start: date,
+			                                                extendedProps: e.extendedProps
+			                                            });
+			                                            e.remove();
+			                                        }
+			                                    });
+		
+			                                    // 재정렬해서 다시 추가
+			                                    eventsToReAdd.forEach(todo => addSmartEvent(todo));
+			                                } else {
+			                                	Swal.fire({
+							                		  text: "할 일 목록 수정이 실패했습니다.",
+							                		  icon: "error",
+							                		  confirmButtonText: '확인',
+							                		  confirmButtonColor: '#205DAC'
+						                		});
+			                                }
+			                            }
+			                        });
 				                });
-				                popup.remove();
-				            });
-				            
-				            popup.find('.detail-btn').on('click', () => {
-				                readmePopUp4.style.display = 'flex';
-			
-				                const editTitle = event.title;
-				                const editDate = event.startStr.split('T')[0];
-				                const editDetail = event.extendedProps.description;
-			
-				                $('.todo-detail-title').val(editTitle);
-				                $('.todo-detail-date').val(editDate);
-				                $('.todo-detail-detail').val(editDetail);
-				                
 				                popup.remove();
 				            });
 			
@@ -681,14 +649,9 @@
 						                });
 						                popup.remove();
 			                		}
-			                	})
-				         
-				            	
+			                	});
 				            });
-				            
-				            
 				        }
-			
 				    });
 			
 				    calendar.render();
@@ -791,26 +754,6 @@
 		    	</div>
 		  	</div>
 		  	
-			<div class="modal modal-4">
-		    	<div class="modal-content">
-		      		<div class="modal-header font-en">
-		      			<span></span>
-		        		<span class="material-symbols-outlined btn-add-close">close</span>
-		      		</div>
-		     		 <div class="modal-body">
-		        		<p>할 일 목록</p>
-		        		<input type="text" class="todo-detail-title" readonly="readonly">
-		        		<br>
-		        		<p>날짜</p>
-		        		<input type="date" class="todo-detail-date" readonly="readonly">
-		        		<br>
-		        		<p>상세 내용</p>
-		        		<textarea rows="10" cols="20" class="todo-detail-detail" readonly="readonly"></textarea>
-		      		</div>
-		    	</div>
-		  	</div>
-		  	
-		  	
 		  	<script>
 			  	const readmeBtn1 = document.querySelector('.btn-add');
 			  	const readmePopUp1 = document.querySelector('.modal.modal-1');
@@ -840,9 +783,6 @@
 			  	});
 			  	readmeClose3.addEventListener('click', () => {
 			  		readmePopUp3.style.display = 'none';
-			  	});
-			  	readmeClose4.addEventListener('click', () => {
-			  		readmePopUp4.style.display = 'none';
 			  	});
 			  	todoForm.addEventListener('submit', () => {
 			  		readmePopUp1.style.display = 'none';

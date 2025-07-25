@@ -52,11 +52,11 @@ public class UseService {
 	public int abortMemberWithPenalty(String[] memberNoArr, String[] memberNoPenArr) {
 		
 		int result = 0;
-		SqlSession session = null;
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);;
 		
 		try {
-			for (String s : memberNoArr) {					
-				session = SqlSessionTemplate.getSqlSession(false);
+			for (String s : memberNoArr) {		
+				result = 0;
 				int memberNo = Integer.parseInt(s);
 				result = dao.abortMember(session, memberNo);
 				
@@ -71,17 +71,19 @@ public class UseService {
 					for (String p : memberNoPenArr) {
 						int memberNoPen = Integer.parseInt(p);
 						if (memberNoPen == memberNo) {
-							System.out.println(memberNoPen);
 							result = dao.insertMemberPen(session, memberNoPen);
+							if (result == 0) break; 
 						}
 					}
 				}
-				
-				if (result > 0) {
-					session.commit();
-				} else {
-					session.rollback();
-				}
+				if (result > 0) continue;
+				else break;
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
