@@ -66,6 +66,12 @@
 		/* background-color: f0f0f0; */
 	}
 	
+	.nav-item > a.disabled:hover {
+		background-color: white;
+		/* box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); */
+		/* background-color: f0f0f0; */
+	}
+	
 	.dropdown {
 		position: relative;
 	}
@@ -101,7 +107,6 @@
 	}
 	
 	.disabled {
-		pointer-events: none;
 		opacity: 0.3;
 	}
 	 
@@ -225,12 +230,15 @@
 
     <div class="nav-item">
       <a href="<c:url value='/seat/view' />"
-        class="<c:if test='${useStatus.status eq 0 || loginMember.memberSeat == 1}'>disabled</c:if> seat">좌석</a>
+        class="
+        	<c:if test='${ useStatus.status eq 0 }'>disabled disabled-warning</c:if> seat
+        	<c:if test='${ useStatus.status ne 0 and loginMember.memberSeat == 1 }'>disabled disabled-fixed-seat-warning</c:if>
+        ">좌석</a>
     </div>
 
     <div class="nav-item">
       <a href="<c:url value='/tablet/view' />"
-        class="<c:if test='${useStatus.status eq 0}'>disabled</c:if> tablet">태블릿</a>
+        class="<c:if test='${useStatus.status eq 0}'>disabled disabled-warning</c:if> tablet">태블릿</a>
     </div>
 
     <div class="nav-item"><a href="<c:url value='/notice/list' />">공지사항</a></div>
@@ -275,6 +283,29 @@
 
 	  // height는 더 이상 조정하지 않음! ← 이게 핵심
 	});
+</script>
+
+<script>
+	$('.disabled-warning').on('click', (e) => {
+		e.preventDefault();
+		 Swal.fire({
+		    icon: 'warning',
+		    text: '먼저 입실을 진행해주세요.',
+		    confirmButtonText: "확인",
+		    confirmButtonColor: '#205DAC'
+		  });
+		});
+	
+	$('.disabled-fixed-seat-warning').on('click', (e) => {
+		e.preventDefault();
+		 Swal.fire({
+		    icon: 'warning',
+		    title: '고정 좌석을 이용중입니다.',
+		    text: '좌석 변경은 관리자에게 문의하세요.',
+		    confirmButtonText: "확인",
+		    confirmButtonColor: '#205DAC'
+		  });
+		});
 </script>
 
 <c:set var="memberNo" value="${ loginMember.memberNo }"/>
