@@ -186,6 +186,7 @@ footer {
 .write-form {
 	display: flex;
 	justify-content: flex-end;
+	margin-top: 30px;
 }
 </style>
 </head>
