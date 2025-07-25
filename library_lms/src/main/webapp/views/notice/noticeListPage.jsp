@@ -182,6 +182,11 @@ footer {
 .nav-item {
 	padding: 5px;
 }
+
+.write-form {
+	display: flex;
+	justify-content: flex-end;
+}
 </style>
 </head>
 <body>
@@ -241,11 +246,6 @@ footer {
 				
 			<c:if test="${ not empty noticeList }">
 				<div class="table-bottom">
-					<c:if test="${ memberNo eq 1 }">
-						<form action="/notice/write" method="get">
-							<button class="btn">작성</button>
-						</form>
-					</c:if>
 				
 					<div class="paging-pages">
 						<c:choose>
@@ -290,6 +290,12 @@ footer {
 						</c:choose>
 					</div>
 				</div>
+			</c:if>
+			
+			<c:if test="${ memberNo eq 1 }">
+				<form action="/notice/write" method="get" class="write-form">
+					<button class="btn">작성</button>
+				</form>
 			</c:if>
 		
 	</div>
