@@ -56,6 +56,10 @@ public class NoticeDetailServlet extends HttpServlet {
 		int noticeId = Integer.parseInt(request.getParameter("no"));
 		
 		Notice notice = service.selectNoticeByNo(noticeId);
+		if (notice == null) {
+			response.sendRedirect(request.getContextPath() + "/views/error/404.jsp");
+		}
+		
 		NoticeAttach attach = service.selectAttachByNo(noticeId);
 		request.setAttribute("notice", notice);
 		request.setAttribute("attach", attach);
