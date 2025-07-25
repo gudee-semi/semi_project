@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 
+import org.json.simple.JSONObject;
+
 import com.hy.dto.login.ProfileAttach;
 import com.hy.dto.login.User;
 import com.hy.dto.qna.Qna;
@@ -57,9 +59,8 @@ public class UserDelete extends HttpServlet {
 
 		user.setUserName(userName);
 		
-
-		int totalData = service.selectUserCount(user);
 		
+		int totalData = service.selectUserCount(user);
 		// 키워드 기준 2가지로 메소드 각각 만들기
 		user.setTotalData(totalData);	
 		// 게시글 목록 정보 조회
@@ -84,6 +85,7 @@ public class UserDelete extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String[] deleteUserNo = request.getParameterValues("deleteUserNo");
 		int result=0;
+		JSONObject obj = new JSONObject();
 		if (deleteUserNo != null) {
 		    for (String userNoStr : deleteUserNo) {
 		        int userNo = Integer.parseInt(userNoStr);
@@ -92,10 +94,12 @@ public class UserDelete extends HttpServlet {
 		        if(memberNo>0) {
 		        	ProfileAttach attach = Myservice.selectProfileAttach(memberNo);
 					result = Myservice.deleteMember(memberNo);
-					File file =new File(attach.getPath());
-					if(result>0) {
-						if (file.exists()) {
-							file.delete();
+					if(attach!=null) {
+						File file =new File(attach.getPath());
+						if(result>0) {
+							if (file.exists()) {
+								file.delete();
+							}
 						}
 					}
 					result = service.deleteUser(userNo);
@@ -105,10 +109,9 @@ public class UserDelete extends HttpServlet {
 		  
 		    }
 		}
-		if(result>0) {
-			request.setAttribute("deleteResult", result);
-		}
-		request.getRequestDispatcher("/views/admin/userDelete.jsp").forward(request, response);
+			obj.put("deleteResult", result);
+			response.setContentType("application/json;charset=utf-8");
+			response.getWriter().print(obj);
 	}
 
 }

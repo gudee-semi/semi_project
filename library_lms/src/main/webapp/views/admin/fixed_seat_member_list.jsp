@@ -10,15 +10,13 @@
             font-family: "Noto Sans KR", sans-serif;
         }
         .h2 {
-        	margin-top: 200px;
+        	margin-top: 100px;
             text-align: center;
             transform: translate(-40px,-40px);
         }
-        .box {
-        	transform: translate(150px,-80px);
-        }
+        
         table {
-            width: 70%;
+            width: 100%;
             margin: 10px auto;
             border-collapse: collapse;
         }
@@ -38,7 +36,7 @@
             padding: 5px;
         }
         .btn-container {
-        	margin-top: 200px;
+        	margin-top: 100px;
         	margin-left: 1200px;
         	margin-bottom: 400px;
             text-align: center;
@@ -61,67 +59,92 @@
 		.flex{
 			display:flex;
 		}
+		.sidebars {
+	width: 300px;
+	height: 1000px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+		column-gap: 100px;
+}
+
+.box {
+	width: 70%;
+}
+
+.logout-text {
+	height:24px !important;
+}
+
+.profile {
+	height: 150.94px !important;
+}
     </style>
 </head>
 
 <body>
 <%@ include file="/views/include/header.jsp" %>
-<%@ include file="/views/include/sidebar.jsp" %>
-<div class="box">
-<h2 class="h2">고정좌석 이용 회원</h2>
+<div class="flex-container">
+	<div class="sidebars">
+		<%@ include file="/views/include/sidebar.jsp" %>
+	</div>
+	
+	<div class="box">
+		<h2 class="h2">고정좌석 이용 회원</h2>
+		<!-- ✅ 확인창 띄우는 form -->
+		<form id="seatForm" action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
+		
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>No</th>
+		                <th>학년</th>
+		                <th>학교</th>
+		                <th>이름</th>
+		                <th>패널티</th>
+		                <th>좌석번호</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		        <%
+		            List<FixedSeatMemberView> list = (List<FixedSeatMemberView>) request.getAttribute("list");
+		            int index = 1;
+		            if (list != null) {
+		                for (FixedSeatMemberView m : list) {
+		                    if (m != null) {
+		        %>
+		        <tr>
+		            <td><%= index++ %></td>
+		            <td><%= m.getMemberGrade() %>학년</td>
+		            <td><%= m.getMemberSchool() %></td>
+		            <td><%= m.getMemberName() %></td>
+		            <td><%= m.getMemberPenalty() %></td>
+		            <td>
+		                <select name="seat_<%= m.getMemberNo() %>">
+		                    <option value="">미지정</option>
+		                    <% for (int i = 1; i <= 10; i++) { %>
+		                        <option value="<%= i %>" <%= (m.getSeatNo() != null && m.getSeatNo() == i) ? "selected" : "" %>><%= i %></option>
+		                    <% } %>
+		                </select>
+		            </td>
+		        </tr>
+		        <%
+		                    } // null check
+		                }
+		            }
+		        %>
+		        </tbody>
+		    </table>
+		
+		    <div class="btn-container">
+		        <button type="submit" class="btn-change">변경하기</button>
+		    </div>
+		</form>
+	</div>	
+</div>
 
-
-
-<!-- ✅ 확인창 띄우는 form -->
-<form id="seatForm" action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
-
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>학년</th>
-                <th>학교</th>
-                <th>이름</th>
-                <th>패널티</th>
-                <th>좌석번호</th>
-            </tr>
-        </thead>
-        <tbody>
-        <%
-            List<FixedSeatMemberView> list = (List<FixedSeatMemberView>) request.getAttribute("list");
-            int index = 1;
-            if (list != null) {
-                for (FixedSeatMemberView m : list) {
-                    if (m != null) {
-        %>
-        <tr>
-            <td><%= index++ %></td>
-            <td><%= m.getMemberGrade() %>학년</td>
-            <td><%= m.getMemberSchool() %></td>
-            <td><%= m.getMemberName() %></td>
-            <td><%= m.getMemberPenalty() %></td>
-            <td>
-                <select name="seat_<%= m.getMemberNo() %>">
-                    <option value="">미지정</option>
-                    <% for (int i = 1; i <= 10; i++) { %>
-                        <option value="<%= i %>" <%= (m.getSeatNo() != null && m.getSeatNo() == i) ? "selected" : "" %>><%= i %></option>
-                    <% } %>
-                </select>
-            </td>
-        </tr>
-        <%
-                    } // null check
-                }
-            }
-        %>
-        </tbody>
-    </table>
-
-    <div class="btn-container">
-        <button type="submit" class="btn-change">변경하기</button>
-    </div>
-</form>
-</div>	
 
 <!-- ✅ 중복 경고 메시지 alert -->
 <%

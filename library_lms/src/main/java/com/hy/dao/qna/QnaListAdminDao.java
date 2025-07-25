@@ -57,9 +57,6 @@ public class QnaListAdminDao {
 			// answerStatus = 1로 업데이트
 			session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusOne", reply.getQnaId());
 
-			// QnA.answer_status = 1로 업데이트
-			session.update("com.hy.mapper.qna.QnaAdminMapper.updateAnswerStatusOne", reply.getQnaId());
-
 			// 커밋
 			session.commit();
 		} catch (Exception e) {

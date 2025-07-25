@@ -65,13 +65,28 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
 	        	
 	        	 res.setContentType("text/html; charset=UTF-8");
         	    PrintWriter out = res.getWriter();
+        	
 
-        	    out.println("<script>");
-        	    out.println("alert('세션이 만료되어 로그아웃 되었습니다.');");
-        	    out.println("location.href='" + safeContext + "/login/view';");
-        	    out.println("</script>");
-        	    out.close();
+        		out.println("<!DOCTYPE html>");
+        		out.println("<html><head>");
+        		out.println("<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>");
+        		out.println("</head><body>");
+        		out.println("<script>");
+        		out.println("Swal.fire({");
+        		out.println("  icon: 'warning',");
+        		out.println("  title: '세션 만료',");
+        		out.println("  text: '다시 로그인해주세요',");
+        		out.println("  confirmButtonText: '확인',");
+        		out.println("  confirmButtonColor: '#205DAC'");
+        		out.println("}).then(() => {");
+        		out.println("  location.href = '" +safeContext + "/login/view';");
+        		out.println("});");
+        		out.println("</script>");
+        		out.println("</body></html>");
+        		out.close();
         	    return;
+        	    
+        	    
 	        }
 		chain.doFilter(request, response);
 	}

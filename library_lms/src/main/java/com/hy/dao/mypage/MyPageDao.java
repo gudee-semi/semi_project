@@ -46,7 +46,12 @@ public class MyPageDao {
 		session.close();
 		return result;
 	}
-
+	public int updateMemberPhone(Member param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.hy.mapper.mypage.MypageMapper.updateMemberPhone", param);
+		session.close();
+		return result;
+	}
 	public int updateProfileAttach(ProfileAttach param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.update("com.hy.mapper.mypage.MypageMapper.updateProfileAttach", param);
@@ -102,5 +107,7 @@ public class MyPageDao {
 		session.close();
 		return result;
 	}
+
+	
 
 }

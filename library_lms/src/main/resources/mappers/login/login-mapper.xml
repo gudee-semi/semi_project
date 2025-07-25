@@ -34,7 +34,7 @@
 		<where>
 			member_name = #{memberName} 
 			AND 
-			member_phone = #{memberPhone}
+			member_rrn = #{memberRrn}
 		</where>
 	</select>	
 	<select id = "searchPw" resultMap = "memberAccount" parameterType="com.hy.dto.Member">
@@ -43,7 +43,7 @@
 		<where>
 			member_id = #{memberId} 
 			AND 
-			member_phone = #{memberPhone}
+			member_rrn = #{memberRrn}
 		</where>
 	</select>
 	<update id="updatePw" parameterType="com.hy.dto.Member">
