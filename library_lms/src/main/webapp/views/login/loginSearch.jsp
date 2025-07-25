@@ -30,7 +30,7 @@
       gap: 15px;
     }
 
-    input[type="text"] {
+    input[type="text"] ,input[type="password"]{
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -83,7 +83,7 @@
       <c:if test="${type == 'id'}">
         <form id="search_id">
           <input type="text" id="search_name" name="search_name" placeholder="이름">
-          <input type="text" id="search_phone" name="search_phone" placeholder="전화번호">
+          <input type="password" id="search_rrn" name="search_rrn" placeholder="주민등록번호">
         <p id="search_name_msg"></p>
           <input type="submit" value="아이디 찾기">
         </form>
@@ -93,7 +93,7 @@
       <c:if test="${type == 'pw'}">
         <form id="search_pw">
           <input type="text" id="search_id" name="search_id" placeholder="아이디">
-          <input type="text" id="search_phone" name="search_phone" placeholder="전화번호">
+          <input type="password" id="search_rrn" name="search_rrn" placeholder="주민등록번호">
         <p id="search_id_msg"></p>
           <input type="submit" value="비밀번호 찾기">
         </form>
@@ -101,24 +101,46 @@
     </div>
   </div>
 
+<script>
+const rrnReg = /^\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[1-4]\d{6}$/;
+	let rrnStatus=false;
+$("#search_rrn").on("input blur",function(){
+	rrnStatus=false;
+	searchRrn = $("#search_rrn").val().trim();
+	if (!rrnReg.test(searchRrn)){
+		$("#search_id_msg").text("주민등록번호 형식이 잘못되었습니다.(-제외 13자리의 숫자)").css('color','red');
+		$("#search_name_msg").text("주민등록번호 형식이 잘못되었습니다.(-제외 13자리의 숫자)").css('color','red');
+		
+	}
+	else{
+		$("#search_id_msg").text("").css('color','red');
+		$("#search_name_msg").text("").css('color','red');
+		rrnStatus=true;
+	}
+});
 
+
+
+</script>
 
 
 <script>
 	$("#search_id").on("submit",function(e){
 		e.preventDefault();
 		const memberName = $("#search_name").val();
-		const memberPhone = $("#search_phone").val();
+		const memberRrn = $("#search_rrn").val();
 		
-		if(!memberName||!memberPhone){
-			$("#search_name_msg").text("이름 또는 전화번호를 입력하세요").css("color","red");
-			
-		}else{
+		if(!memberName||!memberRrn){
+			$("#search_name_msg").text("이름 또는 주민등록번호를 입력하세요").css("color","red");
+			return;
+		}
+		if(rrnStatus){
+		
 			$.ajax({
 				url : "/login/search",
 				type: "post",
 				data : {memberName : memberName,
-						memberPhone : memberPhone},
+						member_rrn : memberRrn},
 				dataType : "json",
 				success : function(data){
 						if(data.id === "no"){
@@ -135,17 +157,17 @@
 	$("#search_pw").on("submit", function(e) {
 	    e.preventDefault();
 	    const memberId = $("#search_id").val();
-	    const memberPhone = $("#search_phone").val();
+	    const memberRrn = $("#search_rrn").val();
 
-	    if (!memberId || !memberPhone) {
-	        $("#search_id_msg").text("아이디 또는 전화번호를 입력하세요").css("color", "red");
-	    } else {
+	    if (!memberId || !memberRrn) {
+	        $("#search_id_msg").text("아이디 또는 주민등록번호를 입력하세요").css("color", "red");
+	    } if(rrnStatus){
 	        $.ajax({
 	            url: "/login/search",
 	            type: "post",
 	            data: {
 	                memberId: memberId,
-	                memberPhone: memberPhone
+	                member_rrn : memberRrn
 	            },
 	            dataType: "json",
 	            success: function(data) {

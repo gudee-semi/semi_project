@@ -117,7 +117,7 @@
 	/*  하...   */
 	.sidebars {
 		width: 250px;
-		height: 1000px;
+		height: 850px;
 	}
 	
 	.flex-container {
@@ -174,7 +174,8 @@
 				</tr>
 				<tr>
 					<th class="content">내용</th>
-					<td class="content-cell" colspan="3">${qna.content }</td>
+					<% pageContext.setAttribute("newLine", "\n"); %>
+					<td class="content-cell" colspan="3">${fn:replace(qna.content, newLine,"<br>")}</td>
 				</tr>
 
 				<c:if test="${not empty attach }">
@@ -218,14 +219,14 @@
 					<c:if test="${qna.answerStatus eq '0'}">
 						<form action="<c:url value='/qna/update'/>" method="get">
 							<input type="hidden" name="no" value="${qna.qnaId}" />
-							<button class="btn-common" style="margin-bottom: 10px">수정</button>
+							<button class="btn-common" style="margin-bottom: 50px">수정</button>
 						</form>
 					</c:if>
 					<form id="deleteForm">
 						<input type="hidden" class="deleteId" name="no"
 							value="${qna.qnaId}" />
 						<button type="submit" class="btn-common" id="deleteBtn"
-							style="margin-bottom: 10px">삭제</button>
+							style="margin-bottom: 50px">삭제</button>
 					</form>
 				</c:if>
 			</div>

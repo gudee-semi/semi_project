@@ -3,6 +3,8 @@ package com.hy.common.filter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.hy.dto.Member;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -48,7 +50,7 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
 	        String safeContext = (context == null || context.equals("/") || context.equals("")) ? "" : context;
 
 	        // 로그인 관련 요청은 세션이 있기 전이기에 필터 제외
-	        if (uri.startsWith(safeContext + "/login")|| uri.equals(safeContext + "/") || uri.equals(safeContext + "/main")) {
+	        if (uri.startsWith(safeContext + "/login")|| uri.equals(safeContext + "/") ) {
 	            chain.doFilter(request, response); // 로그인 관련 요청은 통과
 	            return;
 	        }
@@ -61,17 +63,43 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
 
 	        // 세션 체크
 	        HttpSession session = req.getSession(false);
+	    	if(uri.startsWith(safeContext + "/views/admin/")||uri.contains(safeContext + "/admin")||uri.startsWith(safeContext + "/user") ) {
+	    		
+        		if(session == null || session.getAttribute("loginMember") == null||((Member)session.getAttribute("loginMember")).getMemberNo()!=1){
+        			res.sendRedirect("/views/error/403.jsp");
+        			return;
+        			
+        		}
+        		
+        	}
 	        if (session == null || session.getAttribute("loginMember") == null) {
+	        	
+	       
 	        	
 	        	 res.setContentType("text/html; charset=UTF-8");
         	    PrintWriter out = res.getWriter();
+        	
 
-        	    out.println("<script>");
-        	    out.println("alert('세션이 만료되어 로그아웃 되었습니다.');");
-        	    out.println("location.href='" + safeContext + "/login/view';");
-        	    out.println("</script>");
-        	    out.close();
+        		out.println("<!DOCTYPE html>");
+        		out.println("<html><head>");
+        		out.println("<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>");
+        		out.println("</head><body>");
+        		out.println("<script>");
+        		out.println("Swal.fire({");
+        		out.println("  icon: 'warning',");
+        		out.println("  title: '세션 만료',");
+        		out.println("  text: '다시 로그인해주세요',");
+        		out.println("  confirmButtonText: '확인',");
+        		out.println("  confirmButtonColor: '#205DAC'");
+        		out.println("}).then(() => {");
+        		out.println("  location.href = '" +safeContext + "/login/view';");
+        		out.println("});");
+        		out.println("</script>");
+        		out.println("</body></html>");
+        		out.close();
         	    return;
+        	    
+        	    
 	        }
 		chain.doFilter(request, response);
 	}

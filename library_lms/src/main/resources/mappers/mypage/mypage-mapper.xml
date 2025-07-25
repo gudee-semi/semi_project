@@ -66,6 +66,10 @@
 		UPDATE member SET member_grade = #{memberGrade}
 		WHERE member_no =#{memberNo}
 	</update>
+	<update id="updateMemberPhone"  parameterType="com.hy.dto.Member">
+		UPDATE member SET member_phone = #{memberPhone}
+		WHERE member_no =#{memberNo}
+	</update>
 	<update id = "updateProfileAttach" parameterType="com.hy.dto.login.ProfileAttach">
 		UPDATE member_avatar 
 		SET ori_name = #{oriName},

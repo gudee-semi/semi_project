@@ -39,7 +39,7 @@ public class MainPageDataServlet extends HttpServlet {
 		
 		request.setAttribute("noticeList", noticeList);
 		request.setAttribute("qnaList", qnaList);
-		request.getRequestDispatcher("/").forward(request, response);
+		request.getRequestDispatcher("/views/login/mainPage.jsp").forward(request, response);
 	}
 
 	/**

@@ -44,9 +44,10 @@ public class Logout extends HttpServlet {
 		out.println("  icon: 'success',");
 		out.println("  title: '로그아웃 완료',");
 		out.println("  text: '다시 로그인해주세요',");
-		out.println("  confirmButtonText: '확인'");
+		out.println("  confirmButtonText: '확인',");
+		out.println("  confirmButtonColor: '#205DAC'");
 		out.println("}).then(() => {");
-		out.println("  location.href = '" + request.getContextPath() + "/login/view';");
+		out.println("  location.replace('" + request.getContextPath() + "/login/view');");
 		out.println("});");
 		out.println("</script>");
 		out.println("</body></html>");

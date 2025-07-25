@@ -294,7 +294,7 @@
 <!--비밀번호 -->
 <%@ include file="/views/include/header.jsp" %>
 <div class="container_box">
-	<div class="sidesbar"><%@ include file="/views/include/sidebar.jsp" %></div>
+	<div class="sidebars"><%@ include file="/views/include/sidebar.jsp" %></div>
 	<h1 class="update_title">개인정보 수정</h1>
 	<div class="update_box">
 		<form id="updateAccount">
@@ -304,6 +304,12 @@
 				<input type="password" id="member_pw_check" placeholder="비밀번호 확인">
 				<p id="member_pw_msg"></p>
 			</div>
+			<!-- 전화번호  -->
+			<span style="margin:0 11px 0 10px;">전화번호</span>
+			<input type="text" id="member_phone" name="member_phone"
+					placeholder="전화번호">
+					
+				<p id="member_phone_msg"></p>
 			
 			<!--주소 검색  -->
 			<input type="button" id = "addressBtn" value="주소검색">
@@ -379,6 +385,7 @@
 		const memberAccountAddress = '${sessionScope.loginMember.memberAddress}';
 		const memberAccountSchool ='${sessionScope.loginMember.memberSchool}';
 		const memberAccountGrade = '${sessionScope.loginMember.memberGrade}';
+		const memberAccountPhone = '${sessionScope.loginMember.memberPhone}';
 	</script>
 	<script >
 	//페이지 들어왔을 때 그 계정의 정보를 뿌려줌
@@ -386,6 +393,7 @@
 		  $("#member_address").val(memberAccountAddress);
 		  $("#member_schul").val(memberAccountSchool);
 		  $("#member_grade").val(memberAccountGrade);
+		  $("#member_phone").val(memberAccountPhone);
 		  $.ajax({
 			url : "/file/DealWith?memberNo="+memberNo,
 			type : "get",
@@ -406,14 +414,17 @@
 	let schulStatus= true;
 	let gradeStatus= true;
 	let profileStatus = true;
+	let phoneStatus= true;
 	const pwReg = /^[a-zA-Z0-9!@#$%^&*?]{6,12}$/;
 	const imgReg = /\.(jpg|png)$/i;
+	const phoneReg = /^010([0-9]{4})([0-9]{4})$/;
 	let memberPw="";
 	let member_pw_check="";
 	let memberAddress="";
 	let memberSchul="";
 	let memberGrade=0;
 	let memberProfile="";
+	let memberPhone="";
 </script>
 	<script>
 	//비밀번호 정규식 검사 , 비밀번호 재확인 
@@ -436,6 +447,47 @@
 		}
 	});
 	</script>
+	<script>
+	
+	//전화번호 정규식 
+	$("#member_phone").on("input blur",function(){
+		phoneStatus=false;
+		memberPhone = $("#member_phone").val().trim();
+		if(memberPhone === ""){
+			$("#member_phone_msg").text("전화번호를 입력해주세요.").css('color','red');
+			phoneStatus=true;
+		}else if (!phoneReg.test(memberPhone)){
+			$("#member_phone_msg").text("전화번호 형식이 잘못 되었습니다.(-제외, 010으로 시작)").css('color','red');
+		}else if(memberPhone !== memberAccountPhone){
+			$.ajax({
+				url : "/login/member/repeatcheck",
+				type : "post",
+				data : {member_phone  : memberPhone},
+				dataType :"json",
+				success : function(data) {
+					if(data.phoneCheck=="no"){
+					$("#member_phone_msg").text("이미 등록된 전화번호 입니다.").css('color','red');
+					}else{
+					$("#member_phone_msg").text("").css('color','red');
+						phoneStatus=true;
+					}
+				}
+			});
+		}else{
+			$("#member_phone_msg").text("").css('color','red');
+			memberPhone="";
+			phoneStatus=true;
+			
+		}
+	});
+	
+	</script>
+	
+	
+	
+	
+	
+	
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	
@@ -566,27 +618,80 @@
 	</script>
 	
 	<script>
-		//프로필 이미지
-	$("#member_profile").on("change",function(){
-		profileStatus=false;
-		const file = this.files[0];
-		if(!file){
-			$("#member_profile_msg").text("파일을 선택해주세요").css('color','red');
-		}else if(!imgReg.test(memberProfile=file.name)){
-			$("#member_profile").val("");
-			$("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg ,png 파일만 첨부가능합니다)").css('color','red');
-			profileStatus=true;
-		}else{
-			$("#previewImg_msg").text(file.name);
-			$("#member_profile_msg").text("");
-			const reader = new FileReader();
-			reader.onload = function(e){
-				$("#previewImg").attr("src", e.target.result).show();
-			};
-			 reader.readAsDataURL(file);
-			 profileStatus=true;
-		}
+	//프로필 이미지
+		
+		
+	$("#member_profile").on("change", function () {
+	    profileStatus = false;
+	    $("#member_profile_msg").text("");
+	    $("#previewImg").removeAttr("src").hide();
+	    const file = this.files[0];
+	    const maxSize = 2 * 1024 * 1024; // 2MB
+	
+	    if (!file) {
+	        $("#member_profile_msg").text("파일을 선택해주세요.").css('color', 'red');
+	        profileStatus=true;
+	        return;
+	    }
+	
+	    // 확장자 체크
+	    if (!imgReg.test(file.name)) {
+	        $(this).val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        $("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg, png만 허용)").css('color', 'red');
+	        profileStatus=true;
+	        return;
+	    }
+	
+	    // 용량 체크
+	    if (file.size > maxSize) {
+	        $(this).val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        $("#member_profile_msg").text("파일 크기는 2MB 이하만 허용됩니다.").css('color', 'red');
+	        profileStatus=true;
+	        return;
+	    }
+	
+	    // 해상도 체크
+	    const img = new Image();
+	    const objectURL = URL.createObjectURL(file);
+	    img.onload = function () {
+	        if (img.width > 1200 || img.height > 1200) {
+	            $("#member_profile_msg").text("이미지 해상도는 1200x1200px 이하만 허용됩니다.").css('color', 'red');
+	            $("#member_profile").val("");
+	            $("#file-name").text("선택된 파일 없음");
+	            URL.revokeObjectURL(objectURL);
+	            profileStatus = true;
+	            return;
+	        }
+	
+	        // 모두 통과했을 때
+	        $("#file-name").text(file.name);
+	        memberProfile=file.name;
+	        const reader = new FileReader();
+	        reader.onload = function (e) {
+	            $("#previewImg").attr("src", e.target.result).show();
+	        };
+	        reader.readAsDataURL(file);
+	        profileStatus = true;
+	        URL.revokeObjectURL(objectURL);
+	    };
+	
+	    img.onerror = function () {
+	        $("#member_profile_msg").text("이미지 파일을 불러올 수 없습니다.").css('color', 'red');
+	        $("#member_profile").val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        URL.revokeObjectURL(objectURL);
+	        profileStatus=true;
+	    };
+	
+	    img.src = objectURL;
 	});
+		
+		
+		
+		
+		
 	</script>
 
 	
@@ -594,7 +699,7 @@
 	<script>
 		$("#updateAccount").on("submit",function(e){
 			e.preventDefault();
-			if(pwStatus && addressStatus && schulStatus && gradeStatus &&profileStatus ){
+			if(pwStatus && addressStatus && schulStatus && gradeStatus &&profileStatus&& phoneStatus ){
 				const form = document.getElementById("updateAccount");
 				const formData = new FormData(form);
 				formData.set("member_pw", memberPw);
@@ -602,6 +707,7 @@
 				formData.set("member_schul", memberSchul);
 				formData.set("member_grade", memberGrade);
 				formData.set("member_no", memberNo);
+				formData.set("member_phone",memberPhone);
 				
 				$.ajax({
 					url : "/update/member",
@@ -617,7 +723,7 @@
 							Swal.fire({
 								  title: "변경실패",
 								  text: "서버 오류입니다.",
-								  icon: "waring",
+								  icon: "warning",
 								  confirmButtonColor: '#205DAC'
 								}).then(() => {
 									location.href ="<%=request.getContextPath()%>/mypage/view";
@@ -629,7 +735,7 @@
 								  icon: "success",
 								  confirmButtonColor: '#205DAC'
 								}).then(() => {
-									location.href ="<%=request.getContextPath()%>/main/view";
+									location.href ="<%=request.getContextPath()%>/main";
 								});
 							 
 							 

@@ -40,7 +40,6 @@ public class QnaWriteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-
 		HttpSession session = request.getSession(false); // 기존 세션만 가져오기
 		
 		Member member = (Member)session.getAttribute("loginMember");
@@ -74,17 +73,26 @@ public class QnaWriteServlet extends HttpServlet {
 		File uploadDir = AttachService.getUploadDirectory();
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
 		
-		// 3. 게시글과 파일 정보 데이터베이스에 추가
-		int result = qnaService.createQnaWithAttach(qna,attach);
+		String ext = "pass";
+		if (attach != null) {
+			int loc = attach.getOriName().lastIndexOf(".");
+			ext = attach.getOriName().substring(loc + 1);			
+		}
+		
+		int result = -1;
+		
+		if (ext.equals("png") || ext.equals("jpg") || ext.equals("pass")) {
+			result = qnaService.createQnaWithAttach(qna,attach);	
+		}
 		
 		JSONObject obj = new JSONObject();
 		
-		if(result > 0) {
+		if (result > 0) {
 			obj.put("res_code", "200");
-			obj.put("res_msg", "게시글이 등록되었습니다.");
+		} else if (result == 0) {
+			obj.put("res_code", "500");			
 		} else {
-			obj.put("res_code", "500");
-			obj.put("res_msg", "게시글 등록중 오류가 발생했습니다.");
+			obj.put("res_code", "999");
 		}
 		
 		response.setContentType("application/json; charset=utf-8");

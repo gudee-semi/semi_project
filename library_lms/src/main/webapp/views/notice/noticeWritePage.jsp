@@ -90,9 +90,9 @@ textarea:focus {
 	cursor: pointer;
 	height: 40px;
 	width: 90px;
-   	margin-right: 10px;
-   	transition: .2s;
-   	font-size: 16px;
+  margin-right: 10px;
+  transition: .2s;
+  font-size: 16px;
 }
 
 .btn:hover {
@@ -168,7 +168,10 @@ footer {
 			    	
 			    	<tr>
 						<th>첨부 파일</th>
-						<td colspan="3"><input type="file" name="file" accept=".jpg, .png"></td>
+						<td colspan="3"><input type="file" name="file" accept=".jpg, .png">
+							<br>
+					        <span style="font-size: 13px; color: #888;">※ 첨부 가능 파일: JPG, PNG 형식만 업로드 가능합니다.</span>
+				        </td>
 				    </tr>
 				</table>
 				    
