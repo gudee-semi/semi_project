@@ -61,7 +61,7 @@
 	/*  하...   */
 	.sidebars {
 		width: 250px;
-		height: 1000px;
+		height: 860px;
 	}
 	
 	.flex-container {
