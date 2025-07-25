@@ -55,7 +55,7 @@ button {
 }
 
 .search {
-	text-align: center;
+	text-align: end;
 	padding: 30px;
 }
 
@@ -133,7 +133,7 @@ body>form {
 			<form action="${pageContext.request.contextPath}/qna/list/admin" method="get" class="search">
 
 				<%-- 카테고리 셀렉트 --%>
-				<select name="category">
+				<select name="category" style="height: 27px;">
 					<option value="">전체</option>
 					<option value="시설" <c:if test="${param.category == '시설'}">selected</c:if>>시설</option>
 					<option value="좌석" <c:if test="${param.category == '좌석'}">selected</c:if>>좌석</option>
@@ -142,14 +142,14 @@ body>form {
 				</select>
 
 				<%-- 검색 타입 셀렉트 --%>
-				<select name="searchType">
+				<select name="searchType" style="height: 27px;">
 					<option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
 					<option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
 					<option value="memberName" <c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
 				</select>
 
 				<%-- 키워드 입력창 --%>
-				<input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력" />
+				<input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력 " style="height: 20px;" />
 
 				<%-- 검색 버튼 --%>
 				<button type="submit" class="search-icon" style="display: inline">
