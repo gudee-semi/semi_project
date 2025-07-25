@@ -40,11 +40,12 @@ public class fileDealWith extends HttpServlet {
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 		ProfileAttach attach = service.selectProfileAttach(memberNo);
 		JSONObject obj = new JSONObject();
-		String path = attach.getPath();
-		String oriname= attach.getOriName();
-		obj.put("path",path );
-		obj.put("oriname", oriname);
-		
+		if(attach!=null) {
+			String path = attach.getPath();
+			String oriname= attach.getOriName();
+			obj.put("path",path );
+			obj.put("oriname", oriname);
+		}
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(obj);
 		

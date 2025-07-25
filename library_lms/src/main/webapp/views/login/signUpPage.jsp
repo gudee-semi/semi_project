@@ -312,6 +312,7 @@ select:focus {
 				<!-- 전화번호 -->
 				<input type="text" id="member_phone" name="member_phone"
 					placeholder="전화번호">
+					
 				<p id="member_phone_msg"></p>
 
 				<!--주민번호 -->
@@ -396,8 +397,8 @@ select:focus {
 	let profileStatus = false;
 	const idReg = /^[a-zA-Z0-9]{6,12}$/;
 	const pwReg = /^[a-zA-Z0-9!@#$%^&*?]{6,12}$/;
-	const rrnReg = /^[0-9]{13}$/;
-	const phoneReg = /^[0-9]{11}$/;
+	const rrnReg = /^\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[1-4]\d{6}$/;
+	const phoneReg = /^010([0-9]{4})([0-9]{4})$/;
 	const nameReg = /^[가-힣]{2,20}$/;
 	const imgReg = /\.(jpg|png)$/i;
 	let memberId="";
@@ -465,7 +466,7 @@ select:focus {
 		if(memberPhone === ""){
 			$("#member_phone_msg").text("전화번호를 입력해주세요.").css('color','red');
 		}else if (!phoneReg.test(memberPhone)){
-			$("#member_phone_msg").text("전화번호: - 제외하고 입력해주세요 ").css('color','red');
+			$("#member_phone_msg").text("전화번호 형식이 잘못 되었습니다.(-제외, 010으로 시작)").css('color','red');
 		}else{
 			$.ajax({
 				url : "/login/member/repeatcheck",
@@ -507,7 +508,7 @@ select:focus {
 		if(memberRrn === ""){
 			$("#member_rrn_msg").text("주민등록번호를 입력해주세요.").css('color','red');
 		}else if (!rrnReg.test(memberRrn)){
-			$("#member_rrn_msg").text("13자리의 주민번호를 입력해주세요").css('color','red');
+			$("#member_rrn_msg").text("주민등록번호 형식이 잘못되었습니다.(- 제외 13자리의 숫자)").css('color','red');
 		}
 		else{
 			$.ajax({
@@ -589,6 +590,8 @@ select:focus {
 	})
 	$("#modal_close_btn").on("click",function(){
 		document.getElementById('schul_modal').style.display = 'none';
+		$("#result_field").html("");
+		$("#schul_name").val("");
 	})
 	//서울시 학교 검색
 		$("#schul_search").on("click",function(){
@@ -622,16 +625,20 @@ select:focus {
 						
 						
 						if(name.length===0){
-							$("#result_field").text("없는 학교입니다.");
+							$("#result_field").text("없는 학교입니다.").css('color','red');
 						}else{
 							for(let i = 0 ; i <name.length; i++){
 								result+="<li class = 'schul_list'>"+name[i]+"</li>";
 							}
-							$("#result_field").html("<ul>" + result + "</ul>");
+							$("#result_field").css('color','black').html("<ul>" + result + "</ul>");
 						}	
 					},
 					error: function(){
-						alert("요청실패");
+						Swal.fire({
+							  text: "학교정보를 불러올수 없습니다.",
+							  icon: "warning",
+							  confirmButtonColor: '#205DAC'
+							});
 					}
 					
 				});
@@ -675,28 +682,66 @@ select:focus {
 
 	<script>
 		//프로필 이미지
-	$("#member_profile").on("change",function(){
-		profileStatus=false;
-		$("#member_profile_msg").text("");
-		$("#previewImg").removeAttr("src").hide();
-		const file = this.files[0];
-		if(!file){
-			$("#member_profile_msg").text("파일을 선택해주세요").css('color','red');
-		}else if(!imgReg.test(memberProfile=file.name)){
-			$("#member_profile").val("");
-			$("#file-name").text("선택된 파일 없음");
-			$("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg ,png 파일만 첨부가능합니다)").css('color','red');
-		}else{
-			$("#file-name").text(file.name);
-			const reader = new FileReader();
-			reader.onload = function(e){
-				$("#previewImg").attr("src", e.target.result).show();
-			};
-			 reader.readAsDataURL(file);
-			 profileStatus=true;
-			
-		}
-		
+	$("#member_profile").on("change", function () {
+	    profileStatus = false;
+	    $("#member_profile_msg").text("");
+	    $("#previewImg").removeAttr("src").hide();
+	    const file = this.files[0];
+	    const maxSize = 2 * 1024 * 1024; // 2MB
+	
+	    if (!file) {
+	        $("#member_profile_msg").text("파일을 선택해주세요.").css('color', 'red');
+	        return;
+	    }
+	
+	    // 확장자 체크
+	    if (!imgReg.test(file.name)) {
+	        $(this).val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        $("#member_profile_msg").text("지원하지 않는 확장자입니다.(jpg, png만 허용)").css('color', 'red');
+	        return;
+	    }
+	
+	    // 용량 체크
+	    if (file.size > maxSize) {
+	        $(this).val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        $("#member_profile_msg").text("파일 크기는 2MB 이하만 허용됩니다.").css('color', 'red');
+	        return;
+	    }
+	
+	    // 해상도 체크
+	    const img = new Image();
+	    const objectURL = URL.createObjectURL(file);
+	    img.onload = function () {
+	        if (img.width > 1200 || img.height > 1200) {
+	            $("#member_profile_msg").text("이미지 해상도는 1200x1200px 이하만 허용됩니다.").css('color', 'red');
+	            $("#member_profile").val("");
+	            $("#file-name").text("선택된 파일 없음");
+	            URL.revokeObjectURL(objectURL);
+	            return;
+	        }
+	
+	        // 모두 통과했을 때
+	        $("#file-name").text(file.name);
+	        memberProfile=file.name;
+	        const reader = new FileReader();
+	        reader.onload = function (e) {
+	            $("#previewImg").attr("src", e.target.result).show();
+	        };
+	        reader.readAsDataURL(file);
+	        profileStatus = true;
+	        URL.revokeObjectURL(objectURL);
+	    };
+	
+	    img.onerror = function () {
+	        $("#member_profile_msg").text("이미지 파일을 불러올 수 없습니다.").css('color', 'red');
+	        $("#member_profile").val("");
+	        $("#file-name").text("선택된 파일 없음");
+	        URL.revokeObjectURL(objectURL);
+	    };
+	
+	    img.src = objectURL;
 	});
 	</script>
 

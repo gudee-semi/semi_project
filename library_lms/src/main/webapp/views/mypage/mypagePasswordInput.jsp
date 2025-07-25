@@ -96,7 +96,12 @@
 				}else if(data.res_code==500){
 					$("#search_pw_msg").text("비밀번호가 틀렸습니다.").css('color','red');
 				}else{
-					alert("서버 오류 입니다.");
+					Swal.fire({
+						  title: "비밀번호 변경 실패",
+						  text: "서버오류가 발생했습니다.",
+						  icon: "warning",
+						  confirmButtonColor: '#205DAC'
+						});
 				}
 				
 			},

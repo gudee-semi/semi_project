@@ -183,7 +183,7 @@
 	#scoreRadarChart {
 	  width: 440px; 
 	  height: 440px; 
-	}
+	}  
 	
 	.bar-chart-container canvas,
 	.radar-chart-container canvas {
