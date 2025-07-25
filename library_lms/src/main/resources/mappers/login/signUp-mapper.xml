@@ -105,6 +105,7 @@
 			 AND user_name LIKE CONCAT('%',#{userName},'%')
 		</if>
 	</where>
+	ORDER BY user_name
 	LIMIT #{limitPageNo},#{numPerPage}
 </select>
 <select id = "memberList" resultMap ="memberAccount" parameterType ="com.hy.dto.Member">
@@ -116,7 +117,8 @@
 			AND	 member_name LIKE CONCAT('%',#{memberName},'%')
 		</if>
 	</where>
-	
+	ORDER BY member_grade, member_name
+	LIMIT #{limitPageNo},#{numPerPage}
 </select>
 <select id = "selectUserCount" resultType ="_int" parameterType ="com.hy.dto.login.User">
 	SELECT COUNT(*)

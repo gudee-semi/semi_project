@@ -590,6 +590,8 @@ select:focus {
 	})
 	$("#modal_close_btn").on("click",function(){
 		document.getElementById('schul_modal').style.display = 'none';
+		$("#result_field").html("");
+		$("#schul_name").val("");
 	})
 	//서울시 학교 검색
 		$("#schul_search").on("click",function(){
@@ -623,16 +625,20 @@ select:focus {
 						
 						
 						if(name.length===0){
-							$("#result_field").text("없는 학교입니다.");
+							$("#result_field").text("없는 학교입니다.").css('color','red');
 						}else{
 							for(let i = 0 ; i <name.length; i++){
 								result+="<li class = 'schul_list'>"+name[i]+"</li>";
 							}
-							$("#result_field").html("<ul>" + result + "</ul>");
+							$("#result_field").css('color','black').html("<ul>" + result + "</ul>");
 						}	
 					},
 					error: function(){
-						alert("요청실패");
+						Swal.fire({
+							  text: "학교정보를 불러올수 없습니다.",
+							  icon: "warning",
+							  confirmButtonColor: '#205DAC'
+							});
 					}
 					
 				});
