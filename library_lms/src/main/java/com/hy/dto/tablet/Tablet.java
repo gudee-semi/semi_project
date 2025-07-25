@@ -8,8 +8,7 @@ public class Tablet {
 	private int tabletId;
 	private int tabletAvailable;
 	private int status;
-	private Integer memberNo;
-	
+	private Integer memberNo;	
 	private String memberName;
 
 }

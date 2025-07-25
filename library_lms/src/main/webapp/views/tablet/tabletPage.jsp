@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,36 +27,73 @@ body>div>div.container>div:nth-child(1)>img {
 	width: 100px;
 	height: 55px;
 	border: none;
-	background-color: #205DAC;
-	color: #fff;
+	background-color: #D8E5F4;
 	border-radius: 6px;
-	font-size: 15px;
+	font-weight: bold;
+	font-size: 20px;
 	cursor: pointer;
 	transition: 0.2s;
-	transform: translate(0, 80px);
+	cursor: pointer;
+	transform: translate(0, 120px);
 }
 
 .submit-btn:hover {
 	background-color: #3E7AC8;
 }
 
-#useForm-1, #returnForm-1 {
-	font-size: 28px;
-	font-weight: 400;
+#useForm-1 {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#returnForm-1 {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.useform {
+	background-color: #D8E5F4;
+	padding: 0px 40px;
+	border-radius: 5px;
+	display: block;
+	font-weight: bold;
+	width: 180px;
+	margin: 0 auto;
+}
+
+.returnform {
+	background-color: #D8E5F4;
+	padding: 0px 40px;
+	border-radius: 5px;
+	display: block;
+	font-weight: bold;
+	width: 210px;
+	margin: 0 auto;
+}
+
+.side {
+	width: 300px;
+	height: 1000px;
+}
+
+.flex-container {
+	display: flex;
+	align-items: flex-start;
+}
+
+.container {
+	width: 70%;
 }
 </style>
 
 	<%@ include file="/views/include/header.jsp"%>
 
+	<div class="sidebars"><%@ include file="/views/include/sidebar.jsp"%></div>
 	<div class="flex-container">
-		<div class="sidebars"><%@ include
-				file="/views/include/sidebar.jsp"%>
-		</div>
+		<div class="side"></div>
 		<div class="container">
-			<div>
-				<img
-					src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/6302.png"
-					alt="태블릿" />
+			<div style="text-align: center;">
+				<img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/6302.png" alt="태블릿" />
 			</div>
 
 			<div style="text-align: center; transform: translate(0, -370px);">
@@ -84,13 +120,12 @@ body>div>div.container>div:nth-child(1)>img {
 						<%-- 3-1. 내가 사용중인 태블릿이면 "사용중" 버튼 --%>
 						<c:if test="${usingList[loop.index]}">
 							<%-- "반납하기" 버튼: 활성화 상태! --%>
-							<form id="returnForm-${t.tabletId}"
-								action="${pageContext.request.contextPath}/tablet/return"
-								method="post" style="display: inline;"
-								onsubmit="return confirmReturn(${t.tabletId});">
+							<form id="returnForm-${t.tabletId}" action="${pageContext.request.contextPath}/tablet/return" method="post" style="display: inline;" onsubmit="return confirmReturn(${t.tabletId});">
 								<input type="hidden" name="tabletId" value="${t.tabletId}" />
-								<p>태블릿을 사용중입니다</p>
-								<p>사무실에서 수령해주세요</p>
+								<div class="returnform">
+									<p>태블릿을 사용중입니다</p>
+									<p>사무실에서 수령해주세요</p>
+								</div>
 								<button type="submit" class="submit-btn">반납하기</button>
 							</form>
 
@@ -99,15 +134,13 @@ body>div>div.container>div:nth-child(1)>img {
 						</c:if>
 
 						<%-- 3-2. 내가 사용중이 아니고, 사용 가능한 태블릿(available==0)이면 "사용하기" 버튼 --%>
-						<c:if
-							test="${not usingList[loop.index] and t.tabletAvailable == 0}">
-							<form id="useForm-${t.tabletId}"
-								action="${pageContext.request.contextPath}/tablet/use"
-								method="post" style="display: inline;"
-								onsubmit="return confirmUse(${t.tabletId});">
+						<c:if test="${not usingList[loop.index] and t.tabletAvailable == 0}">
+							<form id="useForm-${t.tabletId}" action="${pageContext.request.contextPath}/tablet/use" method="post" style="display: inline;" onsubmit="return confirmUse(${t.tabletId});">
 								<input type="hidden" name="tabletId" value="${t.tabletId}" />
-								<p>사용 가능 대수</p>
-								<p>${usable}대</p>
+								<div class="useform">
+									<p>사용 가능 대수</p>
+									<p>${usable}대</p>
+								</div>
 								<button type="submit" class="submit-btn">사용하기</button>
 							</form>
 
@@ -128,7 +161,6 @@ body>div>div.container>div:nth-child(1)>img {
 			</div>
 
 		</div>
-
 
 	</div>
 
