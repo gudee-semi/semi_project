@@ -64,13 +64,15 @@ public class NoticeWriteServlet extends HttpServlet {
 		
 		File uploadDir = NoticeAttachService.getUploadDirectory();
 		NoticeAttach attach = NoticeAttachService.handleUploadFile(request, uploadDir);
-		
-		int loc = attach.getOriName().lastIndexOf(".");
-		String ext = attach.getOriName().substring(loc + 1);
+		String ext = "pass";
+		if (attach != null) {
+			int loc = attach.getOriName().lastIndexOf(".");
+			ext = attach.getOriName().substring(loc + 1);			
+		}
 		
 		int result = -1;
 		
-		if (ext.equals("png") || ext.equals("jpg")) {
+		if (ext.equals("png") || ext.equals("jpg") || ext.equals("pass")) {
 			result = noticeService.createNoticeWithAttach(notice, attach);		
 		}
 		

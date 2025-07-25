@@ -178,6 +178,12 @@
 	footer {
 		margin-top: 0px !important;
 	}
+	
+	.qna-write-frm {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 30px;
+	}
 </style>
 
 </head>
@@ -269,9 +275,6 @@
 				
 			<c:if test="${not empty qnaList }">
 				<div class="table-bottom">
-					<form action="/qna/write" method="get">
-						<button class="btn">작성</button>
-					</form>
 					
 					<div class="paging-pages">
 						<c:choose>
@@ -317,6 +320,9 @@
 					</div>
 				</div>
 			</c:if>
+			<form action="/qna/write" method="get" class="qna-write-frm">
+				<button class="btn">작성</button>
+			</form>
 		</div>
 	</div>
 	

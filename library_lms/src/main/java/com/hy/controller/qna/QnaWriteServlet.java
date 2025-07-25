@@ -73,12 +73,15 @@ public class QnaWriteServlet extends HttpServlet {
 		File uploadDir = AttachService.getUploadDirectory();
 		Attach attach = AttachService.handleUploadFile(request, uploadDir);
 		
-		int loc = attach.getOriName().lastIndexOf(".");
-		String ext = attach.getOriName().substring(loc + 1);
+		String ext = "pass";
+		if (attach != null) {
+			int loc = attach.getOriName().lastIndexOf(".");
+			ext = attach.getOriName().substring(loc + 1);			
+		}
 		
 		int result = -1;
 		
-		if (ext.equals("png") || ext.equals("jpg")) {
+		if (ext.equals("png") || ext.equals("jpg") || ext.equals("pass")) {
 			result = qnaService.createQnaWithAttach(qna,attach);	
 		}
 		
