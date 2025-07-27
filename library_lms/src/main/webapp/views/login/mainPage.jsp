@@ -183,8 +183,6 @@
 		
 		<div class="weather-box">
 		  <div class="weather-wrapper">
-		    <div class="weather-left">
-		    </div>
 		  </div>
 		</div>
 		
@@ -192,8 +190,8 @@
 		<div class="city-name" id="cityName"></div>
 		
 		<div class="weather-info">
-		  <div>기온 <span id="temperature"></span> ℃</div>
-		  <div>습도 <span id="humidity"></span> %</div>
+		  <div>기온&nbsp; <span id="temperature">--℃</span></div>
+		  <div>습도&nbsp; <span id="humidity">--%</span></div>
 		</div>
 		
 	<script>
@@ -209,9 +207,9 @@
 		            $("#cityName").text(data.cityName);
 		            $("#weather").text(data.weather);
 		            $("#icon").attr("src", "https://openweathermap.org/img/wn/" + data.icon + "@2x.png");
-		            $("#temperature").text(parseInt(data.temperature));
+		            $("#temperature").text(parseInt(data.temperature) + "℃");
 		            $("#feelsLike").text(data.feelsLike);
-		            $("#humidity").text(data.humidity);
+		            $("#humidity").text((data.humidity) +"%");
 		            $("#windSpeed").text(data.windSpeed);
 		        },
 		        error: function() {
