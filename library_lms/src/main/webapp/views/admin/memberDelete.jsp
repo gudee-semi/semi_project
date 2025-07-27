@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원 계정 목록</title>
 </head>
 <style>
 	.container {
@@ -145,6 +145,32 @@ footer {
 	justify-content: flex-end;
 	margin-top: 10px;
 }
+.input-wrapper {
+  display: flex;
+}
+
+.input-wrapper input {
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  height: 40px;
+}
+
+.input-wrapper .search_btn {
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #205DAC;
+  color: white;
+  height: 40px;
+  width: 60px;
+  padding: 0;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 </style>
 <body>
 	<%@ include file="/views/include/header.jsp"%>
@@ -153,11 +179,14 @@ footer {
 			<div class="container">
 			<h1>회원 계정 목록</h1>
 			<div class="search-row">
-				<form method="get" action="<c:url value='/admin/member/delete'/>">
-					<input type="text" name="memberName" value="${paging.memberName }">
-					<button type="submit" class="material-symbols-outlined search_btn btn">search</button>
-				</form>
-			</div>
+				  <form method="get" action="<c:url value='/admin/member/delete'/>" class="search-form">
+				    <div class="input-wrapper">
+				      <input type="text" name="memberName" placeholder="이름 검색" value="${paging.memberName }">
+				      <button type="submit" class="material-symbols-outlined search_btn">search</button>
+				    </div>
+				  </form>
+				</div>
+				
 			<form action="<c:url value='/admin/member/delete'/>" method="post" id = "delete_member">
 				<table class="center" style="border-collapse: collapse; width: 100%">
 					<thead>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원 목록</title>
 </head>
 <style>
 .container {
@@ -22,6 +22,8 @@ h1 {
 	padding-left: 15px;
 	margin: 0 auto;
 }
+.search-row form{
+    gap: 0;}
 .search-row input {
 	height: 40px;
 	font-size: 14px;
@@ -146,6 +148,32 @@ footer {
 	justify-content: flex-end;
 	margin-top: 10px;
 }
+.input-wrapper {
+  display: flex;
+}
+
+.input-wrapper input {
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  height: 40px;
+}
+
+.input-wrapper .search_btn {
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #205DAC;
+  color: white;
+  height: 40px;
+  width: 60px;
+  padding: 0;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 </style>
 <body>
 	<%@ include file="/views/include/header.jsp"%>
@@ -155,10 +183,12 @@ footer {
 			<div class="container">
 				<h1>회원 목록</h1>
 				<div class="search-row">
-					<form method="get" action="<c:url value='/user/delete'/>">
-						<input type="text" name="userName" placeholder="이름 검색" value="${paging.userName }">
-						<button type="submit" class="material-symbols-outlined search_btn btn">search</button>
-					</form>
+				  <form method="get" action="<c:url value='/user/delete'/>" class="search-form">
+				    <div class="input-wrapper">
+				      <input type="text" name="userName" placeholder="이름 검색" value="${paging.userName }">
+				      <button type="submit" class="material-symbols-outlined search_btn">search</button>
+				    </div>
+				  </form>
 				</div>
 				
 				<form action="<c:url value='/user/delete'/>" method="post" id = "delete_user">

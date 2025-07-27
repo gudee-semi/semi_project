@@ -66,7 +66,8 @@ public class LoginSignUp extends HttpServlet {
 		    String memberPhone = request.getParameter("member_phone");
 		    String memberRrn = request.getParameter("member_rrn");
 		    String memberName = request.getParameter("member_name");
-		    String memberAddress = request.getParameter("member_address")+request.getParameter("member_address_detail");
+		    String memberAddressDetail= " "+request.getParameter("member_address_detail");
+		    String memberAddress = request.getParameter("member_address")+memberAddressDetail;
 		    String memberSchul = request.getParameter("member_schul");
 		    int memberGrade = Integer.parseInt(request.getParameter("member_grade"));
 		    JSONObject obj = new JSONObject();
