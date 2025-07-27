@@ -55,6 +55,7 @@ public class UpdateMember extends HttpServlet {
 		int memberNo = Integer.parseInt(request.getParameter("member_no"));
 		String memberPw = request.getParameter("member_pw");
 	    String memberAddress = request.getParameter("member_address");
+	    String memberAddressDetail =  " "+request.getParameter("member_address_detail");
 	    String memberSchul = request.getParameter("member_schul");
 	    String memberGrade = request.getParameter("member_grade");
 	    String memberPhone = request.getParameter("member_phone");
@@ -64,11 +65,19 @@ public class UpdateMember extends HttpServlet {
   
 		Member member = new Member();
 		member.setMemberNo(memberNo);
+		
 		if(memberPw != null && !memberPw.equals("")) {
 		member.setMemberPw(memberPw);
 		}
 		if(memberAddress != null && !memberAddress.equals("")) {
-			member.setMemberAddress(memberAddress);
+			member.setMemberAddress(memberAddress+memberAddressDetail);
+		}else {
+			if(memberAddressDetail!=null && !memberAddressDetail.equals("")) {
+				HttpSession session = request.getSession(false);
+				Member m = (Member)session.getAttribute("loginMember");
+				memberAddress= m.getMemberAddress();
+				member.setMemberAddress(memberAddress+memberAddressDetail);		
+			}
 		}
 		if(memberSchul != null && !memberSchul.equals("")) {
 			member.setMemberSchool(memberSchul);
