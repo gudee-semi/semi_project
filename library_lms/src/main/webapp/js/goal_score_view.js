@@ -85,21 +85,35 @@ $(document).ready(function () {
       return showSwal("시험 분류를 선택해 주세요.", "warning");
     }
 
-    $.ajax({
-      url: '/goal_score/delete',
-      type: 'POST',
-      data: {
-        memberNo: memberNo,
-        examTypeId: selectedExamTypeId
-      },
-      success: function () {
-        showSwal("삭제완료", "success").then(() => {
-          window.location.href = "/goal_score_view/view";
+    // 삭제 확인 모달
+    Swal.fire({
+      text: "삭제하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#205DAC",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // ✅ 실제 삭제 AJAX 요청
+        $.ajax({
+          url: '/goal_score/delete',
+          type: 'POST',
+          data: {
+            memberNo: memberNo,
+            examTypeId: selectedExamTypeId
+          },
+          success: function () {
+            showSwal("삭제완료", "success").then(() => {
+              window.location.href = "/goal_score_view/view";
+            });
+          },
+          error: function (xhr) {
+            const errMsg = xhr.responseText || "삭제실패";
+            showSwal(errMsg);
+          }
         });
-      },
-      error: function (xhr) {
-        const errMsg = xhr.responseText || "삭제실패";
-        showSwal(errMsg);
       }
     });
   });
