@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>하연 : 비밀번호 찾기</title>
 </head>
 <style>
 .container_pw_search {

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>개인정보 수정</title>
 </head>
 <style>
 	p {
