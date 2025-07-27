@@ -201,6 +201,7 @@
 			
 						<select name="keywordIn" id="keywordIn">
 							<option value="전체"${paging.keywordIn == "전체" ? "selected" : "" }>전체</option>
+							<option value="분류"${paging.keywordIn == "분류" ? "selected" : "" }>분류</option>
 							<option value="제목"${paging.keywordIn == "제목" ? "selected" : "" }>제목</option>
 							<option value="작성자"${paging.keywordIn == "작성자" ? "selected" : "" }>작성자</option>
 						</select>
