@@ -222,9 +222,18 @@ footer {
 			            }).then(() => {	            	
 							location.href = "<%= request.getContextPath() %>/notice/list";
 			            });
-					} else {
+					} else if (data.res_code == 999) {
 						Swal.fire({
 			              text: "허용되지 않은 확장자입니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.href = "<%= request.getContextPath() %>/notice/write";
+			            });
+					} else {
+						Swal.fire({
+			              text: "제목 또는 내용에 부적절한 단어가 존재합니다.",
 			              icon: "error",
 			              confirmButtonText: '확인',
 			              confirmButtonColor: '#205DAC'
