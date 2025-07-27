@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>하연 : 회원가입</title>
 </head>
 <!--모달창 css -->
 <style>

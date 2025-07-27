@@ -275,15 +275,26 @@
 				processData: false,
 				cache: false,
 				dataType: 'json',
-				success: (data) => {	
-					 Swal.fire({
-					    icon: data.res_code == 200 ? 'success' : 'error',
-					    text: data.res_code == 200 ? data.res_msg : data.res_msg,
-					    confirmButtonText: '확인',
-				    	confirmButtonColor: '#205DAC'
-					  }).then(() => {
-					    location.href = "<%= request.getContextPath() %>/qna/view";
-					  });
+				success: (data) => {
+					 if (data.res_code == 200 || data.res_code == 500) {
+						 Swal.fire({
+						    icon: data.res_code == 200 ? 'success' : 'error',
+						    text: data.res_code == 200 ? data.res_msg : data.res_msg,
+						    confirmButtonText: '확인',
+					    	confirmButtonColor: '#205DAC'
+						  }).then(() => {
+						    location.href = "<%= request.getContextPath() %>/qna/view";
+						  });						 
+					 } else {
+						 Swal.fire({
+			              text: "제목 또는 내용에 부적절한 단어가 존재합니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.reload();
+			            });
+					 }
 				}
 			});
 		});

@@ -100,33 +100,37 @@ public class NoticeUpdateServlet extends HttpServlet {
 		
 		int result = 0;
 		
-		if (attach != null) {
-			attach.setNoticeId(noticeId);
-			if (check == 2) {
-				// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
-				result = noticeService.updateNoticeNewAttach(notice, attach);
-			} else {
-				// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
-				result = noticeService.updateNoticeWithAttach(notice, attach);				
-			}
+		if ("CODE_REJECT_BAD_WORD".equals(title) || "CODE_REJECT_BAD_WORD".equals(content)) {
+			result = -1;
 		} else {
-			if (check == 1) {
-				// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
-				result = noticeService.updateNoticeDeleteAttach(notice);
-			} else if (check == 0 || check == 2) {
-				// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
-				result = noticeService.updateNoticeSameAttach(notice);
-			}
+			if (attach != null) {
+				attach.setNoticeId(noticeId);
+				if (check == 2) {
+					// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
+					result = noticeService.updateNoticeNewAttach(notice, attach);
+				} else {
+					// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
+					result = noticeService.updateNoticeWithAttach(notice, attach);				
+				}
+			} else {
+				if (check == 1) {
+					// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
+					result = noticeService.updateNoticeDeleteAttach(notice);
+				} else if (check == 0 || check == 2) {
+					// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
+					result = noticeService.updateNoticeSameAttach(notice);
+				}
+			}			
 		}
 		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
-			obj.put("res_msg", "공지사항이 성공적으로 수정되었습니다.");
 			obj.put("res_code", "200");
-		} else {
-			obj.put("res_msg", "공지사항 수정이 실패했습니다.");
+		} else if (result == 0) {
 			obj.put("res_code", "500");			
+		} else {
+			obj.put("res_code", "998");		
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

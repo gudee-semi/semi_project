@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>회원 등록</title>
 </head>
 <style>
 .container_box{

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>하연 : 아이디 찾기</title>
 </head>
 <style>
     .container_login_search {
