@@ -7,6 +7,7 @@ import com.hy.dto.Member;
 import com.hy.dto.qna.Attach;
 import com.hy.dto.qna.Qna;
 import com.hy.dto.qna.QnaReply;
+import com.hy.dto.use.Use;
 import com.hy.service.mypage.MyPageService;
 import com.hy.service.qna.QnaAdminService;
 import com.hy.service.qna.QnaService;
@@ -30,10 +31,9 @@ public class QnaDetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. no라는 이름의 게시글 pk값 전달받기
 		int qnaId = Integer.parseInt(request.getParameter("no"));
 		
-		// 2. Qna와 Attach 조회
+		// Qna와 Attach 조회
 		Qna qna = qnaService.selectQnaOne(qnaId);
 		Attach attach = qnaService.selectAttachByQnaNo(qnaId);
 		QnaReply reply = new QnaReply();
@@ -48,6 +48,12 @@ public class QnaDetailServlet extends HttpServlet {
 		Member member =(Member)session.getAttribute("loginMember");
 		
 		int memberNo = member.getMemberNo();
+		
+		// 작성자 아닌 멤버가 비공개글 url로 접근 시, 메인페이지로 전환
+		if ((memberNo != qna.getMemberNo()) && (qna.getVisibility() == 0)){
+			response.sendRedirect(request.getContextPath()+"/");
+			return;
+		}
 		
 		if (memberNo == qna.getMemberNo()) {
 			int result = mypageservice.updateReplyCheck(qnaId);

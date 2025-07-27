@@ -23,7 +23,6 @@ public class QnaViewServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 로그인이 안된 사람은 처음 메인페이지로 가게되어있음 현재 로그인페이지가 index가 아니어서
 		Qna qna = new Qna();
 		
 		// 현재 페이지 정보 셋팅
@@ -35,28 +34,22 @@ public class QnaViewServlet extends HttpServlet {
 		qna.setNowPage(nowPage);
 		
 		// 검색어 셋팅
-
 		String keywordIn = request.getParameter("keywordIn");
-
 		qna.setKeywordIn(keywordIn);
 		
 		String keyword = request.getParameter("keyword");
 		qna.setKeyword(keyword);
 		
 		// 전체 게시글 개수 조회
-
 		int totalData = service.selectQnaCount(qna);
 		
 		// 키워드 기준 2가지로 메소드 각각 만들기
 		qna.setTotalData(totalData);
-		
 		int totaldata = qna.getTotalData();
 		
 		// 게시글 목록 정보 조회
 		List<Qna> qnaList = service.selectQnaList(qna);
 	
-		
-		
 		request.setAttribute("totaldata", totaldata);
 		request.setAttribute("paging", qna);
 		request.setAttribute("qnaList", qnaList);
