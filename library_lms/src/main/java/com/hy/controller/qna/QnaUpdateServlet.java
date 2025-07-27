@@ -72,24 +72,29 @@ public class QnaUpdateServlet extends HttpServlet {
 		
 		int result = 0;
 		
-		if (attach != null) {
-			attach.setQnaId(qnaId);
-			if (check == 2) {
-				// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
-				result = qnaService.updateQnaNewAttach(qna, attach);
-			} else {
-				// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
-				result = qnaService.updateQnaWithAttach(qna, attach);				
-			}
+		if ("CODE_REJECT_BAD_WORD".equals(title) || "CODE_REJECT_BAD_WORD".equals(content)) {
+			result = -1;
 		} else {
-			if (check == 1) {
-				// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
-				result = qnaService.updateQnaDeleteAttach(qna);
-			} else if (check == 0 || check == 2) {
-				// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
-				result = qnaService.updateQnaSameAttach(qna);
-			}
+			if (attach != null) {
+				attach.setQnaId(qnaId);
+				if (check == 2) {
+					// 공지사항이 없는 게시물에 새롭게 첨부파일이 들어온 경우
+					result = qnaService.updateQnaNewAttach(qna, attach);
+				} else {
+					// 공지사항 수정과 더불어 첨부파일이 새롭게 업데이트 된 경우
+					result = qnaService.updateQnaWithAttach(qna, attach);				
+				}
+			} else {
+				if (check == 1) {
+					// 공지사항 수정과 더불어 첨부파일을 삭제한 경우
+					result = qnaService.updateQnaDeleteAttach(qna);
+				} else if (check == 0 || check == 2) {
+					// 공지사항 수정과 더불어 첨부파일을 유지하는 경우, 또는 첨부파일이 없는 게시물인 경우
+					result = qnaService.updateQnaSameAttach(qna);
+				}
+			}			
 		}
+		
 		
 		JSONObject obj = new JSONObject();
 
@@ -97,9 +102,11 @@ public class QnaUpdateServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_msg", "성공적으로 수정되었습니다.");
 			obj.put("res_code", "200");
-		} else {
+		} else if (result == 0) {
 			obj.put("res_msg", "게시글 수정 중 오류가 발생했습니다.");
 			obj.put("res_code", "500");			
+		} else {
+			obj.put("res_code", "998");	
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
@@ -276,7 +276,7 @@ footer {
 			            }).then(() => {
 							location.href = "<%= request.getContextPath() %>/notice/list";			            	
 			            });
-					} else {						
+					} else if (data.res_code == 500) {						
 						Swal.fire({
 			              text: "공지사항 수정에 실패했습니다.",
 			              icon: "error",
@@ -284,6 +284,15 @@ footer {
 			              confirmButtonColor: '#205DAC'
 			            }).then(() => {	            	
 							location.href = "<%= request.getContextPath() %>/notice/list";
+			            });
+					} else {
+						Swal.fire({
+			              text: "제목 또는 내용에 부적절한 단어가 존재합니다.",
+			              icon: "error",
+			              confirmButtonText: '확인',
+			              confirmButtonColor: '#205DAC'
+			            }).then(() => {	            	
+							location.reload();
 			            });
 					}
 				}

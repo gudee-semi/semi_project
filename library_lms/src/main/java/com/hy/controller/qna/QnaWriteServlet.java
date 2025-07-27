@@ -82,7 +82,11 @@ public class QnaWriteServlet extends HttpServlet {
 		int result = -1;
 		
 		if (ext.equals("png") || ext.equals("jpg") || ext.equals("pass")) {
-			result = qnaService.createQnaWithAttach(qna,attach);	
+			if ("CODE_REJECT_BAD_WORD".equals(title) || "CODE_REJECT_BAD_WORD".equals(content)) {
+				result = -2;
+			} else {				
+				result = qnaService.createQnaWithAttach(qna,attach);	
+			}
 		}
 		
 		JSONObject obj = new JSONObject();
@@ -91,8 +95,10 @@ public class QnaWriteServlet extends HttpServlet {
 			obj.put("res_code", "200");
 		} else if (result == 0) {
 			obj.put("res_code", "500");			
-		} else {
+		} else if (result == -1) {
 			obj.put("res_code", "999");
+		} else {
+			obj.put("res_code", "998");
 		}
 		
 		response.setContentType("application/json; charset=utf-8");
