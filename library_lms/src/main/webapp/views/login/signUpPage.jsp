@@ -593,6 +593,13 @@ select:focus {
 		$("#result_field").html("");
 		$("#schul_name").val("");
 	})
+	
+	$("#schul_modal").on("keydown", function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault(); // 메인 폼 제출 방지
+        $("#schul_search").click(); // 원하는 버튼 수동 실행
+    }
+	});
 	//서울시 학교 검색
 		$("#schul_search").on("click",function(){
 			
@@ -660,7 +667,8 @@ select:focus {
 			$("#member_schul_msg").text("");
 			schulStatus=true;
 			document.getElementById('schul_modal').style.display = 'none';
-		
+			$("#result_field").html("");
+			$("#schul_name").val("");
 			
 		})
 		
@@ -687,7 +695,7 @@ select:focus {
 	    $("#member_profile_msg").text("");
 	    $("#previewImg").removeAttr("src").hide();
 	    const file = this.files[0];
-	    const maxSize = 2 * 1024 * 1024; // 2MB
+	    const maxSize = 3 * 1024 * 1024; // 3MB
 	
 	    if (!file) {
 	        $("#member_profile_msg").text("파일을 선택해주세요.").css('color', 'red');
@@ -706,7 +714,7 @@ select:focus {
 	    if (file.size > maxSize) {
 	        $(this).val("");
 	        $("#file-name").text("선택된 파일 없음");
-	        $("#member_profile_msg").text("파일 크기는 2MB 이하만 허용됩니다.").css('color', 'red');
+	        $("#member_profile_msg").text("파일 크기는 3MB 이하만 허용됩니다.").css('color', 'red');
 	        return;
 	    }
 	
