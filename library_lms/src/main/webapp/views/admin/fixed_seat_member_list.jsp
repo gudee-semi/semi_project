@@ -93,7 +93,7 @@
 	</div>
 	
 	<div class="box">
-		<h2 class="h2">고정좌석 이용 회원</h2>
+		<h1 class="h2">고정좌석 이용 회원</h1>
 		<!-- ✅ 확인창 띄우는 form -->
 		<form id="seatForm" action="${pageContext.request.contextPath}/admin/fixed-seat-update" method="post">
 		
@@ -176,7 +176,7 @@ Swal.fire({
 %>
 <script>
 Swal.fire({
-	  title: "좌석 변경을 성공했습니다",
+	  text: "좌석 변경을 성공했습니다.",
 	  icon: "success",
 	  draggable: true,
 	  confirmButtonColor:'#205DAC'

@@ -165,6 +165,7 @@ footer{
 
 .container {
 	width: 70%;
+	margin-top: 50px;
 }
 
 header {
@@ -173,6 +174,8 @@ header {
 
 h1 {
 	margin-top: 50px;
+    margin-left: 20px;
+    margin-bottom: 21.44px;
 }
 
 footer {
@@ -236,7 +239,7 @@ footer {
 						<tr class="row" onclick="location.href='<c:url value="/notice/detail?no=${ notice.noticeId }"/>'">
 							<td>${ notice.noticeId }</td>
 							<td>${ notice.category }</td>
-							<td>${ notice.title }</td>
+							<td style="text-align: left;">${ notice.title }</td>
 							<td>관리자</td>
 							<td>${ notice.createAt }</td>
 							<td>${ notice.viewCount }</td>
@@ -279,7 +282,7 @@ footer {
 						
 						<c:choose>
 							<c:when test="${ paging.next }">
-								<a href="<c:url value='/qna/view?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
+								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarEnd+1}&keyword=${paging.keyword }&category=${paging.searchCategory }'/>">
 									<span class="material-symbols-outlined">chevron_right</span>
 								</a>
 							</c:when>
