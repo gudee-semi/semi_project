@@ -240,7 +240,7 @@ footer {
 
 					  Swal.fire({
 					    title: "계정 삭제",
-					    text: "정말로 계정을 삭제하시겠습니까?",
+					    text: "정말로 회원 정보를 삭제하시겠습니까?",
 					    icon: "warning",
 					    showCancelButton: true,
 					    confirmButtonColor: "#205DAC",
