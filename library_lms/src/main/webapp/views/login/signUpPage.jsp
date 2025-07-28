@@ -809,7 +809,7 @@ select:focus {
 						}else{
 							Swal.fire({
 								  title: "회원가입 성공",
-								  text: "계정 등록을 축하합니다.!",
+								  text: "계정 등록을 축하합니다!",
 								  icon: "success",
 								  confirmButtonColor: '#205DAC'
 								}).then(() => {

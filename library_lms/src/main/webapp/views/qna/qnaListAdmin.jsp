@@ -9,18 +9,57 @@
 <body>
 
 	<style>
-h2 {
-	text-align: center;
+.search-row {
+	padding-left: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.center {
-	width: 60vw;
-	margin: 0 auto;
-	text-align: center;
+.search-icon {
+	width: 60px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.total-count {
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+.searchBox form {
+	display: flex;
+	gap: 5px; /* 검색창 요소들 사이 간격 */
+}
+
+.searchBox {
+	text-align: right;
+	margin-bottom: 10px;
+}
+
+.searchBox form {
+	display: inline-flex;
+	align-items: center;
+	gap: 0; /* 완전히 붙이기 */
 }
 
 table {
+	width: 100%;
+	table-layout: fixed; /* 셀 너비 고정 */
 	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+tr.row {
+	cursor: pointer;
+}
+
+th {
+	border-top: 1px solid #CCCCCC;
+	height: 40px;
+	background: #FAFAFA;
 }
 
 th, td {
@@ -28,15 +67,37 @@ th, td {
 	border-bottom: 1px solid #CCCCCC;
 	padding: 8px 12px;
 	text-align: center;
+	white-space: nowrap; /* 줄바꿈 방지 */
+	overflow: hidden; /* 넘치는 텍스트 숨김 */
+	text-overflow: ellipsis; /* ... 처리 */
 }
 
-th {
-	border-bottom: 2px solid #666666;
-	background: #FAFAFA;
+.center {
+	width: 70vw;
+	margin: 0 auto;
+	text-align: center;
 }
 
-tr:last-child td {
-	border-bottom: none;
+td.title {
+	text-align: left;
+}
+
+.searchBox select, .searchBox input[type="text"] {
+	height: 36px;
+	font-size: 14px;
+	box-sizing: border-box;
+	margin: 0; /* ✅ 기본 margin 제거 */
+	border: 1px solid #ccc;
+	border-radius: 4px 0 0 4px;
+	height: 36px; /* 예시: 모양 다듬기 */
+}
+
+.searchBox input[type="text"] {
+	border-radius: 0;
+}
+
+.btn:hover {
+	background-color: #3E7AC8;
 }
 
 button {
@@ -44,7 +105,7 @@ button {
 	border: none;
 	background-color: #205DAC;
 	color: #fff;
-	border-radius: 6px;
+	border-radius: 0 4px 4px 0;
 	font-size: 15px;
 	cursor: pointer;
 	transition: 0.2s;
@@ -56,7 +117,6 @@ button {
 
 .search {
 	text-align: end;
-	padding: 30px;
 }
 
 .paging-pages {
@@ -93,12 +153,8 @@ body>form {
 	transform: translate(380px, 0);
 }
 
-.search-icon {
-	transform: translate(5px, -3px);
-}
-
 .paging-pages {
-	padding: 30px;
+	padding: 60px;
 }
 
 .sidebars {
@@ -109,13 +165,8 @@ body>form {
 .flex-container {
 	display: flex;
 	align-items: flex-start;
-	column-gap: 200px;
+	column-gap: 100px;
 }
-
-.container {
-	width: 80%;
-}
-
 </style>
 
 	<jsp:include page="/views/include/header.jsp" />
@@ -126,37 +177,38 @@ body>form {
 		</div>
 
 		<div>
-			<h2>QnA 관리자 페이지</h2>
+			<h1>QnA 관리자 페이지</h1>
 
 
 			<%-- 검색 영역 --%>
-			<form action="${pageContext.request.contextPath}/qna/list/admin" method="get" class="search">
+			<div class="searchBox">
+				<form action="${pageContext.request.contextPath}/qna/list/admin" method="get" class="search">
 
-				<%-- 카테고리 셀렉트 --%>
-				<select name="category" style="height: 27px;">
-					<option value="">전체</option>
-					<option value="시설" <c:if test="${param.category == '시설'}">selected</c:if>>시설</option>
-					<option value="좌석" <c:if test="${param.category == '좌석'}">selected</c:if>>좌석</option>
-					<option value="환불" <c:if test="${param.category == '환불'}">selected</c:if>>환불</option>
-					<option value="기타" <c:if test="${param.category == '기타'}">selected</c:if>>기타</option>
-				</select>
+					<!-- 카테고리 셀렉트 -->
+					<select name="category">
+						<option value="">전체</option>
+						<option value="시설" <c:if test="${param.category == '시설'}">selected</c:if>>시설</option>
+						<option value="좌석" <c:if test="${param.category == '좌석'}">selected</c:if>>좌석</option>
+						<option value="환불" <c:if test="${param.category == '환불'}">selected</c:if>>환불</option>
+						<option value="기타" <c:if test="${param.category == '기타'}">selected</c:if>>기타</option>
+					</select>
 
-				<%-- 검색 타입 셀렉트 --%>
-				<select name="searchType" style="height: 27px;">
-					<option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
-					<option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
-					<option value="memberName" <c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
-				</select>
+					<!-- 검색 타입 셀렉트 -->
+					<select name="searchType">
+						<option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
+						<option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
+						<option value="memberName" <c:if test="${param.searchType == 'memberName'}">selected</c:if>>작성자이름</option>
+					</select>
 
-				<%-- 키워드 입력창 --%>
-				<input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력 " style="height: 20px;" />
+					<!-- 키워드 입력창 -->
+					<input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력" />
 
-				<%-- 검색 버튼 --%>
-				<button type="submit" class="search-icon" style="display: inline">
-					<span class="material-symbols-outlined">search</span>
-				</button>
-
-			</form>
+					<!-- 검색 버튼 -->
+					<button type="submit" class="search-icon">
+						<span class="material-symbols-outlined search-icon" style="display: flex;">search</span>
+					</button>
+				</form>
+			</div>
 
 			<!-- 리스트 영역 -->
 			<table class="center" style="border-collapse: collapse;">
