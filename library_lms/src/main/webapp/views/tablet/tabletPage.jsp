@@ -90,7 +90,7 @@ body>div>div.container>div:nth-child(1)>img {
 		<div class="side"></div>
 		<div class="container">
 			<div style="text-align: center;">
-				<img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/6302.png" alt="태블릿" />
+				<img src="/images/tablet.png" alt="태블릿" />
 			</div>
 
 			<div style="text-align: center; transform: translate(0, -340px);">
