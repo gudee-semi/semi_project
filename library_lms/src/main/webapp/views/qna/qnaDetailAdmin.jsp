@@ -92,9 +92,9 @@ hr {
 		<div class="container">
 
 			<!-- QnA 상세 정보 영역 -->
-			<h2 class="qnaadmin">
+			<h1 class="qnaadmin">
 				<a href="${pageContext.request.contextPath}/qna/list/admin" style="color: #6666aa; text-decoration: none;">QnA 관리자 페이지로 이동</a>
-			</h2>
+			</h1>
 			<table class="detail-table">
 				<tr>
 					<th style="width: 15%">No</th>

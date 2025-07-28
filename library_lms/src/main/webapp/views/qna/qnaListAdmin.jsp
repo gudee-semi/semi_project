@@ -117,7 +117,6 @@ button {
 
 .search {
 	text-align: end;
-	padding: 30px;
 }
 
 .paging-pages {
