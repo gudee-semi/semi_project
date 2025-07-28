@@ -168,7 +168,7 @@ hr {
 			<c:if test="${empty replyList}">
 				<form class="center" action="/qna/reply/admin/insert" method="post">
 					<input class="center" type="hidden" name="qnaId" value="${qna.qnaId}" />
-					<textarea class="center" name="content" rows="3" cols="60" required placeholder="답글을 입력하세요"></textarea>
+					<textarea class="center reply-textarea" name="content" rows="3" cols="60" required placeholder="답글을 입력하세요"></textarea>
 					<br>
 					<button class="center" type="submit">답글 등록</button>
 				</form>
