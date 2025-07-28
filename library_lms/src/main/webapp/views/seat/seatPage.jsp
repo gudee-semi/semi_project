@@ -352,7 +352,6 @@
 		        data: { seatNo: seatNo },
 		        dataType: 'json',
 		        success: (data) => {
-		          console.log(data.res_msg);
 		          Swal.fire({
 		        	  text:'성공',
 		        	  icon:'success',
@@ -443,7 +442,6 @@
 		        data: { seatNo },
 		        dataType: 'json',
 		        success: (data) => {
-		          console.log(data.res_msg);
 		          Swal.fire({
 		        	  text:'취소 완료',
 		        	  icon:'success',

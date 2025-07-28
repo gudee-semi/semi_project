@@ -19,14 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	  2: { label: "2026 대학수학능력시험", date: dayjs('2026-11-19'), type: "수능" },
 	  3: { label: "2025 대학수학능력시험", date: dayjs('2025-11-13'), type: "수능" }
 	};
-
-	// 로그로 확인
-    console.log("오늘 날짜:", now.format());
-    console.log("학생 학년:", studentGrade);
-    testDates.forEach(t => {
-      console.log(t.label, t.date.format(), t.date.isAfter(now));
-    });
-    
     
 	const container = document.getElementById("dday-wrapper");
 	
