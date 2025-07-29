@@ -28,7 +28,7 @@ public class CalendarService {
 		for (Todo t : list) {
 			String detail = t.getDetail();
 			if (detail != null) {
-				detail = detail.replace("\n", "<br>");
+				detail = detail.replace("\n", "\\n");
 				t.setDetail(detail);
 			}
 		}
